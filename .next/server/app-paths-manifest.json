@@ -1,0 +1,8 @@
+{
+  "/page": "app/page.js",
+  "/converters/page": "app/converters/page.js",
+  "/converters/[slug]/page": "app/converters/[slug]/page.js",
+  "/calculators/page": "app/calculators/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/calculators/[slug]/page": "app/calculators/[slug]/page.js"
+}
