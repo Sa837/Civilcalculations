@@ -7,10 +7,16 @@ import { converters } from '../../lib/registry/converters'
 export default function ConvertersIndex() {
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<string>('All')
-  const index = useMemo(() => new Fuse(converters.map(c => ({
-    ...c,
-    unitNames: c.units.map(u => `${u.name} ${u.symbol}`)
-  })), { keys: ['title','category','unitNames'], threshold: 0.35 }), [])
+  const index = useMemo(() => new Fuse(converters.map(c => {
+    // Support both grouped and flat converters for search
+    const units = 'groups' in c && Array.isArray((c as any).groups)
+      ? (c as any).groups.flatMap((g: any) => g.units)
+      : (c as any).units ?? [];
+    return {
+      ...c,
+      unitNames: units.map((u: any) => `${u.name} ${u.symbol}`)
+    }
+  }), { keys: ['title','category','unitNames'], threshold: 0.35 }), [])
   const categories = ['All', ...Array.from(new Set(converters.map(c => c.category)))]
 
   let list = converters
@@ -71,7 +77,11 @@ export default function ConvertersIndex() {
               </span>
             </div>
             <p className="font-sans text-body/80 dark:text-body-dark/80">
-              {item.units.slice(0,3).map(u=>u.symbol).join(' · ')}
+              {/* Show up to 3 units from first group or from flat units */}
+              {('groups' in item && Array.isArray((item as any).groups)
+                ? (item as any).groups[0]?.units.slice(0,3)
+                : (item as any).units?.slice(0,3) || []
+              ).map((u: any) => u.symbol).join(' · ')}
             </p>
           </Link>
         ))}

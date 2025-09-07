@@ -7,13 +7,22 @@ export type UnitDef = {
   fromBase: (v: Big) => Big
 }
 
-export type Converter = {
-  slug: string
-  title: string
-  category: string
-  units: UnitDef[]
-  convert: (value: number, from: string, to: string) => number
-}
+export type Converter =
+  | {
+      slug: string
+      title: string
+      category: string
+      groups: { name: string; units: UnitDef[] }[]
+      examples?: string[]
+      convert?: (value: number, from: string, to: string) => number
+    }
+  | {
+      slug: string
+      title: string
+      category: string
+      units: UnitDef[]
+      convert: (value: number, from: string, to: string) => number
+    }
 
 export function linearUnit(factorToBase: number, symbol: string, name?: string): UnitDef {
   const f = new Big(factorToBase)
