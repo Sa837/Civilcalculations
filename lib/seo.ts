@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 
 export const baseMetadata: Metadata = {
-  title: 'CivilPro',
+  title: 'Civil Calculation',
   description: 'Fast calculators, smart converters — built for civil engineers.',
   openGraph: {
-    title: 'CivilPro',
+    title: 'Civil Calculation',
     description: 'Fast calculators, smart converters — built for civil engineers.',
     type: 'website',
   },

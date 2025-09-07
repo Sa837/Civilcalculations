@@ -2,17 +2,31 @@
 import { calculators } from '../../../lib/registry/calculators'
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
+import ConcreteCalculator from '../../../components/concrete-calculator'
 
 type Params = { params: { slug: string } }
 
 export default function CalculatorDetail({ params }: Params) {
   const calc = useMemo(() => calculators.find(c => c.slug === params.slug), [params.slug])
   const [values, setValues] = useState<Record<string, string | number>>({})
+  
   if (!calc) return (
     <main className="mx-auto max-w-4xl px-6 py-16">
       <p>Calculator not found. <Link className="text-accent underline" href="/calculators">Back</Link></p>
     </main>
   )
+
+  // Use the dedicated Concrete Calculator component for the concrete volume estimator
+  if (calc.slug === 'concrete-volume-estimator') {
+    return (
+      <main className="py-10">
+        <div className="mx-auto max-w-4xl px-6">
+          <Link href="/calculators" className="text-sm text-slate-500 hover:text-primary transition-colors">← Back to Calculators</Link>
+        </div>
+        <ConcreteCalculator />
+      </main>
+    )
+  }
 
   const result = (() => {
     try { return calc.compute(values) } catch { return {} }

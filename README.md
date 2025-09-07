@@ -1,4 +1,4 @@
-# CivilPro
+# Civil Calculation
 
 Fast calculators, smart converters — built for civil engineers.
 
@@ -26,7 +26,7 @@ npm run build && npm start
 Create `.env.local` with optional values:
 ```
 RESEND_API_KEY=your_key
-PLAUSIBLE_DOMAIN=civilpro.local
+PLAUSIBLE_DOMAIN=civil-calculation.local
 ```
 
 ## Add a converter

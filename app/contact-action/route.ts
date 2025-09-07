@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     if (apiKey) {
       const resend = new Resend(apiKey)
       await resend.emails.send({
-        from: 'CivilPro <noreply@civilpro.app>',
+        from: 'Civil Calculation <noreply@civil-calculation.app>',
         to: ['owner@example.com'],
         subject: `Contact form: ${name}`,
         text: `From: ${name} <${email}>\n\n${message}`,

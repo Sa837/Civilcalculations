@@ -19,9 +19,9 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: 'CivilPro - Professional Civil Engineering Tools',
+  title: 'Civil Calculation - Professional Civil Engineering Tools',
   description: 'Fast calculators, smart converters, and essential tools built specifically for civil engineers. Save time and eliminate errors in your calculations.',
-  metadataBase: new URL('https://civilpro.local'),
+  metadataBase: new URL('https://civil-calculation.local'),
   icons: {
     icon: [
       { url: '/logo.svg', type: 'image/svg+xml' },
@@ -31,10 +31,10 @@ export const metadata: Metadata = {
     apple: '/favicon.ico',
   },
   openGraph: {
-    title: 'CivilPro - Professional Civil Engineering Tools',
+    title: 'Civil Calculation - Professional Civil Engineering Tools',
     description: 'Fast calculators, smart converters, and essential tools built specifically for civil engineers.',
-    url: 'https://civilpro.local',
-    siteName: 'CivilPro',
+    url: 'https://civil-calculation.local',
+    siteName: 'Civil Calculation',
     type: 'website',
   },
 }

@@ -126,7 +126,7 @@ export default function HomePage() {
             Ready to Get Started?
           </h2>
           <p className="mb-10 font-sans text-lg text-body/80 dark:text-body-dark/80">
-            Join thousands of civil engineers who trust CivilPro for their daily calculations. 
+            Join thousands of civil engineers who trust Civil Calculation for their daily calculations. 
             Start building with confidence today.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
