@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Calculator, AlertCircle, CheckCircle, RotateCcw, Eye, EyeOff, Code } from 'lucide-react'
+import { Calculator, AlertCircle, CheckCircle, RotateCcw, Eye, EyeOff, Code, Info } from 'lucide-react'
 
 interface BrickworkResult {
   numberOfBricks: number
@@ -49,7 +49,8 @@ interface BrickworkCalculatorProps {
 }
 
 export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalculatorProps) {
-  const [formData, setFormData] = useState<BrickworkFormData>({
+  const [useArea, setUseArea] = useState(false)
+  const [formData, setFormData] = useState<BrickworkFormData & { area?: string }>({
     wallLength: '5.0',
     wallHeight: '2.4',
     wallThickness: '0.15',
@@ -61,7 +62,8 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
     wastageFactor: '5',
     unit: globalUnit,
     showStepByStep: false,
-    showDeveloperFormulas: false
+    showDeveloperFormulas: false,
+    area: '',
   })
 
   const [result, setResult] = useState<BrickworkResult | null>(null)
@@ -245,7 +247,8 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
       wastageFactor: '5',
       unit: globalUnit,
       showStepByStep: false,
-      showDeveloperFormulas: false
+      showDeveloperFormulas: false,
+      area: '',
     })
     setResult(null)
     setErrors({})
@@ -293,130 +296,192 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
             </div>
           </div>
         </div>
+        {/* SVG Diagram for Brickwork */}
+        <div className="flex justify-center mb-8">
+          <svg width="320" height="110" viewBox="0 0 320 110" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-md">
+            {/* Wall outline */}
+            <rect x="40" y="30" width="240" height="50" rx="8" fill="#f1f5f9" stroke="#64748b" strokeWidth="2" />
+            {/* Bricks - 2 rows */}
+            <rect x="50" y="40" width="40" height="15" fill="#eab308" stroke="#b45309" strokeWidth="1.5" />
+            <rect x="95" y="40" width="35" height="15" fill="#eab308" stroke="#b45309" strokeWidth="1.5" />
+            <rect x="135" y="40" width="50" height="15" fill="#eab308" stroke="#b45309" strokeWidth="1.5" />
+            <rect x="190" y="40" width="40" height="15" fill="#eab308" stroke="#b45309" strokeWidth="1.5" />
+            <rect x="235" y="40" width="35" height="15" fill="#eab308" stroke="#b45309" strokeWidth="1.5" />
+            {/* Second row */}
+            <rect x="60" y="60" width="35" height="15" fill="#fde68a" stroke="#b45309" strokeWidth="1.2" />
+            <rect x="100" y="60" width="45" height="15" fill="#fde68a" stroke="#b45309" strokeWidth="1.2" />
+            <rect x="150" y="60" width="35" height="15" fill="#fde68a" stroke="#b45309" strokeWidth="1.2" />
+            <rect x="190" y="60" width="50" height="15" fill="#fde68a" stroke="#b45309" strokeWidth="1.2" />
+            <rect x="245" y="60" width="25" height="15" fill="#fde68a" stroke="#b45309" strokeWidth="1.2" />
+            {/* Dimension lines */}
+            <line x1="40" y1="95" x2="280" y2="95" stroke="#64748b" strokeWidth="1.5" markerEnd="url(#arrow)" markerStart="url(#arrow)" />
+            <text x="160" y="108" textAnchor="middle" fontSize="14" fill="#334155">Length</text>
+            <line x1="30" y1="30" x2="30" y2="80" stroke="#64748b" strokeWidth="1.5" markerEnd="url(#arrow)" markerStart="url(#arrow)" />
+            <text x="15" y="60" textAnchor="middle" fontSize="14" fill="#334155" transform="rotate(-90 15,60)">Height</text>
+            <line x1="40" y1="25" x2="80" y2="25" stroke="#64748b" strokeWidth="1.5" markerEnd="url(#arrow)" markerStart="url(#arrow)" />
+            <text x="60" y="18" textAnchor="middle" fontSize="13" fill="#334155">Thickness</text>
+            <defs>
+              <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L8,4 L0,8 L2,4 Z" fill="#64748b" />
+              </marker>
+            </defs>
+          </svg>
+        </div>
 
         {/* Form */}
         <div className="p-8">
+          <div className="flex justify-end gap-4 mb-4 px-8 pt-8">
+            <button
+              type="button"
+              onClick={() => setUseArea(!useArea)}
+              className={`flex items-center gap-2 rounded-xl px-6 py-2 font-display font-medium shadow-soft transition-all 
+                ${useArea ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-secondary text-white hover:bg-secondary/90'}`}
+            >
+              <Info className="h-4 w-4" />
+              {useArea ? "Use Length & Height" : "Use Area"}
+            </button>
+          </div>
+
           <div className="grid gap-6 md:grid-cols-2">
-            {/* Wall Length */}
-            <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
-                Wall Length
-              </label>
-              <div className="relative">
+            {!useArea && (
+              <>
+                {/* Wall Length */}
+                <div>
+                  <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                    Wall Length
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      value={formData.wallLength}
+                      onChange={(e) => handleInputChange('wallLength', e.target.value)}
+                      step="0.001"
+                      min="0"
+                      className={`w-full rounded-xl border px-4 py-3 font-sans transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 ${
+                        errors.wallLength
+                          ? 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20'
+                          : 'border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800'
+                      }`}
+                      placeholder="Enter wall length"
+                    />
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body/60 dark:text-body-dark/60">
+                      {getLengthUnit()}
+                    </div>
+                  </div>
+                  {formData.unit === 'ft' && formData.wallLength && (
+                    <p className="mt-1 text-xs text-body/60 dark:text-body-dark/60">
+                      {getDisplayValue(formData.wallLength, true)}
+                    </p>
+                  )}
+                  {errors.wallLength && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-2 flex items-center gap-2 text-sm text-red-600 dark:text-red-400"
+                    >
+                      <AlertCircle className="h-4 w-4" />
+                      {errors.wallLength}
+                    </motion.p>
+                  )}
+                </div>
+
+                {/* Wall Height */}
+                <div>
+                  <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                    Wall Height
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      value={formData.wallHeight}
+                      onChange={(e) => handleInputChange('wallHeight', e.target.value)}
+                      step="0.001"
+                      min="0"
+                      className={`w-full rounded-xl border px-4 py-3 font-sans transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 ${
+                        errors.wallHeight
+                          ? 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20'
+                          : 'border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800'
+                      }`}
+                      placeholder="Enter wall height"
+                    />
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body/60 dark:text-body-dark/60">
+                      {getLengthUnit()}
+                    </div>
+                  </div>
+                  {formData.unit === 'ft' && formData.wallHeight && (
+                    <p className="mt-1 text-xs text-body/60 dark:text-body-dark/60">
+                      {getDisplayValue(formData.wallHeight, true)}
+                    </p>
+                  )}
+                  {errors.wallHeight && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-2 flex items-center gap-2 text-sm text-red-600 dark:text-red-400"
+                    >
+                      <AlertCircle className="h-4 w-4" />
+                      {errors.wallHeight}
+                    </motion.p>
+                  )}
+                </div>
+
+                {/* Wall Thickness */}
+                <div>
+                  <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                    Wall Thickness
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      value={formData.wallThickness}
+                      onChange={(e) => handleInputChange('wallThickness', e.target.value)}
+                      step="0.001"
+                      min="0"
+                      className={`w-full rounded-xl border px-4 py-3 font-sans transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 ${
+                        errors.wallThickness
+                          ? 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20'
+                          : 'border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800'
+                      }`}
+                      placeholder="Enter wall thickness"
+                    />
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body/60 dark:text-body-dark/60">
+                      {getLengthUnit()}
+                    </div>
+                  </div>
+                  {formData.unit === 'ft' && formData.wallThickness && (
+                    <p className="mt-1 text-xs text-body/60 dark:text-body-dark/60">
+                      {getDisplayValue(formData.wallThickness, true)}
+                    </p>
+                  )}
+                  {errors.wallThickness && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-2 flex items-center gap-2 text-sm text-red-600 dark:text-red-400"
+                    >
+                      <AlertCircle className="h-4 w-4" />
+                      {errors.wallThickness}
+                    </motion.p>
+                  )}
+                </div>
+            </>
+            )}
+            {useArea && (
+              <div>
+                <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                  Wall Area
+                </label>
                 <input
                   type="number"
-                  value={formData.wallLength}
-                  onChange={(e) => handleInputChange('wallLength', e.target.value)}
+                  value={formData.area}
+                  onChange={(e) => setFormData(prev => ({ ...prev, area: e.target.value }))}
                   step="0.001"
                   min="0"
-                  className={`w-full rounded-xl border px-4 py-3 font-sans transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 ${
-                    errors.wallLength
-                      ? 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20'
-                      : 'border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800'
-                  }`}
-                  placeholder="Enter wall length"
+                  placeholder={`Enter area (${formData.unit === 'm' ? 'm²' : 'ft²'})`}
+                  className="w-full rounded-xl border px-4 py-3 font-sans border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800"
                 />
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body/60 dark:text-body-dark/60">
-                  {getLengthUnit()}
-                </div>
               </div>
-              {formData.unit === 'ft' && formData.wallLength && (
-                <p className="mt-1 text-xs text-body/60 dark:text-body-dark/60">
-                  {getDisplayValue(formData.wallLength, true)}
-                </p>
-              )}
-              {errors.wallLength && (
-                <motion.p
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-2 flex items-center gap-2 text-sm text-red-600 dark:text-red-400"
-                >
-                  <AlertCircle className="h-4 w-4" />
-                  {errors.wallLength}
-                </motion.p>
-              )}
-            </div>
-
-            {/* Wall Height */}
-            <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
-                Wall Height
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  value={formData.wallHeight}
-                  onChange={(e) => handleInputChange('wallHeight', e.target.value)}
-                  step="0.001"
-                  min="0"
-                  className={`w-full rounded-xl border px-4 py-3 font-sans transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 ${
-                    errors.wallHeight
-                      ? 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20'
-                      : 'border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800'
-                  }`}
-                  placeholder="Enter wall height"
-                />
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body/60 dark:text-body-dark/60">
-                  {getLengthUnit()}
-                </div>
-              </div>
-              {formData.unit === 'ft' && formData.wallHeight && (
-                <p className="mt-1 text-xs text-body/60 dark:text-body-dark/60">
-                  {getDisplayValue(formData.wallHeight, true)}
-                </p>
-              )}
-              {errors.wallHeight && (
-                <motion.p
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-2 flex items-center gap-2 text-sm text-red-600 dark:text-red-400"
-                >
-                  <AlertCircle className="h-4 w-4" />
-                  {errors.wallHeight}
-                </motion.p>
-              )}
-            </div>
-
-            {/* Wall Thickness */}
-            <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
-                Wall Thickness
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  value={formData.wallThickness}
-                  onChange={(e) => handleInputChange('wallThickness', e.target.value)}
-                  step="0.001"
-                  min="0"
-                  className={`w-full rounded-xl border px-4 py-3 font-sans transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 ${
-                    errors.wallThickness
-                      ? 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20'
-                      : 'border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800'
-                  }`}
-                  placeholder="Enter wall thickness"
-                />
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body/60 dark:text-body-dark/60">
-                  {getLengthUnit()}
-                </div>
-              </div>
-              {formData.unit === 'ft' && formData.wallThickness && (
-                <p className="mt-1 text-xs text-body/60 dark:text-body-dark/60">
-                  {getDisplayValue(formData.wallThickness, true)}
-                </p>
-              )}
-              {errors.wallThickness && (
-                <motion.p
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-2 flex items-center gap-2 text-sm text-red-600 dark:text-red-400"
-                >
-                  <AlertCircle className="h-4 w-4" />
-                  {errors.wallThickness}
-                </motion.p>
-              )}
-            </div>
-
+            )}
             {/* Mortar Mix Type */}
             <div>
               <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
@@ -728,84 +793,117 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                 </table>
               </div>
 
-              {/* Developer Formulas Panel */}
-              <div className="mb-6">
-                <button
-                  onClick={() => handleInputChange('showDeveloperFormulas', !formData.showDeveloperFormulas)}
-                  className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3 font-display font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
-                >
-                  <Code className="h-4 w-4" />
-                  {formData.showDeveloperFormulas ? 'Hide' : 'Show'} Developer Formulas
-                </button>
-              </div>
+              {/* Step-by-step Calculation */}
+              {formData.showStepByStep && (
+                <div className="mb-8 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
+                  <h3 className="mb-4 font-display text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
+                    <Eye className="h-5 w-5 text-blue-500 dark:text-blue-300" />
+                    Step-by-Step Calculation
+                  </h3>
+                  <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
+                    <li>
+                      <span className="font-semibold">Wall Volume:</span> Wall Length × Wall Height × Wall Thickness = {result.wallVolume.toFixed(3)} m³
+                    </li>
+                    <li>
+                      <span className="font-semibold">Brick Volume (with mortar):</span> (Brick Length + Mortar Thickness) × (Brick Width + Mortar Thickness) × (Brick Height + Mortar Thickness)
+                    </li>
+                    <li>
+                      <span className="font-semibold">Number of Bricks:</span> Wall Volume / Brick Volume (with mortar) = {result.numberOfBricks}
+                    </li>
+                    <li>
+                      <span className="font-semibold">Mortar Volume:</span> Wall Volume - (Number of Bricks × Brick Volume without mortar) = {result.mortarVolume.toFixed(3)} m³
+                    </li>
+                    <li>
+                      <span className="font-semibold">Cement Needed:</span> {result.cementWeight.toFixed(1)} kg ({Math.ceil(result.cementBags)} bags)
+                    </li>
+                    <li>
+                      <span className="font-semibold">Sand Needed:</span> {result.sandWeight.toFixed(1)} kg
+                    </li>
+                  </ol>
+                </div>
+              )}
 
-              <AnimatePresence>
-                {formData.showDeveloperFormulas && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="mb-6 overflow-hidden rounded-xl border border-slate-200/20 bg-slate-50 dark:border-slate-700/30 dark:bg-slate-900/60"
-                  >
-                    <div className="p-6">
-                      <h3 className="mb-4 font-display text-lg font-semibold text-heading dark:text-heading-dark">
-                        Copy-Paste Safe Formulas
-                      </h3>
-                      <pre className="overflow-x-auto text-sm text-body/80 dark:text-body-dark/80">
-{`Step 0 – Mortar mix parts (based on dropdown)
-if Mortar_Mix_Type == "Non-load bearing (1:6)"
-    Mortar_Mix_Cement = 1
-    Mortar_Mix_Sand = 6
-else if Mortar_Mix_Type == "Standard load bearing (1:4)"
-    Mortar_Mix_Cement = 1
-    Mortar_Mix_Sand = 4
-
-Step 1 – Convert all inputs to meters and cubic meters
-Wall_Volume = Wall_Length * Wall_Height * Wall_Thickness
-
-Step 2 – Brick single volume including mortar (m³)
-Brick_Volume_with_mortar = (Brick_Length/1000 + Mortar_Thickness/1000) *
-                           (Brick_Width/1000 + Mortar_Thickness/1000) *
-                           (Brick_Height/1000 + Mortar_Thickness/1000)
-
-Step 2b – Brick volume without mortar (m³)
-Brick_Volume_without_mortar = (Brick_Length/1000) *
-                              (Brick_Width/1000) *
-                              (Brick_Height/1000)
-
-Step 3 – Number of bricks (before wastage)
-Number_of_Bricks = Wall_Volume / Brick_Volume_with_mortar
-
-Step 4 – Mortar volume (m³)
-Mortar_Volume = Wall_Volume - (Number_of_Bricks * Brick_Volume_without_mortar)
-
-Step 5 – Mix total parts
-Total_Parts = Mortar_Mix_Cement + Mortar_Mix_Sand
-
-Step 6 – Cement & Sand volume (m³)
-Cement_Volume = (Mortar_Mix_Cement / Total_Parts) * Mortar_Volume
-Sand_Volume   = (Mortar_Mix_Sand / Total_Parts) * Mortar_Volume
-
-Step 7 – Convert volumes to weights
-Cement_Weight = Cement_Volume * 1440      // 1440 kg/m³
-Sand_Weight   = Sand_Volume * 1450        // 1450 kg/m³
-Cement_Bags   = Cement_Weight / 50        // 50 kg per bag
-
-Step 8 – Include wastage (apply to bricks, cement, sand)
-Number_of_Bricks = Number_of_Bricks * (1 + Wastage_Factor/100)
-Cement_Weight    = Cement_Weight * (1 + Wastage_Factor/100)
-Sand_Weight      = Sand_Weight * (1 + Wastage_Factor/100)
-Cement_Bags      = Cement_Weight / 50      // recalc after wastage
-
-Rounding/display:
-- Number_of_Bricks: round up to integer (ceil).
-- Cement_Weight, Sand_Weight: round to 1 decimal.
-- Cement_Bags: round up to nearest whole bag.`}
-                      </pre>
+              {/* Enhanced Info & FAQ Section */}
+              <div className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
+                <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark mb-2">
+                  Brickwork Calculator & Estimator – Accurate Material Estimation Tool
+                </h2>
+                <p className="text-body/80 dark:text-body-dark/80 mb-4">
+                  A Brickwork Calculator is an essential online tool for civil engineers, builders, contractors, and DIY enthusiasts to quickly and accurately estimate the number of bricks, cement, sand, and mortar required for walls, columns, partitions, and other masonry work. This tool ensures efficient project planning, cost-saving, and minimal material wastage.
+                </p>
+                <hr className="my-4 border-slate-200 dark:border-slate-700" />
+                <div className="mb-4">
+                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">Why Use a Brickwork Calculator?</h3>
+                  <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
+                    <li>Calculate the exact number of bricks needed.</li>
+                    <li>Estimate cement and sand for mortar accurately.</li>
+                    <li>Save money by reducing waste.</li>
+                    <li>Plan masonry projects efficiently.</li>
+                    <li>Ensure walls and structures have the right strength and stability.</li>
+                  </ul>
+                </div>
+                <hr className="my-4 border-slate-200 dark:border-slate-700" />
+                <div className="mb-4">
+                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">How It Works</h3>
+                  <ol className="list-decimal list-inside space-y-1 text-body/80 dark:text-body-dark/80">
+                    <li>Select the type of brickwork: wall, column, or partition.</li>
+                    <li>Enter project dimensions: length, height, and thickness of the wall.</li>
+                    <li>Choose the mortar mix ratio: 1:6, 1:5, 1:4, or 1:3 (cement:sand).</li>
+                    <li>
+                      Get instant results:
+                      <ul className="list-disc list-inside ml-6">
+                        <li>Number of bricks required</li>
+                        <li>Cement quantity (bags)</li>
+                        <li>Sand volume for mortar</li>
+                      </ul>
+                    </li>
+                  </ol>
+                </div>
+                <hr className="my-4 border-slate-200 dark:border-slate-700" />
+                <div className="mb-4">
+                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">Standard Brickwork Mix Ratios</h3>
+                  <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
+                    <li>1:6 – Low-strength mortar for non-load bearing walls.</li>
+                    <li>1:5 – General-purpose mortar for standard walls.</li>
+                    <li>1:4 – Stronger mortar for structural walls.</li>
+                    <li>1:3 – High-strength mortar for heavy load-bearing walls.</li>
+                  </ul>
+                  <div className="mt-2 text-sm text-body/60 dark:text-body-dark/60">
+                    <span className="font-semibold">Tip:</span> The first number represents cement, and the second represents sand. Choose the mix ratio according to the structural requirements of your project.
+                  </div>
+                </div>
+                <hr className="my-4 border-slate-200 dark:border-slate-700" />
+                <div>
+                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">FAQs – Brickwork Calculator</h3>
+                  <div className="space-y-2 text-body/80 dark:text-body-dark/80">
+                    <div>
+                      <span className="font-semibold">Q1. What is a brickwork calculator?</span><br />
+                      A tool to calculate the number of bricks, cement, and sand required for masonry projects.
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    <div>
+                      <span className="font-semibold">Q2. Why is it important?</span><br />
+                      Ensures accurate estimation, cost-saving, and minimal material waste for construction projects.
+                    </div>
+                    <div>
+                      <span className="font-semibold">Q3. What units does it support?</span><br />
+                      Dimensions can be entered in meters or feet, and cement is calculated in bags.
+                    </div>
+                    <div>
+                      <span className="font-semibold">Q4. How to choose the right mortar mix ratio?</span><br />
+                      <ul className="list-disc list-inside ml-6">
+                        <li>1:6: Low-strength, non-load bearing walls</li>
+                        <li>1:5: General-purpose masonry</li>
+                        <li>1:4: Structural walls</li>
+                        <li>1:3: High-strength walls for heavy loads</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <span className="font-semibold">Q5. Can I calculate for irregular or partial walls?</span><br />
+                      Yes, calculate the total area of the wall and enter it in the calculator for precise results.
+                    </div>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
