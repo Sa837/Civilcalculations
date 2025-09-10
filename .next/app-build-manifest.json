@@ -16,6 +16,11 @@
       "static/chunks/main-app.js",
       "static/chunks/app/calculators/page.js"
     ],
+    "/contact/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/contact/page.js"
+    ],
     "/converters/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -25,11 +30,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/converters/[slug]/page.js"
-    ],
-    "/contact/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/contact/page.js"
     ]
   }
 }

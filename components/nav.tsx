@@ -20,13 +20,34 @@ export default function Nav() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/20 bg-surface/95 backdrop-blur-xl dark:border-slate-800/20 dark:bg-surface-dark/95">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-        <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
-          <div className="flex flex-col">
-            <span className="font-display text-xl font-bold text-heading dark:text-heading-dark">Civil Calculation</span>
-            <span className="text-xs text-body/60 dark:text-body-dark/60">Quick civil calculators</span>
-          </div>
-        </Link>
-        
+ {/* Logo */}
+    <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
+      {/* Gradient Circle with Icon */}
+      <div className="flex h-12 w-12 items-center justify-center rounded-full shadow-lg bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 text-white">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          className="h-7 w-7 drop-shadow-sm"
+        >
+          {/* Structure/Building with Ruler look */}
+          <path d="M4 20V10l8-6 8 6v10H4z" />   {/* building shape */}
+          <path d="M9 20v-5h6v5" />             {/* door */}
+        </svg>
+      </div>
+      
+      {/* Brand Text */}
+      <div className="flex flex-col leading-tight">
+        <span className="font-display text-2xl font-bold bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-sm">
+          CivilCalc
+        </span>
+        <span className="text-sm text-gray-600 dark:text-gray-400">
+          Smart Civil Calculators
+        </span>
+      </div>
+    </Link>
         <nav className="hidden items-center gap-10 md:flex">
           <Link 
             href="/" 
