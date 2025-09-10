@@ -3,8 +3,8 @@ import Big from 'big.js'
 export type UnitDef = {
   name: string
   symbol: string
-  toBase: (v: Big) => Big
-  fromBase: (v: Big) => Big
+  toBase: (v: number) => number
+  fromBase: (v: number) => number
 }
 
 export type Converter =
@@ -25,12 +25,11 @@ export type Converter =
     }
 
 export function linearUnit(factorToBase: number, symbol: string, name?: string): UnitDef {
-  const f = new Big(factorToBase)
   return {
     name: name ?? symbol,
     symbol,
-    toBase: (v) => v.times(f),
-    fromBase: (v) => v.div(f),
+    toBase: (v: number) => v * factorToBase,
+    fromBase: (v: number) => v / factorToBase,
   }
 }
 
@@ -39,20 +38,20 @@ export const temperatureUnits: UnitDef[] = [
   {
     name: 'Celsius',
     symbol: '°C',
-    toBase: (v) => v.plus(273.15), // base = Kelvin
-    fromBase: (v) => v.minus(273.15),
+    toBase: (v: number) => v + 273.15, // base = Kelvin
+    fromBase: (v: number) => v - 273.15,
   },
   {
     name: 'Fahrenheit',
     symbol: '°F',
-    toBase: (v) => v.minus(32).times(5).div(9).plus(273.15),
-    fromBase: (v) => v.minus(273.15).times(9).div(5).plus(32),
+    toBase: (v: number) => ((v - 32) * 5) / 9 + 273.15,
+    fromBase: (v: number) => ((v - 273.15) * 9) / 5 + 32,
   },
   {
     name: 'Kelvin',
     symbol: 'K',
-    toBase: (v) => v, // base already Kelvin
-    fromBase: (v) => v,
+    toBase: (v: number) => v, // base already Kelvin
+    fromBase: (v: number) => v,
   },
 ]
 
@@ -63,13 +62,12 @@ export function makeConverter(slug: string, title: string, category: string, uni
     category,
     units,
     convert: (value: number, from: string, to: string): number => {
-      const v = new Big(value)
       const fromU = units.find((u) => u.symbol === from || u.name === from)
       const toU = units.find((u) => u.symbol === to || u.name === to)
       if (!fromU || !toU) throw new Error('Unknown unit')
-      const base = fromU.toBase(v)
+      const base = fromU.toBase(value)
       const out = toU.fromBase(base)
-      return Number(out)
+      return out
     },
   }
 }

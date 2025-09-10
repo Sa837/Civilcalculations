@@ -1,8 +1,10 @@
 "use client"
 import { converters } from '../../../lib/registry/converters'
+import type { UnitDef } from '../../../lib/convert'
 import { adToBs, bsToAd } from '../../../lib/bs-ad-date'
 import { useEffect, useMemo, useState } from 'react'
 import { Copy, Check, ArrowLeftRight } from 'lucide-react'
+import Script from 'next/script'
 import Link from 'next/link'
 
 type Params = { params: { slug: string } }
@@ -59,11 +61,12 @@ export default function ConverterDetail({ params }: Params) {
   // Default to first group if grouped, else fallback to units
   const [activeTab, setActiveTab] = useState(0)
   const units = isGrouped ? groups?.[activeTab]?.units ?? [] : (converter as any)?.units ?? []
-  const [from, setFrom] = useState<string>('')
-  const [fromUnit, setFromUnit] = useState<string>(() => units?.[0]?.symbol ?? '')
-  const [toUnit, setToUnit] = useState<string>(() => units?.[1]?.symbol ?? units?.[0]?.symbol ?? '')
-  const [precision, setPrecision] = useState(6)
-  const [copied, setCopied] = useState(false)
+  const [from, setFrom] = useState<string>('');
+  const [fromUnit, setFromUnit] = useState<string>('');
+  const [toUnit, setToUnit] = useState<string>('');
+  const [precision, setPrecision] = useState(6);
+  const [copied, setCopied] = useState(false);
+
 
   // Update dateResult when fields change (placeholder logic)
   // Only update result when Convert is pressed
@@ -87,21 +90,19 @@ export default function ConverterDetail({ params }: Params) {
     }
   }
 
-  // Reset state on mount, tab/group change, and when switching between converter slugs
+  // Robustly initialize units and reset state on group/tab or converter change
   useEffect(() => {
-    const defaultFrom = units?.[0]?.symbol ?? ''
-    const defaultTo = units?.[1]?.symbol ?? units?.[0]?.symbol ?? ''
-    setFrom('')
-    setFromUnit(defaultFrom)
-    setToUnit(defaultTo)
-    setPrecision(6)
-    setCopied(false)
-    return () => {
-      setFrom('')
-      setCopied(false)
+    if (units && units.length > 0) {
+      setFrom('');
+      setFromUnit(units[0].symbol);
+      setToUnit(units[1]?.symbol ?? units[0].symbol);
+      setPrecision(6);
+      setCopied(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.slug, activeTab])
+  }, [params.slug, activeTab, units]);
+
+  // (No-op: result is computed directly in render for non-date converters)
 
   if (!converter) return (
     <main className="mx-auto max-w-4xl px-6 py-16">
@@ -110,16 +111,35 @@ export default function ConverterDetail({ params }: Params) {
   )
 
   const hasTemp = converter.slug === 'temperature'
-  let result: number | null = null
-  try {
-    if (fromUnit && toUnit && from !== '' && typeof (converter as any).convert === 'function') {
-      const fromNumber = Number(from)
-      if (!Number.isNaN(fromNumber)) {
-        result = (converter as any).convert(fromNumber, fromUnit, toUnit)
+  // Real-time result calculation for non-date converters
+  let result: number | null = null;
+  let unitError: string | null = null;
+  let debugError = '';
+  if (!isDateConverter) {
+    try {
+      const validFromUnit = units.find((u: any) => u.symbol === fromUnit);
+      const validToUnit = units.find((u: any) => u.symbol === toUnit);
+      if (!validFromUnit) unitError = `From unit not found: ${fromUnit}`;
+      if (!validToUnit) unitError = `To unit not found: ${toUnit}`;
+      const isValidInput = from !== '' && from !== null && from !== undefined && !/^\s+$/.test(from);
+      if (validFromUnit && validToUnit && isValidInput) {
+        const fromNumber = Number(from);
+        if (!Number.isNaN(fromNumber)) {
+          try {
+            // Use plain JS math for all linear conversions
+            // toBase and fromBase are always functions: v => v * factor, v => v / factor
+            const base = validFromUnit.toBase(fromNumber);
+            result = validToUnit.fromBase(base);
+          } catch (err) {
+            debugError = 'Conversion failed: ' + (typeof err === 'object' && err && 'message' in err ? (err as any).message : String(err));
+            result = null;
+          }
+        }
       }
+    } catch (e: any) {
+      debugError = e && e.message ? e.message : String(e);
+      result = null;
     }
-  } catch {
-    result = null
   }
 
   return (
@@ -148,10 +168,9 @@ export default function ConverterDetail({ params }: Params) {
       {isDateConverter ? (
         <div className="mt-8 grid gap-6 md:grid-cols-2">
           <form className="grid gap-4 rounded-2xl border border-slate-200 p-4 dark:border-slate-800" onSubmit={handleDateConvert}>
-            <div className="flex items-center gap-2 mb-2">
-              {/* No direction button, only swap below */}
-            </div>
-            {dateTab === 0 ? (
+            {/* Removed swap button, tabs now control direction */}
+            {/* Show only the relevant input fields for the active tab */}
+            {dateTab === 0 && (
               <div className="flex gap-2">
                 <div>
                   <label className="font-sans text-sm font-medium">Day</label>
@@ -168,7 +187,8 @@ export default function ConverterDetail({ params }: Params) {
                   <input type="number" min="1900" max="2100" value={adYear} onChange={e => setAdYear(e.target.value)} className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900" />
                 </div>
               </div>
-            ) : (
+            )}
+            {dateTab === 1 && (
               <div className="flex gap-2">
                 <div>
                   <label className="font-sans text-sm font-medium">Day</label>
@@ -186,32 +206,7 @@ export default function ConverterDetail({ params }: Params) {
                 </div>
               </div>
             )}
-            {/* Swap button after input fields, before Convert */}
             <div className="flex gap-2 mt-2">
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700"
-                title="Swap direction"
-                onClick={() => {
-                  setDateTab((prev) => {
-                    const next = prev === 0 ? 1 : 0;
-                    if (next === 0) {
-                      setAdYear(defaultAdYear);
-                      setAdMonth(defaultAdMonth);
-                      setAdDate(defaultAdDate);
-                    } else {
-                      setBsYear(defaultBsYear);
-                      setBsMonth(defaultBsMonth);
-                      setBsDate(defaultBsDate);
-                    }
-                    setDateResult('');
-                    setConvertClicked(false);
-                    return next;
-                  });
-                }}
-              >
-                <ArrowLeftRight className="h-4 w-4" /> Swap
-              </button>
               <button
                 type="submit"
                 className="flex-1 rounded-xl bg-primary px-4 py-2 font-semibold text-white hover:bg-primary/90 transition"
@@ -236,7 +231,7 @@ export default function ConverterDetail({ params }: Params) {
         </div>
       ) : (
         <div className="mt-8 grid gap-6 md:grid-cols-2">
-          <form className="grid gap-4 rounded-2xl border border-slate-200 p-4 dark:border-slate-800">
+          <form className="grid gap-4 rounded-2xl border border-slate-200 p-4 dark:border-slate-800" onSubmit={e => e.preventDefault()}>
             <div className="grid gap-1">
               <label className="font-sans text-sm font-medium">Value</label>
               <input
@@ -267,9 +262,13 @@ export default function ConverterDetail({ params }: Params) {
           <div className="rounded-2xl border border-slate-200 p-4 dark:border-slate-800">
             <h2 className="font-display text-xl font-semibold">Result</h2>
             <div className="mt-3">
-              {result === null ? (
+              {from === '' ? (
                 <p className="font-sans text-slate-500">Enter a value and select units.</p>
-              ) : (
+              ) : Number.isNaN(Number(from)) ? (
+                <p className="font-sans text-red-500">Invalid input</p>
+              ) : unitError ? (
+                <p className="font-sans text-red-500">{unitError}</p>
+              ) : (result !== null ? (
                 <div className="flex items-center gap-2">
                   <p className="text-2xl font-bold">{result.toLocaleString(undefined, { maximumFractionDigits: precision })}</p>
                   <button
@@ -302,7 +301,9 @@ export default function ConverterDetail({ params }: Params) {
                   </button>
                   <span className="sr-only" aria-live="polite">{copied ? 'Copied to clipboard' : ''}</span>
                 </div>
-              )}
+              ) : (
+                <p className="font-sans text-red-500">Conversion not available</p>
+              ))}
             </div>
             <div className="mt-4 rounded-lg bg-slate-50 p-3 text-sm dark:bg-slate-900">
               {hasTemp ? (
@@ -314,21 +315,54 @@ export default function ConverterDetail({ params }: Params) {
           </div>
         </div>
       )}
-      {/* Responsive banner ad below results (for both date and other converters) */}
+      {/* Google AdSense integration */}
+      <Script
+        id="adsbygoogle-init"
+        strategy="afterInteractive"
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922"
+        crossOrigin="anonymous"
+      />
       <div className="w-full flex justify-center my-4">
-        <div id="ad-below-results" style={{ width: '100%', maxWidth: 468, minHeight: 60, background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 6 }}>
-          {/* Example: Google AdSense responsive banner */}
-          <span style={{ color: '#94a3b8', fontSize: 12 }}>Ad Slot: Banner Below Results</span>
+        <div style={{ width: '100%', maxWidth: 468, minHeight: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 6 }}>
+          <ins className="adsbygoogle"
+            style={{ display: 'block', width: '100%', height: 60 }}
+            data-ad-client="ca-pub-2472384896413922"
+            data-ad-slot="YOUR_SLOT_ID"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          ></ins>
         </div>
       </div>
-      {/* Minimal static footer ad, desktop only */}
-      <footer className="hidden md:flex w-full justify-center mt-12">
-        <div id="footer-ad" style={{ width: 320, height: 50, background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8 }}>
-          <span style={{ color: '#94a3b8', fontSize: 12 }}>Ad Slot: Footer</span>
+      <Script id="adsbygoogle-load" strategy="afterInteractive">
+        {`(window.adsbygoogle = window.adsbygoogle || []).push({});`}
+      </Script>
+      {/* Minimal static footer ad, desktop and mobile friendly */}
+      <footer className="w-full flex justify-center mt-12">
+        <div id="footer-ad" style={{ width: '100%', maxWidth: 468, minHeight: 60, background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8 }}>
+          <ins className="adsbygoogle"
+            style={{ display: 'block', width: '100%', height: 60 }}
+            data-ad-client="ca-pub-2472384896413922"
+            data-ad-slot="YOUR_SECOND_SLOT_ID"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          ></ins>
         </div>
       </footer>
+      <Script id="adsbygoogle-footer-load" strategy="afterInteractive">
+        {`(window.adsbygoogle = window.adsbygoogle || []).push({});`}
+      </Script>
     </main>
   );
+}
+
+export function linearUnit(factorToBase: number, symbol: string, name?: string): UnitDef {
+  return {
+    name: name ?? symbol,
+    symbol,
+    toBase: (v: number) => v * factorToBase,
+    fromBase: (v: number) => v / factorToBase,
+  }
 }
 
 

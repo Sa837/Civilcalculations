@@ -51,7 +51,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             <div className="text-center">
-              <div className="mb-3 text-3xl font-bold text-primary">50+</div>
+              <div className="mb-3 text-3xl font-bold text-primary">10+</div>
               <div className="font-sans text-body/70 dark:text-body-dark/70">Engineering Calculators</div>
             </div>
             <div className="text-center">
