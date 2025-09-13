@@ -115,6 +115,17 @@ export default function Nav() {
           </div>
           
           <Link 
+            href="/resources" 
+            className={`relative font-display font-medium transition-colors hover:text-primary ${
+              isActive('/resources') 
+                ? 'text-primary border-b-2 border-primary' 
+                : 'text-heading dark:text-heading-dark'
+            }`}
+          >
+            Resources
+          </Link>
+          
+          <Link 
             href="/contact" 
             className={`relative font-display font-medium transition-colors hover:text-primary ${
               isActive('/contact') 
@@ -185,6 +196,17 @@ export default function Nav() {
                 }`}
               >
                 Converters
+              </Link>
+              <Link 
+                href="/resources" 
+                onClick={() => setOpen(false)} 
+                className={`rounded-xl px-5 py-4 font-display font-medium transition-colors ${
+                  isActive('/resources')
+                    ? 'bg-primary/10 text-primary'
+                    : 'hover:bg-slate-100/80 dark:hover:bg-slate-800/80'
+                }`}
+              >
+                Resources
               </Link>
               <Link 
                 href="/contact" 

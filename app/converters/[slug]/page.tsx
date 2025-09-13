@@ -144,7 +144,7 @@ export default function ConverterDetail({ params }: Params) {
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-10">
-      <Link href="/converters" className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">← Back</Link>
+      <Link href="/converters" className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">← Back to Converters</Link>
       <div className="mt-2 flex items-center gap-3">
         <h1 className="font-display text-3xl font-bold">{converter.title}</h1>
         <span className="rounded-full bg-primary/10 px-3 py-1 text-[10px] font-sans font-semibold uppercase tracking-wide text-primary dark:bg-primary/20">{converter.category}</span>
@@ -166,66 +166,97 @@ export default function ConverterDetail({ params }: Params) {
       )}
       {/* Date Converter UI */}
       {isDateConverter ? (
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
-          <form className="grid gap-4 rounded-2xl border border-slate-200 p-4 dark:border-slate-800" onSubmit={handleDateConvert}>
-            {/* Removed swap button, tabs now control direction */}
-            {/* Show only the relevant input fields for the active tab */}
-            {dateTab === 0 && (
-              <div className="flex gap-2">
-                <div>
-                  <label className="font-sans text-sm font-medium">Day</label>
-                  <input type="number" min="1" max="32" value={adDate} onChange={e => setAdDate(e.target.value)} className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900" />
+        <div className="mt-8">
+          {/* Date Converter Tabs */}
+          <div className="mb-6 flex gap-2">
+            <button
+              onClick={() => setDateTab(0)}
+              className={`rounded-xl border px-4 py-2 font-display text-sm font-medium transition-all ${
+                dateTab === 0 
+                  ? 'border-primary bg-primary/10 text-primary' 
+                  : 'border-slate-300 text-body hover:border-primary hover:text-primary dark:border-slate-600 dark:text-body-dark dark:hover:border-primary'
+              }`}
+            >
+              English to Nepali
+            </button>
+            <button
+              onClick={() => setDateTab(1)}
+              className={`rounded-xl border px-4 py-2 font-display text-sm font-medium transition-all ${
+                dateTab === 1 
+                  ? 'border-primary bg-primary/10 text-primary' 
+                  : 'border-slate-300 text-body hover:border-primary hover:text-primary dark:border-slate-600 dark:text-body-dark dark:hover:border-primary'
+              }`}
+            >
+              Nepali to English
+            </button>
+          </div>
+          
+          <div className="grid gap-6 md:grid-cols-2">
+            <form className="grid gap-4 rounded-2xl border border-slate-200 p-4 dark:border-slate-800" onSubmit={handleDateConvert}>
+              {/* Show only the relevant input fields for the active tab */}
+              {dateTab === 0 && (
+                <div className="space-y-4">
+                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark">English Date (AD)</h3>
+                  <div className="flex gap-2">
+                    <div>
+                      <label className="font-sans text-sm font-medium">Day</label>
+                      <input type="number" min="1" max="32" value={adDate} onChange={e => setAdDate(e.target.value)} className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900" />
+                    </div>
+                    <div>
+                      <label className="font-sans text-sm font-medium">Month</label>
+                      <select value={adMonth} onChange={e => setAdMonth(e.target.value)} className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900">
+                        {["January","February","March","April","May","June","July","August","September","October","November","December"].map(m => <option key={m} value={m}>{m}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="font-sans text-sm font-medium">Year</label>
+                      <input type="number" min="1900" max="2100" value={adYear} onChange={e => setAdYear(e.target.value)} className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900" />
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label className="font-sans text-sm font-medium">Month</label>
-                  <select value={adMonth} onChange={e => setAdMonth(e.target.value)} className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900">
-                    {["January","February","March","April","May","June","July","August","September","October","November","December"].map(m => <option key={m} value={m}>{m}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="font-sans text-sm font-medium">Year</label>
-                  <input type="number" min="1900" max="2100" value={adYear} onChange={e => setAdYear(e.target.value)} className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900" />
-                </div>
-              </div>
-            )}
-            {dateTab === 1 && (
-              <div className="flex gap-2">
-                <div>
-                  <label className="font-sans text-sm font-medium">Day</label>
-                  <input type="number" min="1" max="32" value={bsDate} onChange={e => setBsDate(e.target.value)} className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900" />
-                </div>
-                <div>
-                  <label className="font-sans text-sm font-medium">Month</label>
-                  <select value={bsMonth} onChange={e => setBsMonth(e.target.value)} className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900">
-                    {["Baisakh","Jestha","Ashadh","Shrawan","Bhadra","Ashwin","Kartik","Mangsir","Poush","Magh","Falgun","Chaitra"].map(m => <option key={m} value={m}>{m}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="font-sans text-sm font-medium">Year</label>
-                  <input type="number" min="1970" max="2100" value={bsYear} onChange={e => setBsYear(e.target.value)} className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900" />
-                </div>
-              </div>
-            )}
-            <div className="flex gap-2 mt-2">
-              <button
-                type="submit"
-                className="flex-1 rounded-xl bg-primary px-4 py-2 font-semibold text-white hover:bg-primary/90 transition"
-              >
-                Convert
-              </button>
-            </div>
-          </form>
-          <div className="rounded-2xl border border-slate-200 p-4 dark:border-slate-800">
-            <h2 className="font-display text-xl font-semibold">Result</h2>
-            <div className="mt-3 min-h-[2.5em] flex items-center">
-              {convertClicked && dateResult ? (
-                <div className="flex flex-col gap-1">
-                  <span className="text-lg font-semibold text-slate-500">{dateTab === 0 ? 'Nepali (BS) Date:' : 'English (AD) Date:'}</span>
-                  <span className="text-2xl font-bold text-primary">{dateResult}</span>
-                </div>
-              ) : (
-                <span className="text-slate-500 font-sans">Enter a date and click Convert to see the result.</span>
               )}
+              {dateTab === 1 && (
+                <div className="space-y-4">
+                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark">Nepali Date (BS)</h3>
+                  <div className="flex gap-2">
+                    <div>
+                      <label className="font-sans text-sm font-medium">Day</label>
+                      <input type="number" min="1" max="32" value={bsDate} onChange={e => setBsDate(e.target.value)} className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900" />
+                    </div>
+                    <div>
+                      <label className="font-sans text-sm font-medium">Month</label>
+                      <select value={bsMonth} onChange={e => setBsMonth(e.target.value)} className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900">
+                        {["Baisakh","Jestha","Ashadh","Shrawan","Bhadra","Ashwin","Kartik","Mangsir","Poush","Magh","Falgun","Chaitra"].map(m => <option key={m} value={m}>{m}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="font-sans text-sm font-medium">Year</label>
+                      <input type="number" min="1970" max="2100" value={bsYear} onChange={e => setBsYear(e.target.value)} className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900" />
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div className="flex gap-2 mt-2">
+                <button
+                  type="submit"
+                  className="flex-1 rounded-xl bg-primary px-4 py-2 font-semibold text-white hover:bg-primary/90 transition"
+                >
+                  Convert
+                </button>
+              </div>
+            </form>
+            <div className="rounded-2xl border border-slate-200 p-4 dark:border-slate-800">
+              <h2 className="font-display text-xl font-semibold">Result</h2>
+              <div className="mt-3 min-h-[2.5em] flex items-center">
+                {convertClicked && dateResult ? (
+                  <div className="flex flex-col gap-1">
+                    <span className="text-lg font-semibold text-slate-500">{dateTab === 0 ? 'Nepali (BS) Date:' : 'English (AD) Date:'}</span>
+                    <span className="text-2xl font-bold text-primary">{dateResult}</span>
+                  </div>
+                ) : (
+                  <span className="text-slate-500 font-sans">Enter a date and click Convert to see the result.</span>
+                )}
+              </div>
             </div>
           </div>
         </div>

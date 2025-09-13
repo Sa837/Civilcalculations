@@ -2,7 +2,7 @@
 import { calculators } from '../../../lib/registry/calculators'
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import ConcreteCalculator from '../../../components/concrete-calculator'
+import ConcreteCalculator from '../../../components/calculators/concrete-calculator'
 
 type Params = { params: { slug: string } }
 
