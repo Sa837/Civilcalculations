@@ -4,18 +4,32 @@ export const resources: Resource[] = [
   // Nepal Resources
   {
     slug: 'nepal-building-codes',
-    title: 'Nepal Building Codes',
+    title: 'Nepal Building Codes (NBC)',
     description: 'Complete collection of Nepal Building Codes including NBC 105, 205, and other structural design codes.',
     category: 'Codes',
     region: 'Nepal',
     subItems: [
-      { title: 'Nepal Building Code NBC 105:2020 - Seismic Design of the Building in Nepal', url: 'https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824087_98.pdf' },
-      { title: 'Nepal Building Code NBC 205:2024 (Ready-To-Use Detailing Guidelines for Low Rise Reinforced Concrete Buildings Concrete Buildings Without Masonary InFills)', url: 'https://giwmscdntwo.gov.np/media/pdf_upload/NBC_205_READY-TO-USE_DETAILING_GUIDELINE_FOR-signed.pdf' },
-      { title: 'NBC 206 - Steel Design', url: '/resources/nepal-building-codes/nbc-206' },
-      { title: 'NBC 207 - Masonry Design', url: '/resources/nepal-building-codes/nbc-207' },
-      
-      { title: 'NBC 208 - Masonry Design', url: '/resources/nepal-building-codes/nbc-208' }
-    ],
+      { "title": "Nepal Building Code NBC 105:2020 - Seismic Design of Buildings in Nepal", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824087_98.pdf" },
+      { "title": "Nepal Building Code NBC 206:2024 - Architectural Design Requirements", "url": "https://giwmscdntwo.gov.np/media/pdf_upload/NBC_206_ARCHITECTURAL_DESIGN_REQUIREMENTS-signed.pdf" },
+      { "title": "Nepal Building Code NBC 207:2003 - Electrical Design Requirements for Public Buildings", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824531_73.pdf" },
+      { "title": "Nepal Building Code NBC 208:2003 - Sanitary and Plumbing Design Requirements", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824552_72.pdf" },
+      { "title": "Nepal Building Code NBC 204:2015 - Guidelines for Earthquake Resistant Building Construction (Earthen Building)", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824397_8.pdf" },
+      { "title": "Nepal Building Code NBC 203:2015 - Guidelines for Earthquake Resistant Building Construction (Low Strength Masonry)", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679826255_5.pdf" },
+      { "title": "Nepal Building Code NBC 202:2015 - Guidelines on Load Bearing Masonry", "url": "https://giwmscdnone.gov.np/media/app/public/54/posts/1679824354_21.pdf" },
+      { "title": "Nepal Building Code NBC 201:1994 - Mandatory Rules of Thumb for Reinforced Concrete Buildings with Masonry Infill", "url": "https://www.iibh.org/kijun/pdf/Nepal_20_NBC_201_1994_Thumb_RC_with_Masonry.pdf" },
+      { "title": "Nepal Building Code NBC 114:1994 - Construction Safety", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824289_7.pdf" },
+      { "title": "Nepal Building Code NBC 113:1994 - Aluminium", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824268_75.pdf" },
+      { "title": "Nepal Building Code NBC 112:1994 - Timber", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824246_20.pdf" },
+      { "title": "Nepal Building Code NBC 111:1994 - Steel", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824223_46.pdf" },
+      { "title": "Nepal Building Code NBC 110:1994 - Plain and Reinforced Concrete", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824202_6.pdf" },
+      { "title": "Nepal Building Code NBC 109:1994 - Unreinforced Masonry", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824181_36.pdf" },
+      { "title": "Nepal Building Code NBC 108:1994 - Site Consideration for Seismic Hazards", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824158_65.pdf" },
+      { "title": "Nepal Building Code NBC 107:1994 - Provisional Recommendation on Fire Safety", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824137_8.pdf" },
+      { "title": "Nepal Building Code NBC 106:1994 - Snow Load", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824116_40.pdf" },
+      { "title": "Nepal Building Code NBC 104:1994 - Wind Load", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679824060_73.pdf" },
+      { "title": "Nepal Building Code NBC 103:1994 - Occupancy Load (Imposed Load)", "url": "https://giwmscdntwo.gov.np/media/app/public/54/posts/1679823542_78.pdf" }
+    ]
+    ,
     createdAt: new Date('2024-01-15'),
     updatedAt: new Date('2024-01-15')
   },
@@ -26,10 +40,30 @@ export const resources: Resource[] = [
     category: 'District Rates',
     region: 'Nepal',
     subItems: [
-      { title: 'Kathmandu District Rates', url: '/resources/nepal-district-rates/kathmandu' },
-      { title: 'Pokhara District Rates', url: '/resources/nepal-district-rates/pokhara' },
-      { title: 'Lalitpur District Rates', url: '/resources/nepal-district-rates/lalitpur' },
-      { title: 'Bhaktapur District Rates', url: '/resources/nepal-district-rates/bhaktapur' }
+      { title: 'Kathmandu District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://daokathmandu.moha.gov.np/upload/1402a3666bab255e6a3f07937faf522f/files/%E0%A4%9C%E0%A4%BF%E0%A4%B2%E0%A5%8D%E0%A4%B2%E0%A4%BE_%E0%A4%A6%E0%A4%B0%E0%A4%B0%E0%A5%87%E0%A4%9F_%E0%A5%A8%E0%A5%A6%E0%A5%AE%E0%A5%A8.%E0%A5%A6%E0%A5%AE%E0%A5%A9_%E0%A4%95%E0%A4%BE%E0%A4%A0%E0%A4%AE%E0%A4%BE%E0%A4%A1%E0%A5%8C%E0%A4%82_Final_rotated_Size_(1).pdf' },
+      { title: 'Kaski District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dcckaski.gov.np/dcc-notice-file/Notices-202508031300507062.pdf' },
+      { title: 'Lalitpur District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dcclalitpur.gov.np/dcc-notice-file/Notices-202410151147141924.pdf' },
+      { title: 'Bhaktapur District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://daobhaktapur.moha.gov.np/upload/23c9d1f978cb60dc116b59b903e5975a/files/%E0%A4%9C%E0%A4%BF%E0%A4%B2%E0%A5%8D%E0%A4%B2%E0%A4%BE_%E0%A4%A6%E0%A4%B0%E0%A4%B0%E0%A5%87%E0%A4%9F_%E0%A4%86.%E0%A4%B5.%E0%A5%A8%E0%A5%A6%E0%A5%AE%E0%A5%A8.%E0%A5%AE%E0%A5%A9_compressed_(1).pdf' },
+      { title: 'Bhojpur District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccbhojpur.gov.np/dcc-notice-file/Notices-202508041718207276.pdf' },
+      { title: 'Solukhumbu District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccsolukhumbu.gov.np/dcc-notice-file/Notices-202507152046175271.pdf' },
+      { title: 'Bara District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccbara.gov.np/dcc-notice-file/Notices-202507211122442234.pdf' },
+      { title: 'Dhanusha District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccdhanusha.gov.np/dcc-notice-file/Notices-202508141413503484.pdf' },
+      { title: 'Rautahat District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccrautahat.gov.np/dcc-notice-file/Notices-202508191105089330.pdf' },
+      { title: 'Siraha District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://daosiraha.moha.gov.np/upload/f729da1c8bb603cb3b301f916a396214/files/%E0%A4%9C%E0%A4%BF%E0%A4%B2%E0%A5%8D%E0%A4%B2%E0%A4%BE_%E0%A4%A6%E0%A4%B0%E0%A4%B0%E0%A5%87%E0%A4%9F_%E0%A4%AB%E0%A4%BE%E0%A4%87%E0%A4%A8%E0%A4%B2_%E0%A5%A8%E0%A5%A6%E0%A5%AE%E0%A5%A8_%E0%A5%AE%E0%A5%A9_%E0%A4%95%E0%A5%8B_%E0%A4%B2%E0%A4%BE%E0%A4%97%E0%A4%BF.pdf' },
+      { title: 'Dhading District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccdhading.gov.np/dcc-notice-file/Notices-202507231340323598.pdf' },
+      { title: 'Dolakha District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccdolakha.gov.np/dcc-notice-file/Notices-202507251012293488.pdf' },
+      { title: 'Nuwakot District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccnuwakot.gov.np/dcc-notice-file/Notices-202508241316336848.pdf' },
+      { title: 'Ramechhap District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccramechhap.gov.np/dcc-notice-file/Notices-202507201506558251.pdf' },
+      { title: 'Sindhupalchok District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccsindhupalchowk.gov.np/dcc-notice-file/Notices-20250724124500789.pdf' },
+      { title: 'Baglung District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccbaglung.gov.np/dcc-notice-file/Notices-202507241306197560.pdf' },
+      { title: 'Gorkha District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'http://wssdogorkha.gandaki.gov.np/upload/6acf52f10c91c26c780d78e8527c7d21/files/District_rate_of_Gorkha_For_2082_083.pdf' },
+      { title: 'Lamjung District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'http://wriddlamjung.gandaki.gov.np/upload/22afdd56a563fa604f1442ca7bc02e72/files/%E0%A4%9C%E0%A4%BF%E0%A4%B2%E0%A5%8D%E0%A4%B2%E0%A4%BE_%E0%A4%A6%E0%A4%B0%E0%A4%B0%E0%A5%87%E0%A4%9F_%E0%A5%A8%E0%A5%A6%E0%A5%AE%E0%A5%A8_83.pdf' },
+      { title: 'Myagdi District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'http://idomyagdi.gandaki.gov.np/upload/a482d14985070398df905fc9e4bb33d9/files/%E0%A4%9C%E0%A4%BF%E0%A4%B2%E0%A5%8D%E0%A4%B2%E0%A4%BE_%E0%A4%A6%E0%A4%B0%E0%A4%B0%E0%A5%87%E0%A4%9F_%E0%A5%A8%E0%A5%A6%E0%A5%AE%E0%A5%A8_%E0%A5%A6%E0%A5%AE%E0%A5%A9.pdf' },
+      { title: 'Banke District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://wriddobanke.gov.np/storage/notice-news/Rate_082-83/file/62Vbzf5whHAfDgf6JjmQ3pJhdxVWmHhQEWEhjJ4V.pdf' },
+      { title: 'Dang District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccdang.gov.np/dcc-notice-file/Notices-202507181353529491.pdf' },
+      { title: 'Kapilvastu District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dcckapilvastu.gov.np/dcc-notice-file/Notices-202507201228046353.pdf' },
+      { title: 'Rolpa District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://ridorolpa.lumbini.gov.np/media/notices/%E0%A4%86.%E0%A4%B5._%E0%A5%A8%E0%A5%A6%E0%A5%AE%E0%A5%A8-%E0%A5%A6%E0%A5%AE%E0%A5%A9_%E0%A4%B0%E0%A4%B2%E0%A4%AA_%E0%A4%9C%E0%A4%B2%E0%A4%B2%E0%A4%95_%E0%A4%B8%E0%A4%B5%E0%A4%95%E0%A4%A4_%E0%A4%9C%E0%A4%B2%E0%A4%B2_%E0%A4%A6%E0%A4%B0%E0%A4%B0%E0%A4%9F.pdf' },
+      { title: 'Kanchanpur District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://shuklaphantamun.gov.np/sites/shuklaphantamun.gov.np/files/documents/कञ्चनपुर जिल्लाको स्वीकृत दररेट आ.व. २०८२।०८३.pdf' }
     ],
     createdAt: new Date('2024-01-10'),
     updatedAt: new Date('2024-01-10')
@@ -61,7 +95,7 @@ export const resources: Resource[] = [
     createdAt: new Date('2024-01-12'),
     updatedAt: new Date('2024-01-12')
   },
-
+/*
   // India Resources
   {
     slug: 'indian-building-codes',
@@ -296,7 +330,7 @@ export const resources: Resource[] = [
     region: 'Other Regions',
     createdAt: new Date('2024-01-08'),
     updatedAt: new Date('2024-01-08')
-  }
+  }*/
 ]
 
 export const getResourcesByCategory = (category: string) => {

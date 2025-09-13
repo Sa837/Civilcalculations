@@ -34,6 +34,7 @@ export interface Resource {
   createdAt: Date
   updatedAt: Date
   isFavorite?: boolean
+  parentResource?: Resource
 }
 
 export interface ResourceFilters {

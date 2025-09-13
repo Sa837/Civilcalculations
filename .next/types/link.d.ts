@@ -32,8 +32,8 @@ declare namespace __next_route_internal_types__ {
     | `/`
     | `/calculators`
     | `/contact`
-    | `/converters`
     | `/contact-action`
+    | `/converters`
     | `/resources`
   type DynamicRoutes<T extends string = string> = 
     | `/calculators/${SafeSlug<T>}`
