@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, ArrowLeft, Star, StarOff, ExternalLink, ChevronDown, BookOpen, FileText, Scale, MapPin, PenTool, Download, Eye, X } from 'lucide-react'
+import { Search, ArrowLeft, Star, StarOff, ExternalLink, ChevronDown, BookOpen, FileText, Scale, MapPin, PenTool, Download, Eye, X, Share2, Copy, Check, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 import Fuse from 'fuse.js'
 import { resources } from '../../../lib/data/resources'
@@ -37,8 +37,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const [pdfViewerOpen, setPdfViewerOpen] = useState(false)
   const [currentPdfUrl, setCurrentPdfUrl] = useState('')
   const [currentPdfTitle, setCurrentPdfTitle] = useState('')
-  const [downloading, setDownloading] = useState<string | null>(null)
-  const [loadingPdf, setLoadingPdf] = useState(false)
+  const [downloading, setDownloading] = useState<Set<string>>(new Set())
+  const [copiedUrl, setCopiedUrl] = useState<string | null>(null)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
 
   // Load favorites from localStorage
   useEffect(() => {
@@ -60,46 +61,133 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
   const mainResource = categoryResources[0]
 
-  // Handle PDF download
-  const handleDownload = async (url: string, title: string, event: React.MouseEvent) => {
-    event.preventDefault()
-    event.stopPropagation()
+  // PROPER DOWNLOAD FUNCTION - Forces actual download
+  const handleDownload = async (url: string, title: string, event?: React.MouseEvent) => {
+    event?.preventDefault()
+    event?.stopPropagation()
     
-    setDownloading(url)
+    setDownloading(prev => new Set([...prev, url]))
     
     try {
-      // Show loading for a minimum time to provide feedback
-      await Promise.all([
-        new Promise(resolve => setTimeout(resolve, 800)),
-        (async () => {
-          const a = document.createElement('a')
-          a.style.display = 'none'
-          a.href = url
-          a.download = title + '.pdf'
-          a.target = '_self'
-          
-          document.body.appendChild(a)
-          a.click()
-          document.body.removeChild(a)
-        })()
-      ])
+      // Method 1: Try to download using fetch + blob (most reliable)
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/pdf,*/*',
+          'Cache-Control': 'no-cache',
+        },
+        mode: 'cors',
+      })
+
+      if (response.ok) {
+        const blob = await response.blob()
+        
+        // Force download by creating a blob URL and triggering download
+        const downloadUrl = window.URL.createObjectURL(new Blob([blob], { type: 'application/octet-stream' }))
+        
+        const link = document.createElement('a')
+        link.href = downloadUrl
+        link.download = `${title.replace(/[^\w\s-]/gi, '').replace(/\s+/g, '_')}.pdf`
+        link.style.display = 'none'
+        
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        
+        // Clean up the blob URL
+        setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 100)
+        return // Success - exit here
+      }
     } catch (error) {
-      console.error('Download failed:', error)
-      window.location.href = url
+      console.log('Fetch method failed, trying alternative:', error)
+    }
+
+    try {
+      // Method 2: Use XMLHttpRequest with blob response type
+      const xhr = new XMLHttpRequest()
+      xhr.open('GET', url, true)
+      xhr.responseType = 'blob'
+      
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          const blob = xhr.response
+          const downloadUrl = window.URL.createObjectURL(blob)
+          
+          const link = document.createElement('a')
+          link.href = downloadUrl
+          link.download = `${title.replace(/[^\w\s-]/gi, '').replace(/\s+/g, '_')}.pdf`
+          link.style.display = 'none'
+          
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          
+          setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 100)
+          return
+        } else {
+          throw new Error('XHR failed')
+        }
+      }
+      
+      xhr.onerror = function() {
+        throw new Error('XHR error')
+      }
+      
+      xhr.send()
+      return // Wait for xhr to complete
+    } catch (error) {
+      console.log('XHR method failed, trying final fallback:', error)
+    }
+
+    try {
+      // Method 3: Create invisible iframe to trigger download
+      const iframe = document.createElement('iframe')
+      iframe.style.display = 'none'
+      iframe.src = url
+      document.body.appendChild(iframe)
+      
+      // Remove iframe after download starts
+      setTimeout(() => {
+        if (document.body.contains(iframe)) {
+          document.body.removeChild(iframe)
+        }
+      }, 3000)
+    } catch (error) {
+      console.log('Iframe method failed:', error)
+      
+      // Final fallback: Show instructions to user
+      const newWindow = window.open('', '_blank')
+      if (newWindow) {
+        newWindow.document.write(`
+          <html>
+            <head><title>Download Instructions</title></head>
+            <body style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
+              <h2>Manual Download Required</h2>
+              <p>Please right-click the link below and select "Save As" or "Download":</p>
+              <a href="${url}" target="_blank" style="color: blue; text-decoration: underline;">${title}</a>
+              <br><br>
+              <p>Or <a href="${url}" target="_blank">click here to open the PDF</a> and use your browser's download option.</p>
+            </body>
+          </html>
+        `)
+        newWindow.document.close()
+      } else {
+        alert('Please allow popups and try again, or right-click the PDF link and select "Save As"')
+      }
     } finally {
-      setDownloading(null)
+      setDownloading(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(url)
+        return newSet
+      })
     }
   }
 
-  // Handle PDF view
-  const handleViewPdf = (url: string, title: string, event: React.MouseEvent) => {
+  // Open PDF in new tab (replaces quick view)
+  const handleOpenInNewTab = (url: string, title: string, event: React.MouseEvent) => {
     event.preventDefault()
     event.stopPropagation()
-    setCurrentPdfUrl(url)
-    setCurrentPdfTitle(title)
-    setPdfViewerOpen(true)
-    setLoadingPdf(true)
-    document.body.style.overflow = 'hidden'
+    window.open(url, '_blank')
   }
 
   // Close PDF viewer
@@ -107,8 +195,55 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     setPdfViewerOpen(false)
     setCurrentPdfUrl('')
     setCurrentPdfTitle('')
-    setLoadingPdf(false)
     document.body.style.overflow = 'auto'
+  }
+
+  // Copy URL to clipboard
+  const copyToClipboard = async (url: string, event?: React.MouseEvent) => {
+    event?.preventDefault()
+    event?.stopPropagation()
+    
+    try {
+      await navigator.clipboard.writeText(url)
+      setCopiedUrl(url)
+      setTimeout(() => setCopiedUrl(null), 2000)
+    } catch (err) {
+      // Fallback
+      const textArea = document.createElement('textarea')
+      textArea.value = url
+      textArea.style.position = 'fixed'
+      textArea.style.opacity = '0'
+      document.body.appendChild(textArea)
+      textArea.select()
+      try {
+        document.execCommand('copy')
+        setCopiedUrl(url)
+        setTimeout(() => setCopiedUrl(null), 2000)
+      } catch (fallbackErr) {
+        console.error('Failed to copy:', fallbackErr)
+      }
+      document.body.removeChild(textArea)
+    }
+  }
+
+  // Share URL
+  const shareUrl = async (url: string, title: string, event?: React.MouseEvent) => {
+    event?.preventDefault()
+    event?.stopPropagation()
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: title,
+          text: `Check out this resource: ${title}`,
+          url: url,
+        })
+      } catch (err) {
+        console.log('Share cancelled or failed')
+      }
+    } else {
+      await copyToClipboard(url)
+    }
   }
 
   // Close on escape key
@@ -208,279 +343,259 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const CategoryIcon = categoryIcons[mainResource.category]
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-20">
-      {/* Back Button */}
-      <Link
-        href="/resources"
-        className="mb-8 inline-flex items-center gap-2 rounded-xl border border-slate-200/20 bg-surface px-4 py-2 font-display font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to Resources
-      </Link>
-
-      {/* Category Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="mb-8"
-      >
-        <div className="flex items-start gap-4">
-          <div className={`flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-r ${categoryColors[mainResource.category]} text-white`}>
-            <CategoryIcon className="h-8 w-8" />
+    <div className="min-h-screen bg-background dark:bg-background-dark">
+      {/* Top Ad Banner */}
+      <div className="w-full dark: py-3">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="h-20 flex items-center justify-center rounded-lg bg-slate-200/70 dark:bg-slate-700/50">
+            <span className="text-sm text-slate-500 dark:text-slate-400">Advertisement</span>
           </div>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-6xl px-4 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Right Sidebar Ad */}
+          <div className="lg:w-72 flex-shrink-0 hidden lg:block">
+            <div className="sticky top-24 rounded-xl bg-slate-100 dark:bg-slate-800 p-4 h-96 flex items-center justify-center">
+              <span className="text-sm text-slate-500 dark:text-slate-400">Advertisement</span>
+            </div>
+          </div>
+
+          {/* Main Content */}
           <div className="flex-1">
-            <h1 className="mb-2 font-display text-4xl font-bold text-heading dark:text-heading-dark">
-              {mainResource.title}
-            </h1>
-            <p className="font-sans text-xl text-body/80 dark:text-body-dark/80">
-              {mainResource.description}
-            </p>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Search and Sort */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.1 }}
-        className="mb-8 space-y-4"
-      >
-        {/* Search Bar */}
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-body/40 dark:text-body-dark/40" />
-          <input
-            type="text"
-            placeholder="Search within this category..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-2xl border border-slate-200/20 bg-surface px-12 py-4 font-sans text-body placeholder:text-body/40 shadow-card transition-all focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-800/20 dark:bg-surface-dark dark:text-body-dark dark:placeholder:text-body-dark/40"
-          />
-        </div>
-
-        {/* Sort Dropdown */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="font-display text-sm font-medium text-body/60 dark:text-body-dark/60">
-              Sort by:
-            </span>
-            <div className="relative">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as SortOption)}
-                className="appearance-none rounded-xl border border-slate-200/20 bg-surface px-4 py-2 pr-8 font-display font-medium text-heading transition-colors focus:border-primary/50 focus:outline-none dark:border-slate-800/20 dark:bg-surface-dark dark:text-heading-dark"
-              >
-                <option value="Favorite">All</option>
-                <option value="Newest">Newest</option>
-                <option value="Oldest">Oldest</option>
-                <option value="A-Z">A-Z</option>
-                <option value="Z-A">Z-A</option>
-                <option value="Favorite">Favorite</option>
-                
-              </select>
-              <ChevronDown className="absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-body/40 dark:text-body-dark/40" />
-            </div>
-          </div>
-          <div className="text-sm text-body/60 dark:text-body-dark/60">
-            {filteredSubItems.length} item{filteredSubItems.length !== 1 ? 's' : ''} found
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Sub Resources Grid */}
-      <AnimatePresence mode="wait">
-        {filteredSubItems.length > 0 ? (
-          <motion.div
-            key="sub-resources-grid"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            {filteredSubItems.map((subItem, index) => {
-              const isFavorite = favorites.has(subItem.url)
-              const isDownloading = downloading === subItem.url
-              
-              return (
-                <motion.div
-                  key={subItem.url}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="group relative flex flex-col rounded-xl border border-slate-200/20 bg-surface p-4 shadow-card transition-all hover:-translate-y-1 hover:shadow-hover dark:border-slate-800/20 dark:bg-surface-dark"
-                >
-                  {/* Favorite Button */}
-                  <button
-                    onClick={(e) => toggleFavorite(subItem.url, e)}
-                    className={`absolute right-3 top-3 rounded-full p-1.5 transition-all hover:scale-110 ${
-                      isFavorite 
-                        ? 'text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20' 
-                        : 'text-body/40 hover:bg-slate-100/80 dark:text-body-dark/40 dark:hover:bg-slate-800/80'
-                    }`}
-                    aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-                  >
-                    {isFavorite ? (
-                      <Star className="h-4 w-4 fill-current" />
-                    ) : (
-                      <StarOff className="h-4 w-4" />
-                    )}
-                  </button>
-
-                  {/* Content */}
-                  <div className="pr-8 flex-grow">
-                    <h3 className="mb-2 font-display text-lg font-semibold text-heading group-hover:text-primary transition-colors dark:text-heading-dark">
-                      {subItem.title}
-                    </h3>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="mt-4 flex justify-between items-end">
-                    <div className="flex gap-2">
-                      {/* View PDF Button */}
-                      <button
-                        onClick={(e) => handleViewPdf(subItem.url, subItem.title, e)}
-                        className="flex items-center gap-1.5 rounded-xl border border-slate-200/20 bg-surface px-3 py-2 font-display text-sm font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-800/20 dark:bg-surface-dark dark:text-heading-dark dark:hover:bg-slate-700"
-                        aria-label="View PDF"
-                      >
-                        <Eye className="h-4 w-4" />
-                        View
-                      </button>
-                      
-                      {/* Download Button */}
-                      <button
-                        onClick={(e) => handleDownload(subItem.url, subItem.title, e)}
-                        disabled={isDownloading}
-                        className={`flex items-center gap-1.5 rounded-xl border border-slate-200/20 bg-surface px-3 py-2 font-display text-sm font-medium transition-colorshover:bg-slate-50 dark:border-slate-800/20 dark:bg-surface-dark dark:text-heading-dark dark:hover:bg-slate-700"
-                           ${
-                          isDownloading 
-                            ? 'text-gray-400 cursor-not-allowed dark:text-gray-500' 
-                            : 'text-heading hover:bg-slate-50 dark:text-heading-dark dark:hover:bg-slate-700'
-                        }`}
-                        aria-label={isDownloading ? 'Downloading...' : 'Download PDF'}
-                      >
-                        {isDownloading ? (
-                          <>
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
-                            <span>Downloading</span>
-                          </>
-                        ) : (
-                          <>
-                            <Download className="h-4 w-4" />
-                            <span>Download</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-                    
-                    {/* External Link Icon (for visual consistency) */}
-                    <ExternalLink className="h-4 w-4 text-body/40 dark:text-body-dark/40 mb-2" />
-                  </div>
-                </motion.div>
-              )
-            })}
-          </motion.div>
-        ) : (
-          <motion.div
-            key="empty-state"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="text-center py-12"
-          >
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
-              <Search className="h-8 w-8 text-body/40 dark:text-body-dark/40" />
-            </div>
-            <h3 className="mb-2 font-display text-xl font-semibold text-heading dark:text-heading-dark">
-              No items found
-            </h3>
-            <p className="font-sans text-body/60 dark:text-body-dark/60">
-              Try adjusting your search terms to find what you're looking for.
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* PDF Viewer Modal */}
-      <AnimatePresence>
-        {pdfViewerOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
-              onClick={closePdfViewer}
-            />
-            
-            {/* Modal */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ type: "spring", damping: 20, stiffness: 300 }}
-              className="fixed inset-4 z-50 mx-auto my-8 flex max-w-6xl flex-col overflow-hidden rounded-xl bg-white dark:bg-slate-900"
+            {/* Back Button */}
+            <Link
+              href="/resources"
+              className="mb-8 inline-flex items-center gap-2 rounded-xl border border-slate-200/20 bg-surface px-4 py-2 font-display font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
             >
-              {/* Header */}
-              <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-6 py-4 dark:border-slate-700 dark:bg-slate-800">
-                <h3 className="font-display font-medium text-heading dark:text-heading-dark max-w-[80%] truncate">
-                  {currentPdfTitle}
-                </h3>
-                <button
-                  onClick={closePdfViewer}
-                  className="rounded-full p-1.5 text-body/60 transition-colors hover:bg-slate-200/80 hover:text-primary dark:text-body-dark/60 dark:hover:bg-slate-700/80"
-                  aria-label="Close PDF viewer"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-              
-              {/* PDF Loading State */}
-              {loadingPdf && (
-                <div className="flex-1 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-4"></div>
-                    <p className="font-sans text-body/60 dark:text-body-dark/60">Loading document...</p>
-                  </div>
+              <ArrowLeft className="h-4 w-4" />
+              Back to Resources
+            </Link>
+
+            {/* Category Header */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="mb-8"
+            >
+              <div className="flex items-start gap-4">
+                <div className={`flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-r ${categoryColors[mainResource.category]} text-white`}>
+                  <CategoryIcon className="h-8 w-8" />
                 </div>
-              )}
-              
-              {/* PDF Content */}
-              <div className="flex-1 overflow-hidden">
-                <iframe
-                  src={currentPdfUrl}
-                  className="h-full w-full"
-                  frameBorder="0"
-                  title="PDF document"
-                  onLoad={() => setLoadingPdf(false)}
-                  style={{ display: loadingPdf ? 'none' : 'block' }}
-                />
-              </div>
-              
-              {/* Footer */}
-              <div className="flex items-center justify-between border-t border-slate-200 bg-slate-20 px-6 py-3 dark:border-slate-700 ">
-                <button
-                  onClick={() => {
-                    const a = document.createElement('a')
-                    a.href = currentPdfUrl
-                    a.download = currentPdfTitle + '.pdf'
-                    a.target = '_self'
-                    document.body.appendChild(a)
-                    a.click()
-                    document.body.removeChild(a)
-                  }}
-                  className="flex items-center gap-2 rounded-xl border border-slate-200/20 bg-surface px-4 py-2 font-display text-sm font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-800/20 dark:bg-surface-dark dark:text-heading-dark dark:hover:bg-slate-700"
-                >
-                  <Download className="h-4 w-4" />
-                  Download
-                </button>
+                <div className="flex-1">
+                  <h1 className="mb-2 font-display text-4xl font-bold text-heading dark:text-heading-dark">
+                    {mainResource.title}
+                  </h1>
+                  <p className="font-sans text-xl text-body/80 dark:text-body-dark/80">
+                    {mainResource.description}
+                  </p>
+                </div>
               </div>
             </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </main>
+
+            {/* Search and Sort */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
+              className="mb-8 space-y-4"
+            >
+              {/* Search Bar */}
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-body/40 dark:text-body-dark/40" />
+                <input
+                  type="text"
+                  placeholder="Search within this category..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full rounded-2xl border border-slate-200/20 bg-surface px-12 py-4 font-sans text-body placeholder:text-body/40 shadow-card transition-all focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-800/20 dark:bg-surface-dark dark:text-body-dark dark:placeholder:text-body-dark/40"
+                />
+              </div>
+
+              {/* Sort Dropdown */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="font-display text-sm font-medium text-body/60 dark:text-body-dark/60">
+                    Sort by:
+                  </span>
+                  <div className="relative">
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value as SortOption)}
+                      className="appearance-none rounded-xl border border-slate-200/20 bg-surface px-4 py-2 pr-8 font-display font-medium text-heading transition-colors focus:border-primary/50 focus:outline-none dark:border-slate-800/20 dark:bg-surface-dark dark:text-heading-dark"
+                    >
+                      <option value="All">All</option>
+                      <option value="Newest">Newest</option>
+                      <option value="Oldest">Oldest</option>
+                      <option value="A-Z">A-Z</option>
+                      <option value="Z-A">Z-A</option>
+                      <option value="Favorite">Favorite</option>
+                    </select>
+                    <ChevronDown className="absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-body/40 dark:text-body-dark/40" />
+                  </div>
+                </div>
+                <div className="text-sm text-body/60 dark:text-body-dark/60">
+                  {filteredSubItems.length} item{filteredSubItems.length !== 1 ? 's' : ''} found
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Sub Resources Grid */}
+            <AnimatePresence mode="wait">
+              {filteredSubItems.length > 0 ? (
+                <motion.div
+                  key="sub-resources-grid"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="grid gap-4 md:grid-cols-2 lg:grid-cols-2"
+                >
+                  {filteredSubItems.map((subItem, index) => {
+                    const isFavorite = favorites.has(subItem.url)
+                    const isDownloading = downloading.has(subItem.url)
+                    const isCopied = copiedUrl === subItem.url
+                    
+                    return (
+                      <motion.div
+                        key={subItem.url}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3, delay: index * 0.05, ease: "easeOut" }}
+                        className="group relative flex flex-col rounded-xl border border-slate-200/20 bg-surface p-5 shadow-card transition-all hover:-translate-y-1 hover:shadow-hover dark:border-slate-800/20 dark:bg-surface-dark"
+                      >
+                        {/* Favorite Button */}
+                        <button
+                          onClick={(e) => toggleFavorite(subItem.url, e)}
+                          className={`absolute right-4 top-4 rounded-full p-1.5 transition-all hover:scale-110 ${
+                            isFavorite 
+                              ? 'text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20' 
+                              : 'text-body/40 hover:bg-slate-100/80 dark:text-body-dark/40 dark:hover:bg-slate-800/80'
+                          }`}
+                          aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                        >
+                          {isFavorite ? (
+                            <Star className="h-4 w-4 fill-current" />
+                          ) : (
+                            <StarOff className="h-4 w-4" />
+                          )}
+                        </button>
+
+                        {/* Content */}
+                        <div className="pr-10 flex-grow">
+                          <h3 className="mb-3 font-display text-lg font-semibold text-heading group-hover:text-primary transition-colors dark:text-heading-dark">
+                            {subItem.title}
+                          </h3>
+                          {/* Clear indicator that this will open in new tab */}
+                          <div className="flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400">
+                            <AlertCircle className="h-3 w-3" />
+                            <span>Opens in new tab</span>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="mt-5 flex justify-between items-center">
+                          <div className="flex gap-2">
+                            {/* Open in New Tab Button - Clear label */}
+                            <button
+                              onClick={(e) => handleOpenInNewTab(subItem.url, subItem.title, e)}
+                              className="flex items-center gap-1.5 rounded-xl border border-slate-200/20 bg-surface px-3 py-2 font-display text-sm font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-800/20 dark:bg-surface-dark dark:text-heading-dark dark:hover:bg-slate-700"
+                              aria-label="Open in new tab"
+                            >
+                              <ExternalLink className="h-4 w-4" />
+                              Open
+                            </button>
+                            
+                            {/* Download Button */}
+                            <button
+                              onClick={(e) => handleDownload(subItem.url, subItem.title, e)}
+                              disabled={isDownloading}
+                              className={`flex items-center gap-1.5 rounded-xl border border-slate-200/20  px-3 py-2 font-display text-sm font-medium transition-colors ${
+                                isDownloading 
+                                  ? 'text-gray-400 cursor-not-allowed dark:text-gray-500' 
+                                  : 'text-heading hover:bg-slate-50 dark:text-heading-dark dark:hover:bg-slate-700'
+                              }`}
+                              aria-label={isDownloading ? 'Downloading...' : 'Download PDF'}
+                            >
+                              {isDownloading ? (
+                                <>
+                                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+                                  <span>Saving...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Download className="h-4 w-4" />
+                                  <span>Download</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                          
+                          {/* Right side buttons */}
+                          <div className="flex gap-2 items-center">
+                            {/* Copy Button */}
+                            <button
+                              onClick={(e) => copyToClipboard(subItem.url, e)}
+                              className={`p-1.5 rounded-full transition-colors ${
+                                isCopied 
+                                  ? 'text-green-500 bg-green-50 dark:bg-green-900/20' 
+                                  : 'text-body/40 hover:bg-slate-100/80 dark:text-body-dark/40 dark:hover:bg-slate-800/80'
+                              }`}
+                              aria-label={isCopied ? 'Copied!' : 'Copy URL'}
+                            >
+                              {isCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                            </button>
+                            
+                            {/* Share Button */}
+                            <button
+                              onClick={(e) => shareUrl(subItem.url, subItem.title, e)}
+                              className="p-1.5 rounded-full text-body/40 hover:bg-slate-100/80 dark:text-body-dark/40 dark:hover:bg-slate-800/80"
+                              aria-label="Share resource"
+                            >
+                              <Share2 className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )
+                  })}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="empty-state"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-center py-12"
+                >
+                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                    <Search className="h-8 w-8 text-body/40 dark:text-body-dark/40" />
+                  </div>
+                  <h3 className="mb-2 font-display text-xl font-semibold text-heading dark:text-heading-dark">
+                    No items found
+                  </h3>
+                  <p className="font-sans text-body/60 dark:text-body-dark/60">
+                    Try adjusting your search terms to find what you're looking for.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Ad Banner */}
+      <div className="w-full dark: py-6 mt-12">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="h-24 flex items-center justify-center rounded-lg bg-slate-200/70 dark:bg-slate-700/50">
+            <span className="text-sm text-slate-500 dark:text-slate-400">Advertisement</span>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

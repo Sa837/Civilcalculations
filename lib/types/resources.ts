@@ -18,6 +18,8 @@ export type SortOption =
   | "A-Z" 
   | "Z-A" 
   | "Favorite"
+  | "All"
+
 
 export interface ResourceSubItem {
   title: string

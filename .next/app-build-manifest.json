@@ -26,11 +26,6 @@
       "static/chunks/main-app.js",
       "static/chunks/app/converters/page.js"
     ],
-    "/converters/[slug]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/converters/[slug]/page.js"
-    ],
     "/calculators/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",

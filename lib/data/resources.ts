@@ -44,7 +44,7 @@ export const resources: Resource[] = [
       { title: 'Kaski District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dcckaski.gov.np/dcc-notice-file/Notices-202508031300507062.pdf' },
       { title: 'Lalitpur District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dcclalitpur.gov.np/dcc-notice-file/Notices-202410151147141924.pdf' },
       { title: 'Bhaktapur District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://daobhaktapur.moha.gov.np/upload/23c9d1f978cb60dc116b59b903e5975a/files/%E0%A4%9C%E0%A4%BF%E0%A4%B2%E0%A5%8D%E0%A4%B2%E0%A4%BE_%E0%A4%A6%E0%A4%B0%E0%A4%B0%E0%A5%87%E0%A4%9F_%E0%A4%86.%E0%A4%B5.%E0%A5%A8%E0%A5%A6%E0%A5%AE%E0%A5%A8.%E0%A5%AE%E0%A5%A9_compressed_(1).pdf' },
-      { title: 'Bhojpur District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccbhojpur.gov.np/dcc-notice-file/Notices-202508041718207276.pdf' },
+      { title: 'Bhojpur District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://daobhojpur.moha.gov.np/upload/0c86b0873e4e04ba18d1308320f56ab7/files/%E0%A4%86.%E0%A4%AC.%E0%A5%A8%E0%A5%A6%E0%A5%AE%E0%A5%A8_%E0%A5%A6%E0%A5%AE%E0%A5%A9_%E0%A4%95%E0%A5%8B_%E0%A4%B8%E0%A5%8D%E0%A4%B5%E0%A5%80%E0%A4%95%E0%A5%83%E0%A4%A4_%E0%A4%9C%E0%A4%BF%E0%A4%B2%E0%A5%8D%E0%A4%B2%E0%A4%BE_%E0%A4%A6%E0%A4%B0%E0%A4%B0%E0%A5%87%E0%A4%9F.pdf' },
       { title: 'Solukhumbu District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccsolukhumbu.gov.np/dcc-notice-file/Notices-202507152046175271.pdf' },
       { title: 'Bara District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccbara.gov.np/dcc-notice-file/Notices-202507211122442234.pdf' },
       { title: 'Dhanusha District Rate 2082/83 (जिल्ला दर रेट २०८२/८३)', url: 'https://dccdhanusha.gov.np/dcc-notice-file/Notices-202508141413503484.pdf' },
