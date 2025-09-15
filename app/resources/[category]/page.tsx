@@ -40,8 +40,109 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const [downloading, setDownloading] = useState<Set<string>>(new Set())
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null)
   const iframeRef = useRef<HTMLIFrameElement>(null)
+ const safeFileName = (title: string) =>  `${title.replace(/[^\w\s-]/gi, '').trim().replace(/\s+/g, '_')}.pdf`
+ const handleDownload = async (
+  url: string,
+  title: string,
+  setDownloading: React.Dispatch<React.SetStateAction<Set<string>>>,
+  event?: React.MouseEvent
+) => {
+  event?.preventDefault()
+  event?.stopPropagation()
 
-  // Load favorites from localStorage
+  setDownloading(prev => new Set([...prev, url]))
+  const filename = safeFileName(title)
+
+  try {
+    // --- Attempt automatic download via fetch ---
+    try {
+      const response = await fetch(url)
+      if (response.ok) {
+        const blob = await response.blob()
+        const downloadUrl = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = downloadUrl
+        link.download = filename
+        link.style.display = 'none'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 200)
+        return
+      }
+    } catch (err) {
+      console.warn('Fetch failed (likely CORS):', err)
+    }
+
+    // --- XHR fallback ---
+    try {
+      const blob = await xhrFetchAsPromise(url)
+      const downloadUrl = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = downloadUrl
+      link.download = filename
+      link.style.display = 'none'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 200)
+      return
+    } catch (err) {
+      console.warn('XHR failed (likely CORS):', err)
+    }
+
+    // --- Popup fallback for manual download ---
+    const modal = document.createElement('div')
+    modal.innerHTML = `
+      <div style="
+        position: fixed; top:0; left:0; width:100%; height:100%;
+        background: rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:9999;
+        font-family: 'Inter', Arial, sans-serif;
+      ">
+        <div style="
+          background: #fff; padding: 25px 30px; border-radius: 12px; max-width: 420px; width: 90%;
+          text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        ">
+          <h2 style="margin-bottom:15px; font-size:1.4rem; color:#111;">Manual Download Required</h2>
+          <p style="margin-bottom:px; font-size:1rem; color:#333;">
+            Open PDF in a new tab and save it manually. 
+            Automatically redirecting to new tab in 20 seconds.
+          </p>
+          <div style="display:flex; justify-content:center; gap:10px;">
+            <a href="${url}" target="_blank" style="
+              padding: 8px 18px; background:#0070f3; color:white; border-radius:6px; text-decoration:none;
+              font-weight:500; font-size:0.95rem;
+            ">Open PDF</a>
+            <button id="close-modal-btn" style="
+              padding: 8px 18px; background:#e0e0e0; color:#111; border:none; border-radius:6px;
+              font-weight:500; font-size:0.95rem; cursor:pointer;
+            ">Close</button>
+          </div>
+        </div>
+      </div>
+    `
+    document.body.appendChild(modal)
+
+    const closeBtn = modal.querySelector('#close-modal-btn') as HTMLElement
+    closeBtn.onclick = () => { if (document.body.contains(modal)) document.body.removeChild(modal) }
+
+    // Open in new tab automatically
+    // Open in new tab after ~20 seconds
+setTimeout(() => window.open(url, '_blank', 'noopener'), 20000)
+
+
+  } finally {
+    setDownloading(prev => {
+      const newSet = new Set(prev)
+      newSet.delete(url)
+      return newSet
+    })
+  }
+} 
+ 
+ 
+ 
+ // Load favorites from localStorage
   useEffect(() => {
     const savedFavorites = localStorage.getItem('resource-favorites')
     if (savedFavorites) {
@@ -62,126 +163,26 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const mainResource = categoryResources[0]
 
   // PROPER DOWNLOAD FUNCTION - Forces actual download
-  const handleDownload = async (url: string, title: string, event?: React.MouseEvent) => {
-    event?.preventDefault()
-    event?.stopPropagation()
-    
-    setDownloading(prev => new Set([...prev, url]))
-    
-    try {
-      // Method 1: Try to download using fetch + blob (most reliable)
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/pdf,*/*',
-          'Cache-Control': 'no-cache',
-        },
-        mode: 'cors',
-      })
+// --- Safe file name for download ---
 
-      if (response.ok) {
-        const blob = await response.blob()
-        
-        // Force download by creating a blob URL and triggering download
-        const downloadUrl = window.URL.createObjectURL(new Blob([blob], { type: 'application/octet-stream' }))
-        
-        const link = document.createElement('a')
-        link.href = downloadUrl
-        link.download = `${title.replace(/[^\w\s-]/gi, '').replace(/\s+/g, '_')}.pdf`
-        link.style.display = 'none'
-        
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        
-        // Clean up the blob URL
-        setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 100)
-        return // Success - exit here
-      }
-    } catch (error) {
-      console.log('Fetch method failed, trying alternative:', error)
-    }
 
-    try {
-      // Method 2: Use XMLHttpRequest with blob response type
-      const xhr = new XMLHttpRequest()
-      xhr.open('GET', url, true)
-      xhr.responseType = 'blob'
-      
-      xhr.onload = function() {
-        if (xhr.status === 200) {
-          const blob = xhr.response
-          const downloadUrl = window.URL.createObjectURL(blob)
-          
-          const link = document.createElement('a')
-          link.href = downloadUrl
-          link.download = `${title.replace(/[^\w\s-]/gi, '').replace(/\s+/g, '_')}.pdf`
-          link.style.display = 'none'
-          
-          document.body.appendChild(link)
-          link.click()
-          document.body.removeChild(link)
-          
-          setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 100)
-          return
-        } else {
-          throw new Error('XHR failed')
-        }
-      }
-      
-      xhr.onerror = function() {
-        throw new Error('XHR error')
-      }
-      
-      xhr.send()
-      return // Wait for xhr to complete
-    } catch (error) {
-      console.log('XHR method failed, trying final fallback:', error)
-    }
+// --- XHR helper for fallback download ---
+const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
+  new Promise<Blob>((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.responseType = 'blob'
+    const to = setTimeout(() => { xhr.abort(); reject(new Error('XHR timeout')) }, timeoutMs)
 
-    try {
-      // Method 3: Create invisible iframe to trigger download
-      const iframe = document.createElement('iframe')
-      iframe.style.display = 'none'
-      iframe.src = url
-      document.body.appendChild(iframe)
-      
-      // Remove iframe after download starts
-      setTimeout(() => {
-        if (document.body.contains(iframe)) {
-          document.body.removeChild(iframe)
-        }
-      }, 3000)
-    } catch (error) {
-      console.log('Iframe method failed:', error)
-      
-      // Final fallback: Show instructions to user
-      const newWindow = window.open('', '_blank')
-      if (newWindow) {
-        newWindow.document.write(`
-          <html>
-            <head><title>Download Instructions</title></head>
-            <body style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
-              <h2>Manual Download Required</h2>
-              <p>Please right-click the link below and select "Save As" or "Download":</p>
-              <a href="${url}" target="_blank" style="color: blue; text-decoration: underline;">${title}</a>
-              <br><br>
-              <p>Or <a href="${url}" target="_blank">click here to open the PDF</a> and use your browser's download option.</p>
-            </body>
-          </html>
-        `)
-        newWindow.document.close()
-      } else {
-        alert('Please allow popups and try again, or right-click the PDF link and select "Save As"')
-      }
-    } finally {
-      setDownloading(prev => {
-        const newSet = new Set(prev)
-        newSet.delete(url)
-        return newSet
-      })
-    }
-  }
+    xhr.onload = () => { clearTimeout(to); xhr.status === 200 ? resolve(xhr.response) : reject(new Error(`XHR status ${xhr.status}`)) }
+    xhr.onerror = () => { clearTimeout(to); reject(new Error('XHR network error')) }
+    xhr.send()
+  })
+
+// --- Universal download handler ---
+
+
+
 
   // Open PDF in new tab (replaces quick view)
   const handleOpenInNewTab = (url: string, title: string, event: React.MouseEvent) => {
@@ -510,28 +511,28 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                             </button>
                             
                             {/* Download Button */}
-                            <button
-                              onClick={(e) => handleDownload(subItem.url, subItem.title, e)}
-                              disabled={isDownloading}
-                              className={`flex items-center gap-1.5 rounded-xl border border-slate-200/20  px-3 py-2 font-display text-sm font-medium transition-colors ${
-                                isDownloading 
-                                  ? 'text-gray-400 cursor-not-allowed dark:text-gray-500' 
-                                  : 'text-heading hover:bg-slate-50 dark:text-heading-dark dark:hover:bg-slate-700'
-                              }`}
-                              aria-label={isDownloading ? 'Downloading...' : 'Download PDF'}
-                            >
-                              {isDownloading ? (
-                                <>
-                                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
-                                  <span>Saving...</span>
-                                </>
-                              ) : (
-                                <>
-                                  <Download className="h-4 w-4" />
-                                  <span>Download</span>
-                                </>
-                              )}
-                            </button>
+                           <button
+  onClick={(e) => handleDownload(subItem.url, subItem.title, setDownloading, e)}
+  disabled={isDownloading}
+  className={`flex items-center gap-1.5 rounded-xl border border-slate-200/20 px-3 py-2 font-display text-sm font-medium transition-colors ${
+    isDownloading 
+      ? 'text-gray-400 cursor-not-allowed dark:text-gray-500' 
+      : 'text-heading hover:bg-slate-50 dark:text-heading-dark dark:hover:bg-slate-700'
+  }`}
+>
+  {isDownloading ? (
+    <>
+      <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+      <span>Saving...</span>
+    </>
+  ) : (
+    <>
+      <Download className="h-4 w-4" />
+      <span>Download</span>
+    </>
+  )}
+</button>
+
                           </div>
                           
                           {/* Right side buttons */}

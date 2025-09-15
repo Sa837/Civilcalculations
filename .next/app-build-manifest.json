@@ -21,15 +21,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/resources/[category]/page.js"
     ],
-    "/converters/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/converters/page.js"
-    ],
     "/calculators/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/calculators/page.js"
+    ],
+    "/converters/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/converters/page.js"
     ]
   }
 }
