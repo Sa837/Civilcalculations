@@ -3,11 +3,13 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator, RotateCcw, Eye, EyeOff, Info, CheckCircle } from 'lucide-react'
+import { StoneMasonryCalculatorLib } from '@/lib/registry/calculator/stone-masonry-calculator'
 
 interface StoneMasonryResult {
   volume: number
   cementBags: number
   sandWeight: number
+  human_summary?: string
 }
 
 interface StoneMasonryFormData {
@@ -45,19 +47,13 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
     setIsCalculating(true)
     await new Promise(resolve => setTimeout(resolve, 300))
     try {
-      const length = parseFloat(formData.length)
-      const height = parseFloat(formData.height)
-      const thickness = parseFloat(formData.thickness)
-      // Convert to meters if needed
-      const unitFactor = formData.unit === 'm' ? 1 : 0.3048
-      const l = length * unitFactor
-      const h = height * unitFactor
-      const t = thickness * unitFactor
-      const wetVolume = l * h * t
-      const dryVolume = wetVolume * 1.27
-      const cement = (dryVolume / 7) * 1.5 * DENSITIES.cement
-      const sand = (dryVolume / 7) * 5.5 * DENSITIES.sand
-      setResult({ volume: dryVolume, cementBags: cement / DENSITIES.cementBag, sandWeight: sand })
+      const res = StoneMasonryCalculatorLib.calculate({
+       length: parseFloat(formData.length),
+       height: parseFloat(formData.height),
+       thickness: parseFloat(formData.thickness),
+       unit: formData.unit,
+      })
+      setResult({ volume: res.volume, cementBags: res.cementBags, sandWeight: res.sandWeight, human_summary: res.human_summary })
     } finally {
       setIsCalculating(false)
     }
@@ -248,6 +244,12 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
                   </div>
                 </div>
               </div>
+              {/* Optional engineering summary (non-invasive) */}
+              {result.human_summary && (
+                <div className="mt-6 rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
+                  <b>Engineering Summary:</b> {result.human_summary}
+                </div>
+              )}
               {/* Steps */}
               {showSteps && result && (
                 <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">

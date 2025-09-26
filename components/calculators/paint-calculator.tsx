@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Info, RotateCcw, Eye, EyeOff, Calculator, CheckCircle } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
+import { PaintCalculator as PaintCalculatorLib } from '@/lib/registry/calculator/paint-calculator'
 
 interface PaintResult {
   paintRequired: number
@@ -19,7 +20,7 @@ interface PaintFormData {
   showStepByStep: boolean
 }
 
-const UNIT_CONVERSIONS = { m: { length: 1, area: 1 }, ft: { length: 0.3048, area: 0.092903 } }
+// Logic moved to lib/registry/calculator/paint-calculator
 
 export default function PaintCalculator({ globalUnit = 'm' }: { globalUnit?: 'm' | 'ft' }) {
   const [useArea, setUseArea] = useState(false)
@@ -29,12 +30,24 @@ export default function PaintCalculator({ globalUnit = 'm' }: { globalUnit?: 'm'
   const [hasCalculated, setHasCalculated] = useState(false)
 
   const calculate = () => {
-    let area = useArea && formData.area ? parseFloat(formData.area) : (parseFloat(formData.length) * parseFloat(formData.height))
-    if (formData.unit === 'ft') area *= 0.092903
+    const length = formData.length ? parseFloat(formData.length) : undefined
+    const height = formData.height ? parseFloat(formData.height) : undefined
+    const area = formData.area ? parseFloat(formData.area) : undefined
     const coats = parseInt(formData.coats)
     const coverage = parseFloat(formData.coverage)
-    const paintRequired = (area * coats) / coverage
-    setResult({ paintRequired, coats })
+    const unit = formData.unit
+
+    const res = PaintCalculatorLib.calculate({
+      length,
+      height,
+      area,
+      coats,
+      coverage,
+      unit,
+      useArea
+    })
+
+    setResult(res)
   }
 
   // Always update result when any input changes and all required fields are filled

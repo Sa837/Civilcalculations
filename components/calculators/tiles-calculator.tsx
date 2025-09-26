@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator, RotateCcw, Eye, EyeOff, Info, CheckCircle } from 'lucide-react'
+import { TilesCalculatorLib } from '@/lib/registry/calculator/tiles-calculator'
 
 
 interface TilesResult {
   tilesNeeded: number
   area: number
+  human_summary?: string
 }
 
 
@@ -56,12 +58,17 @@ export default function TilesCalculator({ globalUnit = 'm' }: { globalUnit?: 'm'
     setIsCalculating(true)
     await new Promise(resolve => setTimeout(resolve, 300))
     try {
-      let area = useArea && formData.area ? parseFloat(formData.area) : (parseFloat(formData.length) * parseFloat(formData.width))
-      if (formData.unit === 'ft') area *= 0.092903
-      const tileArea = (parseFloat(formData.tileLength) * parseFloat(formData.tileWidth)) / 10000
-      let tilesNeeded = area / tileArea
-      tilesNeeded *= 1 + parseFloat(formData.wastage) / 100
-      setResult({ tilesNeeded: Math.ceil(tilesNeeded), area })
+      const res = TilesCalculatorLib.calculate({
+        length: formData.length ? parseFloat(formData.length) : undefined,
+        width: formData.width ? parseFloat(formData.width) : undefined,
+        area: formData.area ? parseFloat(formData.area) : undefined,
+        tileLengthCm: parseFloat(formData.tileLength),
+        tileWidthCm: parseFloat(formData.tileWidth),
+        wastagePercent: parseFloat(formData.wastage),
+        unit: formData.unit,
+        useArea,
+      })
+      setResult({ tilesNeeded: res.tilesNeeded, area: res.area, human_summary: res.human_summary })
     } finally {
       setIsCalculating(false)
     }
@@ -292,6 +299,12 @@ export default function TilesCalculator({ globalUnit = 'm' }: { globalUnit?: 'm'
                   </div>
                 </div>
               </div>
+              {/* Optional engineering summary (non-invasive) */}
+              {result.human_summary && (
+                <div className="mt-6 rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
+                  <b>Engineering Summary:</b> {result.human_summary}
+                </div>
+              )}
               {/* Steps */}
               {showSteps && result && (
                 <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">

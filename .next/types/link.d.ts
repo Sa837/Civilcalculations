@@ -31,14 +31,20 @@ declare namespace __next_route_internal_types__ {
   type StaticRoutes = 
     | `/`
     | `/calculators`
-    | `/contact`
     | `/contact-action`
     | `/converters`
+    | `/cookies`
+    | `/disclaimer`
+    | `/contact`
+    | `/privacy`
     | `/resources`
+    | `/terms`
+    | `/tools`
   type DynamicRoutes<T extends string = string> = 
     | `/calculators/${SafeSlug<T>}`
     | `/converters/${SafeSlug<T>}`
     | `/resources/${SafeSlug<T>}`
+    | `/tools/${SafeSlug<T>}`
 
   type RouteImpl<T> = 
     | StaticRoutes

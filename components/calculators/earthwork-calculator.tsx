@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator, RotateCcw, Eye, EyeOff, Info, CheckCircle } from 'lucide-react'
+import { EarthworkCalculatorLib } from '@/lib/registry/calculator/earthwork-calculator'
 
 interface EarthworkResult {
   volume: number
@@ -40,12 +41,13 @@ export default function EarthworkCalculator({ globalUnit = 'm' }: { globalUnit?:
     setIsCalculating(true)
     await new Promise(resolve => setTimeout(resolve, 300))
     try {
-      const unitFactor = formData.unit === 'm' ? 1 : 0.3048
-      const length = parseFloat(formData.length) * unitFactor
-      const width = parseFloat(formData.width) * unitFactor
-      const depth = parseFloat(formData.depth) * unitFactor
-      const volume = length * width * depth
-      setResult({ volume })
+      const res = EarthworkCalculatorLib.calculate({
+        length: parseFloat(formData.length),
+        width: parseFloat(formData.width),
+        depth: parseFloat(formData.depth),
+        unit: formData.unit,
+      })
+      setResult({ volume: res.volume })
     } finally {
       setIsCalculating(false)
     }

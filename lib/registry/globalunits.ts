@@ -125,8 +125,32 @@ export const UNIT_PRESETS = {
       defaultWallThickness: '0.33', // 4 inch in feet
       defaultMortarThickness: '0.394', // ~10mm in inches
     }
+  },
+  concrete: {
+    metric: {
+      length: 'm' as const,
+      area: 'm²' as const,
+      volume: 'm³' as const,
+      mass: 'kg' as const,
+      defaultHeight: '0.15',
+      defaultLength: '5',
+      defaultWidth: '3',
+    },
+    imperial: {
+      length: 'ft' as const,
+      area: 'ft²' as const,
+      volume: 'ft³' as const,
+      mass: 'lb' as const,
+      defaultHeight: '0.5',
+      defaultLength: '16.4',
+      defaultWidth: '9.8',
+    }
   }
-};
+
+  }
+  
+
+
 
 // Backward compatibility
 export const UNIT_CONVERSIONS = LENGTH_CONVERSIONS;

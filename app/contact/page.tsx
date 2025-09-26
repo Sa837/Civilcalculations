@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import ContactForm from '../../components/contact-form'
+
+export const metadata: Metadata = {
+  title: 'Contact Us | Civil Calculation',
+  description: 'Get in touch with Civil Calculation for support, feedback, or collaboration. Reach us via the contact form or email support@civilcalculation.com.',
+  alternates: { canonical: '/contact' },
+}
 
 export default function ContactPage() {
   return (
@@ -7,6 +14,9 @@ export default function ContactPage() {
         <h1 className="mb-6 font-display text-5xl font-bold text-heading dark:text-heading-dark">Contact Us</h1>
         <p className="mx-auto max-w-2xl font-sans text-xl text-body/80 dark:text-body-dark/80">
           We'd love to hear from you. Get in touch for support, feedback, or collaboration opportunities.
+        </p>
+        <p className="mt-4 font-sans text-sm text-body/70 dark:text-body-dark/70">
+          Or email us directly at <a href="mailto:support@civilcalculation.com" className="underline hover:no-underline">support@civilcalculation.com</a>.
         </p>
       </div>
       

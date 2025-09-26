@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator, RotateCcw, Eye, EyeOff, Info, CheckCircle } from 'lucide-react'
+import { RoofAreaCalculatorLib } from '@/lib/registry/calculator/roof-area-calculator'
 
 
 interface RoofResult {
   area: number
+  human_summary?: string
 }
 
 
@@ -55,41 +57,18 @@ export default function RoofAreaCalculator({ globalUnit = 'm' }: { globalUnit?: 
     setIsCalculating(true)
     await new Promise(resolve => setTimeout(resolve, 300))
     try {
-      const length = parseFloat(formData.length)
-      const width = parseFloat(formData.width)
-      const slope = parseFloat(formData.slope)
-      let area = 0
-      if (formData.roofType === 'gable') {
-        // Gable roof: 2 slopes
-        area = 2 * (length * width / 2) / Math.cos((slope * Math.PI) / 180)
-      } else if (formData.roofType === 'hip') {
-        // Hip roof: 4 slopes, needs hipLength
-        const hipLength = parseFloat(formData.hipLength || '0')
-        area = 2 * (length * width / 2) / Math.cos((slope * Math.PI) / 180) + 2 * (hipLength * width / 2) / Math.cos((slope * Math.PI) / 180)
-      } else if (formData.roofType === 'mansard') {
-        // Mansard: 4 sides, each with two slopes (upper/lower)
-        const upperSlope = parseFloat(formData.upperSlope || '0')
-        const lowerSlope = parseFloat(formData.lowerSlope || '0')
-        // Approximate: area = 2*(length/2*width/2)/cos(upperSlope) + 2*(length/2*width/2)/cos(lowerSlope)
-        area = 2 * (length * width / 4) / Math.cos((upperSlope * Math.PI) / 180) + 2 * (length * width / 4) / Math.cos((lowerSlope * Math.PI) / 180)
-      } else if (formData.roofType === 'gambrel') {
-        // Gambrel: 2 sides, each with two slopes (upper/lower)
-        const upperSlope = parseFloat(formData.upperSlope || '0')
-        const lowerSlope = parseFloat(formData.lowerSlope || '0')
-        area = (length * width / 2) / Math.cos((upperSlope * Math.PI) / 180) + (length * width / 2) / Math.cos((lowerSlope * Math.PI) / 180)
-      } else if (formData.roofType === 'pyramid') {
-        // Pyramid: 4 equal triangles, area = 2*base*height
-        const height = parseFloat(formData.height || '0')
-        area = 2 * length * height
-      } else if (formData.roofType === 'butterfly') {
-        // Butterfly: 2 slopes inward, area = 2 * (length * height) / cos(slope)
-        const height = parseFloat(formData.height || '0')
-        area = 2 * (length * height) / Math.cos((slope * Math.PI) / 180)
-      } else {
-        // Shed/simple roof
-        area = (length * width) / Math.cos((slope * Math.PI) / 180)
-      }
-      setResult({ area })
+      const res = RoofAreaCalculatorLib.calculate({
+        roofType: formData.roofType,
+        length: parseFloat(formData.length),
+        width: parseFloat(formData.width),
+        slope: formData.slope ? parseFloat(formData.slope) : undefined,
+        hipLength: formData.hipLength ? parseFloat(formData.hipLength) : undefined,
+        upperSlope: formData.upperSlope ? parseFloat(formData.upperSlope) : undefined,
+        lowerSlope: formData.lowerSlope ? parseFloat(formData.lowerSlope) : undefined,
+        height: formData.height ? parseFloat(formData.height) : undefined,
+        unit: formData.unit,
+      })
+      setResult({ area: res.area, human_summary: res.human_summary })
     } finally {
       setIsCalculating(false)
     }
@@ -392,6 +371,12 @@ export default function RoofAreaCalculator({ globalUnit = 'm' }: { globalUnit?: 
                   </div>
                 </div>
               </div>
+              {/* Optional engineering summary (non-invasive) */}
+              {result.human_summary && (
+                <div className="mt-6 rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
+                  <b>Engineering Summary:</b> {result.human_summary}
+                </div>
+              )}
               {/* Steps */}
               {showSteps && result && (
                 <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">

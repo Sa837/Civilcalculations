@@ -126,6 +126,17 @@ export default function Nav() {
           </Link>
           
           <Link 
+            href={"/tools" as const} 
+            className={`relative font-display font-medium transition-colors hover:text-primary ${
+              isActive('/tools') 
+                ? 'text-primary border-b-2 border-primary' 
+                : 'text-heading dark:text-heading-dark'
+            }`}
+          >
+            Tools
+          </Link>
+          
+          <Link 
             href="/contact" 
             className={`relative font-display font-medium transition-colors hover:text-primary ${
               isActive('/contact') 
@@ -207,6 +218,17 @@ export default function Nav() {
                 }`}
               >
                 Resources
+              </Link>
+              <Link 
+                href={"/tools" as const} 
+                onClick={() => setOpen(false)} 
+                className={`rounded-xl px-5 py-4 font-display font-medium transition-colors ${
+                  isActive('/tools')
+                    ? 'bg-primary/10 text-primary'
+                    : 'hover:bg-slate-100/80 dark:hover:bg-slate-800/80'
+                }`}
+              >
+                Tools
               </Link>
               <Link 
                 href="/contact" 

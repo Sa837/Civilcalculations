@@ -4,10 +4,12 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calculator, AlertCircle, CheckCircle, RotateCcw, Info, Hammer } from "lucide-react";
+import { RoadPavementCalculatorLib } from '@/lib/registry/calculator/road-pavement-calculator'
 
 interface CalculationResult {
   area: number;
   volume: number;
+  human_summary?: string;
 }
 
 interface FormData {
@@ -63,18 +65,15 @@ export default function RoadPavementCalculator({ globalUnit = "m" }: RoadPavemen
     setIsCalculating(true);
     await new Promise((resolve) => setTimeout(resolve, 300));
     try {
-      let area = 0;
-      if (useArea && formData.area) {
-        area = parseFloat(formData.area);
-        if (formData.unit === "ft") area *= 0.092903;
-      } else {
-        area = parseFloat(formData.length) * parseFloat(formData.width);
-        if (formData.unit === "ft") area *= 0.092903;
-      }
-      let thickness = parseFloat(formData.thickness);
-      if (formData.unit === "ft") thickness *= 0.3048;
-      let volume = area * thickness;
-      setResult({ area, volume });
+      const res = RoadPavementCalculatorLib.calculate({
+        length: formData.length ? parseFloat(formData.length) : undefined,
+        width: formData.width ? parseFloat(formData.width) : undefined,
+        area: formData.area ? parseFloat(formData.area) : undefined,
+        thickness: parseFloat(formData.thickness),
+        unit: formData.unit,
+        useArea,
+      })
+      setResult({ area: res.area, volume: res.volume, human_summary: res.human_summary });
     } finally {
       setIsCalculating(false);
     }
@@ -322,6 +321,12 @@ export default function RoadPavementCalculator({ globalUnit = "m" }: RoadPavemen
                   </div>
                 </div>
               </div>
+              {/* Optional engineering summary (non-invasive) */}
+              {result.human_summary && (
+                <div className="mt-6 rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
+                  <b>Engineering Summary:</b> {result.human_summary}
+                </div>
+              )}
 
               {showSteps && result && (
                 <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">

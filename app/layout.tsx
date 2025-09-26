@@ -4,6 +4,8 @@ import { ThemeProvider } from 'next-themes'
 import Nav from '../components/nav'
 import Footer from '../components/footer'
 import { Inter, Poppins } from 'next/font/google'
+import CookieConsent from '../components/cookie-consent'
+import ConsentScripts from '../components/consent-scripts'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -49,6 +51,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="flex-1">{children}</div>
             <Footer />
           </div>
+          <CookieConsent />
+          <ConsentScripts />
           {process.env.PLAUSIBLE_DOMAIN ? (
             <script
               defer

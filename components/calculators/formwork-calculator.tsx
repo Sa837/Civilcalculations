@@ -3,9 +3,11 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator, RotateCcw, Eye, EyeOff, Info, CheckCircle } from 'lucide-react'
+import { FormworkCalculatorLib } from '@/lib/registry/calculator/formwork-calculator'
 
 interface FormworkResult {
   area: number
+  human_summary?: string
 }
 
 type FormworkType = 'batten' | 'plywood' | 'steel' | 'aluminum' | 'plastic' | 'timber';
@@ -41,11 +43,13 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
     setIsCalculating(true)
     await new Promise(resolve => setTimeout(resolve, 300))
     try {
-      const unitFactor = formData.unit === 'm' ? 1 : 0.3048
-      const length = parseFloat(formData.length) * unitFactor
-      const height = parseFloat(formData.height) * unitFactor
-      const area = length * height
-      setResult({ area })
+      const res = FormworkCalculatorLib.calculate({
+        length: parseFloat(formData.length),
+        height: parseFloat(formData.height),
+        unit: formData.unit,
+        formworkType: formData.formworkType,
+      })
+      setResult({ area: res.area, human_summary: res.human_summary })
     } finally {
       setIsCalculating(false)
     }
@@ -208,6 +212,12 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
                   </div>
                 </div>
               </div>
+              {/* Optional engineering summary (non-invasive) */}
+              {result.human_summary && (
+                <div className="mt-6 rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
+                  <b>Engineering Summary:</b> {result.human_summary}
+                </div>
+              )}
               {/* Steps */}
               {showSteps && result && (
                 <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">

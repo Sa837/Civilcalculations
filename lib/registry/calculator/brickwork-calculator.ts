@@ -1,5 +1,6 @@
 // C:\Users\hello\OneDrive\Desktop\CivilPro\lib\registry\calculator\brickwork-calculator.ts
 import { DENSITIES, UnitConverter, UNIT_PRESETS } from '../globalunits'
+import { CalculationUtils } from '../utils'
 
 export const STANDARD_BRICK_SIZES = [
   {
@@ -134,45 +135,45 @@ export class BrickworkCalculator {
       openings,
     } = input
 
+    // Validate inputs
+    CalculationUtils.validatePositive(wallThickness, 'Wall thickness')
+    CalculationUtils.validatePositive(brickLength, 'Brick length')
+    CalculationUtils.validatePositive(brickWidth, 'Brick width')
+    CalculationUtils.validatePositive(brickHeight, 'Brick height')
+    CalculationUtils.validatePositive(mortarThickness, 'Mortar thickness')
+
     // Convert all inputs to metric system for calculation
     const lengthUnit = unitSystem === 'metric' ? 'm' : 'ft'
     const brickUnit = unitSystem === 'metric' ? 'mm' : 'in'
 
-    // Convert wall dimensions to meters
-    let wallLengthM: number, wallHeightM: number
+    // Normalize dimensions
+    const dimensions = CalculationUtils.normalizeDimensions({
+      length: wallLength,
+      width: wallHeight, // Using height as width for wall calculation
+      height: wallThickness,
+      area: wallArea
+    }, unitSystem)
 
+    // Calculate wall volume
+    let wallVolumeM3: number
     if (wallArea) {
-      // Area mode - convert area to square meters
-      const areaM2 = UnitConverter.convertArea(
-        wallArea,
-        unitSystem === 'metric' ? 'm²' : 'ft²',
-        'm²',
-      )
-      // For area calculation, we need to derive length and height (assume square for calculation)
-      const sideLength = Math.sqrt(areaM2)
-      wallLengthM = sideLength
-      wallHeightM = sideLength
+      wallVolumeM3 = CalculationUtils.calculateVolumeFromArea(dimensions.area!, dimensions.height!)
     } else {
-      // Length × Height mode
-      wallLengthM = UnitConverter.convertLength(wallLength!, lengthUnit, 'm')
-      wallHeightM = UnitConverter.convertLength(wallHeight!, lengthUnit, 'm')
+      wallVolumeM3 = CalculationUtils.calculateVolume(dimensions.length!, dimensions.width!, dimensions.height!)
     }
 
-    const wallThicknessM = UnitConverter.convertLength(wallThickness, lengthUnit, 'm')
-
     // Convert brick dimensions to meters
-    const brickLengthM =
-      UnitConverter.convertBrickDimension(brickLength, brickUnit as 'mm' | 'in', 'mm') / 1000
-    const brickWidthM =
-      UnitConverter.convertBrickDimension(brickWidth, brickUnit as 'mm' | 'in', 'mm') / 1000
-    const brickHeightM =
-      UnitConverter.convertBrickDimension(brickHeight, brickUnit as 'mm' | 'in', 'mm') / 1000
+    const brickLengthM = UnitConverter.convertBrickDimension(brickLength, brickUnit as 'mm' | 'in', 'mm') / 1000
+    const brickWidthM = UnitConverter.convertBrickDimension(brickWidth, brickUnit as 'mm' | 'in', 'mm') / 1000
+    const brickHeightM = UnitConverter.convertBrickDimension(brickHeight, brickUnit as 'mm' | 'in', 'mm') / 1000
 
     // Convert mortar thickness to meters
-    const mortarThicknessM =
-      UnitConverter.convertBrickDimension(mortarThickness, brickUnit as 'mm' | 'in', 'mm') / 1000
+    const mortarThicknessM = UnitConverter.convertBrickDimension(mortarThickness, brickUnit as 'mm' | 'in', 'mm') / 1000
 
-    const wastageFactorDecimal = wastageFactor / 100
+    // Normalize openings and calculate net volume
+    const normalizedOpenings = CalculationUtils.normalizeOpenings(openings, unitSystem)
+    const totalOpeningVolumeM3 = CalculationUtils.calculateOpeningsVolume(normalizedOpenings, dimensions.height!)
+    const netWallVolumeM3 = CalculationUtils.calculateNetVolume(wallVolumeM3, normalizedOpenings, dimensions.height!)
 
     // Get mortar mix ratio
     const mixType = MORTAR_MIX_TYPES.find((m) => m.value === mortarMixType)
@@ -180,40 +181,17 @@ export class BrickworkCalculator {
       throw new Error(`Invalid mortar mix type: ${mortarMixType}`)
     }
 
-    const { cement: cementRatio, sand: sandRatio } = mixType
-    const totalParts = cementRatio + sandRatio
+    CalculationUtils.validateMixRatio({ cement: mixType.cement, sand: mixType.sand })
 
-    // Calculate wall volume in cubic meters
-    const wallVolumeM3 = wallArea
-      ? wallArea * (unitSystem === 'metric' ? 1 : 0.092903) * wallThicknessM
-      : wallLengthM * wallHeightM * wallThicknessM
+    // Calculate brick volumes
+    const brickVolumeWithMortarM3 = CalculationUtils.calculateVolume(
+      brickLengthM + mortarThicknessM,
+      brickWidthM + mortarThicknessM,
+      brickHeightM + mortarThicknessM
+    )
+    const brickVolumeWithoutMortarM3 = CalculationUtils.calculateVolume(brickLengthM, brickWidthM, brickHeightM)
 
-    // Calculate total opening volume in cubic meters
-    let totalOpeningVolumeM3 = 0
-    openings.forEach((opening) => {
-      const widthM = UnitConverter.convertLength(
-        opening.width,
-        opening.unitSystem === 'metric' ? 'm' : 'ft',
-        'm',
-      )
-      const heightM = UnitConverter.convertLength(
-        opening.height,
-        opening.unitSystem === 'metric' ? 'm' : 'ft',
-        'm',
-      )
-      totalOpeningVolumeM3 += widthM * heightM * wallThicknessM
-    })
-
-    const netWallVolumeM3 = Math.max(wallVolumeM3 - totalOpeningVolumeM3, 0)
-
-    // Calculate brick and mortar volumes
-    const brickVolumeWithMortarM3 =
-      (brickLengthM + mortarThicknessM) *
-      (brickWidthM + mortarThicknessM) *
-      (brickHeightM + mortarThicknessM)
-
-    const brickVolumeWithoutMortarM3 = brickLengthM * brickWidthM * brickHeightM
-
+    // Calculate number of bricks and mortar volume
     let numberOfBricks = netWallVolumeM3 / brickVolumeWithMortarM3
     const mortarVolumeM3 = netWallVolumeM3 - numberOfBricks * brickVolumeWithoutMortarM3
 
@@ -221,30 +199,43 @@ export class BrickworkCalculator {
       throw new Error('Mortar volume calculated as zero or negative. Check dimensions.')
     }
 
-    // Calculate material quantities
-    const cementVolumeM3 = (cementRatio / totalParts) * mortarVolumeM3
-    const sandVolumeM3 = (sandRatio / totalParts) * mortarVolumeM3
-
-    const cementWeightKg = cementVolumeM3 * DENSITIES.cement
-    const sandWeightKg = sandVolumeM3 * DENSITIES.sand
-    const cementBags = cementWeightKg / DENSITIES.cementBag
+    // Calculate materials using mix ratio
+    const materials = CalculationUtils.calculateMaterialsFromMixRatio(
+      mortarVolumeM3,
+      { cement: mixType.cement, sand: mixType.sand },
+      true // isDryVolume for mortar
+    )
 
     // Apply wastage factor
-    numberOfBricks = numberOfBricks * (1 + wastageFactorDecimal)
-    const cementWeightFinalKg = cementWeightKg * (1 + wastageFactorDecimal)
-    const sandWeightFinalKg = sandWeightKg * (1 + wastageFactorDecimal)
-    const cementBagsFinal = cementWeightFinalKg / DENSITIES.cementBag
+    const finalMaterials = CalculationUtils.applyWastageToMaterials({
+      numberOfBricks,
+      cementWeight: materials.cementWeight,
+      sandWeight: materials.sandWeight,
+      mortarVolume: mortarVolumeM3
+    }, wastageFactor)
 
-    return {
-      numberOfBricks: Math.ceil(numberOfBricks),
-      cementWeight: Math.round(cementWeightFinalKg * 10) / 10,
-      cementBags: Math.ceil(cementBagsFinal),
-      sandWeight: Math.round(sandWeightFinalKg * 10) / 10,
-      mortarVolume: Math.round(mortarVolumeM3 * 1000) / 1000,
-      wallVolume: Math.round(wallVolumeM3 * 1000) / 1000,
-      netWallVolume: Math.round(netWallVolumeM3 * 1000) / 1000,
-      totalOpeningVolume: Math.round(totalOpeningVolumeM3 * 1000) / 1000,
-    }
+    // Format results with appropriate rounding
+    const results = CalculationUtils.formatCalculationResults({
+      numberOfBricks: Math.ceil(finalMaterials.numberOfBricks),
+      cementWeight: finalMaterials.cementWeight,
+      cementBags: Math.ceil(CalculationUtils.calculateCementBags(finalMaterials.cementWeight)),
+      sandWeight: finalMaterials.sandWeight,
+      mortarVolume: finalMaterials.mortarVolume,
+      wallVolume: wallVolumeM3,
+      netWallVolume: netWallVolumeM3,
+      totalOpeningVolume: totalOpeningVolumeM3,
+    }, {
+      numberOfBricks: 0,
+      cementWeight: 1,
+      cementBags: 0,
+      sandWeight: 1,
+      mortarVolume: 3,
+      wallVolume: 3,
+      netWallVolume: 3,
+      totalOpeningVolume: 3,
+    })
+
+    return results
   }
 
   // Helper method to get default values for a unit system

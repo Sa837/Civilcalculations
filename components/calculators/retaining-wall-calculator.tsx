@@ -6,6 +6,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator, AlertCircle, CheckCircle, RotateCcw, Info } from 'lucide-react'
+import { RetainingWallQuantityCalculator } from '@/lib/registry/calculator/retaining-wall-calculator'
 
 const MIX_TYPES = [
   { value: 'M5', label: 'M5 (1:5:10)', ratios: { cement: 1, sand: 5, aggregate: 10 } },
@@ -37,6 +38,9 @@ interface CalculationResult {
   aggregateWeight: number
   mixRatio: string
   area?: number
+  // Optional advanced fields (non-breaking)
+  structural?: any
+  human_summary?: string
 }
 
 interface RetainingWallCalculatorProps {
@@ -95,34 +99,32 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
     if (!validateForm()) return
     setIsCalculating(true)
     setTimeout(() => {
-      let area = 0
-      if (useArea) {
-        area = Number(formData.area)
-      } else {
-        area = Number(formData.length) * Number(formData.width)
-      }
-      const height = Number(formData.height)
-      const wastage = Number(formData.wastage)
-      const wetVolume = area * height
-      const dryVolume = wetVolume * 1.54 * (1 + wastage / 100)
-      const mix = MIX_TYPES.find(m => m.value === formData.mixType) || MIX_TYPES[3]
-      const totalParts = mix.ratios.cement + mix.ratios.sand + mix.ratios.aggregate
-      const cementWeight = (dryVolume * (mix.ratios.cement / totalParts)) * 1440
-      const sandWeight = (dryVolume * (mix.ratios.sand / totalParts)) * 1450
-      const aggregateWeight = (dryVolume * (mix.ratios.aggregate / totalParts)) * 1500
-      const cementBags = cementWeight / 50
+      const res = RetainingWallQuantityCalculator.calculate({
+        length: formData.length ? Number(formData.length) : undefined,
+        width: formData.width ? Number(formData.width) : undefined,
+        height: Number(formData.height),
+        area: formData.area ? Number(formData.area) : undefined,
+        mixType: formData.mixType,
+        wastagePercent: Number(formData.wastage),
+        unitSystem: formData.unit,
+        useArea: useArea,
+      })
+
+      // Map to existing UI result shape (no UI change)
       setResult({
-        wetVolume,
-        dryVolume,
-        cementWeight,
-        cementBags,
-        sandWeight,
-        aggregateWeight,
-        mixRatio: mix.label,
-        area,
+        wetVolume: res.wetVolume,
+        dryVolume: res.dryVolume,
+        cementWeight: res.cementWeight,
+        cementBags: res.cementBags,
+        sandWeight: res.sandWeight,
+        aggregateWeight: res.aggregateWeight,
+        mixRatio: res.mixRatio,
+        area: res.area,
+        structural: (res as any).structural,
+        human_summary: (res as any).human_summary,
       })
       setIsCalculating(false)
-    }, 600)
+    }, 300)
   }
 
   const resetForm = () => {
@@ -365,6 +367,12 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
                   </div>
                 </div>
               </div>
+              {/* Optional engineering summary (non-invasive) */}
+              {result.human_summary && (
+                <div className="mt-6 rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
+                  <b>Engineering Summary:</b> {result.human_summary}
+                </div>
+              )}
               {showSteps && (
                 <div className="mt-12">
                   <h3 className="font-display text-xl font-semibold text-heading dark:text-heading-dark mb-2">Step-by-Step Calculation</h3>

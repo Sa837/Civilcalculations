@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Info, CheckCircle, RotateCcw, Eye, EyeOff, Calculator } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
+import { PlasterCalculator as PlasterCalculatorLib } from '@/lib/registry/calculator/plaster-calculator'
 
 interface PlasterResult {
   plasterVolume: number
@@ -19,11 +20,7 @@ interface PlasterFormData {
   showStepByStep: boolean
 }
 
-const DENSITIES = { cement: 1440, sand: 1450, cementBag: 50 }
-const UNIT_CONVERSIONS = {
-  metric: { length: 1, area: 1 },
-  imperial: { length: 0.3048, area: 0.092903 }
-}
+// Logic moved to lib/registry/calculator/plaster-calculator
 
 export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: 'm' | 'ft' }) {
   const [useArea, setUseArea] = useState(false)
@@ -41,15 +38,23 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
 
   // Calculate result
   const calculate = () => {
-    const conversion = UNIT_CONVERSIONS[formData.unit]
-    let area = useArea && formData.area ? parseFloat(formData.area) : (parseFloat(formData.length) * parseFloat(formData.height))
-    area *= conversion.area
-    const thickness = parseFloat(formData.thickness) / 1000
-    const volume = area * thickness
-    const dryVolume = volume * 1.27
-    const cement = dryVolume / 7 * 1.5 * DENSITIES.cement
-    const sand = dryVolume / 7 * 5.5 * DENSITIES.sand
-    setResult({ plasterVolume: dryVolume, cementBags: cement / DENSITIES.cementBag, sandWeight: sand })
+    const unitSystem = formData.unit
+    const useAreaLocal = useArea
+    const length = formData.length ? parseFloat(formData.length) : undefined
+    const height = formData.height ? parseFloat(formData.height) : undefined
+    const area = formData.area ? parseFloat(formData.area) : undefined
+    const thickness = formData.thickness ? parseFloat(formData.thickness) : 0
+
+    const res = PlasterCalculatorLib.calculate({
+      length,
+      height,
+      area,
+      thickness,
+      unitSystem: unitSystem,
+      useArea: useAreaLocal
+    })
+
+    setResult(res)
   }
 
   // Only update result after Calculate is pressed at least once
