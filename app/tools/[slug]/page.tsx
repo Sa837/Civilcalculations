@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useMemo } from 'react'
 import { notFound, useParams, useRouter } from 'next/navigation'
@@ -22,7 +22,7 @@ export default function ToolSlugPage() {
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-8">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 font-display flex items-center justify-between">
         <button
           onClick={() => router.push('/tools')}
           className="rounded-xl border border-slate-200/20 bg-surface px-4 py-2 font-display text-sm dark:border-slate-800/20 dark:bg-surface-dark"

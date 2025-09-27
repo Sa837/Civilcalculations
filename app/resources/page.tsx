@@ -433,7 +433,7 @@ export default function ResourcesPage() {
               No resources found
             </h3>
             <p className="font-sans text-body/60 dark:text-body-dark/60">
-              Try adjusting your search terms or filters to find what you're looking for.
+              Try adjusting your search terms or filters to find what you&#39;re looking for.
             </p>
           </motion.div>
         )}

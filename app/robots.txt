@@ -1,9 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://civilpro.local/sitemap.xml
-
-
-
-
-
-
+Sitemap: https:www.civilcalculation.com/sitemap.xml

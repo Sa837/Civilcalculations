@@ -31,11 +31,11 @@ declare namespace __next_route_internal_types__ {
   type StaticRoutes = 
     | `/`
     | `/calculators`
+    | `/contact`
     | `/contact-action`
     | `/converters`
     | `/cookies`
     | `/disclaimer`
-    | `/contact`
     | `/privacy`
     | `/resources`
     | `/terms`

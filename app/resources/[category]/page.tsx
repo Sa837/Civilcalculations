@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client"
+
 
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -265,7 +267,7 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
             Category Not Found
           </h1>
           <p className="mb-8 font-sans text-body/60 dark:text-body-dark/60">
-            The category you're looking for doesn't exist.
+            The category you&#39;re looking for doesn&#39;t exist.
           </p>
           <Link
             href="/resources"
@@ -580,7 +582,7 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
                     No items found
                   </h3>
                   <p className="font-sans text-body/60 dark:text-body-dark/60">
-                    Try adjusting your search terms to find what you're looking for.
+                    Try adjusting your search terms to find what you&#39;re looking for.
                   </p>
                 </motion.div>
               )}

@@ -19,7 +19,7 @@ export default function TermsPage() {
       <div className="prose prose-slate max-w-none dark:prose-invert">
         <h2>Use of the Service</h2>
         <p>
-          By accessing or using Civil Calculation (the "Service"), you agree to comply with these Terms. If you do not agree, do not use the Service.
+          By accessing or using Civil Calculation (the &quot;Service&quot;), you agree to comply with these Terms. If you do not agree, do not use the Service.
         </p>
 
         <h2>Acceptable Use</h2>
@@ -35,7 +35,7 @@ export default function TermsPage() {
 
         <h2>Accuracy and Availability</h2>
         <p>
-          While we strive for accuracy and uptime, the Service is provided "as is" without warranties of any kind. We do not guarantee uninterrupted operation or error-free content.
+          While we strive for accuracy and uptime, the Service is provided &quot;as is&quot; without warranties of any kind. We do not guarantee uninterrupted operation or error-free content.
         </p>
 
         <h2>Limitation of Liability</h2>

@@ -23,6 +23,7 @@ export default function CalculatorDetail({ params }: Params) {
       <button onClick={()=>setGlobalUnit('ft')} className={`rounded-lg border px-2 py-1 text-xs ${globalUnit==='ft'?'border-blue-500 text-blue-600 bg-blue-50':'border-slate-300'}`}>Imperial (ft)</button>
     </div>
   )
+
   // Dedicated components (no generic UI change)
   if (params.slug === 'concrete-volume-estimator') {
     return (
@@ -46,12 +47,14 @@ export default function CalculatorDetail({ params }: Params) {
       </main>
     )
   }
+
+  // Generic calculator flow
   const calc = useMemo<CalculatorEntry | undefined>(
     () => calculators.find((c: CalculatorEntry) => c.slug === params.slug),
     [params.slug]
   )
   const [values, setValues] = useState<Record<string, string | number>>({})
-  
+
   if (!calc) return (
     <main className="mx-auto max-w-4xl px-6 py-16">
       <p>Calculator not found. <Link className="text-accent underline" href="/calculators">Back</Link></p>
@@ -116,7 +119,6 @@ export default function CalculatorDetail({ params }: Params) {
     </main>
   )
 }
-
 
 
 

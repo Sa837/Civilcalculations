@@ -19,7 +19,7 @@ export default function PrivacyPolicyPage() {
       <div className="prose prose-slate max-w-none dark:prose-invert">
         <h2>Overview</h2>
         <p>
-          Civil Calculation (the "Service") provides engineering calculators and tools. This Privacy Policy describes how we
+          Civil Calculation (the &quot;Service&quot;) provides engineering calculators and tools. This Privacy Policy describes how we
           collect, use, and disclose information when you use the Service.
         </p>
 
@@ -32,7 +32,7 @@ export default function PrivacyPolicyPage() {
         <h2>Cookies and Similar Technologies</h2>
         <p>
           We use cookies to operate the Service, measure usage, and personalize/measure advertising. You can manage your
-          preferences at any time using the cookie settings in the banner or the “Manage Cookies” link in the footer.
+          preferences at any time using the cookie settings in the banner or the &quot;Manage Cookies&quot; link in the footer.
         </p>
 
         <h2>Google Analytics (GA4)</h2>
