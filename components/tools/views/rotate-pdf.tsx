@@ -20,9 +20,8 @@ export default function RotatePdfView() {
       const { PDFDocument, degrees } = await import('pdf-lib')
       const bytes = new Uint8Array(await file.arrayBuffer())
       const doc = await PDFDocument.load(bytes)
-      const deg = degrees(angle as any)
-      doc.getPages().forEach((p) => {
-        const current = p.getRotation().angle || 0
+      doc.getPages().forEach((p: any) => {
+        const current = p.getRotation()?.angle ?? 0
         p.setRotation(degrees((current + angle) % 360))
       })
       const out = await doc.save()

@@ -386,14 +386,3 @@ export default function ConverterDetail({ params }: Params) {
     </main>
   );
 }
-
-export function linearUnit(factorToBase: number, symbol: string, name?: string): UnitDef {
-  return {
-    name: name ?? symbol,
-    symbol,
-    toBase: (v: number) => v * factorToBase,
-    fromBase: (v: number) => v / factorToBase,
-  }
-}
-
-

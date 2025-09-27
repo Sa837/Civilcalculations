@@ -24,7 +24,24 @@ export default function CalculatorDetail({ params }: Params) {
     </div>
   )
 
-  // Dedicated components (no generic UI change)
+  // Ensure hooks are always called before any early return
+  const calc = useMemo<CalculatorEntry | undefined>(
+    () => calculators.find((c: CalculatorEntry) => c.slug === params.slug),
+    [params.slug]
+  )
+  const [values, setValues] = useState<Record<string, string | number>>({})
+
+  if (!calc) return (
+    <main className="mx-auto max-w-4xl px-6 py-16">
+      <p>Calculator not found. <Link className="text-accent underline" href="/calculators">Back</Link></p>
+    </main>
+  )
+
+  const result = (() => {
+    try { return calc.compute(values) } catch { return {} }
+  })()
+
+  // Dedicated component overrides
   if (params.slug === 'concrete-volume-estimator') {
     return (
       <main className="py-10">
@@ -47,23 +64,6 @@ export default function CalculatorDetail({ params }: Params) {
       </main>
     )
   }
-
-  // Generic calculator flow
-  const calc = useMemo<CalculatorEntry | undefined>(
-    () => calculators.find((c: CalculatorEntry) => c.slug === params.slug),
-    [params.slug]
-  )
-  const [values, setValues] = useState<Record<string, string | number>>({})
-
-  if (!calc) return (
-    <main className="mx-auto max-w-4xl px-6 py-16">
-      <p>Calculator not found. <Link className="text-accent underline" href="/calculators">Back</Link></p>
-    </main>
-  )
-
-  const result = (() => {
-    try { return calc.compute(values) } catch { return {} }
-  })()
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-10">

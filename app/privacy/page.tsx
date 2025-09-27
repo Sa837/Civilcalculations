@@ -38,7 +38,7 @@ export default function PrivacyPolicyPage() {
         <h2>Google Analytics (GA4)</h2>
         <p>
           We use Google Analytics to understand how the Service is used. Data is collected only when you consent to analytics
-          cookies. Learn more at Google's policies: <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">https://policies.google.com/technologies/partner-sites</a> and <a href="https://policies.google.com/technologies/cookies" target="_blank" rel="noopener noreferrer">https://policies.google.com/technologies/cookies</a>.
+          cookies. Learn more at Google&#39;s policies: <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">https://policies.google.com/technologies/partner-sites</a> and <a href="https://policies.google.com/technologies/cookies" target="_blank" rel="noopener noreferrer">https://policies.google.com/technologies/cookies</a>.
         </p>
 
         <h2>Google AdSense</h2>

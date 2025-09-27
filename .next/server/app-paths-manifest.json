@@ -1,3 +1,20 @@
 {
-  "/page": "app/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/calculators/[slug]/page": "app/calculators/[slug]/page.js",
+  "/contact-action/route": "app/contact-action/route.js",
+  "/calculators/page": "app/calculators/page.js",
+  "/converters/page": "app/converters/page.js",
+  "/converters/[slug]/page": "app/converters/[slug]/page.js",
+  "/resources/page": "app/resources/page.js",
+  "/resources/[category]/page": "app/resources/[category]/page.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/tools/page": "app/tools/page.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/page": "app/page.js",
+  "/tools/[slug]/page": "app/tools/[slug]/page.js",
+  "/disclaimer/page": "app/disclaimer/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/privacy/page": "app/privacy/page.js",
+  "/cookies/page": "app/cookies/page.js",
+  "/terms/page": "app/terms/page.js"
 }
