@@ -49,7 +49,7 @@ export default function PrivacyPolicyPage() {
         <h2>Cookies and Similar Technologies</h2>
         <p>
           Cookies help our site function properly and provide a personalized experience. You can
-          manage your preferences at any time using the cookie banner or the "Manage Cookies" link
+          manage your preferences at any time using the cookie banner or the &quot;Manage Cookies&quot; link
           in the footer. Cookies may include:
         </p>
         <ul>

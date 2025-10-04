@@ -159,8 +159,8 @@ export default function HomePage() {
               </div>
               <Quote className="mb-3 h-6 w-6 text-primary/40" />
               <p className="mb-4 font-sans text-sm text-body/80 dark:text-body-dark/80 italic">
-                "This platform totally changed how I handle my daily calculations. The concrete mix
-                calculator saved me so much time on my last project!"
+                &quot;This platform totally changed how I handle my daily calculations. The concrete mix
+                calculator saved me so much time on my last project!&quot;
               </p>
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-500">
@@ -184,8 +184,8 @@ export default function HomePage() {
               </div>
               <Quote className="mb-3 h-6 w-6 text-primary/40" />
               <p className="mb-4 font-sans text-sm text-body/80 dark:text-body-dark/80 italic">
-                "The unit converters are spot-on and super fast. I use them every day for switching
-                between metric and imperial on my international projects."
+                &quot;The unit converters are spot-on and super fast. I use them every day for switching
+                between metric and imperial on my international projects.&quot;
               </p>
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-green-500 to-emerald-500">
@@ -209,8 +209,8 @@ export default function HomePage() {
               </div>
               <Quote className="mb-3 h-6 w-6 text-primary/40" />
               <p className="mb-4 font-sans text-sm text-body/80 dark:text-body-dark/80 italic">
-                "Having these tools on my phone has been a total game-changer as a site engineer.
-                Instant calculations right when I need them!"
+                &quot;Having these tools on my phone has been a total game-changer as a site engineer.
+                Instant calculations right when I need them!&quot;
               </p>
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500">
