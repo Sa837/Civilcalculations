@@ -1,35 +1,88 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-"use client"
-
+'use client'
 
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, ArrowLeft, Star, StarOff, ExternalLink, ChevronDown, BookOpen, FileText, Scale, MapPin, PenTool, Download, Eye, X, Share2, Copy, Check, AlertCircle } from 'lucide-react'
+import {
+  Search,
+  ArrowLeft,
+  Star,
+  StarOff,
+  ExternalLink,
+  ChevronDown,
+  BookOpen,
+  FileText,
+  Scale,
+  MapPin,
+  PenTool,
+  Download,
+  Eye,
+  X,
+  Share2,
+  Copy,
+  Check,
+  AlertCircle,
+} from 'lucide-react'
 import Link from 'next/link'
 import Fuse from 'fuse.js'
 import { resources } from '../../../lib/data/resources'
 import { Resource, ResourceCategory, SortOption } from '../../../lib/types/resources'
 
 const categoryIcons = {
-  'Codes': BookOpen,
+  Codes: BookOpen,
   'District Rates': MapPin,
   'Rules and Regulations': Scale,
-  'Notes': PenTool,
-  'Notices': FileText
+  Notes: PenTool,
+  Notices: FileText,
 }
 
 const categoryColors = {
-  'Codes': 'from-blue-500 to-cyan-500',
+  Codes: 'from-blue-500 to-cyan-500',
   'District Rates': 'from-orange-500 to-red-500',
   'Rules and Regulations': 'from-purple-500 to-violet-500',
-  'Notes': 'from-yellow-500 to-amber-500',
-  'Notices': 'from-green-500 to-emerald-500'
+  Notes: 'from-yellow-500 to-amber-500',
+  Notices: 'from-green-500 to-emerald-500',
 }
 
 interface CategoryPageProps {
   params: {
     category: string
   }
+}
+
+// AdSense Component
+const AdSenseAd = ({
+  slot,
+  format = 'auto',
+  style = {},
+}: {
+  slot: string
+  format?: string
+  style?: React.CSSProperties
+}) => {
+  const adRef = useRef<HTMLModElement>(null)
+
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined' && adRef.current) {
+        ;((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({})
+      }
+    } catch (err) {
+      console.error('AdSense error:', err)
+    }
+  }, [])
+
+  return (
+    <ins
+      ref={adRef}
+      className="adsbygoogle"
+      style={{ display: 'block', ...style }}
+      data-ad-client="ca-pub-2472384896413922"
+      data-ad-slot={slot}
+      data-ad-format={format}
+      data-full-width-responsive="true"
+    />
+  )
 }
 
 export default function CategoryPage({ params }: CategoryPageProps) {
@@ -42,25 +95,63 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const [downloading, setDownloading] = useState<Set<string>>(new Set())
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null)
   const iframeRef = useRef<HTMLIFrameElement>(null)
- const safeFileName = (title: string) =>  `${title.replace(/[^\w\s-]/gi, '').trim().replace(/\s+/g, '_')}.pdf`
- const handleDownload = async (
-  url: string,
-  title: string,
-  setDownloading: React.Dispatch<React.SetStateAction<Set<string>>>,
-  event?: React.MouseEvent
-) => {
-  event?.preventDefault()
-  event?.stopPropagation()
 
-  setDownloading(prev => new Set([...prev, url]))
-  const filename = safeFileName(title)
+  // Load AdSense script
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src =
+      'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922'
+    script.async = true
+    script.crossOrigin = 'anonymous'
+    document.head.appendChild(script)
 
-  try {
-    // --- Attempt automatic download via fetch ---
+    return () => {
+      if (document.head.contains(script)) {
+        document.head.removeChild(script)
+      }
+    }
+  }, [])
+
+  const safeFileName = (title: string) =>
+    `${title
+      .replace(/[^\w\s-]/gi, '')
+      .trim()
+      .replace(/\s+/g, '_')}.pdf`
+
+  const handleDownload = async (
+    url: string,
+    title: string,
+    setDownloading: React.Dispatch<React.SetStateAction<Set<string>>>,
+    event?: React.MouseEvent,
+  ) => {
+    event?.preventDefault()
+    event?.stopPropagation()
+
+    setDownloading((prev) => new Set([...prev, url]))
+    const filename = safeFileName(title)
+
     try {
-      const response = await fetch(url)
-      if (response.ok) {
-        const blob = await response.blob()
+      try {
+        const response = await fetch(url)
+        if (response.ok) {
+          const blob = await response.blob()
+          const downloadUrl = window.URL.createObjectURL(blob)
+          const link = document.createElement('a')
+          link.href = downloadUrl
+          link.download = filename
+          link.style.display = 'none'
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 200)
+          return
+        }
+      } catch (err) {
+        console.warn('Fetch failed (likely CORS):', err)
+      }
+
+      try {
+        const blob = await xhrFetchAsPromise(url)
         const downloadUrl = window.URL.createObjectURL(blob)
         const link = document.createElement('a')
         link.href = downloadUrl
@@ -71,31 +162,12 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         document.body.removeChild(link)
         setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 200)
         return
+      } catch (err) {
+        console.warn('XHR failed (likely CORS):', err)
       }
-    } catch (err) {
-      console.warn('Fetch failed (likely CORS):', err)
-    }
 
-    // --- XHR fallback ---
-    try {
-      const blob = await xhrFetchAsPromise(url)
-      const downloadUrl = window.URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = downloadUrl
-      link.download = filename
-      link.style.display = 'none'
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 200)
-      return
-    } catch (err) {
-      console.warn('XHR failed (likely CORS):', err)
-    }
-
-    // --- Popup fallback for manual download ---
-    const modal = document.createElement('div')
-    modal.innerHTML = `
+      const modal = document.createElement('div')
+      modal.innerHTML = `
       <div style="
         position: fixed; top:0; left:0; width:100%; height:100%;
         background: rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:9999;
@@ -123,28 +195,23 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         </div>
       </div>
     `
-    document.body.appendChild(modal)
+      document.body.appendChild(modal)
 
-    const closeBtn = modal.querySelector('#close-modal-btn') as HTMLElement
-    closeBtn.onclick = () => { if (document.body.contains(modal)) document.body.removeChild(modal) }
+      const closeBtn = modal.querySelector('#close-modal-btn') as HTMLElement
+      closeBtn.onclick = () => {
+        if (document.body.contains(modal)) document.body.removeChild(modal)
+      }
 
-    // Open in new tab automatically
-    // Open in new tab after ~20 seconds
-setTimeout(() => window.open(url, '_blank', 'noopener'), 20000)
-
-
-  } finally {
-    setDownloading(prev => {
-      const newSet = new Set(prev)
-      newSet.delete(url)
-      return newSet
-    })
+      setTimeout(() => window.open(url, '_blank', 'noopener'), 20000)
+    } finally {
+      setDownloading((prev) => {
+        const newSet = new Set(prev)
+        newSet.delete(url)
+        return newSet
+      })
+    }
   }
-} 
- 
- 
- 
- // Load favorites from localStorage
+
   useEffect(() => {
     const savedFavorites = localStorage.getItem('resource-favorites')
     if (savedFavorites) {
@@ -152,48 +219,43 @@ setTimeout(() => window.open(url, '_blank', 'noopener'), 20000)
     }
   }, [])
 
-  // Save favorites to localStorage
   useEffect(() => {
     localStorage.setItem('resource-favorites', JSON.stringify(Array.from(favorites)))
   }, [favorites])
 
-  // Get resources for this category
   const categoryResources = useMemo(() => {
-    return resources.filter(resource => resource.slug === params.category)
+    return resources.filter((resource) => resource.slug === params.category)
   }, [params.category])
 
   const mainResource = categoryResources[0]
 
-  // PROPER DOWNLOAD FUNCTION - Forces actual download
-// --- Safe file name for download ---
+  const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
+    new Promise<Blob>((resolve, reject) => {
+      const xhr = new XMLHttpRequest()
+      xhr.open('GET', url, true)
+      xhr.responseType = 'blob'
+      const to = setTimeout(() => {
+        xhr.abort()
+        reject(new Error('XHR timeout'))
+      }, timeoutMs)
 
+      xhr.onload = () => {
+        clearTimeout(to)
+        xhr.status === 200 ? resolve(xhr.response) : reject(new Error(`XHR status ${xhr.status}`))
+      }
+      xhr.onerror = () => {
+        clearTimeout(to)
+        reject(new Error('XHR network error'))
+      }
+      xhr.send()
+    })
 
-// --- XHR helper for fallback download ---
-const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
-  new Promise<Blob>((resolve, reject) => {
-    const xhr = new XMLHttpRequest()
-    xhr.open('GET', url, true)
-    xhr.responseType = 'blob'
-    const to = setTimeout(() => { xhr.abort(); reject(new Error('XHR timeout')) }, timeoutMs)
-
-    xhr.onload = () => { clearTimeout(to); xhr.status === 200 ? resolve(xhr.response) : reject(new Error(`XHR status ${xhr.status}`)) }
-    xhr.onerror = () => { clearTimeout(to); reject(new Error('XHR network error')) }
-    xhr.send()
-  })
-
-// --- Universal download handler ---
-
-
-
-
-  // Open PDF in new tab (replaces quick view)
   const handleOpenInNewTab = (url: string, title: string, event: React.MouseEvent) => {
     event.preventDefault()
     event.stopPropagation()
     window.open(url, '_blank')
   }
 
-  // Close PDF viewer
   const closePdfViewer = () => {
     setPdfViewerOpen(false)
     setCurrentPdfUrl('')
@@ -201,17 +263,15 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
     document.body.style.overflow = 'auto'
   }
 
-  // Copy URL to clipboard
   const copyToClipboard = async (url: string, event?: React.MouseEvent) => {
     event?.preventDefault()
     event?.stopPropagation()
-    
+
     try {
       await navigator.clipboard.writeText(url)
       setCopiedUrl(url)
       setTimeout(() => setCopiedUrl(null), 2000)
     } catch (err) {
-      // Fallback
       const textArea = document.createElement('textarea')
       textArea.value = url
       textArea.style.position = 'fixed'
@@ -229,11 +289,10 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
     }
   }
 
-  // Share URL
   const shareUrl = async (url: string, title: string, event?: React.MouseEvent) => {
     event?.preventDefault()
     event?.stopPropagation()
-    
+
     if (navigator.share) {
       try {
         await navigator.share({
@@ -249,12 +308,11 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
     }
   }
 
-  // Close on escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closePdfViewer()
     }
-    
+
     window.addEventListener('keydown', handleEscape)
     return () => window.removeEventListener('keydown', handleEscape)
   }, [])
@@ -281,30 +339,30 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
     )
   }
 
-  // Fuse.js configuration for search
-  const fuse = useMemo(() => new Fuse(mainResource.subItems || [], {
-    keys: ['title'],
-    threshold: 0.3,
-    includeScore: true
-  }), [mainResource.subItems])
+  const fuse = useMemo(
+    () =>
+      new Fuse(mainResource.subItems || [], {
+        keys: ['title'],
+        threshold: 0.3,
+        includeScore: true,
+      }),
+    [mainResource.subItems],
+  )
 
-  // Filter and search sub-resources
   const filteredSubItems = useMemo(() => {
     if (!mainResource.subItems) return []
 
     let filtered = mainResource.subItems
 
-    // Apply search
     if (searchQuery.trim()) {
       const searchResults = fuse.search(searchQuery)
-      filtered = searchResults.map(result => result.item)
+      filtered = searchResults.map((result) => result.item)
     }
 
-    // Apply sorting
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'All':
-          return 0;
+          return 0
         case 'Newest':
           return b.title.localeCompare(a.title)
         case 'Oldest':
@@ -332,7 +390,7 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
       event.preventDefault()
       event.stopPropagation()
     }
-    setFavorites(prev => {
+    setFavorites((prev) => {
       const newFavorites = new Set(prev)
       if (newFavorites.has(url)) {
         newFavorites.delete(url)
@@ -350,9 +408,8 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
       {/* Top Ad Banner */}
       <div className="w-full dark: py-3">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="h-20 flex items-center justify-center rounded-lg bg-slate-200/70 dark:bg-slate-700/50">
-            <span className="text-sm text-slate-500 dark:text-slate-400"><meta name="google-adsense-account" content="ca-pub-2472384896413922" />
-</span>
+          <div className="h-20 flex items-center justify-center rounded-lg overflow-hidden">
+            <AdSenseAd slot="YOUR_TOP_AD_SLOT_ID" format="horizontal" />
           </div>
         </div>
       </div>
@@ -361,9 +418,12 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Right Sidebar Ad */}
           <div className="lg:w-72 flex-shrink-0 hidden lg:block">
-            <div className="sticky top-24 rounded-xl bg-slate-100 dark:bg-slate-800 p-4 h-96 flex items-center justify-center">
-              <span className="text-sm text-slate-500 dark:text-slate-400"><meta name="google-adsense-account" content="ca-pub-2472384896413922" />
-</span>
+            <div className="sticky top-24 rounded-xl overflow-hidden h-96 flex items-center justify-center">
+              <AdSenseAd
+                slot="YOUR_SIDEBAR_AD_SLOT_ID"
+                format="vertical"
+                style={{ minHeight: '384px' }}
+              />
             </div>
           </div>
 
@@ -382,11 +442,13 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
               className="mb-8"
             >
               <div className="flex items-start gap-4">
-                <div className={`flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-r ${categoryColors[mainResource.category]} text-white`}>
+                <div
+                  className={`flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-r ${categoryColors[mainResource.category]} text-white`}
+                >
                   <CategoryIcon className="h-8 w-8" />
                 </div>
                 <div className="flex-1">
@@ -404,7 +466,7 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
+              transition={{ duration: 0.3, delay: 0.1, ease: 'easeOut' }}
               className="mb-8 space-y-4"
             >
               {/* Search Bar */}
@@ -462,22 +524,22 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
                     const isFavorite = favorites.has(subItem.url)
                     const isDownloading = downloading.has(subItem.url)
                     const isCopied = copiedUrl === subItem.url
-                    
+
                     return (
                       <motion.div
                         key={subItem.url}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3, delay: index * 0.05, ease: "easeOut" }}
+                        transition={{ duration: 0.3, delay: index * 0.05, ease: 'easeOut' }}
                         className="group relative flex flex-col rounded-xl border border-slate-200/20 bg-surface p-5 shadow-card transition-all hover:-translate-y-1 hover:shadow-hover dark:border-slate-800/20 dark:bg-surface-dark"
                       >
                         {/* Favorite Button */}
                         <button
                           onClick={(e) => toggleFavorite(subItem.url, e)}
                           className={`absolute right-4 top-4 rounded-full p-1.5 transition-all hover:scale-110 ${
-                            isFavorite 
-                              ? 'text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20' 
+                            isFavorite
+                              ? 'text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20'
                               : 'text-body/40 hover:bg-slate-100/80 dark:text-body-dark/40 dark:hover:bg-slate-800/80'
                           }`}
                           aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
@@ -494,7 +556,6 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
                           <h3 className="mb-3 font-display text-lg font-semibold text-heading group-hover:text-primary transition-colors dark:text-heading-dark">
                             {subItem.title}
                           </h3>
-                          {/* Clear indicator that this will open in new tab */}
                           <div className="flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400">
                             <AlertCircle className="h-3 w-3" />
                             <span>Opens in new tab</span>
@@ -504,7 +565,6 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
                         {/* Action Buttons */}
                         <div className="mt-5 flex justify-between items-center">
                           <div className="flex gap-2">
-                            {/* Open in New Tab Button - Clear label */}
                             <button
                               onClick={(e) => handleOpenInNewTab(subItem.url, subItem.title, e)}
                               className="flex items-center gap-1.5 rounded-xl border border-slate-200/20 bg-surface px-3 py-2 font-display text-sm font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-800/20 dark:bg-surface-dark dark:text-heading-dark dark:hover:bg-slate-700"
@@ -513,48 +573,49 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
                               <ExternalLink className="h-4 w-4" />
                               Open
                             </button>
-                            
-                            {/* Download Button */}
-                           <button
-  onClick={(e) => handleDownload(subItem.url, subItem.title, setDownloading, e)}
-  disabled={isDownloading}
-  className={`flex items-center gap-1.5 rounded-xl border border-slate-200/20 px-3 py-2 font-display text-sm font-medium transition-colors ${
-    isDownloading 
-      ? 'text-gray-400 cursor-not-allowed dark:text-gray-500' 
-      : 'text-heading hover:bg-slate-50 dark:text-heading-dark dark:hover:bg-slate-700'
-  }`}
->
-  {isDownloading ? (
-    <>
-      <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
-      <span>Saving...</span>
-    </>
-  ) : (
-    <>
-      <Download className="h-4 w-4" />
-      <span>Download</span>
-    </>
-  )}
-</button>
 
+                            <button
+                              onClick={(e) =>
+                                handleDownload(subItem.url, subItem.title, setDownloading, e)
+                              }
+                              disabled={isDownloading}
+                              className={`flex items-center gap-1.5 rounded-xl border border-slate-200/20 px-3 py-2 font-display text-sm font-medium transition-colors ${
+                                isDownloading
+                                  ? 'text-gray-400 cursor-not-allowed dark:text-gray-500'
+                                  : 'text-heading hover:bg-slate-50 dark:text-heading-dark dark:hover:bg-slate-700'
+                              }`}
+                            >
+                              {isDownloading ? (
+                                <>
+                                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+                                  <span>Saving...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Download className="h-4 w-4" />
+                                  <span>Download</span>
+                                </>
+                              )}
+                            </button>
                           </div>
-                          
-                          {/* Right side buttons */}
+
                           <div className="flex gap-2 items-center">
-                            {/* Copy Button */}
                             <button
                               onClick={(e) => copyToClipboard(subItem.url, e)}
                               className={`p-1.5 rounded-full transition-colors ${
-                                isCopied 
-                                  ? 'text-green-500 bg-green-50 dark:bg-green-900/20' 
+                                isCopied
+                                  ? 'text-green-500 bg-green-50 dark:bg-green-900/20'
                                   : 'text-body/40 hover:bg-slate-100/80 dark:text-body-dark/40 dark:hover:bg-slate-800/80'
                               }`}
                               aria-label={isCopied ? 'Copied!' : 'Copy URL'}
                             >
-                              {isCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                              {isCopied ? (
+                                <Check className="h-4 w-4" />
+                              ) : (
+                                <Copy className="h-4 w-4" />
+                              )}
                             </button>
-                            
-                            {/* Share Button */}
+
                             <button
                               onClick={(e) => shareUrl(subItem.url, subItem.title, e)}
                               className="p-1.5 rounded-full text-body/40 hover:bg-slate-100/80 dark:text-body-dark/40 dark:hover:bg-slate-800/80"
@@ -594,11 +655,10 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
       </div>
 
       {/* Bottom Ad Banner */}
-      <div className="w-full dark: py-6 mt-12">
+      <div className="w-full dark:py-6 mt-12">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="h-24 flex items-center justify-center rounded-lg bg-slate-200/70 dark:bg-slate-700/50">
-            <span className="text-sm text-slate-500 dark:text-slate-400><meta name="google-adsense-account" content="ca-pub-2472384896413922" />
-</span>
+          <div className="h-24 flex items-center justify-center rounded-lg overflow-hidden">
+            <AdSenseAd slot="YOUR_BOTTOM_AD_SLOT_ID" format="horizontal" />
           </div>
         </div>
       </div>
