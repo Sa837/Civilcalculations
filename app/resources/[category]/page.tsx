@@ -351,8 +351,8 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
       <div className="w-full dark: py-3">
         <div className="mx-auto max-w-6xl px-4">
           <div className="h-20 flex items-center justify-center rounded-lg bg-slate-200/70 dark:bg-slate-700/50">
-            <span className="text-sm text-slate-500 dark:text-slate-400"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922"
-     crossorigin="anonymous"></script></span>
+            <span className="text-sm text-slate-500 dark:text-slate-400"><meta name="google-adsense-account" content="ca-pub-2472384896413922" />
+</span>
           </div>
         </div>
       </div>
@@ -362,8 +362,8 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
           {/* Right Sidebar Ad */}
           <div className="lg:w-72 flex-shrink-0 hidden lg:block">
             <div className="sticky top-24 rounded-xl bg-slate-100 dark:bg-slate-800 p-4 h-96 flex items-center justify-center">
-              <span className="text-sm text-slate-500 dark:text-slate-400"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922"
-     crossorigin="anonymous"></script></span>
+              <span className="text-sm text-slate-500 dark:text-slate-400"><meta name="google-adsense-account" content="ca-pub-2472384896413922" />
+</span>
             </div>
           </div>
 
@@ -597,8 +597,8 @@ const xhrFetchAsPromise = (url: string, timeoutMs = 30000) =>
       <div className="w-full dark: py-6 mt-12">
         <div className="mx-auto max-w-6xl px-4">
           <div className="h-24 flex items-center justify-center rounded-lg bg-slate-200/70 dark:bg-slate-700/50">
-            <span className="text-sm text-slate-500 dark:text-slate-400"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922"
-     crossorigin="anonymous"></script></span>
+            <span className="text-sm text-slate-500 dark:text-slate-400><meta name="google-adsense-account" content="ca-pub-2472384896413922" />
+</span>
           </div>
         </div>
       </div>
