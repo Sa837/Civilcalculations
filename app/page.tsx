@@ -44,7 +44,7 @@ export default function HomePage() {
           </div>
         </div>
         {/* Background Pattern */}
-        <div className="absolute inset-0 bg-grid-slate-16 opacity-30 pointer-events-none"></div>{' '}
+        <div className="absolute inset-0 bg-grid-slate-16 opacity-30"></div>
       </section>
 
       {/* Stats Section */}
