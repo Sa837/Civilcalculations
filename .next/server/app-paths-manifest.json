@@ -1,4 +1,7 @@
 {
+  "/calculators/page": "app/calculators/page.js",
   "/page": "app/page.js",
-  "/contact/page": "app/contact/page.js"
+  "/converters/page": "app/converters/page.js",
+  "/resources/page": "app/resources/page.js",
+  "/tools/page": "app/tools/page.js"
 }

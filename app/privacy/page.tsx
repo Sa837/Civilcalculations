@@ -2,86 +2,152 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Civil Calculation',
-  description: 'Learn how Civil Calculation uses cookies, Google AdSense, and Google Analytics. Understand what data we collect, how we store it, and your rights (GDPR/CCPA).',
+  description:
+    'Learn about how Civil Calculation collects, stores, and uses information, including cookies, Google Analytics, and AdSense. Understand your rights under GDPR and CCPA.',
   alternates: { canonical: '/privacy' },
 }
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className="mx-auto max-w-4xl px-6 py-20">
+    <main className="mx-auto max-w-4xl px-6 py-20 font-display">
       <div className="mb-12 text-center">
-        <h1 className="mb-6 font-display text-5xl font-bold text-heading dark:text-heading-dark">Privacy Policy</h1>
-        <p className="mx-auto max-w-2xl font-sans text-lg text-body/80 dark:text-body-dark/80">
-          Your privacy matters to us. This policy explains what data we collect, how we use it, and your rights.
+        <h1 className="mb-6 text-5xl font-bold text-heading dark:text-heading-dark">
+          Privacy Policy
+        </h1>
+        <p className="mx-auto max-w-2xl text-lg text-body/80 dark:text-body-dark/80">
+          At Civil Calculation, we value your privacy. This Privacy Policy explains the information
+          we collect, how we use it, and your rights regarding your data.
         </p>
       </div>
 
-      <div className="prose prose-slate max-w-none dark:prose-invert">
+      <div className="prose prose-slate max-w-none text-bold dark:prose-invert">
         <h2>Overview</h2>
         <p>
-          Civil Calculation (the &quot;Service&quot;) provides engineering calculators and tools. This Privacy Policy describes how we
-          collect, use, and disclose information when you use the Service.
+          Civil Calculation provides civil engineering tools, calculators, and resources. Our
+          Privacy Policy explains how we collect, store, and use information when you visit our
+          website or use our services.
         </p>
 
         <h2>Information We Collect</h2>
         <ul>
-          <li><strong>Usage data</strong>: pages visited, interactions, performance metrics (via analytics).</li>
-          <li><strong>Cookies</strong>: to remember preferences, measure analytics, and serve ads if you consent.</li>
+          <li>
+            <strong>Usage Data</strong>: Information about how you interact with our website,
+            including pages visited, time spent, and features used. This helps us improve user
+            experience and website functionality.
+          </li>
+          <li>
+            <strong>Cookies</strong>: Small files stored on your device to remember preferences,
+            provide a better experience, and enable analytics and advertising services. Cookies are
+            only used if you consent.
+          </li>
+          <li>
+            <strong>Contact Data</strong>: Information you provide voluntarily when contacting us
+            via forms or email.
+          </li>
         </ul>
 
         <h2>Cookies and Similar Technologies</h2>
         <p>
-          We use cookies to operate the Service, measure usage, and personalize/measure advertising. You can manage your
-          preferences at any time using the cookie settings in the banner or the &quot;Manage Cookies&quot; link in the footer.
+          Cookies help our site function properly and provide a personalized experience. You can
+          manage your preferences at any time using the cookie banner or the "Manage Cookies" link
+          in the footer. Cookies may include:
         </p>
+        <ul>
+          <li>
+            <strong>Strictly Necessary Cookies</strong>: Required for core functionality, like
+            navigation and security.
+          </li>
+          <li>
+            <strong>Analytics Cookies</strong>: Used by Google Analytics (GA4) to understand user
+            behavior and improve our services.
+          </li>
+          <li>
+            <strong>Advertising Cookies</strong>: Used by Google AdSense to serve personalized ads
+            based on consent.
+          </li>
+          <li>
+            <strong>Functional Cookies</strong>: Help remember preferences such as language, theme,
+            and user settings.
+          </li>
+        </ul>
 
         <h2>Google Analytics (GA4)</h2>
         <p>
-          We use Google Analytics to understand how the Service is used. Data is collected only when you consent to analytics
-          cookies. Learn more at Google&#39;s policies: <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">https://policies.google.com/technologies/partner-sites</a> and <a href="https://policies.google.com/technologies/cookies" target="_blank" rel="noopener noreferrer">https://policies.google.com/technologies/cookies</a>.
+          We use Google Analytics to collect usage data for insights about site performance and user
+          engagement. Data collection occurs only with your consent. You can read more about
+          Google's policies here:
+          <br />
+          <a
+            href="https://policies.google.com/technologies/partner-sites"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Partner Sites Policy
+          </a>
+          <br />
+          <a
+            href="https://policies.google.com/technologies/cookies"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Cookies Policy
+          </a>
         </p>
 
         <h2>Google AdSense</h2>
         <p>
-          We use Google AdSense to display ads. Personalized ads and measurement cookies are used only when you consent to
-          advertising cookies. You can learn how Google uses information from sites that use its services here: <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">Google partner policies</a>.
+          Our website uses Google AdSense to display ads. Personalized ads and tracking cookies are
+          used only with your consent. Learn more about Google's use of information here:
+          <br />
+          <a
+            href="https://policies.google.com/technologies/partner-sites"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Google Partner Policies
+          </a>
         </p>
 
-        <h2>Data Use</h2>
+        <h2>How We Use Your Information</h2>
         <ul>
-          <li>To operate and improve the Service.</li>
-          <li>To understand usage patterns and performance.</li>
-          <li>To provide relevant advertising if you consent.</li>
-          <li>To respond to inquiries you send via the contact form.</li>
+          <li>To operate and maintain our website and services effectively.</li>
+          <li>To analyze trends, usage, and performance for service improvement.</li>
+          <li>To serve relevant advertising only when consented.</li>
+          <li>To respond to inquiries, requests, and support questions.</li>
         </ul>
 
         <h2>Data Retention</h2>
         <p>
-          We retain data only as long as necessary for the purposes stated in this policy, unless a longer retention period is
-          required by law.
+          We retain your information only as long as necessary to fulfill the purposes outlined in
+          this Privacy Policy or as required by law. Cookies are stored according to their
+          respective durations unless you change your preferences or clear them.
         </p>
 
         <h2>Data Sharing</h2>
         <p>
-          We do not sell personal information. We may share information with service providers for analytics and advertising as
-          described, subject to your consent and applicable law.
+          We do not sell personal information. We may share data with service providers for
+          analytics and advertising purposes, but only in compliance with your consent and
+          applicable laws.
         </p>
 
-        <h2>Your Rights (GDPR/CCPA)</h2>
+        <h2>Your Rights (GDPR & CCPA)</h2>
         <ul>
-          <li>Access, correction, or deletion of your personal data.</li>
-          <li>Opt-out of sale or sharing where applicable.</li>
-          <li>Withdraw consent for cookies at any time via the cookie preferences.</li>
+          <li>Access, correct, or request deletion of your personal data.</li>
+          <li>Opt-out of the sale or sharing of your personal data where applicable.</li>
+          <li>Withdraw cookie consent at any time via the cookie settings.</li>
         </ul>
 
-        <h2>Contact</h2>
+        <h2>Contact Us</h2>
         <p>
-          For privacy inquiries, contact us at <a href="/contact">Contact</a> or email: <a href="mailto:support@civilcalculation.com">support@civilcalculation.com</a>.
+          For privacy-related inquiries or concerns, you can contact us at: <br />
+          <a href="/contact">Contact Page</a> or email:{' '}
+          <a href="mailto:sa.9819158546@gmail.com">sa.9819158546@gmail.com</a>.
         </p>
 
-        <h2>Updates</h2>
+        <h2>Policy Updates</h2>
         <p>
-          We may update this policy from time to time. The latest version will always be available on this page.
+          We may update this Privacy Policy periodically. The latest version will always be
+          available on this page. We encourage you to review it regularly.
         </p>
       </div>
     </main>

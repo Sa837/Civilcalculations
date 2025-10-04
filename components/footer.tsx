@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 export default function Footer() {
   function openCookiePrefs(e: React.MouseEvent) {
@@ -14,23 +14,57 @@ export default function Footer() {
         <p className="font-sans text-body/70 dark:text-body-dark/70">
           © {new Date().getFullYear()} Civil Calculation. Built for civil engineers, by engineers.
         </p>
+
         <p className="mt-2 font-sans text-sm text-body/50 dark:text-body-dark/50">
           Professional-grade tools for accurate calculations and conversions.
         </p>
 
         <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-          <a href="/privacy" className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark">Privacy Policy</a>
-          <a href="/terms" className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark">Terms & Conditions</a>
-          <a href="/disclaimer" className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark">Disclaimer</a>
-          <a href="/cookies" className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark">Cookie Policy</a>
-          <a href="/contact" className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark">Contact</a>
-          <a href="#" onClick={openCookiePrefs} className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark">Manage Cookies</a>
+          <a
+            href="/privacy"
+            className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark"
+          >
+            Privacy Policy
+          </a>
+          <a
+            href="/terms"
+            className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark"
+          >
+            Terms & Conditions
+          </a>
+          <a
+            href="/disclaimer"
+            className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark"
+          >
+            Disclaimer
+          </a>
+          <a
+            href="/cookies"
+            className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark"
+          >
+            Cookie Policy
+          </a>
+          <a
+            href="/contact"
+            className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark"
+          >
+            Contact
+          </a>
+          <a
+            href="/about"
+            className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark"
+          >
+            About
+          </a>
+          <a
+            href="#"
+            onClick={openCookiePrefs}
+            className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark"
+          >
+            Manage Cookies
+          </a>
         </div>
       </div>
     </footer>
   )
 }
-
-
-
-

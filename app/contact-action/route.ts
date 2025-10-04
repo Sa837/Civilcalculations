@@ -21,7 +21,7 @@ export async function POST(req: Request) {
       const resend = new Resend(apiKey)
       await resend.emails.send({
         from: 'Civil Calculation <noreply@civil-calculation.app>',
-        to: ['owner@example.com'],
+        to: ['sa.9819158546@gmail.com'],
         subject: `Contact form: ${name}`,
         text: `From: ${name} <${email}>\n\n${message}`,
       })
@@ -33,9 +33,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
 }
-
-
-
-
-
-
