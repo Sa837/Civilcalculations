@@ -43,7 +43,7 @@ export default function HomePage() {
         </div>
         
         {/* Background Pattern */}
-        <div className="absolute inset-0 bg-grid-slate-16 opacity-30"></div>
+       <div className="absolute inset-0 bg-grid-slate-16 opacity-30 pointer-events-none"></div>
       </section>
 
       {/* Stats Section */}
