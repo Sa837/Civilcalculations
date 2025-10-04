@@ -75,7 +75,7 @@ export default function PrivacyPolicyPage() {
         <p>
           We use Google Analytics to collect usage data for insights about site performance and user
           engagement. Data collection occurs only with your consent. You can read more about
-          Google's policies here:
+          Google&apos;s policies here:
           <br />
           <a
             href="https://policies.google.com/technologies/partner-sites"
@@ -97,7 +97,7 @@ export default function PrivacyPolicyPage() {
         <h2>Google AdSense</h2>
         <p>
           Our website uses Google AdSense to display ads. Personalized ads and tracking cookies are
-          used only with your consent. Learn more about Google's use of information here:
+          used only with your consent. Learn more about Google&apos;s use of information here:
           <br />
           <a
             href="https://policies.google.com/technologies/partner-sites"

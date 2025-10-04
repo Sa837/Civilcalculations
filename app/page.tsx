@@ -145,7 +145,7 @@ export default function HomePage() {
               What Engineers Say
             </h2>
             <p className="mx-auto max-w-2xl font-sans text-lg text-body/80 dark:text-body-dark/80">
-              Don't just take our word for it. Here's what our users have to say.
+              Don&apos;t just take our word for it. Here&apos;s what our users have to say.
             </p>
           </div>
 
