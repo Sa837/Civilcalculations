@@ -11,10 +11,7 @@ const timeGlobalUnits = [
   linearUnit(31557600, 'year', 'year'),
 ]
 
-const timeNepaliUnits = [
-  linearUnit(1, 'BS', 'Bikram Sambat'),
-  linearUnit(1, 'AD', 'Gregorian'),
-]
+const timeNepaliUnits = [linearUnit(1, 'BS', 'Bikram Sambat'), linearUnit(1, 'AD', 'Gregorian')]
 
 export const timeConverter: Converter = {
   slug: 'time',

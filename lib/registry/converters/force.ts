@@ -13,7 +13,5 @@ export const forceConverter: Converter = {
   slug: 'force',
   title: 'Force',
   category: 'Properties',
-  groups: [
-    { name: 'Global', units: forceGlobalUnits },
-  ],
+  groups: [{ name: 'Global', units: forceGlobalUnits }],
 }

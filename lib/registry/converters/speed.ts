@@ -12,7 +12,5 @@ export const speedConverter: Converter = {
   slug: 'speed',
   title: 'Speed',
   category: 'Properties',
-  groups: [
-    { name: 'Global', units: speedGlobalUnits },
-  ],
+  groups: [{ name: 'Global', units: speedGlobalUnits }],
 }

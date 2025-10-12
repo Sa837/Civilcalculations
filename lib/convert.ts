@@ -12,6 +12,8 @@ export type Converter =
       slug: string
       title: string
       category: string
+      description?: string
+      baseUnit?: string
       groups: { name: string; units: UnitDef[] }[]
       examples?: string[]
       convert?: (value: number, from: string, to: string) => number
@@ -20,6 +22,8 @@ export type Converter =
       slug: string
       title: string
       category: string
+      description?: string
+      baseUnit?: string
       units: UnitDef[]
       convert: (value: number, from: string, to: string) => number
     }

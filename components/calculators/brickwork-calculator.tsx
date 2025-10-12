@@ -67,7 +67,7 @@ interface BrickworkCalculatorProps {
 const BrickworkSVG = ({ formData }: { formData: BrickworkFormData }) => {
   return (
     <div className="mt-6 p-4 rounded-xl">
-      <h3 className="font-display font-medium text-heading dark:text-heading-dark mb-3 text-center">
+      <h3 className="  font-medium text-heading dark:text-heading-dark mb-3 text-center">
         Wall Diagram
       </h3>
       <svg
@@ -199,7 +199,7 @@ const BrickworkSVG = ({ formData }: { formData: BrickworkFormData }) => {
         </text>
       </svg>
 
-      <div className="mt-2 font-display text-xs text-center text-slate-600 dark:text-slate-300">
+      <div className="mt-2   text-xs text-center text-slate-600 dark:text-slate-300">
         Dimensions: {formData.wallLength || '0'} × {formData.wallHeight || '0'} {formData.unit}
         {formData.openings.length > 0 &&
           ` • ${formData.openings.length} opening${formData.openings.length !== 1 ? 's' : ''}`}
@@ -243,7 +243,7 @@ const InputField = memo(
 
     return (
       <div>
-        <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+        <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
           {label}
         </label>
         <div className="relative">
@@ -704,7 +704,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
   const getAreaUnit = useCallback(() => (formData.unit === 'm' ? 'm²' : 'ft²'), [formData.unit])
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
+    <div className="mx-auto max-w-4xl p-6 font-display">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -717,7 +717,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
               <Calculator className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="font-display text-2xl font-bold text-heading dark:text-heading-dark">
+              <h1 className="  text-2xl font-bold text-heading dark:text-heading-dark">
                 Brickwork Calculator
               </h1>
               <p className="text-body/70 dark:text-body-dark/70">
@@ -735,7 +735,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
             <button
               type="button"
               onClick={() => setUseArea(!useArea)}
-              className={`flex items-center gap-2 rounded-xl px-6 py-2 font-display font-medium shadow-soft transition-all 
+              className={`flex items-center gap-2 rounded-xl px-6 py-2   font-medium shadow-soft transition-all 
                 ${useArea ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-secondary text-white hover:bg-secondary/90'}`}
             >
               <Info className="h-4 w-4" />
@@ -783,14 +783,14 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
 
             {/* Wall Thickness with Dropdown */}
             <div className="md:col-span-2">
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
                 Wall Thickness
               </label>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <button
                   type="button"
                   onClick={() => handleWallThicknessTypeChange('4inch')}
-                  className={`px-1 py-1 rounded-lg font-medium font-display transition-colors ${
+                  className={`px-1 py-1 rounded-lg font-medium   transition-colors ${
                     formData.wallThicknessType === '4inch'
                       ? 'bg-primary text-white'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300'
@@ -805,7 +805,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                 <button
                   type="button"
                   onClick={() => handleWallThicknessTypeChange('9inch')}
-                  className={`px-1 py-1 rounded-lg font-medium font-display transition-colors ${
+                  className={`px-1 py-1 rounded-lg font-medium   transition-colors ${
                     formData.wallThicknessType === '9inch'
                       ? 'bg-primary text-white'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300'
@@ -820,7 +820,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                 <button
                   type="button"
                   onClick={() => handleWallThicknessTypeChange('custom')}
-                  className={`px-4 py-1 rounded-lg font-medium font-display transition-colors ${
+                  className={`px-4 py-1 rounded-lg font-medium   transition-colors ${
                     formData.wallThicknessType === 'custom'
                       ? 'bg-primary text-white'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300'
@@ -859,13 +859,13 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
             {/* Openings Section */}
             <div className="md:col-span-2">
               <div className="flex justify-between items-center mb-4">
-                <label className="block font-display font-medium text-heading dark:text-heading-dark">
+                <label className="block   font-medium text-heading dark:text-heading-dark">
                   Door/Window Openings (Optional)
                 </label>
                 <button
                   type="button"
                   onClick={addOpening}
-                  className="flex items-center gap-2 px-4 py-2 bg-green-600 font-display text-white rounded-lg hover:bg-green-700 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600   text-white rounded-lg hover:bg-green-700 transition-colors"
                 >
                   <Plus className="h-4 w-4" />
                   Add Opening
@@ -875,7 +875,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
               {formData.openings.map((opening, index) => (
                 <div
                   key={opening.id}
-                  className="mb-4 p-4 border border-slate-200 font-display rounded-lg dark:border-slate-600"
+                  className="mb-4 p-4 border border-slate-200   rounded-lg dark:border-slate-600"
                 >
                   <div className="flex justify-between items-center mb-3">
                     <span className="font-medium">{opening.name}</span>
@@ -948,7 +948,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
 
             {/* Brick Size Selection */}
             <div className="md:col-span-2">
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
                 Brick Size (Length × Width × Height)
               </label>
 
@@ -956,7 +956,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                 <button
                   type="button"
                   onClick={() => handleBrickSizeChange('standard', '240x115x71')}
-                  className={`px-4 py-2 rounded-lg font-medium font-display transition-colors ${
+                  className={`px-4 py-2 rounded-lg font-medium   transition-colors ${
                     formData.brickSizeType === 'standard'
                       ? 'bg-primary text-white'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300'
@@ -967,7 +967,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                 <button
                   type="button"
                   onClick={() => handleBrickSizeChange('custom', '')}
-                  className={`px-4 py-2 rounded-lg font-medium font-display transition-colors ${
+                  className={`px-4 py-2 rounded-lg font-medium   transition-colors ${
                     formData.brickSizeType === 'custom'
                       ? 'bg-primary text-white'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300'
@@ -1054,7 +1054,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
 
             {/* Mortar Settings */}
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
                 Mortar Mix Type
               </label>
               <select
@@ -1096,7 +1096,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
               <button
                 type="button"
                 onClick={resetForm}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-display font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
+                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3   font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
               >
                 <RotateCcw className="h-4 w-4" />
                 Reset
@@ -1105,7 +1105,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
               <button
                 type="button"
                 onClick={() => handleInputChange('showStepByStep', !formData.showStepByStep)}
-                className={`flex items-center justify-center gap-2 rounded-xl px-4 py-3 font-display font-medium transition-colors ${
+                className={`flex items-center justify-center gap-2 rounded-xl px-4 py-3   font-medium transition-colors ${
                   formData.showStepByStep
                     ? 'bg-primary text-white'
                     : 'border border-slate-300 bg-white text-heading dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark'
@@ -1124,7 +1124,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
               type="button"
               onClick={calculateBrickwork}
               disabled={isCalculating}
-              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 font-display font-semibold text-white shadow-soft transition-all hover:bg-primary/90 hover:shadow-hover disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3   font-semibold text-white shadow-soft transition-all hover:bg-primary/90 hover:shadow-hover disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isCalculating ? (
                 <>
@@ -1153,7 +1153,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
               {/* Results content */}
               <div className="mb-6 flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-                <h2 className="font-display text-xl font-semibold text-heading dark:text-heading-dark">
+                <h2 className="  text-xl font-semibold text-heading dark:text-heading-dark">
                   Calculation Results
                 </h2>
               </div>
@@ -1163,13 +1163,13 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                 <table className="w-full">
                   <thead className="bg-slate-50 dark:bg-slate-800/50">
                     <tr>
-                      <th className="px-6 py-4 text-left font-display font-semibold text-heading dark:text-heading-dark">
+                      <th className="px-6 py-4 text-left   font-semibold text-heading dark:text-heading-dark">
                         Material
                       </th>
-                      <th className="px-6 py-4 text-right font-display font-semibold text-heading dark:text-heading-dark">
+                      <th className="px-6 py-4 text-right   font-semibold text-heading dark:text-heading-dark">
                         Quantity
                       </th>
-                      <th className="px-6 py-4 text-left font-display font-semibold text-heading dark:text-heading-dark">
+                      <th className="px-6 py-4 text-left   font-semibold text-heading dark:text-heading-dark">
                         Unit
                       </th>
                     </tr>
@@ -1229,7 +1229,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
               {/* Step-by-step Calculation */}
               {formData.showStepByStep && (
                 <div className="mb-8 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
-                  <h3 className="mb-4 font-display text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
+                  <h3 className="mb-4   text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
                     <Eye className="h-5 w-5 text-blue-500 dark:text-blue-300" />
                     Step-by-Step Calculation
                   </h3>
@@ -1272,117 +1272,113 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                   </ol>
                 </div>
               )}
-
-              {/* Enhanced Info & FAQ Section */}
-              <div className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
-                <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark mb-2">
-                  Brickwork Calculator & Estimator – Accurate Material Estimation Tool
-                </h2>
-                <p className="text-body/80 dark:text-body-dark/80 mb-4">
-                  A Brickwork Calculator is an essential online tool for civil engineers, builders,
-                  contractors, and DIY enthusiasts to quickly and accurately estimate the number of
-                  bricks, cement, sand, and mortar required for walls, columns, partitions, and
-                  other masonry work. This tool ensures efficient project planning, cost-saving, and
-                  minimal material wastage.
-                </p>
-                <hr className="my-4 border-slate-200 dark:border-slate-700" />
-                <div className="mb-4">
-                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-                    Why Use a Brickwork Calculator?
-                  </h3>
-                  <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-                    <li>Calculate the exact number of bricks needed.</li>
-                    <li>Estimate cement and sand for mortar accurately.</li>
-                    <li>Save money by reducing waste.</li>
-                    <li>Plan masonry projects efficiently.</li>
-                    <li>Ensure walls and structures have the right strength and stability.</li>
-                  </ul>
-                </div>
-                <hr className="my-4 border-slate-200 dark:border-slate-700" />
-                <div className="mb-4">
-                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-                    How It Works
-                  </h3>
-                  <ol className="list-decimal list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-                    <li>Select the type of brickwork: wall, column, or partition.</li>
-                    <li>Enter project dimensions: length, height, and thickness of the wall.</li>
-                    <li>Choose the mortar mix ratio: 1:6, 1:5, 1:4, or 1:3 (cement:sand).</li>
-                    <li>
-                      Get instant results:
-                      <ul className="list-disc list-inside ml-6">
-                        <li>Number of bricks required</li>
-                        <li>Cement quantity (bags)</li>
-                        <li>Sand volume for mortar</li>
-                      </ul>
-                    </li>
-                  </ol>
-                </div>
-                <hr className="my-4 border-slate-200 dark:border-slate-700" />
-                <div className="mb-4">
-                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-                    Standard Brickwork Mix Ratios
-                  </h3>
-                  <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-                    <li>1:6 – Low-strength mortar for non-load bearing walls.</li>
-                    <li>1:5 – General-purpose mortar for standard walls.</li>
-                    <li>1:4 – Stronger mortar for structural walls.</li>
-                    <li>1:3 – High-strength mortar for heavy load-bearing walls.</li>
-                  </ul>
-                  <div className="mt-2 text-sm text-body/60 dark:text-body-dark/60">
-                    <span className="font-semibold">Tip:</span> The first number represents cement,
-                    and the second represents sand. Choose the mix ratio according to the structural
-                    requirements of your project.
-                  </div>
-                </div>
-                <hr className="my-4 border-slate-200 dark:border-slate-700" />
-                <div>
-                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-                    FAQs – Brickwork Calculator
-                  </h3>
-                  <div className="space-y-2 text-body/80 dark:text-body-dark/80">
-                    <div>
-                      <span className="font-semibold">Q1. What is a brickwork calculator?</span>
-                      <br />A tool to calculate the number of bricks, cement, and sand required for
-                      masonry projects.
-                    </div>
-                    <div>
-                      <span className="font-semibold">Q2. Why is it important?</span>
-                      <br />
-                      Ensures accurate estimation, cost-saving, and minimal material waste for
-                      construction projects.
-                    </div>
-                    <div>
-                      <span className="font-semibold">Q3. What units does it support?</span>
-                      <br />
-                      Dimensions can be entered in meters or feet, and cement is calculated in bags.
-                    </div>
-                    <div>
-                      <span className="font-semibold">
-                        Q4. How to choose the right mortar mix ratio?
-                      </span>
-                      <br />
-                      <ul className="list-disc list-inside ml-6">
-                        <li>1:6: Low-strength, non-load bearing walls</li>
-                        <li>1:5: General-purpose masonry</li>
-                        <li>1:4: Structural walls</li>
-                        <li>1:3: High-strength walls for heavy loads</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <span className="font-semibold">
-                        Q5. Can I calculate for irregular or partial walls?
-                      </span>
-                      <br />
-                      Yes, calculate the total area of the wall and enter it in the calculator for
-                      precise results.
-                    </div>
-                  </div>
-                </div>
-              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
+      {/* Enhanced Info & FAQ Section */}
+      <div className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
+        <h2 className="  text-2xl font-bold text-heading dark:text-heading-dark mb-2">
+          Brickwork Calculator & Estimator – Accurate Material Estimation Tool
+        </h2>
+        <p className="text-body/80 dark:text-body-dark/80 mb-4">
+          A Brickwork Calculator is an essential online tool for civil engineers, builders,
+          contractors, and DIY enthusiasts to quickly and accurately estimate the number of bricks,
+          cement, sand, and mortar required for walls, columns, partitions, and other masonry work.
+          This tool ensures efficient project planning, cost-saving, and minimal material wastage.
+        </p>
+        <hr className="my-4 border-slate-200 dark:border-slate-700" />
+        <div className="mb-4">
+          <h3 className="  text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+            Why Use a Brickwork Calculator?
+          </h3>
+          <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
+            <li>Calculate the exact number of bricks needed.</li>
+            <li>Estimate cement and sand for mortar accurately.</li>
+            <li>Save money by reducing waste.</li>
+            <li>Plan masonry projects efficiently.</li>
+            <li>Ensure walls and structures have the right strength and stability.</li>
+          </ul>
+        </div>
+        <hr className="my-4 border-slate-200 dark:border-slate-700" />
+        <div className="mb-4">
+          <h3 className="  text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+            How It Works
+          </h3>
+          <ol className="list-decimal list-inside space-y-1 text-body/80 dark:text-body-dark/80">
+            <li>Select the type of brickwork: wall, column, or partition.</li>
+            <li>Enter project dimensions: length, height, and thickness of the wall.</li>
+            <li>Choose the mortar mix ratio: 1:6, 1:5, 1:4, or 1:3 (cement:sand).</li>
+            <li>
+              Get instant results:
+              <ul className="list-disc list-inside ml-6">
+                <li>Number of bricks required</li>
+                <li>Cement quantity (bags)</li>
+                <li>Sand volume for mortar</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+        <hr className="my-4 border-slate-200 dark:border-slate-700" />
+        <div className="mb-4">
+          <h3 className="  text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+            Standard Brickwork Mix Ratios
+          </h3>
+          <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
+            <li>1:6 – Low-strength mortar for non-load bearing walls.</li>
+            <li>1:5 – General-purpose mortar for standard walls.</li>
+            <li>1:4 – Stronger mortar for structural walls.</li>
+            <li>1:3 – High-strength mortar for heavy load-bearing walls.</li>
+          </ul>
+          <div className="mt-2 text-sm text-body/60 dark:text-body-dark/60">
+            <span className="font-semibold">Tip:</span> The first number represents cement, and the
+            second represents sand. Choose the mix ratio according to the structural requirements of
+            your project.
+          </div>
+        </div>
+        <hr className="my-4 border-slate-200 dark:border-slate-700" />
+        <div>
+          <h3 className="  text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+            FAQs – Brickwork Calculator
+          </h3>
+          <div className="space-y-2 text-body/80 dark:text-body-dark/80">
+            <div>
+              <span className="font-semibold">Q1. What is a brickwork calculator?</span>
+              <br />A tool to calculate the number of bricks, cement, and sand required for masonry
+              projects.
+            </div>
+            <div>
+              <span className="font-semibold">Q2. Why is it important?</span>
+              <br />
+              Ensures accurate estimation, cost-saving, and minimal material waste for construction
+              projects.
+            </div>
+            <div>
+              <span className="font-semibold">Q3. What units does it support?</span>
+              <br />
+              Dimensions can be entered in meters or feet, and cement is calculated in bags.
+            </div>
+            <div>
+              <span className="font-semibold">Q4. How to choose the right mortar mix ratio?</span>
+              <br />
+              <ul className="list-disc list-inside ml-6">
+                <li>1:6: Low-strength, non-load bearing walls</li>
+                <li>1:5: General-purpose masonry</li>
+                <li>1:4: Structural walls</li>
+                <li>1:3: High-strength walls for heavy loads</li>
+              </ul>
+            </div>
+            <div>
+              <span className="font-semibold">
+                Q5. Can I calculate for irregular or partial walls?
+              </span>
+              <br />
+              Yes, calculate the total area of the wall and enter it in the calculator for precise
+              results.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -25,7 +25,7 @@ const areaIndianUnits = [
 
 const areaNepaliUnits = [
   linearUnit(508.72, 'ropani', 'ropani'),
-  linearUnit(31.80, 'aana', 'aana'),
+  linearUnit(31.8, 'aana', 'aana'),
   linearUnit(7.95, 'paisa', 'paisa'),
   linearUnit(16.93, 'dhur', 'dhur'),
   linearUnit(1, 'm²', 'square meter'),

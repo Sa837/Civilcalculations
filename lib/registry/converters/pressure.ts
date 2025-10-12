@@ -16,7 +16,5 @@ export const pressureConverter: Converter = {
   slug: 'pressure',
   title: 'Pressure / Stress',
   category: 'Properties',
-  groups: [
-    { name: 'Global', units: pressureGlobalUnits },
-  ],
+  groups: [{ name: 'Global', units: pressureGlobalUnits }],
 }

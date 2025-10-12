@@ -547,21 +547,21 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                           </h3>
                           <div className="flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400">
                             <AlertCircle className="h-3 w-3" />
-                            <span>Opens in new tab</span>
+                            <span>Opens section page</span>
                           </div>
                         </div>
 
                         {/* Action Buttons */}
                         <div className="mt-5 flex justify-between items-center">
                           <div className="flex gap-2">
-                            <button
-                              onClick={(e) => handleOpenInNewTab(subItem.url, subItem.title, e)}
+                            <Link
+                              href={subItem.url as any}
                               className="flex items-center gap-1.5 rounded-xl border border-slate-200/20 bg-surface px-3 py-2 font-display text-sm font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-800/20 dark:bg-surface-dark dark:text-heading-dark dark:hover:bg-slate-700"
-                              aria-label="Open in new tab"
+                              aria-label="Open"
                             >
                               <ExternalLink className="h-4 w-4" />
                               Open
-                            </button>
+                            </Link>
 
                             <button
                               onClick={(e) =>
@@ -614,6 +614,13 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                             </button>
                           </div>
                         </div>
+
+                        {/* Overlay Link for whole card click */}
+                        <Link
+                          href={subItem.url as any}
+                          className="absolute inset-0 rounded-xl"
+                          aria-label={`View ${subItem.title}`}
+                        />
                       </motion.div>
                     )
                   })}

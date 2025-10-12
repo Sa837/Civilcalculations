@@ -455,7 +455,13 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
       if (!formData.stair_tread) newErrors.stair_tread = 'Enter tread'
       if (!formData.stair_steps) newErrors.stair_steps = 'Enter steps'
       if (!formData.stair_width) newErrors.stair_width = 'Enter stair width'
-      if ((formData.subType === 'dogleg' || formData.subType === 'quarter_turn' || formData.subType === 'u_shaped') && !formData.stair_steps2) newErrors.stair_steps2 = 'Enter steps for flight 2'
+      if (
+        (formData.subType === 'dogleg' ||
+          formData.subType === 'quarter_turn' ||
+          formData.subType === 'u_shaped') &&
+        !formData.stair_steps2
+      )
+        newErrors.stair_steps2 = 'Enter steps for flight 2'
     } else if (formData.elementType === 'beam') {
       if (!formData.beam_b) newErrors.beam_b = 'Enter beam breadth'
       if (!formData.beam_D) newErrors.beam_D = 'Enter beam depth'
@@ -550,7 +556,9 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
         stair_steps: formData.stair_steps ? parseFloat(formData.stair_steps) : undefined,
         stair_steps2: formData.stair_steps2 ? parseFloat(formData.stair_steps2) : undefined,
         stair_width: formData.stair_width ? parseFloat(formData.stair_width) : undefined,
-        stair_landing_len: formData.stair_landing_len ? parseFloat(formData.stair_landing_len) : undefined,
+        stair_landing_len: formData.stair_landing_len
+          ? parseFloat(formData.stair_landing_len)
+          : undefined,
         // Beam
         beam_b: formData.beam_b ? parseFloat(formData.beam_b) : undefined,
         beam_D: formData.beam_D ? parseFloat(formData.beam_D) : undefined,
@@ -586,10 +594,38 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
       useArea: false,
       // reset element-specific
       subType: undefined,
-      col_b: '', col_D: '', col_diam: '',
-      ft_a: '', ft_B: '', ft_L: '', ft_B_bot: '', ft_L_bot: '', ft_B_top: '', ft_L_top: '', ft_a1: '', ft_a2: '', strap_len: '', strap_b: '', strap_D: '', st1_B: '', st1_L: '', st1_t: '', st2_B: '', st2_L: '', st2_t: '', st3_B: '', st3_L: '', st3_t: '',
-      stair_riser: '', stair_tread: '', stair_steps: '', stair_steps2: '', stair_width: '', stair_landing_len: '',
-      beam_b: '', beam_D: '',
+      col_b: '',
+      col_D: '',
+      col_diam: '',
+      ft_a: '',
+      ft_B: '',
+      ft_L: '',
+      ft_B_bot: '',
+      ft_L_bot: '',
+      ft_B_top: '',
+      ft_L_top: '',
+      ft_a1: '',
+      ft_a2: '',
+      strap_len: '',
+      strap_b: '',
+      strap_D: '',
+      st1_B: '',
+      st1_L: '',
+      st1_t: '',
+      st2_B: '',
+      st2_L: '',
+      st2_t: '',
+      st3_B: '',
+      st3_L: '',
+      st3_t: '',
+      stair_riser: '',
+      stair_tread: '',
+      stair_steps: '',
+      stair_steps2: '',
+      stair_width: '',
+      stair_landing_len: '',
+      beam_b: '',
+      beam_D: '',
     })
     setResult(null)
     setErrors({})
@@ -619,10 +655,38 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
         height: elementDefaults.height,
         // reset element-specific
         subType: undefined,
-        col_b: '', col_D: '', col_diam: '',
-        ft_a: '', ft_B: '', ft_L: '', ft_B_bot: '', ft_L_bot: '', ft_B_top: '', ft_L_top: '', ft_a1: '', ft_a2: '', strap_len: '', strap_b: '', strap_D: '', st1_B: '', st1_L: '', st1_t: '', st2_B: '', st2_L: '', st2_t: '', st3_B: '', st3_L: '', st3_t: '',
-        stair_riser: '', stair_tread: '', stair_steps: '', stair_steps2: '', stair_width: '', stair_landing_len: '',
-        beam_b: '', beam_D: '',
+        col_b: '',
+        col_D: '',
+        col_diam: '',
+        ft_a: '',
+        ft_B: '',
+        ft_L: '',
+        ft_B_bot: '',
+        ft_L_bot: '',
+        ft_B_top: '',
+        ft_L_top: '',
+        ft_a1: '',
+        ft_a2: '',
+        strap_len: '',
+        strap_b: '',
+        strap_D: '',
+        st1_B: '',
+        st1_L: '',
+        st1_t: '',
+        st2_B: '',
+        st2_L: '',
+        st2_t: '',
+        st3_B: '',
+        st3_L: '',
+        st3_t: '',
+        stair_riser: '',
+        stair_tread: '',
+        stair_steps: '',
+        stair_steps2: '',
+        stair_width: '',
+        stair_landing_len: '',
+        beam_b: '',
+        beam_D: '',
       }))
     },
     [formData.unit],
@@ -706,7 +770,9 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
           {/* Element Sub-Type Selection (Phase 2 additions) */}
           {formData.elementType === 'slab' && (
             <div className="mb-6">
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">Slab Type</label>
+              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                Slab Type
+              </label>
               <select
                 value={formData.subType || 'one_way'}
                 onChange={(e) => handleInputChange('subType', e.target.value)}
@@ -719,7 +785,9 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
           )}
           {formData.elementType === 'footing' && (
             <div className="mb-6">
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">Footing Type</label>
+              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                Footing Type
+              </label>
               <select
                 value={formData.subType || 'iso_square'}
                 onChange={(e) => handleInputChange('subType', e.target.value)}
@@ -737,7 +805,9 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
           )}
           {formData.elementType === 'staircase' && (
             <div className="mb-6">
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">Stair Type</label>
+              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                Stair Type
+              </label>
               <select
                 value={formData.subType || 'straight'}
                 onChange={(e) => handleInputChange('subType', e.target.value)}
@@ -752,7 +822,9 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
           )}
           {formData.elementType === 'column' && (
             <div className="mb-6">
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">Column Shape</label>
+              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                Column Shape
+              </label>
               <select
                 value={formData.subType || 'rect'}
                 onChange={(e) => handleInputChange('subType', e.target.value)}
@@ -808,15 +880,51 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
               <>
                 {(formData.subType === 'rect' || !formData.subType) && (
                   <>
-                    <InputField label="Column Breadth (b)" value={formData.col_b || ''} onChange={(v)=>handleInputChange('col_b', v)} error={errors.col_b} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 0.30" />
-                    <InputField label="Column Depth (D)" value={formData.col_D || ''} onChange={(v)=>handleInputChange('col_D', v)} error={errors.col_D} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 0.45" />
+                    <InputField
+                      label="Column Breadth (b)"
+                      value={formData.col_b || ''}
+                      onChange={(v) => handleInputChange('col_b', v)}
+                      error={errors.col_b}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 0.30"
+                    />
+                    <InputField
+                      label="Column Depth (D)"
+                      value={formData.col_D || ''}
+                      onChange={(v) => handleInputChange('col_D', v)}
+                      error={errors.col_D}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 0.45"
+                    />
                   </>
                 )}
                 {formData.subType === 'square' && (
-                  <InputField label="Column Side (b)" value={formData.col_b || ''} onChange={(v)=>handleInputChange('col_b', v)} error={errors.col_b} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 0.30" />
+                  <InputField
+                    label="Column Side (b)"
+                    value={formData.col_b || ''}
+                    onChange={(v) => handleInputChange('col_b', v)}
+                    error={errors.col_b}
+                    unit={getLengthUnit()}
+                    isLength
+                    currentUnit={formData.unit}
+                    placeholder="e.g., 0.30"
+                  />
                 )}
                 {formData.subType === 'circular' && (
-                  <InputField label="Column Diameter (d)" value={formData.col_diam || ''} onChange={(v)=>handleInputChange('col_diam', v)} error={errors.col_diam} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 0.40" />
+                  <InputField
+                    label="Column Diameter (d)"
+                    value={formData.col_diam || ''}
+                    onChange={(v) => handleInputChange('col_diam', v)}
+                    error={errors.col_diam}
+                    unit={getLengthUnit()}
+                    isLength
+                    currentUnit={formData.unit}
+                    placeholder="e.g., 0.40"
+                  />
                 )}
               </>
             )}
@@ -824,59 +932,286 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
             {formData.elementType === 'footing' && (
               <>
                 {(formData.subType === 'iso_square' || !formData.subType) && (
-                  <InputField label="Footing Side (a)" value={formData.ft_a || ''} onChange={(v)=>handleInputChange('ft_a', v)} error={errors.ft_a} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 1.80" />
+                  <InputField
+                    label="Footing Side (a)"
+                    value={formData.ft_a || ''}
+                    onChange={(v) => handleInputChange('ft_a', v)}
+                    error={errors.ft_a}
+                    unit={getLengthUnit()}
+                    isLength
+                    currentUnit={formData.unit}
+                    placeholder="e.g., 1.80"
+                  />
                 )}
                 {formData.subType === 'iso_rect' && (
                   <>
-                    <InputField label="Footing Width (B)" value={formData.ft_B || ''} onChange={(v)=>handleInputChange('ft_B', v)} error={errors.ft_B} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 1.50" />
-                    <InputField label="Footing Length (L)" value={formData.ft_L || ''} onChange={(v)=>handleInputChange('ft_L', v)} error={errors.ft_L} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 2.20" />
+                    <InputField
+                      label="Footing Width (B)"
+                      value={formData.ft_B || ''}
+                      onChange={(v) => handleInputChange('ft_B', v)}
+                      error={errors.ft_B}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 1.50"
+                    />
+                    <InputField
+                      label="Footing Length (L)"
+                      value={formData.ft_L || ''}
+                      onChange={(v) => handleInputChange('ft_L', v)}
+                      error={errors.ft_L}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 2.20"
+                    />
                   </>
                 )}
                 {formData.subType === 'iso_frustum' && (
                   <>
-                    <InputField label="Bottom Width (B1)" value={formData.ft_B_bot || ''} onChange={(v)=>handleInputChange('ft_B_bot', v)} error={errors.ft_B_bot} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 2.00" />
-                    <InputField label="Bottom Length (L1)" value={formData.ft_L_bot || ''} onChange={(v)=>handleInputChange('ft_L_bot', v)} error={errors.ft_L_bot} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 2.00" />
-                    <InputField label="Top Width (B2)" value={formData.ft_B_top || ''} onChange={(v)=>handleInputChange('ft_B_top', v)} error={errors.ft_B_top} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 1.00" />
-                    <InputField label="Top Length (L2)" value={formData.ft_L_top || ''} onChange={(v)=>handleInputChange('ft_L_top', v)} error={errors.ft_L_top} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 1.00" />
+                    <InputField
+                      label="Bottom Width (B1)"
+                      value={formData.ft_B_bot || ''}
+                      onChange={(v) => handleInputChange('ft_B_bot', v)}
+                      error={errors.ft_B_bot}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 2.00"
+                    />
+                    <InputField
+                      label="Bottom Length (L1)"
+                      value={formData.ft_L_bot || ''}
+                      onChange={(v) => handleInputChange('ft_L_bot', v)}
+                      error={errors.ft_L_bot}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 2.00"
+                    />
+                    <InputField
+                      label="Top Width (B2)"
+                      value={formData.ft_B_top || ''}
+                      onChange={(v) => handleInputChange('ft_B_top', v)}
+                      error={errors.ft_B_top}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 1.00"
+                    />
+                    <InputField
+                      label="Top Length (L2)"
+                      value={formData.ft_L_top || ''}
+                      onChange={(v) => handleInputChange('ft_L_top', v)}
+                      error={errors.ft_L_top}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 1.00"
+                    />
                   </>
                 )}
                 {formData.subType === 'combined' && (
                   <>
-                    <InputField label="Footing Width (B)" value={formData.ft_B || ''} onChange={(v)=>handleInputChange('ft_B', v)} error={errors.ft_B} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 2.20" />
-                    <InputField label="Footing Length (L)" value={formData.ft_L || ''} onChange={(v)=>handleInputChange('ft_L', v)} error={errors.ft_L} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 4.50" />
+                    <InputField
+                      label="Footing Width (B)"
+                      value={formData.ft_B || ''}
+                      onChange={(v) => handleInputChange('ft_B', v)}
+                      error={errors.ft_B}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 2.20"
+                    />
+                    <InputField
+                      label="Footing Length (L)"
+                      value={formData.ft_L || ''}
+                      onChange={(v) => handleInputChange('ft_L', v)}
+                      error={errors.ft_L}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 4.50"
+                    />
                   </>
                 )}
                 {formData.subType === 'strap' && (
                   <>
-                    <InputField label="Pad-1 Side (a1)" value={formData.ft_a1 || ''} onChange={(v)=>handleInputChange('ft_a1', v)} error={errors.ft_a1} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 1.50" />
-                    <InputField label="Pad-2 Side (a2)" value={formData.ft_a2 || ''} onChange={(v)=>handleInputChange('ft_a2', v)} error={errors.ft_a2} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 1.20" />
-                    <InputField label="Strap Length (L)" value={formData.strap_len || ''} onChange={(v)=>handleInputChange('strap_len', v)} error={errors.strap_len} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 3.00" />
-                    <InputField label="Strap Breadth (b)" value={formData.strap_b || ''} onChange={(v)=>handleInputChange('strap_b', v)} error={errors.strap_b} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 0.30" />
-                    <InputField label="Strap Depth (D)" value={formData.strap_D || ''} onChange={(v)=>handleInputChange('strap_D', v)} error={errors.strap_D} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 0.45" />
+                    <InputField
+                      label="Pad-1 Side (a1)"
+                      value={formData.ft_a1 || ''}
+                      onChange={(v) => handleInputChange('ft_a1', v)}
+                      error={errors.ft_a1}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 1.50"
+                    />
+                    <InputField
+                      label="Pad-2 Side (a2)"
+                      value={formData.ft_a2 || ''}
+                      onChange={(v) => handleInputChange('ft_a2', v)}
+                      error={errors.ft_a2}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 1.20"
+                    />
+                    <InputField
+                      label="Strap Length (L)"
+                      value={formData.strap_len || ''}
+                      onChange={(v) => handleInputChange('strap_len', v)}
+                      error={errors.strap_len}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 3.00"
+                    />
+                    <InputField
+                      label="Strap Breadth (b)"
+                      value={formData.strap_b || ''}
+                      onChange={(v) => handleInputChange('strap_b', v)}
+                      error={errors.strap_b}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 0.30"
+                    />
+                    <InputField
+                      label="Strap Depth (D)"
+                      value={formData.strap_D || ''}
+                      onChange={(v) => handleInputChange('strap_D', v)}
+                      error={errors.strap_D}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 0.45"
+                    />
                   </>
                 )}
                 {formData.subType === 'stepped' && (
                   <>
-                    <p className="mb-2 text-sm text-slate-600 dark:text-slate-300">Provide Step 1 (required) and optionally Steps 2–3.</p>
-                    <InputField label="Step 1 Width (B1)" value={formData.st1_B || ''} onChange={(v)=>handleInputChange('st1_B', v)} error={errors.st1_B} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 2.00" />
-                    <InputField label="Step 1 Length (L1)" value={formData.st1_L || ''} onChange={(v)=>handleInputChange('st1_L', v)} error={errors.st1_L} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 2.50" />
-                    <InputField label="Step 1 Thickness (t1)" value={formData.st1_t || ''} onChange={(v)=>handleInputChange('st1_t', v)} error={errors.st1_t} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 0.30" />
+                    <p className="mb-2 text-sm text-slate-600 dark:text-slate-300">
+                      Provide Step 1 (required) and optionally Steps 2–3.
+                    </p>
+                    <InputField
+                      label="Step 1 Width (B1)"
+                      value={formData.st1_B || ''}
+                      onChange={(v) => handleInputChange('st1_B', v)}
+                      error={errors.st1_B}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 2.00"
+                    />
+                    <InputField
+                      label="Step 1 Length (L1)"
+                      value={formData.st1_L || ''}
+                      onChange={(v) => handleInputChange('st1_L', v)}
+                      error={errors.st1_L}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 2.50"
+                    />
+                    <InputField
+                      label="Step 1 Thickness (t1)"
+                      value={formData.st1_t || ''}
+                      onChange={(v) => handleInputChange('st1_t', v)}
+                      error={errors.st1_t}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 0.30"
+                    />
                     <div className="mt-2 rounded-lg border border-slate-200 p-3 dark:border-slate-700">
-                      <InputField label="Step 2 Width (B2)" value={formData.st2_B || ''} onChange={(v)=>handleInputChange('st2_B', v)} error={errors.st2_B} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="optional" />
-                      <InputField label="Step 2 Length (L2)" value={formData.st2_L || ''} onChange={(v)=>handleInputChange('st2_L', v)} error={errors.st2_L} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="optional" />
-                      <InputField label="Step 2 Thickness (t2)" value={formData.st2_t || ''} onChange={(v)=>handleInputChange('st2_t', v)} error={errors.st2_t} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="optional" />
+                      <InputField
+                        label="Step 2 Width (B2)"
+                        value={formData.st2_B || ''}
+                        onChange={(v) => handleInputChange('st2_B', v)}
+                        error={errors.st2_B}
+                        unit={getLengthUnit()}
+                        isLength
+                        currentUnit={formData.unit}
+                        placeholder="optional"
+                      />
+                      <InputField
+                        label="Step 2 Length (L2)"
+                        value={formData.st2_L || ''}
+                        onChange={(v) => handleInputChange('st2_L', v)}
+                        error={errors.st2_L}
+                        unit={getLengthUnit()}
+                        isLength
+                        currentUnit={formData.unit}
+                        placeholder="optional"
+                      />
+                      <InputField
+                        label="Step 2 Thickness (t2)"
+                        value={formData.st2_t || ''}
+                        onChange={(v) => handleInputChange('st2_t', v)}
+                        error={errors.st2_t}
+                        unit={getLengthUnit()}
+                        isLength
+                        currentUnit={formData.unit}
+                        placeholder="optional"
+                      />
                     </div>
                     <div className="mt-2 rounded-lg border border-slate-200 p-3 dark:border-slate-700">
-                      <InputField label="Step 3 Width (B3)" value={formData.st3_B || ''} onChange={(v)=>handleInputChange('st3_B', v)} error={errors.st3_B} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="optional" />
-                      <InputField label="Step 3 Length (L3)" value={formData.st3_L || ''} onChange={(v)=>handleInputChange('st3_L', v)} error={errors.st3_L} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="optional" />
-                      <InputField label="Step 3 Thickness (t3)" value={formData.st3_t || ''} onChange={(v)=>handleInputChange('st3_t', v)} error={errors.st3_t} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="optional" />
+                      <InputField
+                        label="Step 3 Width (B3)"
+                        value={formData.st3_B || ''}
+                        onChange={(v) => handleInputChange('st3_B', v)}
+                        error={errors.st3_B}
+                        unit={getLengthUnit()}
+                        isLength
+                        currentUnit={formData.unit}
+                        placeholder="optional"
+                      />
+                      <InputField
+                        label="Step 3 Length (L3)"
+                        value={formData.st3_L || ''}
+                        onChange={(v) => handleInputChange('st3_L', v)}
+                        error={errors.st3_L}
+                        unit={getLengthUnit()}
+                        isLength
+                        currentUnit={formData.unit}
+                        placeholder="optional"
+                      />
+                      <InputField
+                        label="Step 3 Thickness (t3)"
+                        value={formData.st3_t || ''}
+                        onChange={(v) => handleInputChange('st3_t', v)}
+                        error={errors.st3_t}
+                        unit={getLengthUnit()}
+                        isLength
+                        currentUnit={formData.unit}
+                        placeholder="optional"
+                      />
                     </div>
                   </>
                 )}
                 {formData.subType === 'mat' && (
                   <>
-                    <InputField label="Mat Width (B)" value={formData.ft_B || ''} onChange={(v)=>handleInputChange('ft_B', v)} error={errors.ft_B} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 6.00" />
-                    <InputField label="Mat Length (L)" value={formData.ft_L || ''} onChange={(v)=>handleInputChange('ft_L', v)} error={errors.ft_L} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 8.00" />
+                    <InputField
+                      label="Mat Width (B)"
+                      value={formData.ft_B || ''}
+                      onChange={(v) => handleInputChange('ft_B', v)}
+                      error={errors.ft_B}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 6.00"
+                    />
+                    <InputField
+                      label="Mat Length (L)"
+                      value={formData.ft_L || ''}
+                      onChange={(v) => handleInputChange('ft_L', v)}
+                      error={errors.ft_L}
+                      unit={getLengthUnit()}
+                      isLength
+                      currentUnit={formData.unit}
+                      placeholder="e.g., 8.00"
+                    />
                   </>
                 )}
               </>
@@ -884,21 +1219,83 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
 
             {formData.elementType === 'staircase' && (
               <>
-                <InputField label="Riser (m)" value={formData.stair_riser || ''} onChange={(v)=>handleInputChange('stair_riser', v)} error={errors.stair_riser} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 0.150" />
-                <InputField label="Tread (m)" value={formData.stair_tread || ''} onChange={(v)=>handleInputChange('stair_tread', v)} error={errors.stair_tread} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 0.300" />
-                <InputField label="Steps (count)" value={formData.stair_steps || ''} onChange={(v)=>handleInputChange('stair_steps', v)} error={errors.stair_steps} placeholder="e.g., 10" />
-                <InputField label="Stair Width (m)" value={formData.stair_width || ''} onChange={(v)=>handleInputChange('stair_width', v)} error={errors.stair_width} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 1.0" />
-                <InputField label="Landing Length (m) (optional)" value={formData.stair_landing_len || ''} onChange={(v)=>handleInputChange('stair_landing_len', v)} placeholder="e.g., 1.2" />
+                <InputField
+                  label="Riser (m)"
+                  value={formData.stair_riser || ''}
+                  onChange={(v) => handleInputChange('stair_riser', v)}
+                  error={errors.stair_riser}
+                  unit={getLengthUnit()}
+                  isLength
+                  currentUnit={formData.unit}
+                  placeholder="e.g., 0.150"
+                />
+                <InputField
+                  label="Tread (m)"
+                  value={formData.stair_tread || ''}
+                  onChange={(v) => handleInputChange('stair_tread', v)}
+                  error={errors.stair_tread}
+                  unit={getLengthUnit()}
+                  isLength
+                  currentUnit={formData.unit}
+                  placeholder="e.g., 0.300"
+                />
+                <InputField
+                  label="Steps (count)"
+                  value={formData.stair_steps || ''}
+                  onChange={(v) => handleInputChange('stair_steps', v)}
+                  error={errors.stair_steps}
+                  placeholder="e.g., 10"
+                />
+                <InputField
+                  label="Stair Width (m)"
+                  value={formData.stair_width || ''}
+                  onChange={(v) => handleInputChange('stair_width', v)}
+                  error={errors.stair_width}
+                  unit={getLengthUnit()}
+                  isLength
+                  currentUnit={formData.unit}
+                  placeholder="e.g., 1.0"
+                />
+                <InputField
+                  label="Landing Length (m) (optional)"
+                  value={formData.stair_landing_len || ''}
+                  onChange={(v) => handleInputChange('stair_landing_len', v)}
+                  placeholder="e.g., 1.2"
+                />
                 {(formData.subType === 'dogleg' || formData.subType === 'quarter_turn') && (
-                  <InputField label="Steps (flight 2)" value={formData.stair_steps2 || ''} onChange={(v)=>handleInputChange('stair_steps2', v)} error={errors.stair_steps2} placeholder="e.g., 10" />
+                  <InputField
+                    label="Steps (flight 2)"
+                    value={formData.stair_steps2 || ''}
+                    onChange={(v) => handleInputChange('stair_steps2', v)}
+                    error={errors.stair_steps2}
+                    placeholder="e.g., 10"
+                  />
                 )}
               </>
             )}
 
             {formData.elementType === 'beam' && (
               <>
-                <InputField label="Beam Breadth (b)" value={formData.beam_b || ''} onChange={(v)=>handleInputChange('beam_b', v)} error={errors.beam_b} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 0.300" />
-                <InputField label="Beam Depth (D)" value={formData.beam_D || ''} onChange={(v)=>handleInputChange('beam_D', v)} error={errors.beam_D} unit={getLengthUnit()} isLength currentUnit={formData.unit} placeholder="e.g., 0.450" />
+                <InputField
+                  label="Beam Breadth (b)"
+                  value={formData.beam_b || ''}
+                  onChange={(v) => handleInputChange('beam_b', v)}
+                  error={errors.beam_b}
+                  unit={getLengthUnit()}
+                  isLength
+                  currentUnit={formData.unit}
+                  placeholder="e.g., 0.300"
+                />
+                <InputField
+                  label="Beam Depth (D)"
+                  value={formData.beam_D || ''}
+                  onChange={(v) => handleInputChange('beam_D', v)}
+                  error={errors.beam_D}
+                  unit={getLengthUnit()}
+                  isLength
+                  currentUnit={formData.unit}
+                  placeholder="e.g., 0.450"
+                />
               </>
             )}
 
@@ -1148,120 +1545,116 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
                   </ol>
                 </div>
               )}
-
-              {/* Enhanced Info & FAQ Section */}
-              <div className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
-                <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark mb-2">
-                  Concrete Calculator & Estimator – Simple, Fast, Mobile Friendly & Accurate
-                  Material Estimation Tool
-                </h2>
-                <p className="text-body/80 dark:text-body-dark/80 mb-4">
-                  A Concrete Calculator is an easy-to-use online tool that helps civil engineers,
-                  builders, contractors, and DIY enthusiasts quickly estimate the exact quantity of
-                  concrete, cement, sand, aggregate, and water required for construction projects.
-                  From slabs and beams to columns, footings, and foundations, this tool ensures
-                  accurate planning, cost-saving, and minimal material wastage.
-                </p>
-                <hr className="my-4 border-slate-200 dark:border-slate-700" />
-                <div className="mb-4">
-                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-                    Why Use a Concrete Calculator?
-                  </h3>
-                  <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-                    <li>Get precise concrete volume in cubic meters or cubic feet.</li>
-                    <li>Estimate cement, sand, and aggregate needed for your project.</li>
-                    <li>Reduce material waste and save money.</li>
-                    <li>Plan construction projects efficiently and avoid delays.</li>
-                    <li>Improve construction quality and structural strength.</li>
-                  </ul>
-                </div>
-                <hr className="my-4 border-slate-200 dark:border-slate-700" />
-                <div className="mb-4">
-                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-                    How It Works
-                  </h3>
-                  <ol className="list-decimal list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-                    <li>
-                      Select the type of construction: slab, beam, column, footing, or foundation.
-                    </li>
-                    <li>
-                      Enter the project dimensions: length, width (if irregular then direct area),
-                      and thickness/height.
-                    </li>
-                    <li>Choose the concrete mix ratio: M5, M7.5, M10, M15, M20, or M25.</li>
-                    <li>
-                      Get instant results:
-                      <ul className="list-disc list-inside ml-6">
-                        <li>Concrete volume (m³ or ft³)</li>
-                        <li>Cement quantity (bags)</li>
-                        <li>Sand and aggregate volume</li>
-                        <li>Water required for the mix</li>
-                      </ul>
-                    </li>
-                  </ol>
-                </div>
-                <hr className="my-4 border-slate-200 dark:border-slate-700" />
-                <div className="mb-4">
-                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-                    Standard Concrete Mix Ratios
-                  </h3>
-                  <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-                    <li>M5: 1:5:10 (cement:sand:aggregate)</li>
-                    <li>M7.5: 1:4:8</li>
-                    <li>M10: 1:3:6</li>
-                    <li>M15: 1:2:4</li>
-                    <li>M20: 1:1.5:3</li>
-                    <li>M25: 1:1:2</li>
-                  </ul>
-                  <div className="mt-2 text-sm text-body/60 dark:text-body-dark/60">
-                    <span className="font-semibold">Tip:</span> The first number represents cement,
-                    the second sand, and the third aggregate. Choose the mix ratio according to
-                    project strength requirements.
-                  </div>
-                </div>
-                <hr className="my-4 border-slate-200 dark:border-slate-700" />
-                <div>
-                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-                    FAQs – Concrete Calculator
-                  </h3>
-                  <div className="space-y-2 text-body/80 dark:text-body-dark/80">
-                    <div>
-                      <span className="font-semibold">Q1. What is a concrete calculator?</span>
-                      <br />A tool to calculate the amount of concrete and its materials needed for
-                      construction projects.
-                    </div>
-                    <div>
-                      <span className="font-semibold">Q2. Why is it important?</span>
-                      <br />
-                      Helps in accurate planning, cost-saving, and reducing material wastage.
-                    </div>
-                    <div>
-                      <span className="font-semibold">Q3. What units does it support?</span>
-                      <br />
-                      Volume can be entered in cubic meters or cubic feet, and cement is calculated
-                      in bags.
-                    </div>
-                    <div>
-                      <span className="font-semibold">Q4. How to choose the right mix ratio?</span>
-                      <br />
-                      <ul className="list-disc list-inside ml-6">
-                        <li>M5–M10: Low-strength works like leveling or small foundations.</li>
-                        <li>M15–M25: Structural works like slabs, beams, and columns.</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <span className="font-semibold">Q5. Can it handle irregular shapes?</span>
-                      <br />
-                      Yes, calculate the total volume of the shape and enter it in the calculator
-                      for accurate results.
-                    </div>
-                  </div>
-                </div>
-              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
+      {/* Enhanced Info & FAQ Section */}
+      <div className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
+        <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark mb-2">
+          Concrete Calculator & Estimator – Simple, Fast, Mobile Friendly & Accurate Material
+          Estimation Tool
+        </h2>
+        <p className="text-body/80 dark:text-body-dark/80 mb-4">
+          A Concrete Calculator is an easy-to-use online tool that helps civil engineers, builders,
+          contractors, and DIY enthusiasts quickly estimate the exact quantity of concrete, cement,
+          sand, aggregate, and water required for construction projects. From slabs and beams to
+          columns, footings, and foundations, this tool ensures accurate planning, cost-saving, and
+          minimal material wastage.
+        </p>
+        <hr className="my-4 border-slate-200 dark:border-slate-700" />
+        <div className="mb-4">
+          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+            Why Use a Concrete Calculator?
+          </h3>
+          <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
+            <li>Get precise concrete volume in cubic meters or cubic feet.</li>
+            <li>Estimate cement, sand, and aggregate needed for your project.</li>
+            <li>Reduce material waste and save money.</li>
+            <li>Plan construction projects efficiently and avoid delays.</li>
+            <li>Improve construction quality and structural strength.</li>
+          </ul>
+        </div>
+        <hr className="my-4 border-slate-200 dark:border-slate-700" />
+        <div className="mb-4">
+          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+            How It Works
+          </h3>
+          <ol className="list-decimal list-inside space-y-1 text-body/80 dark:text-body-dark/80">
+            <li>Select the type of construction: slab, beam, column, footing, or foundation.</li>
+            <li>
+              Enter the project dimensions: length, width (if irregular then direct area), and
+              thickness/height.
+            </li>
+            <li>Choose the concrete mix ratio: M5, M7.5, M10, M15, M20, or M25.</li>
+            <li>
+              Get instant results:
+              <ul className="list-disc list-inside ml-6">
+                <li>Concrete volume (m³ or ft³)</li>
+                <li>Cement quantity (bags)</li>
+                <li>Sand and aggregate volume</li>
+                <li>Water required for the mix</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+        <hr className="my-4 border-slate-200 dark:border-slate-700" />
+        <div className="mb-4">
+          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+            Standard Concrete Mix Ratios
+          </h3>
+          <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
+            <li>M5: 1:5:10 (cement:sand:aggregate)</li>
+            <li>M7.5: 1:4:8</li>
+            <li>M10: 1:3:6</li>
+            <li>M15: 1:2:4</li>
+            <li>M20: 1:1.5:3</li>
+            <li>M25: 1:1:2</li>
+          </ul>
+          <div className="mt-2 text-sm text-body/60 dark:text-body-dark/60">
+            <span className="font-semibold">Tip:</span> The first number represents cement, the
+            second sand, and the third aggregate. Choose the mix ratio according to project strength
+            requirements.
+          </div>
+        </div>
+        <hr className="my-4 border-slate-200 dark:border-slate-700" />
+        <div>
+          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+            FAQs – Concrete Calculator
+          </h3>
+          <div className="space-y-2 text-body/80 dark:text-body-dark/80">
+            <div>
+              <span className="font-semibold">Q1. What is a concrete calculator?</span>
+              <br />A tool to calculate the amount of concrete and its materials needed for
+              construction projects.
+            </div>
+            <div>
+              <span className="font-semibold">Q2. Why is it important?</span>
+              <br />
+              Helps in accurate planning, cost-saving, and reducing material wastage.
+            </div>
+            <div>
+              <span className="font-semibold">Q3. What units does it support?</span>
+              <br />
+              Volume can be entered in cubic meters or cubic feet, and cement is calculated in bags.
+            </div>
+            <div>
+              <span className="font-semibold">Q4. How to choose the right mix ratio?</span>
+              <br />
+              <ul className="list-disc list-inside ml-6">
+                <li>M5–M10: Low-strength works like leveling or small foundations.</li>
+                <li>M15–M25: Structural works like slabs, beams, and columns.</li>
+              </ul>
+            </div>
+            <div>
+              <span className="font-semibold">Q5. Can it handle irregular shapes?</span>
+              <br />
+              Yes, calculate the total volume of the shape and enter it in the calculator for
+              accurate results.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

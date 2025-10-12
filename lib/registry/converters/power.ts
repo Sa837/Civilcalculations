@@ -13,7 +13,5 @@ export const powerConverter: Converter = {
   slug: 'power',
   title: 'Power',
   category: 'Properties',
-  groups: [
-    { name: 'Global', units: powerGlobalUnits },
-  ],
+  groups: [{ name: 'Global', units: powerGlobalUnits }],
 }

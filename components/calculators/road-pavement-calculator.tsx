@@ -1,69 +1,71 @@
+'use client'
 
-"use client";
-
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Calculator, AlertCircle, CheckCircle, RotateCcw, Info, Hammer } from "lucide-react";
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Calculator, AlertCircle, CheckCircle, RotateCcw, Info, Hammer } from 'lucide-react'
 import { RoadPavementCalculatorLib } from '@/lib/registry/calculator/road-pavement-calculator'
 
 interface CalculationResult {
-  area: number;
-  volume: number;
-  human_summary?: string;
+  area: number
+  volume: number
+  human_summary?: string
 }
 
 interface FormData {
-  length: string;
-  width: string;
-  thickness: string;
-  area?: string;
-  unit: "m" | "ft";
+  length: string
+  width: string
+  thickness: string
+  area?: string
+  unit: 'm' | 'ft'
 }
 
 interface RoadPavementCalculatorProps {
-  globalUnit?: "m" | "ft";
+  globalUnit?: 'm' | 'ft'
 }
 
 const UNIT_LABELS = {
-  m: "Metric (m)",
-  ft: "Imperial (ft)",
-};
+  m: 'Metric (m)',
+  ft: 'Imperial (ft)',
+}
 
-export default function RoadPavementCalculator({ globalUnit = "m" }: RoadPavementCalculatorProps) {
+export default function RoadPavementCalculator({ globalUnit = 'm' }: RoadPavementCalculatorProps) {
   const [formData, setFormData] = useState<FormData>({
-    length: "",
-    width: "",
-    thickness: "",
-    area: "",
+    length: '',
+    width: '',
+    thickness: '',
+    area: '',
     unit: globalUnit,
-  });
-  const [useArea, setUseArea] = useState(false);
-  const [result, setResult] = useState<CalculationResult | null>(null);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isCalculating, setIsCalculating] = useState(false);
-  const [showSteps, setShowSteps] = useState(false);
+  })
+  const [useArea, setUseArea] = useState(false)
+  const [result, setResult] = useState<CalculationResult | null>(null)
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [isCalculating, setIsCalculating] = useState(false)
+  const [showSteps, setShowSteps] = useState(false)
 
   useEffect(() => {
-    setFormData((prev) => ({ ...prev, unit: globalUnit }));
-  }, [globalUnit]);
+    setFormData((prev) => ({ ...prev, unit: globalUnit }))
+  }, [globalUnit])
 
   const validateForm = (): boolean => {
-    const newErrors: Record<string, string> = {};
+    const newErrors: Record<string, string> = {}
     if (useArea) {
-      if (!formData.area || parseFloat(formData.area) <= 0) newErrors.area = "Enter a valid area";
+      if (!formData.area || parseFloat(formData.area) <= 0) newErrors.area = 'Enter a valid area'
     } else {
-      if (!formData.length || parseFloat(formData.length) <= 0) newErrors.length = "Enter a valid length";
-      if (!formData.width || parseFloat(formData.width) <= 0) newErrors.width = "Enter a valid width";
+      if (!formData.length || parseFloat(formData.length) <= 0)
+        newErrors.length = 'Enter a valid length'
+      if (!formData.width || parseFloat(formData.width) <= 0)
+        newErrors.width = 'Enter a valid width'
     }
-    if (!formData.thickness || parseFloat(formData.thickness) <= 0) newErrors.thickness = "Enter a valid thickness";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    if (!formData.thickness || parseFloat(formData.thickness) <= 0)
+      newErrors.thickness = 'Enter a valid thickness'
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const calculate = async () => {
-    if (!validateForm()) return;
-    setIsCalculating(true);
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    if (!validateForm()) return
+    setIsCalculating(true)
+    await new Promise((resolve) => setTimeout(resolve, 300))
     try {
       const res = RoadPavementCalculatorLib.calculate({
         length: formData.length ? parseFloat(formData.length) : undefined,
@@ -73,23 +75,23 @@ export default function RoadPavementCalculator({ globalUnit = "m" }: RoadPavemen
         unit: formData.unit,
         useArea,
       })
-      setResult({ area: res.area, volume: res.volume, human_summary: res.human_summary });
+      setResult({ area: res.area, volume: res.volume, human_summary: res.human_summary })
     } finally {
-      setIsCalculating(false);
+      setIsCalculating(false)
     }
-  };
+  }
 
   const resetForm = () => {
-    setFormData({ length: "", width: "", thickness: "", area: "", unit: globalUnit });
-    setResult(null);
-    setErrors({});
-    setShowSteps(false);
-  };
+    setFormData({ length: '', width: '', thickness: '', area: '', unit: globalUnit })
+    setResult(null)
+    setErrors({})
+    setShowSteps(false)
+  }
 
   const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }));
-  };
+    setFormData((prev) => ({ ...prev, [field]: value }))
+    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: '' }))
+  }
 
   return (
     <div className="mx-auto max-w-4xl p-6">
@@ -123,10 +125,10 @@ export default function RoadPavementCalculator({ globalUnit = "m" }: RoadPavemen
               type="button"
               onClick={() => setUseArea(!useArea)}
               className={`flex items-center gap-2 rounded-xl px-6 py-2 font-display font-medium shadow-soft transition-all 
-    ${useArea ? "bg-green-600 text-white hover:bg-green-700" : "bg-secondary text-white hover:bg-secondary/90"}`}
+    ${useArea ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-secondary text-white hover:bg-secondary/90'}`}
             >
               <Info className="h-4 w-4" />
-              {useArea ? "Use Length & Width" : "Use Area"}
+              {useArea ? 'Use Length & Width' : 'Use Area'}
             </button>
           </div>
 
@@ -141,14 +143,14 @@ export default function RoadPavementCalculator({ globalUnit = "m" }: RoadPavemen
                   <input
                     type="number"
                     value={formData.length}
-                    onChange={(e) => handleInputChange("length", e.target.value)}
+                    onChange={(e) => handleInputChange('length', e.target.value)}
                     step="0.001"
                     min="0"
-                    placeholder={`Enter length (${formData.unit === "m" ? "m" : "ft"})`}
+                    placeholder={`Enter length (${formData.unit === 'm' ? 'm' : 'ft'})`}
                     className={`w-full rounded-xl border px-4 py-3 font-sans ${
                       errors.length
-                        ? "border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20"
-                        : "border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800"
+                        ? 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20'
+                        : 'border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800'
                     }`}
                   />
                   {errors.length && (
@@ -167,14 +169,14 @@ export default function RoadPavementCalculator({ globalUnit = "m" }: RoadPavemen
                   <input
                     type="number"
                     value={formData.width}
-                    onChange={(e) => handleInputChange("width", e.target.value)}
+                    onChange={(e) => handleInputChange('width', e.target.value)}
                     step="0.001"
                     min="0"
-                    placeholder={`Enter width (${formData.unit === "m" ? "m" : "ft"})`}
+                    placeholder={`Enter width (${formData.unit === 'm' ? 'm' : 'ft'})`}
                     className={`w-full rounded-xl border px-4 py-3 font-sans ${
                       errors.width
-                        ? "border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20"
-                        : "border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800"
+                        ? 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20'
+                        : 'border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800'
                     }`}
                   />
                   {errors.width && (
@@ -194,15 +196,15 @@ export default function RoadPavementCalculator({ globalUnit = "m" }: RoadPavemen
                 </label>
                 <input
                   type="number"
-                  value={formData.area || ""}
-                  onChange={(e) => handleInputChange("area", e.target.value)}
+                  value={formData.area || ''}
+                  onChange={(e) => handleInputChange('area', e.target.value)}
                   step="0.001"
                   min="0"
-                  placeholder={`Enter total area (${formData.unit === "m" ? "m²" : "ft²"})`}
+                  placeholder={`Enter total area (${formData.unit === 'm' ? 'm²' : 'ft²'})`}
                   className={`w-full rounded-xl border px-4 py-3 font-sans ${
                     errors.area
-                      ? "border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20"
-                      : "border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800"
+                      ? 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20'
+                      : 'border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800'
                   }`}
                 />
                 {errors.area && (
@@ -222,14 +224,14 @@ export default function RoadPavementCalculator({ globalUnit = "m" }: RoadPavemen
               <input
                 type="number"
                 value={formData.thickness}
-                onChange={(e) => handleInputChange("thickness", e.target.value)}
+                onChange={(e) => handleInputChange('thickness', e.target.value)}
                 step="0.001"
                 min="0"
-                placeholder={`Enter thickness (${formData.unit === "m" ? "m" : "ft"})`}
+                placeholder={`Enter thickness (${formData.unit === 'm' ? 'm' : 'ft'})`}
                 className={`w-full rounded-xl border px-4 py-3 font-sans ${
                   errors.thickness
-                    ? "border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20"
-                    : "border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800"
+                    ? 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20'
+                    : 'border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800'
                 }`}
               />
               {errors.thickness && (
@@ -286,7 +288,7 @@ export default function RoadPavementCalculator({ globalUnit = "m" }: RoadPavemen
           {result && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
+              animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               className="border-t border-slate-200/20 bg-gradient-to-r from-primary/5 to-secondary/5 p-8 dark:border-slate-800/20 dark:from-primary/10 dark:to-secondary/10"
             >
@@ -304,9 +306,7 @@ export default function RoadPavementCalculator({ globalUnit = "m" }: RoadPavemen
                   </h3>
                   <div className="flex justify-between">
                     <span className="text-body/70 dark:text-body-dark/70">Area:</span>
-                    <span className="font-mono font-semibold">
-                      {result.area.toFixed(3)} m²
-                    </span>
+                    <span className="font-mono font-semibold">{result.area.toFixed(3)} m²</span>
                   </div>
                 </div>
                 <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
@@ -315,9 +315,7 @@ export default function RoadPavementCalculator({ globalUnit = "m" }: RoadPavemen
                   </h3>
                   <div className="flex justify-between">
                     <span className="text-body/70 dark:text-body-dark/70">Volume:</span>
-                    <span className="font-mono font-semibold">
-                      {result.volume.toFixed(3)} m³
-                    </span>
+                    <span className="font-mono font-semibold">{result.volume.toFixed(3)} m³</span>
                   </div>
                 </div>
               </div>
@@ -337,73 +335,90 @@ export default function RoadPavementCalculator({ globalUnit = "m" }: RoadPavemen
                   <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
                     {!useArea && (
                       <li>
-                        <span className="font-semibold">Area:</span> Length × Width = {formData.length} × {formData.width} = {(parseFloat(formData.length) * parseFloat(formData.width)).toFixed(3)} m²
+                        <span className="font-semibold">Area:</span> Length × Width ={' '}
+                        {formData.length} × {formData.width} ={' '}
+                        {(parseFloat(formData.length) * parseFloat(formData.width)).toFixed(3)} m²
                       </li>
                     )}
                     {useArea && (
                       <li>
-                        <span className="font-semibold">Area:</span> {formData.area} m² (direct input)
+                        <span className="font-semibold">Area:</span> {formData.area} m² (direct
+                        input)
                       </li>
                     )}
                     <li>
-                      <span className="font-semibold">Thickness:</span> {formData.thickness} {formData.unit === "m" ? "m" : "ft"}
+                      <span className="font-semibold">Thickness:</span> {formData.thickness}{' '}
+                      {formData.unit === 'm' ? 'm' : 'ft'}
                     </li>
                     <li>
-                      <span className="font-semibold">Volume:</span> Area × Thickness = {result.area.toFixed(3)} × {formData.thickness} = {result.volume.toFixed(3)} m³
+                      <span className="font-semibold">Volume:</span> Area × Thickness ={' '}
+                      {result.area.toFixed(3)} × {formData.thickness} = {result.volume.toFixed(3)}{' '}
+                      m³
                     </li>
                   </ol>
                 </div>
               )}
-
-              {/* FAQ Section */}
-              <div className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
-                <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark mb-2">
-                  Road Pavement Calculator & Estimator – Fast, Accurate, and Mobile Friendly
-                </h2>
-                <p className="text-body/80 dark:text-body-dark/80 mb-4">
-                  This tool helps civil engineers, contractors, and planners estimate the area and volume of road pavement projects, supporting both metric and imperial units.
-                </p>
-                <hr className="my-4 border-slate-200 dark:border-slate-700" />
-                <div className="mb-4">
-                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">Why Use a Road Pavement Calculator?</h3>
-                  <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-                    <li>Get precise area and volume for road pavement construction.</li>
-                    <li>Plan material requirements and reduce waste.</li>
-                    <li>Improve project planning and cost estimation.</li>
-                  </ul>
-                </div>
-                <hr className="my-4 border-slate-200 dark:border-slate-700" />
-                <div className="mb-4">
-                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">How It Works</h3>
-                  <ol className="list-decimal list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-                    <li>Enter the project dimensions: length, width (or direct area), and thickness.</li>
-                    <li>Choose the unit: metric (m) or imperial (ft).</li>
-                    <li>Get instant results for area and volume in metric units.</li>
-                  </ol>
-                </div>
-                <hr className="my-4 border-slate-200 dark:border-slate-700" />
-                <div>
-                  <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">FAQs – Road Pavement Calculator</h3>
-                  <div className="space-y-2 text-body/80 dark:text-body-dark/80">
-                    <div>
-                      <span className="font-semibold">Q1. What does this calculator do?</span><br />
-                      It estimates the area and volume for road pavement projects based on your input dimensions.
-                    </div>
-                    <div>
-                      <span className="font-semibold">Q2. What units does it support?</span><br />
-                      You can enter values in meters or feet; results are shown in metric units for consistency.
-                    </div>
-                    <div>
-                      <span className="font-semibold">Q3. Can I use area directly?</span><br />
-                      Yes, switch to area mode if you already know the total area to be paved.
-                    </div>
-                  </div>
-                </div>
-              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
+      {/* FAQ Section */}
+      <div className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
+        <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark mb-2">
+          Road Pavement Calculator & Estimator – Fast, Accurate, and Mobile Friendly
+        </h2>
+        <p className="text-body/80 dark:text-body-dark/80 mb-4">
+          This tool helps civil engineers, contractors, and planners estimate the area and volume of
+          road pavement projects, supporting both metric and imperial units.
+        </p>
+        <hr className="my-4 border-slate-200 dark:border-slate-700" />
+        <div className="mb-4">
+          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+            Why Use a Road Pavement Calculator?
+          </h3>
+          <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
+            <li>Get precise area and volume for road pavement construction.</li>
+            <li>Plan material requirements and reduce waste.</li>
+            <li>Improve project planning and cost estimation.</li>
+          </ul>
+        </div>
+        <hr className="my-4 border-slate-200 dark:border-slate-700" />
+        <div className="mb-4">
+          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+            How It Works
+          </h3>
+          <ol className="list-decimal list-inside space-y-1 text-body/80 dark:text-body-dark/80">
+            <li>Enter the project dimensions: length, width (or direct area), and thickness.</li>
+            <li>Choose the unit: metric (m) or imperial (ft).</li>
+            <li>Get instant results for area and volume in metric units.</li>
+          </ol>
+        </div>
+        <hr className="my-4 border-slate-200 dark:border-slate-700" />
+        <div>
+          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+            FAQs – Road Pavement Calculator
+          </h3>
+          <div className="space-y-2 text-body/80 dark:text-body-dark/80">
+            <div>
+              <span className="font-semibold">Q1. What does this calculator do?</span>
+              <br />
+              It estimates the area and volume for road pavement projects based on your input
+              dimensions.
+            </div>
+            <div>
+              <span className="font-semibold">Q2. What units does it support?</span>
+              <br />
+              You can enter values in meters or feet; results are shown in metric units for
+              consistency.
+            </div>
+            <div>
+              <span className="font-semibold">Q3. Can I use area directly?</span>
+              <br />
+              Yes, switch to area mode if you already know the total area to be paved.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }

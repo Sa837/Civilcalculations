@@ -11,7 +11,5 @@ export const temperatureConverter: Converter = {
   slug: 'temperature',
   title: 'Temperature',
   category: 'Properties',
-  groups: [
-    { name: 'Global', units: temperatureGlobalUnits },
-  ],
+  groups: [{ name: 'Global', units: temperatureGlobalUnits }],
 }
