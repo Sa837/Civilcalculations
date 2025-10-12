@@ -58,11 +58,14 @@ export default function ConverterDetail({ params }: Params) {
   const converter = useMemo(() => converters.find((c) => c.slug === params.slug), [params.slug])
   const isDateConverter = converter?.slug === 'date'
   // Support both grouped and flat converters
-  const isGrouped = !!(converter && 'groups' in converter && Array.isArray(converter.groups))
+  const isGrouped = !!(converter && 'groups' in converter && Array.isArray((converter as any).groups))
   const groups = isGrouped ? ((converter as any).groups as { name: string; units: any[] }[]) : null
   // Default to first group if grouped, else fallback to units
   const [activeTab, setActiveTab] = useState(0)
-  const units = isGrouped ? (groups?.[activeTab]?.units ?? []) : ((converter as any)?.units ?? [])
+  const units = useMemo(
+    () => (isGrouped ? (groups?.[activeTab]?.units ?? []) : ((converter as any)?.units ?? [])),
+    [isGrouped, groups, activeTab, converter]
+  )
   const [from, setFrom] = useState<string>('')
   const [fromUnit, setFromUnit] = useState<string>('')
   const [toUnit, setToUnit] = useState<string>('')
@@ -507,7 +510,7 @@ export default function ConverterDetail({ params }: Params) {
         </div>
       )}
       <div className="mt-8">
-        <AdSlot adId="converter-bottom" className="h-[90px] w-full md:h-[90px]" />
+        <AdSlot slotId="converter-bottom" className="h-[90px] w-full md:h-[90px]" />
       </div>
       {/* Google AdSense integration */}
       <Script

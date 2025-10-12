@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Info, RotateCcw, Eye, EyeOff, Calculator, CheckCircle } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { PaintCalculator as PaintCalculatorLib } from '@/lib/registry/calculator/paint-calculator'
@@ -37,7 +37,7 @@ export default function PaintCalculator({ globalUnit = 'm' }: { globalUnit?: 'm'
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [hasCalculated, setHasCalculated] = useState(false)
 
-  const calculate = () => {
+  const calculate = useCallback(() => {
     const length = formData.length ? parseFloat(formData.length) : undefined
     const height = formData.height ? parseFloat(formData.height) : undefined
     const area = formData.area ? parseFloat(formData.area) : undefined
@@ -56,7 +56,7 @@ export default function PaintCalculator({ globalUnit = 'm' }: { globalUnit?: 'm'
     })
 
     setResult(res)
-  }
+  }, [formData, useArea])
 
   // Always update result when any input changes and all required fields are filled
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function PaintCalculator({ globalUnit = 'm' }: { globalUnit?: 'm'
     } else {
       setResult(null)
     }
-  }, [formData, useArea])
+  }, [formData, useArea, hasCalculated, calculate])
 
   return (
     <div className="mx-auto max-w-4xl p-6">

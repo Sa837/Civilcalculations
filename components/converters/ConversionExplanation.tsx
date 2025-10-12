@@ -74,7 +74,7 @@ export function ConversionExplanation({
               <div>
                 <h3 className="font-medium text-blue-800 dark:text-blue-100">2. Convert to Target Unit</h3>
                 <p>
-                  The value in the base unit is then converted to the target unit by dividing by the target unit's factor.
+                  The value in the base unit is then converted to the target unit by dividing by the target unit&apos;s factor.
                 </p>
               </div>
 

@@ -20,32 +20,12 @@ export default function SubPage({ params }: SubPageProps) {
     return { resource: res, subItem: item }
   }, [category, sub])
 
-  if (!resource || !subItem) {
-    return (
-      <main className="mx-auto max-w-4xl px-6 py-20">
-        <div className="text-center">
-          <h1 className="mb-4 font-display text-3xl font-bold text-heading dark:text-heading-dark">
-            Content Not Found
-          </h1>
-          <p className="mb-6 font-sans text-body/70 dark:text-body-dark/70">
-            The requested section could not be found.
-          </p>
-          <Link
-            href={`/resources/${category}` as any}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-display font-medium text-white transition-colors hover:bg-primary/90"
-          >
-            Back to {category}
-          </Link>
-        </div>
-      </main>
-    )
-  }
-
+  // Hooks must be called unconditionally, before any early returns
   const printRef = useRef<HTMLDivElement>(null)
 
   const handleDownloadPdf = useCallback(() => {
     const content = printRef.current
-    if (!content) return
+    if (!content || !subItem || !resource) return
 
     const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=900,height=1200')
     if (!printWindow) return
@@ -55,7 +35,7 @@ export default function SubPage({ params }: SubPageProps) {
     doc.write(`
       <html>
         <head>
-          <title>${subItem.title} - ${resource.title}</title>
+          <title>${subItem?.title ?? ''} - ${resource?.title ?? ''}</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <style>
             * { box-sizing: border-box; }
@@ -71,18 +51,35 @@ export default function SubPage({ params }: SubPageProps) {
           </style>
         </head>
         <body>
-          <h1>${subItem.title}</h1>
-          <h3>${resource.title}</h3>
+          <h1>${subItem?.title ?? ''}</h1>
+          <h3>${resource?.title ?? ''}</h3>
           <div class="prose">${content.innerHTML}</div>
           <script>window.onload = () => { window.print(); setTimeout(() => window.close(), 300); }<\/script>
         </body>
       </html>
     `)
     doc.close()
-  }, [resource.title, subItem.title])
+  }, [resource, subItem])
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-10">
+      {!resource || !subItem ? (
+        <div className="text-center py-10">
+          <h1 className="mb-4 font-display text-3xl font-bold text-heading dark:text-heading-dark">
+            Content Not Found
+          </h1>
+          <p className="mb-6 font-sans text-body/70 dark:text-body-dark/70">
+            The requested section could not be found.
+          </p>
+          <Link
+            href={`/resources/${category}` as any}
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-display font-medium text-white transition-colors hover:bg-primary/90"
+          >
+            Back to {category}
+          </Link>
+        </div>
+      ) : (
+      <>
       <div className="mb-6">
         <Link
           href={`/resources/${category}` as any}
@@ -267,6 +264,8 @@ export default function SubPage({ params }: SubPageProps) {
           <p>Start writing your blog-style content for this section here.</p>
         )}
       </article>
+      </>
+      )}
     </main>
   )
 }

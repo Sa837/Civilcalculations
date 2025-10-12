@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Info, CheckCircle, RotateCcw, Eye, EyeOff, Calculator } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { PlasterCalculator as PlasterCalculatorLib } from '@/lib/registry/calculator/plaster-calculator'
@@ -37,7 +37,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
   const [hasCalculated, setHasCalculated] = useState(false)
 
   // Calculate result
-  const calculate = () => {
+  const calculate = useCallback(() => {
     const unitSystem = formData.unit
     const useAreaLocal = useArea
     const length = formData.length ? parseFloat(formData.length) : undefined
@@ -55,7 +55,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
     })
 
     setResult(res)
-  }
+  }, [formData, useArea])
 
   // Only update result after Calculate is pressed at least once
   useEffect(() => {
@@ -68,7 +68,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
     } else {
       setResult(null)
     }
-  }, [formData, useArea])
+  }, [formData, useArea, hasCalculated, calculate])
 
   return (
     <div className="mx-auto max-w-4xl p-6">
