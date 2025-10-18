@@ -1,0 +1,314 @@
+{
+  "title": "Section A: Fundamentals of Mathematics",
+  "ui": {
+    "show_toc": true,
+    "chapters_collapsible": true,
+    "mcq": {
+      "shuffle_options": true,
+      "show_correct_on_submit": true,
+      "track_progress": true
+    },
+    "tables": {
+      "style": "plain-3",
+      "wrap_long_text": true
+    },
+    "theme": {
+      "palette": {
+        "primary": "#1E88E5",
+        "secondary": "#00ACC1",
+        "accent": "#FDD835",
+        "background": "#FFFFFF",
+        "surface": "#FAFAFA",
+        "text_primary": "#0F172A",
+        "text_secondary": "#475569"
+      },
+      "typography": {
+        "font_family": "font-sans",
+        "scale": {
+          "h1": 1.75,
+          "h2": 1.5,
+          "h3": 1.25,
+          "body": 1.0,
+          "small": 0.9
+        }
+      },
+      "cards": {
+        "elevation": 1,
+        "radius": 10,
+        "padding": 16
+      }
+    }
+  },
+  "sections": [
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 1: Set, Calculus, and Vector Algebra",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Basic Concepts",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "SETS & FUNCTIONS",
+                "Definition of sets, types of sets, union, intersection, difference; functions and types of functions",
+                ""
+              ],
+              [
+                "LIMIT & CONTINUITY",
+                "Limit of a function: lim f(x) as x→a; Continuity criteria at a point",
+                ""
+              ],
+              [
+                "DIFFERENTIABILITY",
+                "Derivative definition: f'(x) = lim (Δx→0) (f(x+Δx)-f(x))/Δx; Rules: sum, product, quotient, chain",
+                ""
+              ],
+              ["CURVATURE", "Curvature k = |dT/ds|, T = unit tangent vector, s = arc length", ""],
+              [
+                "INTEGRATION TECHNIQUES",
+                "Integration by substitution, by parts, partial fractions, trigonometric integrals",
+                ""
+              ],
+              [
+                "APPLICATIONS OF DERIVATIVE",
+                "Tangents & normals, maxima & minima, rate of change, motion problems",
+                ""
+              ],
+              [
+                "ORDINARY DIFFERENTIAL EQUATIONS",
+                "First-order: dy/dx + P(x)y = Q(x); Second-order: homogeneous and non-homogeneous",
+                ""
+              ],
+              [
+                "VECTOR & SCALAR",
+                "Vector magnitude, direction, vector addition and subtraction; scalar and vector multiplication",
+                ""
+              ],
+              [
+                "VECTOR PRODUCTS",
+                "Dot product: A·B = |A||B|cosθ; Cross product: A×B = |A||B|sinθ n̂; Triple scalar & vector products",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas",
+          "items": [
+            {
+              "name": "Derivative of sum/product/quotient",
+              "expr": "(f+g)'=f'+g', (fg)'=f'g + fg', (f/g)'=(f'g - fg')/g²"
+            },
+            { "name": "Integration by parts", "expr": "∫u dv = uv - ∫v du" },
+            { "name": "Curvature", "expr": "k = |d²y/dx²| / (1+(dy/dx)²)^(3/2)" },
+            { "name": "Dot product", "expr": "A·B = |A||B|cosθ" },
+            { "name": "Cross product", "expr": "A×B = |A||B|sinθ n̂" },
+            {
+              "name": "ODE (1st order linear)",
+              "expr": "dy/dx + P(x)y = Q(x) → solution y = e^(-∫Pdx) ∫Q e^(∫Pdx) dx"
+            }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Set, Calculus & Vectors – MCQs",
+          "items": [
+            {
+              "question": "Limit of f(x) as x→a exists if —",
+              "options": [
+                { "text": "Left and right limits equal", "correct": true },
+                { "text": "Only right limit exists", "correct": false },
+                { "text": "Function continuous elsewhere", "correct": false }
+              ]
+            },
+            {
+              "question": "Derivative of sin(x) is —",
+              "options": [
+                { "text": "cos(x)", "correct": true },
+                { "text": "-cos(x)", "correct": false },
+                { "text": "sin(x)", "correct": false }
+              ]
+            },
+            {
+              "question": "Dot product of perpendicular vectors —",
+              "options": [
+                { "text": "0", "correct": true },
+                { "text": "1", "correct": false },
+                { "text": "|A||B|", "correct": false }
+              ]
+            },
+            {
+              "question": "Cross product of parallel vectors —",
+              "options": [
+                { "text": "0", "correct": true },
+                { "text": "|A||B|", "correct": false },
+                { "text": "1", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 2: Linear Algebra, Analytic Geometry & Series",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Matrices, Determinants & Analytic Geometry",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "MATRICES & DETERMINANTS",
+                "Definition, types of matrices, determinant properties, adjoint and inverse",
+                ""
+              ],
+              ["RANK OF MATRIX", "Maximum number of linearly independent rows/columns", ""],
+              [
+                "SYSTEM OF LINEAR EQUATIONS",
+                "Ax = b, solution by inverse or row reduction; Consistent, inconsistent, dependent",
+                ""
+              ],
+              [
+                "CONIC SECTIONS",
+                "Circle, parabola, ellipse, hyperbola equations; vertex, focus, directrix",
+                ""
+              ],
+              [
+                "FOURIER SERIES",
+                "f(x) periodic with period 2π: f(x) = a0/2 + Σ(an cos nx + bn sin nx)",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Linear Algebra & Series Formulas",
+          "items": [
+            {
+              "name": "Inverse of 2x2 matrix",
+              "expr": "A⁻¹ = 1/det(A) * [[d,-b],[-c,a]] for [[a,b],[c,d]]"
+            },
+            {
+              "name": "Fourier series coefficients",
+              "expr": "an = 1/π ∫f(x) cos(nx) dx, bn = 1/π ∫f(x) sin(nx) dx"
+            }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Linear Algebra & Series – MCQs",
+          "items": [
+            {
+              "question": "Rank of matrix is —",
+              "options": [
+                { "text": "Max number of linearly independent rows/cols", "correct": true },
+                { "text": "Number of zeros", "correct": false },
+                { "text": "Determinant", "correct": false }
+              ]
+            },
+            {
+              "question": "Inverse of non-singular matrix exists —",
+              "options": [
+                { "text": "Always", "correct": true },
+                { "text": "Never", "correct": false },
+                { "text": "Sometimes", "correct": false }
+              ]
+            },
+            {
+              "question": "Fourier series is used for —",
+              "options": [
+                { "text": "Periodic functions", "correct": true },
+                { "text": "Non-periodic only", "correct": false },
+                { "text": "Derivatives", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 3: Descriptive Statistics & Numerical Methods",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Statistics Fundamentals",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "DATA PRESENTATION",
+                "Classification, frequency distribution, histogram, cumulative frequency",
+                ""
+              ],
+              ["CENTRAL TENDENCY", "Mean, median, mode, quartiles, percentiles", ""],
+              [
+                "MEASURES OF DISPERSION",
+                "Range, variance, standard deviation, coefficient of variation",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Statistics Formulas",
+          "items": [
+            { "name": "Mean", "expr": "x̄ = Σx_i / n" },
+            { "name": "Variance", "expr": "σ² = Σ(x_i - x̄)² / n" },
+            { "name": "Standard deviation", "expr": "σ = √σ²" },
+            { "name": "Coefficient of variation", "expr": "CV = σ / x̄ * 100%" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Descriptive Statistics – MCQs",
+          "items": [
+            {
+              "question": "Mean of data is —",
+              "options": [
+                { "text": "Average", "correct": true },
+                { "text": "Middle value", "correct": false },
+                { "text": "Most frequent", "correct": false }
+              ]
+            },
+            {
+              "question": "Standard deviation measures —",
+              "options": [
+                { "text": "Dispersion", "correct": true },
+                { "text": "Central value", "correct": false },
+                { "text": "Sum", "correct": false }
+              ]
+            },
+            {
+              "question": "Histogram represents —",
+              "options": [
+                { "text": "Frequency distribution", "correct": true },
+                { "text": "Mean", "correct": false },
+                { "text": "Mode", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

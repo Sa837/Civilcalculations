@@ -1,0 +1,1339 @@
+{
+  "title": "Section C: Soil Mechanics & Foundation Engineering",
+  "ui": {
+    "show_toc": true,
+    "chapters_collapsible": true,
+    "mcq": {
+      "shuffle_options": true,
+      "show_correct_on_submit": true,
+      "track_progress": true
+    },
+    "tables": {
+      "style": "plain-3",
+      "wrap_long_text": true
+    },
+    "theme": {
+      "palette": {
+        "primary": "#1E88E5",
+        "secondary": "#00ACC1",
+        "accent": "#FDD835",
+        "background": "#FFFFFF",
+        "surface": "#FAFAFA",
+        "text_primary": "#0F172A",
+        "text_secondary": "#475569"
+      },
+      "typography": {
+        "font_family": "font-sans",
+        "scale": {
+          "h1": 1.75,
+          "h2": 1.5,
+          "h3": 1.25,
+          "body": 1.0,
+          "small": 0.9
+        }
+      },
+      "cards": {
+        "elevation": 1,
+        "radius": 10,
+        "padding": 16
+      }
+    }
+  },
+  "sections": [
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 1: Soil Mechanics - Phase Relations & Index Properties",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Soil Mechanics - Introduction & Phase Relations",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "INTRODUCTION & SCOPE",
+                "Soil mechanics studies the physical and engineering behavior of soil as a construction material. Applications include foundations, embankments, retaining structures, and pavements.",
+                ""
+              ],
+              [
+                "PHASE RELATIONS OF SOIL",
+                "Soil is a three-phase system: solid particles, water, and air. Key parameters:\n• Total volume: V = V_s + V_w + V_a\n• Void ratio: e = V_v / V_s\n• Porosity: n = V_v / V\n• Degree of saturation: S_r = V_w / V_v × 100%",
+                ""
+              ],
+              [
+                "WATER CONTENT (w)",
+                "w = W_w / W_s × 100%, indicates moisture in soil; affects compaction and strength.",
+                ""
+              ],
+              [
+                "UNIT WEIGHT & DENSITY",
+                "• Bulk density: ρ = W / V\n• Dry density: ρ_d = W_s / V\n• Saturated density: ρ_sat = W_sat / V\n• Specific gravity: G_s = ρ_s / ρ_w",
+                ""
+              ],
+              [
+                "INDEX PROPERTIES",
+                "• Liquid Limit (LL): moisture content at which soil changes from plastic to liquid\n• Plastic Limit (PL): moisture content at which soil changes from semi-solid to plastic\n• Plasticity Index (PI) = LL - PL\n• Shrinkage Limit (SL): moisture content below which soil does not shrink further",
+                ""
+              ],
+              [
+                "SOIL IDENTIFICATION & CLASSIFICATION",
+                "• Coarse-grained: gravel & sand; fine-grained: silt & clay\n• USCS / IS:1498 classification based on grain size and Atterberg limits\n• Determines suitability for construction & drainage behavior",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas - Phase Relations & Index Properties",
+          "items": [
+            { "name": "VOID RATIO", "expr": "e = V_v / V_s" },
+            { "name": "POROSITY", "expr": "n = V_v / V" },
+            { "name": "DEGREE OF SATURATION", "expr": "S_r = V_w / V_v × 100%" },
+            { "name": "WATER CONTENT", "expr": "w = W_w / W_s × 100%" },
+            { "name": "BULK DENSITY", "expr": "ρ = W / V" },
+            { "name": "DRY DENSITY", "expr": "ρ_d = W_s / V" },
+            { "name": "SATURATED DENSITY", "expr": "ρ_sat = W_sat / V" },
+            { "name": "SPECIFIC GRAVITY", "expr": "G_s = ρ_s / ρ_w" },
+            { "name": "PLASTICITY INDEX", "expr": "PI = LL - PL" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Phase Relations & Index Properties - MCQs",
+          "items": [
+            {
+              "question": "Soil is a three-phase system →",
+              "options": [
+                { "text": "Solids, water, air", "correct": true },
+                { "text": "Solids, liquids, gases", "correct": false },
+                { "text": "Minerals, water, air", "correct": false }
+              ]
+            },
+            {
+              "question": "Void ratio formula →",
+              "options": [
+                { "text": "e = V_v / V_s", "correct": true },
+                { "text": "e = V_v / V", "correct": false },
+                { "text": "e = V_s / V_v", "correct": false }
+              ]
+            },
+            {
+              "question": "Porosity formula →",
+              "options": [
+                { "text": "n = V_v / V", "correct": true },
+                { "text": "n = V_s / V", "correct": false },
+                { "text": "n = V_w / V", "correct": false }
+              ]
+            },
+            {
+              "question": "Degree of saturation →",
+              "options": [
+                { "text": "S_r = V_w / V_v × 100%", "correct": true },
+                { "text": "S_r = V_w / V × 100%", "correct": false },
+                { "text": "S_r = V_v / V_w × 100%", "correct": false }
+              ]
+            },
+            {
+              "question": "Water content →",
+              "options": [
+                { "text": "w = W_w / W_s × 100%", "correct": true },
+                { "text": "w = W_s / W_w × 100%", "correct": false },
+                { "text": "w = W_w / W × 100%", "correct": false }
+              ]
+            },
+            {
+              "question": "Dry density formula →",
+              "options": [
+                { "text": "ρ_d = W_s / V", "correct": true },
+                { "text": "ρ_d = W / V", "correct": false },
+                { "text": "ρ_d = W_w / V", "correct": false }
+              ]
+            },
+            {
+              "question": "Plasticity Index →",
+              "options": [
+                { "text": "PI = LL - PL", "correct": true },
+                { "text": "PI = LL + PL", "correct": false },
+                { "text": "PI = PL - LL", "correct": false }
+              ]
+            },
+            {
+              "question": "Shrinkage Limit →",
+              "options": [
+                { "text": "Moisture below which no further shrinkage occurs", "correct": true },
+                { "text": "Moisture at which soil becomes liquid", "correct": false },
+                { "text": "Moisture at which soil becomes plastic", "correct": false }
+              ]
+            },
+            {
+              "question": "Coarse-grained soil →",
+              "options": [
+                { "text": "Gravel & Sand", "correct": true },
+                { "text": "Silt & Clay", "correct": false },
+                { "text": "Clay only", "correct": false }
+              ]
+            },
+            {
+              "question": "Fine-grained soil →",
+              "options": [
+                { "text": "Silt & Clay", "correct": true },
+                { "text": "Gravel & Sand", "correct": false },
+                { "text": "Sand only", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 2: Effective Stress, Capillarity & Permeability",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Effective Stress, Capillarity & Permeability",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "PRINCIPLE OF EFFECTIVE STRESS",
+                "Effective stress governs soil strength and deformation. Introduced by Terzaghi:\n• Total stress (σ) = stress applied to soil\n• Pore water pressure (u) = pressure of water in voids\n• Effective stress (σ') = stress transmitted through soil skeleton\nσ' = σ - u\n• Controls settlement, shear strength, and consolidation behavior of soils",
+                ""
+              ],
+              [
+                "CAPILLARITY IN SOILS",
+                "Phenomenon of water rising in small pores due to surface tension.\n• Capillary rise (h_c) = height water rises above groundwater\n• Capillary pressure (p_c) = pressure causing water to rise\n• Quick sand condition occurs when upward seepage equals or exceeds weight of soil particles",
+                ""
+              ],
+              [
+                "TOTAL PRESSURE & ELEVATION HEADS",
+                "• Total head (H) = Pressure head (h_p) + Elevation head (z) + Velocity head (v²/2g)\n• Pressure head = u / γ_w\n• Elevation head = height of point above datum\n• Quick sand occurs if upward hydraulic gradient i ≥ i_critical = γ_sat / γ_w - 1",
+                ""
+              ],
+              [
+                "PERMEABILITY OF SOIL",
+                "Ability of soil to allow water flow.\n• Hydraulic conductivity (k) depends on soil type, void ratio, and viscosity\n• Flow governed by Darcy's law: Q = k i A\n• Determination by: Constant head test (coarse soils), Falling head test (fine soils)\n• Units: m/s",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas - Effective Stress & Permeability",
+          "items": [
+            { "name": "EFFECTIVE STRESS", "expr": "σ' = σ - u" },
+            {
+              "name": "CAPILLARY RISE",
+              "expr": "h_c = 0.15 / d (in meters, d in mm for fine sands) approx."
+            },
+            { "name": "CAPILLARY PRESSURE", "expr": "p_c = γ_w × h_c" },
+            { "name": "QUICK SAND CONDITION", "expr": "i_critical = γ_sat / γ_w - 1" },
+            { "name": "DARCY'S LAW", "expr": "Q = k i A" },
+            { "name": "HYDRAULIC GRADIENT", "expr": "i = Δh / L" },
+            { "name": "FLOW RATE THROUGH SOIL", "expr": "Q = k i A" },
+            { "name": "HYDRAULIC CONDUCTIVITY", "expr": "k = Q L / (A Δh)" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Effective Stress & Permeability - MCQs",
+          "items": [
+            {
+              "question": "Effective stress formula →",
+              "options": [
+                { "text": "σ' = σ - u", "correct": true },
+                { "text": "σ' = σ + u", "correct": false },
+                { "text": "σ' = u - σ", "correct": false }
+              ]
+            },
+            {
+              "question": "Governs soil strength and settlement →",
+              "options": [
+                { "text": "Effective stress", "correct": true },
+                { "text": "Total stress", "correct": false },
+                { "text": "Pore water pressure", "correct": false }
+              ]
+            },
+            {
+              "question": "Capillary rise →",
+              "options": [
+                { "text": "Water rises in small pores due to surface tension", "correct": true },
+                { "text": "Water flows downward due to gravity", "correct": false },
+                { "text": "Water evaporates from soil surface", "correct": false }
+              ]
+            },
+            {
+              "question": "Quick sand occurs when →",
+              "options": [
+                { "text": "Upward gradient ≥ critical gradient", "correct": true },
+                { "text": "Downward gradient ≥ critical gradient", "correct": false },
+                { "text": "No water flow", "correct": false }
+              ]
+            },
+            {
+              "question": "Critical hydraulic gradient →",
+              "options": [
+                { "text": "i_critical = γ_sat / γ_w - 1", "correct": true },
+                { "text": "i_critical = γ_w / γ_sat - 1", "correct": false },
+                { "text": "i_critical = γ_sat × γ_w", "correct": false }
+              ]
+            },
+            {
+              "question": "Darcy's law →",
+              "options": [
+                { "text": "Q = k i A", "correct": true },
+                { "text": "Q = A i k", "correct": false },
+                { "text": "Q = k A / i", "correct": false }
+              ]
+            },
+            {
+              "question": "Hydraulic conductivity test →",
+              "options": [
+                { "text": "Constant head (coarse), Falling head (fine)", "correct": true },
+                { "text": "Only constant head test", "correct": false },
+                { "text": "Only falling head test", "correct": false }
+              ]
+            },
+            {
+              "question": "Total head =",
+              "options": [
+                { "text": "Pressure head + Elevation head + Velocity head", "correct": true },
+                { "text": "Pressure head only", "correct": false },
+                { "text": "Elevation head only", "correct": false }
+              ]
+            },
+            {
+              "question": "Capillary pressure →",
+              "options": [
+                { "text": "p_c = γ_w × h_c", "correct": true },
+                { "text": "p_c = h_c / γ_w", "correct": false },
+                { "text": "p_c = γ_w / h_c", "correct": false }
+              ]
+            },
+            {
+              "question": "Flow rate through soil →",
+              "options": [
+                { "text": "Q = k i A", "correct": true },
+                { "text": "Q = A / (k i)", "correct": false },
+                { "text": "Q = k A / i", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 3: Compaction, Compressibility & Consolidation",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Compaction, Compressibility & Consolidation",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "COMPACTION – DEFINITION & PURPOSE",
+                "Process of increasing soil density by mechanical means to improve engineering properties.\n• Reduces void ratio, increases shear strength, decreases compressibility, improves stability.\n• Affects bearing capacity, settlement, and permeability.",
+                ""
+              ],
+              [
+                "PROCESS OF COMPACTION",
+                "• Compaction achieved by rolling, tamping, vibrating, or kneading.\n• Moisture content crucial – optimum water content (w_opt) gives maximum dry density (ρ_dmax).\n• Dry and wet of optimum:\n– Dry: Soil too stiff, cannot rearrange → low density\n– Wet: Water lubricates particles but reduces friction → density decreases",
+                ""
+              ],
+              [
+                "COMPACTION THEORIES",
+                "• Proctor Test: Determines ρ_dmax and w_opt.\n• Modified Proctor: Higher energy compaction → higher ρ_dmax.\n• Maximum Dry Density (ρ_dmax) used in field control.",
+                ""
+              ],
+              [
+                "MOISTURE-DENSITY RELATIONSHIP",
+                "• Standard Compaction Curve: ρ_d vs w (moisture content)\n• Degree of Compaction (DC):\nDC = (ρ_d,field / ρ_d,max) × 100%",
+                ""
+              ],
+              [
+                "EFFECT OF COMPACTION ON SOIL BEHAVIOR",
+                "• Increases shear strength and bearing capacity.\n• Reduces settlement and compressibility.\n• Decreases permeability.",
+                ""
+              ],
+              [
+                "COMPRESSIBILITY OF SOIL",
+                "• Measure of soil deformation under load.\n• Compressibility index (Cc) for normally consolidated soil: Cc = (e_0 - e) / log(σ'_2 / σ'_1)\n• Recompression index (Cr) for overconsolidated soil.\n• Settlement (S) = H × Δe / (1 + e_0)",
+                ""
+              ],
+              [
+                "CONSOLIDATION OF SOIL",
+                "• Time-dependent process of volume decrease due to expulsion of water from pores under load.\n• Governed by Terzaghi's 1D consolidation theory.\n• Primary consolidation: vertical compression of soil skeleton.\n• Secondary consolidation: creep of soil particles.",
+                ""
+              ],
+              [
+                "KEY CONSOLIDATION PARAMETERS",
+                "• Coefficient of Consolidation (Cv): Rate of consolidation\n• Degree of consolidation (U): % consolidation achieved at time t\n• Time factor: T_v = Cv × t / H²",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas - Compaction & Consolidation",
+          "items": [
+            { "name": "DRY DENSITY", "expr": "ρ_d = ρ / (1 + w)" },
+            { "name": "DEGREE OF COMPACTION", "expr": "DC = (ρ_d,field / ρ_d,max) × 100%" },
+            { "name": "MOISTURE CONTENT", "expr": "w = (W_w / W_s) × 100%" },
+            { "name": "SETTLEMENT", "expr": "S = H × Δe / (1 + e_0)" },
+            { "name": "COMPRESSIBILITY INDEX", "expr": "Cc = (e_0 - e) / log(σ'_2 / σ'_1)" },
+            {
+              "name": "RECOMPRESSION INDEX",
+              "expr": "Cr = (e_0 - e) / log(σ'_2 / σ'_1) for OC soils"
+            },
+            { "name": "COEFFICIENT OF CONSOLIDATION", "expr": "Cv = k / (γ_w × m_v)" },
+            { "name": "DEGREE OF CONSOLIDATION", "expr": "U = (S_t / S_final) × 100%" },
+            { "name": "TIME FACTOR", "expr": "T_v = Cv × t / H²" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Compaction & Consolidation - MCQs",
+          "items": [
+            {
+              "question": "Compaction increases →",
+              "options": [
+                { "text": "Dry density, shear strength", "correct": true },
+                { "text": "Porosity, permeability", "correct": false },
+                { "text": "Water content, compressibility", "correct": false }
+              ]
+            },
+            {
+              "question": "Optimum moisture content →",
+              "options": [
+                { "text": "Maximum dry density", "correct": true },
+                { "text": "Minimum dry density", "correct": false },
+                { "text": "No effect on density", "correct": false }
+              ]
+            },
+            {
+              "question": "Standard Proctor Test →",
+              "options": [
+                { "text": "Determines ρ_dmax and w_opt", "correct": true },
+                { "text": "Measures shear strength", "correct": false },
+                { "text": "Tests permeability", "correct": false }
+              ]
+            },
+            {
+              "question": "Degree of Compaction formula →",
+              "options": [
+                { "text": "DC = (ρ_d,field / ρ_d,max) × 100%", "correct": true },
+                { "text": "DC = (ρ_d,max / ρ_d,field) × 100%", "correct": false },
+                { "text": "DC = ρ_d,field × ρ_d,max", "correct": false }
+              ]
+            },
+            {
+              "question": "Compressibility index →",
+              "options": [
+                { "text": "Cc = (e_0 - e) / log(σ'_2 / σ'_1)", "correct": true },
+                { "text": "Cc = (e_0 + e) / log(σ'_2 / σ'_1)", "correct": false },
+                { "text": "Cc = log(σ'_2 / σ'_1) / (e_0 - e)", "correct": false }
+              ]
+            },
+            {
+              "question": "Settlement formula →",
+              "options": [
+                { "text": "S = H × Δe / (1 + e_0)", "correct": true },
+                { "text": "S = H × (1 + e_0) / Δe", "correct": false },
+                { "text": "S = Δe / (H × (1 + e_0))", "correct": false }
+              ]
+            },
+            {
+              "question": "Coefficient of Consolidation →",
+              "options": [
+                { "text": "Cv = k / (γ_w × m_v)", "correct": true },
+                { "text": "Cv = k × γ_w × m_v", "correct": false },
+                { "text": "Cv = γ_w / (k × m_v)", "correct": false }
+              ]
+            },
+            {
+              "question": "Degree of consolidation →",
+              "options": [
+                { "text": "U = (S_t / S_final) × 100%", "correct": true },
+                { "text": "U = (S_final / S_t) × 100%", "correct": false },
+                { "text": "U = S_t × S_final", "correct": false }
+              ]
+            },
+            {
+              "question": "Overcompacted soil →",
+              "options": [
+                { "text": "Recompression index (Cr) used", "correct": true },
+                { "text": "Compressibility index (Cc) used", "correct": false },
+                { "text": "No consolidation occurs", "correct": false }
+              ]
+            },
+            {
+              "question": "Secondary consolidation →",
+              "options": [
+                { "text": "Creep of soil particles after primary consolidation", "correct": true },
+                { "text": "Expulsion of water from pores", "correct": false },
+                { "text": "Immediate settlement", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 4: Shear Strength & Slope Stability",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Shear Strength & Slope Stability",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "SHEAR STRENGTH OF SOIL – DEFINITION",
+                "Ability of soil to resist shear stress. Depends on cohesion (c), internal friction angle (φ), and normal stress (σ). Governs stability of foundations, slopes, and retaining walls.",
+                ""
+              ],
+              [
+                "MOHR'S CIRCLE OF STRESS",
+                "Graphical representation of stress state in soil.\n• Principal stresses: σ₁ (major), σ₃ (minor)\n• Shear stress (τ) vs normal stress (σ) plot\n• Failure envelope: τ = c + σ tan φ",
+                ""
+              ],
+              [
+                "COMPONENTS OF SHEAR STRENGTH",
+                "• Cohesion (c): Soil particle attraction, independent of normal stress\n• Angle of internal friction (φ): Resistance due to interparticle friction\n• Total shear stress: τ = c + σ tan φ",
+                ""
+              ],
+              [
+                "DETERMINATION OF SHEAR STRENGTH PARAMETERS",
+                "• Direct Shear Test → Measures c and φ under controlled normal stress\n• Triaxial Test → Measures strength under drained (CD, CU) or undrained (UU) conditions\n• Unconfined Compression Test → Measures cohesion for saturated clays (c_u)",
+                ""
+              ],
+              [
+                "STRESS PATH CONCEPT",
+                "Shows the path of stress change during loading in σ-τ space. Useful in understanding failure mechanisms in soils.",
+                ""
+              ],
+              [
+                "SLOPE STABILITY",
+                "• Analysis of slopes to prevent failure.\n• Factors affecting stability: Slope angle, soil type, cohesion, internal friction, water content, surcharge loads\n• Types of slope failure: Translational, rotational, wedge, circular slip.",
+                ""
+              ],
+              [
+                "FACTOR OF SAFETY (FS)",
+                "Ratio of resisting forces to driving forces on slope.\n• FS = Resisting Shear / Driving Shear\n• FS > 1 → Stable, FS < 1 → Failure likely",
+                ""
+              ],
+              [
+                "STABILITY ANALYSIS METHODS",
+                "• Analytical methods: Infinite slope, Swedish Circle method, Bishop's method, Janbu method\n• Empirical methods: Based on experience, charts, and field observation",
+                ""
+              ],
+              [
+                "KEY INFLUENCES",
+                "• Groundwater lowers FS due to pore pressure\n• Vegetation can improve stability\n• Loadings such as buildings, roads, or excavation affect slope stability",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas - Shear Strength & Slope Stability",
+          "items": [
+            { "name": "SHEAR STRENGTH (MOHR-COULOMB)", "expr": "τ = c + σ tan φ" },
+            { "name": "FACTOR OF SAFETY", "expr": "FS = Resisting Shear / Driving Shear" },
+            { "name": "UNCONFINED COMPRESSION", "expr": "c_u = σ_3 / 2 for saturated clay" },
+            { "name": "MOHR'S CIRCLE RADIUS", "expr": "R = (σ_1 - σ_3)/2" },
+            { "name": "PRINCIPAL STRESSES", "expr": "σ_avg = (σ_1 + σ_3)/2" },
+            {
+              "name": "SLOPE FACTOR OF SAFETY (SIMPLIFIED)",
+              "expr": "FS = c'/(γH sin θ cos θ) + tan φ'/tan θ"
+            },
+            { "name": "DRIVING SHEAR ON SLOPE", "expr": "τ_d = γH sin θ cos θ" },
+            { "name": "RESISTING SHEAR ON SLOPE", "expr": "τ_r = c + (σ - u) tan φ" },
+            { "name": "EFFECTIVE STRESS", "expr": "σ' = σ - u (where u = pore water pressure)" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Shear Strength & Slope Stability - MCQs",
+          "items": [
+            {
+              "question": "Shear strength depends on →",
+              "options": [
+                { "text": "Cohesion (c) and internal friction (φ)", "correct": true },
+                { "text": "Water content only", "correct": false },
+                { "text": "Soil color only", "correct": false }
+              ]
+            },
+            {
+              "question": "Mohr-Coulomb equation →",
+              "options": [
+                { "text": "τ = c + σ tan φ", "correct": true },
+                { "text": "τ = c - σ tan φ", "correct": false },
+                { "text": "τ = σ tan φ - c", "correct": false }
+              ]
+            },
+            {
+              "question": "Direct shear test measures →",
+              "options": [
+                { "text": "c and φ", "correct": true },
+                { "text": "Permeability only", "correct": false },
+                { "text": "Consolidation parameters", "correct": false }
+              ]
+            },
+            {
+              "question": "Triaxial test →",
+              "options": [
+                { "text": "Provides drained and undrained shear strength", "correct": true },
+                { "text": "Measures only permeability", "correct": false },
+                { "text": "Tests only compaction", "correct": false }
+              ]
+            },
+            {
+              "question": "Unconfined compression →",
+              "options": [
+                { "text": "Measures cohesion for saturated clay", "correct": true },
+                { "text": "Measures friction angle", "correct": false },
+                { "text": "Tests permeability", "correct": false }
+              ]
+            },
+            {
+              "question": "Factor of safety (FS) →",
+              "options": [
+                { "text": "Resisting / Driving shear", "correct": true },
+                { "text": "Driving / Resisting shear", "correct": false },
+                { "text": "Resisting × Driving shear", "correct": false }
+              ]
+            },
+            {
+              "question": "FS > 1 →",
+              "options": [
+                { "text": "Stable slope", "correct": true },
+                { "text": "Unstable slope", "correct": false },
+                { "text": "Critical slope", "correct": false }
+              ]
+            },
+            {
+              "question": "FS < 1 →",
+              "options": [
+                { "text": "Likely failure", "correct": true },
+                { "text": "Stable slope", "correct": false },
+                { "text": "No effect", "correct": false }
+              ]
+            },
+            {
+              "question": "Principal stresses →",
+              "options": [
+                { "text": "σ₁ (major), σ₃ (minor)", "correct": true },
+                { "text": "σ only", "correct": false },
+                { "text": "τ only", "correct": false }
+              ]
+            },
+            {
+              "question": "Stress path →",
+              "options": [
+                { "text": "Shows stress changes during loading", "correct": true },
+                { "text": "Shows water flow path", "correct": false },
+                { "text": "Shows compaction curve", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 5: Foundation Engineering - Site Investigation & Earth Pressure",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Site Investigation & Lateral Earth Pressure",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "SITE INVESTIGATION - INTRODUCTION & SCOPE",
+                "Site investigation studies subsurface conditions to design safe foundations. It includes exploration, sampling, and in-situ testing. Determines soil profile, groundwater level, and engineering properties.",
+                ""
+              ],
+              [
+                "METHODS OF SOIL EXPLORATION",
+                "• Boring: Rotary, Auger, Wash boring; reveals soil profile.\n• Sampling: Disturbed (structure destroyed, for classification), Undisturbed (structure preserved, for strength tests)\n• Field Tests: Standard Penetration Test (SPT), Plate Load Test",
+                ""
+              ],
+              [
+                "SOIL SAMPLING & TYPES",
+                "• Disturbed Sample – soil structure destroyed; used for classification, moisture content\n• Undisturbed Sample – structure preserved; used for strength, consolidation",
+                ""
+              ],
+              [
+                "FIELD PENETRATION TEST",
+                "• SPT: Number of blows per 30 cm penetration → N-value\n• CPT: Cone penetration, measures tip resistance & sleeve friction",
+                ""
+              ],
+              [
+                "PLATE LOAD TEST",
+                "Determines in-situ bearing capacity & settlement under controlled load",
+                ""
+              ],
+              [
+                "NUMBER OF BOREHOLES & DEPTH",
+                "Depends on: Structure type, variability of soil, water table depth, and foundation type",
+                ""
+              ],
+              [
+                "TYPES OF EARTH PRESSURE",
+                "• Active: Soil tends to move away from wall\n• Passive: Soil resists wall movement\n• At-Rest: Wall prevented from moving; pressure intermediate",
+                ""
+              ],
+              [
+                "RANKINE'S THEORY",
+                "Simplified for cohesionless soil; wall smooth & vertical\n• Active: σ_a = γ H K_a - 2c√K_a\n• Passive: σ_p = γ H K_p + 2c√K_p\n• K_a = tan²(45 - φ/2), K_p = tan²(45 + φ/2)",
+                ""
+              ],
+              [
+                "COULOMB'S THEORY",
+                "Considers wall friction (δ) and inclined backfill (β). Provides more realistic pressure than Rankine",
+                ""
+              ],
+              [
+                "EARTH RETAINING STRUCTURES",
+                "Types: Gravity, Cantilever, Counterfort, Sheet pile walls. Designed to resist lateral earth pressure safely",
+                ""
+              ],
+              [
+                "COFFER DAM",
+                "Temporary structure for retaining water/soil during construction. Types: Earthen, Sheet pile, Cellular",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas - Site Investigation & Earth Pressure",
+          "items": [
+            { "name": "SPT N-VALUE", "expr": "N = Number of blows / 30 cm" },
+            {
+              "name": "PLATE LOAD TEST",
+              "expr": "q_allow = P / A; Settlement measured by dial gauges"
+            },
+            { "name": "ACTIVE EARTH PRESSURE", "expr": "σ_a = γ H K_a - 2c√K_a" },
+            { "name": "PASSIVE EARTH PRESSURE", "expr": "σ_p = γ H K_p + 2c√K_p" },
+            { "name": "RANKINE COEFFICIENTS", "expr": "K_a = tan²(45 - φ/2), K_p = tan²(45 + φ/2)" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Site Investigation & Earth Pressure - MCQs",
+          "items": [
+            {
+              "question": "Undisturbed sample used for —",
+              "options": [
+                { "text": "Strength & consolidation tests", "correct": true },
+                { "text": "Classification only", "correct": false },
+                { "text": "Moisture content only", "correct": false }
+              ]
+            },
+            {
+              "question": "Disturbed sample used for —",
+              "options": [
+                { "text": "Classification & moisture content", "correct": true },
+                { "text": "Strength tests", "correct": false },
+                { "text": "Consolidation tests", "correct": false }
+              ]
+            },
+            {
+              "question": "SPT measures —",
+              "options": [
+                { "text": "N-value (blows/30 cm)", "correct": true },
+                { "text": "Permeability", "correct": false },
+                { "text": "Shear strength directly", "correct": false }
+              ]
+            },
+            {
+              "question": "Plate load test measures —",
+              "options": [
+                { "text": "q_allow & settlement", "correct": true },
+                { "text": "Permeability only", "correct": false },
+                { "text": "Water content", "correct": false }
+              ]
+            },
+            {
+              "question": "Borehole depth depends on —",
+              "options": [
+                { "text": "Structure type & soil layers", "correct": true },
+                { "text": "Soil color only", "correct": false },
+                { "text": "Weather conditions", "correct": false }
+              ]
+            },
+            {
+              "question": "Active earth pressure occurs when —",
+              "options": [
+                { "text": "Wall moves away from soil", "correct": true },
+                { "text": "Wall moves toward soil", "correct": false },
+                { "text": "Wall doesn't move", "correct": false }
+              ]
+            },
+            {
+              "question": "Passive earth pressure occurs when —",
+              "options": [
+                { "text": "Soil resists wall movement", "correct": true },
+                { "text": "Soil moves away from wall", "correct": false },
+                { "text": "No movement occurs", "correct": false }
+              ]
+            },
+            {
+              "question": "Rankine's K_a formula —",
+              "options": [
+                { "text": "tan²(45 - φ/2)", "correct": true },
+                { "text": "tan²(45 + φ/2)", "correct": false },
+                { "text": "tan(45 - φ/2)", "correct": false }
+              ]
+            },
+            {
+              "question": "Rankine's K_p formula —",
+              "options": [
+                { "text": "tan²(45 + φ/2)", "correct": true },
+                { "text": "tan²(45 - φ/2)", "correct": false },
+                { "text": "tan(45 + φ/2)", "correct": false }
+              ]
+            },
+            {
+              "question": "Coulomb's theory considers —",
+              "options": [
+                { "text": "Wall friction & backfill slope", "correct": true },
+                { "text": "Only vertical walls", "correct": false },
+                { "text": "Only horizontal backfill", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 6: Bearing Capacity & Settlement of Foundations",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Bearing Capacity & Settlement",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "MODES OF SOIL FAILURE",
+                "• General Shear: Sudden failure with well-defined shear surfaces; typical in dense sands & stiff clays\n• Local Shear: Partial failure; occurs in medium dense soils\n• Punching Shear: Small settlement, no distinct shear plane; typical in soft soils",
+                ""
+              ],
+              [
+                "THEORIES OF BEARING CAPACITY",
+                "• Terzaghi's Theory (1925) for shallow foundations:\nq_ult = c N_c + γ D_f N_q + 0.5 γ B N_y\n- c: cohesion, γ: unit weight, D_f: depth, B: width, N_c, N_q, N_y: bearing capacity factors\n• Meyerhof, Hansen: Include shape, depth, inclination, water table correction factors",
+                ""
+              ],
+              [
+                "EFFECT OF WATER TABLE",
+                "• Reduces effective stress → reduces bearing capacity\n• Corrected ultimate bearing: q_ult,water = q_ult,dry - γ_w D_f N_q (if water table at foundation base)",
+                ""
+              ],
+              [
+                "BEARING CAPACITY FROM IN-SITU TESTS",
+                "• SPT-based: q_ult ≈ N × factor (depending on soil type)\n• Plate Load Test: Measures q_allow directly for shallow foundations",
+                ""
+              ],
+              [
+                "SETTLEMENT",
+                "Total settlement = Immediate (elastic) + Primary consolidation + Secondary compression\n• Depends on: Soil compressibility, thickness of soil layer, applied load, groundwater conditions",
+                ""
+              ],
+              [
+                "ALLOWABLE BEARING CAPACITY",
+                "q_allow = q_ult / FS; FS = Factor of Safety, typically 2.5–3 for shallow foundations",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas - Bearing Capacity & Settlement",
+          "items": [
+            {
+              "name": "TERZAGHI BEARING CAPACITY",
+              "expr": "q_ult = c N_c + γ D_f N_q + 0.5 γ B N_y"
+            },
+            { "name": "ALLOWABLE BEARING CAPACITY", "expr": "q_allow = q_ult / FS" },
+            {
+              "name": "SETTLEMENT (ELASTIC)",
+              "expr": "S = (q B (1 - μ²) / E_s) × L_s (B/L ratio factor)"
+            },
+            { "name": "SETTLEMENT (CONSOLIDATION)", "expr": "S_c = H × Δe / (1 + e_0)" },
+            { "name": "SPT-BASED BEARING", "expr": "q_ult ≈ N × factor (soil type dependent)" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Bearing Capacity & Settlement - MCQs",
+          "items": [
+            {
+              "question": "General shear failure occurs in —",
+              "options": [
+                { "text": "Dense sands & stiff clays", "correct": true },
+                { "text": "Soft soils", "correct": false },
+                { "text": "Medium dense soils", "correct": false }
+              ]
+            },
+            {
+              "question": "Local shear failure occurs in —",
+              "options": [
+                { "text": "Medium dense soils", "correct": true },
+                { "text": "Dense sands", "correct": false },
+                { "text": "Stiff clays", "correct": false }
+              ]
+            },
+            {
+              "question": "Punching shear occurs in —",
+              "options": [
+                { "text": "Soft soils", "correct": true },
+                { "text": "Dense sands", "correct": false },
+                { "text": "Stiff clays", "correct": false }
+              ]
+            },
+            {
+              "question": "Terzaghi's formula —",
+              "options": [
+                { "text": "q_ult = c N_c + γ D_f N_q + 0.5 γ B N_y", "correct": true },
+                { "text": "q_ult = c + γ D_f + γ B", "correct": false },
+                { "text": "q_ult = N_c + N_q + N_y", "correct": false }
+              ]
+            },
+            {
+              "question": "Allowable bearing capacity —",
+              "options": [
+                { "text": "q_allow = q_ult / FS", "correct": true },
+                { "text": "q_allow = q_ult × FS", "correct": false },
+                { "text": "q_allow = FS / q_ult", "correct": false }
+              ]
+            },
+            {
+              "question": "Typical FS for shallow foundation —",
+              "options": [
+                { "text": "2.5–3", "correct": true },
+                { "text": "1–1.5", "correct": false },
+                { "text": "4–5", "correct": false }
+              ]
+            },
+            {
+              "question": "Settlement =",
+              "options": [
+                { "text": "Immediate + Primary + Secondary", "correct": true },
+                { "text": "Only immediate", "correct": false },
+                { "text": "Only primary", "correct": false }
+              ]
+            },
+            {
+              "question": "Plate load test measures —",
+              "options": [
+                { "text": "q_allow & settlement", "correct": true },
+                { "text": "Permeability only", "correct": false },
+                { "text": "Shear strength only", "correct": false }
+              ]
+            },
+            {
+              "question": "Water table effect —",
+              "options": [
+                { "text": "Reduces bearing capacity", "correct": true },
+                { "text": "Increases bearing capacity", "correct": false },
+                { "text": "No effect on bearing capacity", "correct": false }
+              ]
+            },
+            {
+              "question": "SPT-based q_ult —",
+              "options": [
+                { "text": "Approximate from N-value", "correct": true },
+                { "text": "Exact calculation", "correct": false },
+                { "text": "Not related to N-value", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 7: Mat, Pile & Well Foundations",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Deep Foundations",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "MAT (RAFT) FOUNDATION",
+                "• Large continuous foundation covering the entire structure footprint\n• Used when soil bearing capacity is low or column loads are close\n• Reduces differential settlement\n• Settlement calculated similar to shallow foundation but for entire mat area: S = Σ(H × Δe / (1 + e_0)) over layers",
+                ""
+              ],
+              [
+                "PILE FOUNDATION",
+                "• Transfers loads to deeper, stronger soil layers or rock\n• Types: End-bearing piles (load carried by tip) & Friction piles (load carried by skin friction)\n• Materials: Concrete, steel, timber\n• Single pile capacity: Q_p = Q_b + Q_s – Q_b = end-bearing capacity, Q_s = skin friction capacity\n• Group efficiency: η_group = Q_group / (Σ Q_single)",
+                ""
+              ],
+              [
+                "NEGATIVE SKIN FRICTION",
+                "• Occurs when surrounding soil settles more than pile → downward drag on pile\n• Reduces net pile capacity",
+                ""
+              ],
+              [
+                "WELL FOUNDATION",
+                "• Used in bridges, piers, or water structures\n• Components: Cutting edge, well curb, well curb cap, shaft, well cap\n• Types: Cylindrical, Rectangular, Composite wells\n• Load transfer: Base bearing + shaft friction\n• Depth depends on soil strata & scour allowance",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas - Deep Foundations",
+          "items": [
+            { "name": "SINGLE PILE CAPACITY", "expr": "Q_p = Q_b + Q_s" },
+            { "name": "END-BEARING PILE", "expr": "Q_b = q_b × A_tip" },
+            { "name": "FRICTION PILE", "expr": "Q_s = Σ(f_s × A_surface)" },
+            { "name": "PILE GROUP EFFICIENCY", "expr": "η_group = Q_group / Σ Q_single" },
+            { "name": "MAT SETTLEMENT", "expr": "S = Σ(H × Δe / (1 + e_0))" },
+            { "name": "WELL FOUNDATION BEARING", "expr": "Q_total = Q_base + Q_shaft" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Deep Foundations - MCQs",
+          "items": [
+            {
+              "question": "Mat foundation is used when —",
+              "options": [
+                { "text": "Soil bearing capacity is low", "correct": true },
+                { "text": "Soil bearing capacity is high", "correct": false },
+                { "text": "No settlement concerns", "correct": false }
+              ]
+            },
+            {
+              "question": "Main advantage of mat foundation —",
+              "options": [
+                { "text": "Reduces differential settlement", "correct": true },
+                { "text": "Increases cost", "correct": false },
+                { "text": "Increases settlement", "correct": false }
+              ]
+            },
+            {
+              "question": "Pile foundation transfers load to —",
+              "options": [
+                { "text": "Deeper soil/rock", "correct": true },
+                { "text": "Surface soil only", "correct": false },
+                { "text": "No transfer occurs", "correct": false }
+              ]
+            },
+            {
+              "question": "End-bearing pile —",
+              "options": [
+                { "text": "Load carried by tip", "correct": true },
+                { "text": "Load carried by skin friction", "correct": false },
+                { "text": "No load transfer", "correct": false }
+              ]
+            },
+            {
+              "question": "Friction pile —",
+              "options": [
+                { "text": "Load carried by skin friction", "correct": true },
+                { "text": "Load carried by tip", "correct": false },
+                { "text": "No load transfer", "correct": false }
+              ]
+            },
+            {
+              "question": "Total pile capacity —",
+              "options": [
+                { "text": "Q_p = Q_b + Q_s", "correct": true },
+                { "text": "Q_p = Q_b - Q_s", "correct": false },
+                { "text": "Q_p = Q_b × Q_s", "correct": false }
+              ]
+            },
+            {
+              "question": "Pile group efficiency —",
+              "options": [
+                { "text": "η_group = Q_group / Σ Q_single", "correct": true },
+                { "text": "η_group = Σ Q_single / Q_group", "correct": false },
+                { "text": "η_group = Q_group × Σ Q_single", "correct": false }
+              ]
+            },
+            {
+              "question": "Negative skin friction reduces —",
+              "options": [
+                { "text": "Net pile capacity", "correct": true },
+                { "text": "Pile length", "correct": false },
+                { "text": "Soil density", "correct": false }
+              ]
+            },
+            {
+              "question": "Well foundation components —",
+              "options": [
+                { "text": "Cutting edge, shaft, well cap", "correct": true },
+                { "text": "Only concrete", "correct": false },
+                { "text": "Only steel", "correct": false }
+              ]
+            },
+            {
+              "question": "Typical well foundation application —",
+              "options": [
+                { "text": "Bridge piers, water structures", "correct": true },
+                { "text": "Small houses", "correct": false },
+                { "text": "Road pavements", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "level": 2,
+      "title": "Section C: Soil Mechanics & Foundation Engineering – Summary Table",
+      "table": {
+        "header": ["TOPIC / SUB-TOPIC", "KEY NOTES / FORMULAS", "HIGH-VALUE MCQS"],
+        "rows": [
+          [
+            "Soil Mechanics - Phase Relations & Index Properties",
+            "- Soil as 3-phase system: solids, water, air\n- Void ratio: e = V_v/V_s, Porosity: n = V_v/V\n- Water content: w = W_w/W_s × 100%\n- Atterberg limits: LL, PL, PI = LL - PL\n- Soil classification: USCS/IS based on grain size & plasticity",
+            "1. Void ratio = V_v/V_s\n2. Porosity = V_v/V\n3. PI = LL - PL\n4. Coarse soil = Gravel & Sand\n5. Fine soil = Silt & Clay"
+          ],
+          [
+            "Effective Stress, Capillarity & Permeability",
+            "- Effective stress: σ' = σ - u\n- Darcy's law: Q = k i A\n- Capillary rise: h_c = 0.15/d\n- Quick sand: i_critical = γ_sat/γ_w - 1\n- Constant head test (coarse), Falling head test (fine)",
+            "1. Effective stress = σ - u\n2. Darcy's law: Q = k i A\n3. Quick sand when i ≥ i_critical\n4. Capillary rise in fine pores\n5. Permeability units: m/s"
+          ],
+          [
+            "Compaction, Compressibility & Consolidation",
+            "- Compaction increases density, strength\n- Proctor test: ρ_dmax & w_opt\n- Settlement: S = H × Δe/(1 + e_0)\n- Consolidation: time-dependent volume decrease\n- Cc for NC soil, Cr for OC soil",
+            "1. Compaction increases dry density\n2. Optimum moisture → max density\n3. Settlement = H × Δe/(1 + e_0)\n4. Primary + Secondary consolidation\n5. Degree of compaction = (ρ_d,field/ρ_d,max)×100%"
+          ],
+          [
+            "Shear Strength & Slope Stability",
+            "- Mohr-Coulomb: τ = c + σ tan φ\n- Direct shear, Triaxial, Unconfined tests\n- FS = Resisting/Driving shear\n- Slope failure types: circular, translational\n- Groundwater reduces FS",
+            "1. Shear strength = c + σ tan φ\n2. FS = Resisting/Driving\n3. FS > 1 stable, FS < 1 failure\n4. Principal stresses: σ₁, σ₃\n5. Groundwater reduces stability"
+          ],
+          [
+            "Foundation Engineering - Site Investigation & Earth Pressure",
+            "- SPT: N-value (blows/30cm)\n- Plate load test for q_allow\n- Earth pressure: Active, Passive, At-rest\n- Rankine: K_a = tan²(45-φ/2), K_p = tan²(45+φ/2)\n- Retaining walls: Gravity, Cantilever, Sheet pile",
+            "1. SPT measures N-value\n2. Active: wall moves away\n3. Passive: soil resists wall\n4. K_a = tan²(45-φ/2)\n5. K_p = tan²(45+φ/2)"
+          ],
+          [
+            "Bearing Capacity & Settlement",
+            "- Terzaghi: q_ult = cN_c + γD_fN_q + 0.5γBN_y\n- q_allow = q_ult/FS (FS=2.5-3)\n- Failure modes: General, Local, Punching\n- Settlement = Immediate + Primary + Secondary\n- Water table reduces capacity",
+            "1. Terzaghi: q_ult = cN_c + γD_fN_q + 0.5γBN_y\n2. q_allow = q_ult/FS\n3. General shear in dense soils\n4. Settlement has 3 components\n5. Water table reduces bearing capacity"
+          ],
+          [
+            "Mat, Pile & Well Foundations",
+            "- Mat: for low bearing capacity, reduces differential settlement\n- Pile: Q_p = Q_b + Q_s, η_group = Q_group/ΣQ_single\n- Negative skin friction reduces capacity\n- Well: for bridges/piers, components: cutting edge, shaft, cap",
+            "1. Mat reduces differential settlement\n2. Pile capacity = end-bearing + skin friction\n3. Group efficiency < 1\n4. Negative skin friction reduces capacity\n5. Well for bridge piers"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "formulas",
+      "level": 2,
+      "title": "Important Formulas – Section C",
+      "items": [
+        { "name": "Effective Stress", "expr": "σ' = σ - u" },
+        { "name": "Shear Strength (Mohr-Coulomb)", "expr": "τ = c + σ tan φ" },
+        { "name": "Terzaghi Bearing Capacity", "expr": "q_ult = cN_c + γD_fN_q + 0.5γBN_y" },
+        { "name": "Settlement", "expr": "S = H × Δe / (1 + e_0)" },
+        { "name": "Darcy's Law", "expr": "Q = k i A" },
+        { "name": "Factor of Safety (Slope)", "expr": "FS = Resisting Shear / Driving Shear" },
+        { "name": "Pile Capacity", "expr": "Q_p = Q_b + Q_s" },
+        { "name": "Rankine Active Coefficient", "expr": "K_a = tan²(45 - φ/2)" },
+        { "name": "Degree of Compaction", "expr": "DC = (ρ_d,field / ρ_d,max) × 100%" },
+        { "name": "Plasticity Index", "expr": "PI = LL - PL" }
+      ]
+    },
+    {
+      "type": "mcqs",
+      "level": 2,
+      "title": "Very Important MCQs – Section C (High-Yield)",
+      "items": [
+        {
+          "question": "Effective stress formula →",
+          "options": [
+            { "text": "σ' = σ - u", "correct": true },
+            { "text": "σ' = σ + u", "correct": false }
+          ]
+        },
+        {
+          "question": "Shear strength equation →",
+          "options": [
+            { "text": "τ = c + σ tan φ", "correct": true },
+            { "text": "τ = c - σ tan φ", "correct": false }
+          ]
+        },
+        {
+          "question": "Terzaghi bearing capacity →",
+          "options": [
+            { "text": "q_ult = cN_c + γD_fN_q + 0.5γBN_y", "correct": true },
+            { "text": "q_ult = c + γD_f + γB", "correct": false }
+          ]
+        },
+        {
+          "question": "Darcy's law →",
+          "options": [
+            { "text": "Q = k i A", "correct": true },
+            { "text": "Q = A / (k i)", "correct": false }
+          ]
+        },
+        {
+          "question": "Plasticity Index →",
+          "options": [
+            { "text": "PI = LL - PL", "correct": true },
+            { "text": "PI = LL + PL", "correct": false }
+          ]
+        },
+        {
+          "question": "Active earth pressure coefficient →",
+          "options": [
+            { "text": "K_a = tan²(45 - φ/2)", "correct": true },
+            { "text": "K_a = tan²(45 + φ/2)", "correct": false }
+          ]
+        },
+        {
+          "question": "Pile capacity →",
+          "options": [
+            { "text": "Q_p = Q_b + Q_s", "correct": true },
+            { "text": "Q_p = Q_b - Q_s", "correct": false }
+          ]
+        },
+        {
+          "question": "Factor of Safety for slope →",
+          "options": [
+            { "text": "FS = Resisting/Driving shear", "correct": true },
+            { "text": "FS = Driving/Resisting shear", "correct": false }
+          ]
+        },
+        {
+          "question": "Settlement formula →",
+          "options": [
+            { "text": "S = H × Δe / (1 + e_0)", "correct": true },
+            { "text": "S = H × (1 + e_0) / Δe", "correct": false }
+          ]
+        },
+        {
+          "question": "Quick sand condition occurs when →",
+          "options": [
+            { "text": "Upward gradient ≥ critical gradient", "correct": true },
+            { "text": "Downward gradient ≥ critical gradient", "correct": false }
+          ]
+        },
+        {
+          "question": "Mat foundation advantage →",
+          "options": [
+            { "text": "Reduces differential settlement", "correct": true },
+            { "text": "Increases settlement", "correct": false }
+          ]
+        },
+        {
+          "question": "SPT measures →",
+          "options": [
+            { "text": "N-value (blows/30cm)", "correct": true },
+            { "text": "Permeability", "correct": false }
+          ]
+        },
+        {
+          "question": "Compaction increases →",
+          "options": [
+            { "text": "Dry density & shear strength", "correct": true },
+            { "text": "Porosity & permeability", "correct": false }
+          ]
+        },
+        {
+          "question": "General shear failure occurs in →",
+          "options": [
+            { "text": "Dense sands & stiff clays", "correct": true },
+            { "text": "Soft soils", "correct": false }
+          ]
+        },
+        {
+          "question": "Water table effect on bearing capacity →",
+          "options": [
+            { "text": "Reduces bearing capacity", "correct": true },
+            { "text": "Increases bearing capacity", "correct": false }
+          ]
+        },
+        {
+          "question": "Negative skin friction →",
+          "options": [
+            { "text": "Reduces pile capacity", "correct": true },
+            { "text": "Increases pile capacity", "correct": false }
+          ]
+        },
+        {
+          "question": "Well foundation used for →",
+          "options": [
+            { "text": "Bridge piers & water structures", "correct": true },
+            { "text": "Small residential buildings", "correct": false }
+          ]
+        },
+        {
+          "question": "Degree of compaction →",
+          "options": [
+            { "text": "(ρ_d,field / ρ_d,max) × 100%", "correct": true },
+            { "text": "(ρ_d,max / ρ_d,field) × 100%", "correct": false }
+          ]
+        },
+        {
+          "question": "Mohr-Coulomb failure envelope →",
+          "options": [
+            { "text": "τ = c + σ tan φ", "correct": true },
+            { "text": "τ = σ tan φ - c", "correct": false }
+          ]
+        },
+        {
+          "question": "Plate load test measures →",
+          "options": [
+            { "text": "q_allow & settlement", "correct": true },
+            { "text": "Shear strength parameters", "correct": false }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -129,40 +129,6 @@ export default function Nav() {
                     m³ ⇄ ft³
                   </div>
                 </Link>
-                {/* Second row: Nepali variants */}
-                <Link
-                  href="/converters/length-nepali"
-                  className="group/item rounded-xl border border-slate-200/40 bg-white/70 p-4 transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-soft dark:border-slate-700/30 dark:bg-slate-900/60"
-                >
-                  <div className="  text-sm font-semibold text-heading dark:text-heading-dark group-hover/item:text-primary">
-                    Length (Nepali)
-                  </div>
-                  <div className="font-sans text-xs text-body/70 dark:text-body-dark/70">
-                    haat ⇄ m
-                  </div>
-                </Link>
-                <Link
-                  href="/converters/area-nepali"
-                  className="group/item rounded-xl border border-slate-200/40 bg-white/70 p-4 transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-soft dark:border-slate-700/30 dark:bg-slate-900/60"
-                >
-                  <div className="  text-sm font-semibold text-heading dark:text-heading-dark group-hover/item:text-primary">
-                    Area (Nepali)
-                  </div>
-                  <div className="font-sans text-xs text-body/70 dark:text-body-dark/70">
-                    ropani ⇄ m²
-                  </div>
-                </Link>
-                <Link
-                  href="/converters/volume-nepali"
-                  className="group/item rounded-xl border border-slate-200/40 bg-white/70 p-4 transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-soft dark:border-slate-700/30 dark:bg-slate-900/60"
-                >
-                  <div className="  text-sm font-semibold text-heading dark:text-heading-dark group-hover/item:text-primary">
-                    Volume (Nepali)
-                  </div>
-                  <div className="font-sans text-xs text-body/70 dark:text-body-dark/70">
-                    pathi ⇄ liter
-                  </div>
-                </Link>
               </div>
             </div>
           </div>

@@ -1,0 +1,312 @@
+{
+  "title": "Section C: Structural Analysis",
+  "ui": {
+    "show_toc": true,
+    "chapters_collapsible": true,
+    "mcq": {
+      "shuffle_options": true,
+      "show_correct_on_submit": true,
+      "track_progress": true
+    },
+    "tables": {
+      "style": "plain-3",
+      "wrap_long_text": true
+    },
+    "theme": {
+      "palette": {
+        "primary": "#1E88E5",
+        "secondary": "#00ACC1",
+        "accent": "#FDD835",
+        "background": "#FFFFFF",
+        "surface": "#FAFAFA",
+        "text_primary": "#0F172A",
+        "text_secondary": "#475569"
+      },
+      "typography": {
+        "font_family": "font-sans",
+        "scale": {
+          "h1": 1.75,
+          "h2": 1.5,
+          "h3": 1.25,
+          "body": 1.0,
+          "small": 0.9
+        }
+      },
+      "cards": {
+        "elevation": 1,
+        "radius": 10,
+        "padding": 16
+      }
+    }
+  },
+  "sections": [
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 1: Stresses and Strains",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Fundamentals of Stresses and Strains",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "STRESS",
+                "Force per unit area on a member; σ = F / A; Types: axial, bending, shear, torsion.",
+                ""
+              ],
+              ["STRAIN", "Deformation per unit length; ε = ΔL / L; Types: normal, shear.", ""],
+              [
+                "HOOKE'S LAW",
+                "Stress is proportional to strain for elastic material: σ = E ε; E = modulus of elasticity.",
+                ""
+              ],
+              [
+                "POISSON'S RATIO",
+                "Ratio of lateral strain to longitudinal strain: ν = ε_lat / ε_long.",
+                ""
+              ],
+              [
+                "STRESS-STRAIN RELATIONSHIPS",
+                "Axial: σ = F/A; Shear: τ = V/A; Bending: σ = M y / I; Torsion: τ = T ρ / J.",
+                ""
+              ],
+              [
+                "TEMPERATURE STRESSES",
+                "ΔL = α L ΔT; σ = E α ΔT; α = coefficient of thermal expansion.",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas – Stresses & Strains",
+          "items": [
+            { "name": "Axial stress", "expr": "σ = F / A" },
+            { "name": "Axial strain", "expr": "ε = ΔL / L" },
+            { "name": "Hooke's Law", "expr": "σ = E ε" },
+            { "name": "Shear stress", "expr": "τ = V / A" },
+            { "name": "Bending stress", "expr": "σ = M y / I" },
+            { "name": "Torsion stress", "expr": "τ = T ρ / J" },
+            { "name": "Temperature stress", "expr": "σ = E α ΔT" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Stresses & Strains – MCQs",
+          "items": [
+            {
+              "question": "Unit of stress is —",
+              "options": [
+                { "text": "N/m² or Pa", "correct": true },
+                { "text": "N", "correct": false },
+                { "text": "m²", "correct": false }
+              ]
+            },
+            {
+              "question": "Hooke’s law applies in —",
+              "options": [
+                { "text": "Elastic range", "correct": true },
+                { "text": "Plastic range", "correct": false },
+                { "text": "Fracture range", "correct": false }
+              ]
+            },
+            {
+              "question": "Poisson's ratio is —",
+              "options": [
+                { "text": "Lateral/longitudinal strain", "correct": true },
+                { "text": "Stress/strain", "correct": false },
+                { "text": "Force/area", "correct": false }
+              ]
+            },
+            {
+              "question": "Bending stress formula —",
+              "options": [
+                { "text": "σ = M y / I", "correct": true },
+                { "text": "σ = F / A", "correct": false },
+                { "text": "τ = V / A", "correct": false }
+              ]
+            },
+            {
+              "question": "Temperature stress depends on —",
+              "options": [
+                { "text": "E, α, ΔT", "correct": true },
+                { "text": "Mass only", "correct": false },
+                { "text": "Length only", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 2: Analysis of Beams",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Beams – Bending & Shear",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "SIMPLE BEAM",
+                "Supported at ends, carries vertical loads; Reactions determined by equilibrium.",
+                ""
+              ],
+              [
+                "SHEAR FORCE (SF)",
+                "Internal force along section resisting sliding; Positive when left segment tends up.",
+                ""
+              ],
+              [
+                "BENDING MOMENT (BM)",
+                "Internal moment resisting bending; Positive when concave up (sagging).",
+                ""
+              ],
+              [
+                "SF & BM DIAGRAMS",
+                "Plot variation along beam; Use relations: dV/dx = -w(x), dM/dx = V(x).",
+                ""
+              ],
+              [
+                "UNIFORMLY DISTRIBUTED LOAD (UDL)",
+                "SF slope = -w, BM slope = V; Max BM at midspan for simply supported.",
+                ""
+              ],
+              [
+                "POINT LOAD",
+                "SF changes abruptly; BM linear between points; Max at load location.",
+                ""
+              ],
+              ["CONCENTRATED MOMENT", "SF continuous; BM jumps by applied moment.", ""]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Beam Analysis Formulas",
+          "items": [
+            { "name": "Bending stress", "expr": "σ = M y / I" },
+            { "name": "Shear stress", "expr": "τ = V Q / (I b)" },
+            { "name": "Relation SF & Load", "expr": "dV/dx = -w(x)" },
+            { "name": "Relation BM & SF", "expr": "dM/dx = V(x)" },
+            { "name": "Max bending moment (simply supported, UDL)", "expr": "Mmax = w L² / 8" },
+            { "name": "Max bending moment (point load center)", "expr": "Mmax = P L / 4" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Beams – MCQs",
+          "items": [
+            {
+              "question": "Shear force is —",
+              "options": [
+                { "text": "Internal force along section", "correct": true },
+                { "text": "Moment at section", "correct": false },
+                { "text": "Deflection", "correct": false }
+              ]
+            },
+            {
+              "question": "Bending moment positive —",
+              "options": [
+                { "text": "Sagging concave up", "correct": true },
+                { "text": "Hogging concave down", "correct": false },
+                { "text": "Zero", "correct": false }
+              ]
+            },
+            {
+              "question": "Max BM for simply supported UDL —",
+              "options": [
+                { "text": "w L² / 8", "correct": true },
+                { "text": "w L² / 4", "correct": false },
+                { "text": "P L / 4", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 3: Analysis of Trusses",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Trusses – Methods of Analysis",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "DETERMINATE TRUSS",
+                "Number of members m = 2j - 3; j = number of joints; Stable and solvable by static equilibrium.",
+                ""
+              ],
+              [
+                "METHOD OF JOINTS",
+                "Equilibrium at each joint: ΣFx=0, ΣFy=0; Useful for all member forces.",
+                ""
+              ],
+              [
+                "METHOD OF SECTIONS",
+                "Cut through members; Use ΣFx=0, ΣFy=0, ΣM=0; Efficient for selected members.",
+                ""
+              ],
+              [
+                "ZERO FORCE MEMBERS",
+                "Members with 2 non-collinear members and no external load at joint; help in stability.",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Truss Formulas",
+          "items": [
+            { "name": "Joint equilibrium", "expr": "ΣFx = 0, ΣFy = 0" },
+            { "name": "Section method", "expr": "ΣFx = 0, ΣFy = 0, ΣM = 0" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Trusses – MCQs",
+          "items": [
+            {
+              "question": "Determinacy condition for truss —",
+              "options": [
+                { "text": "m = 2j - 3", "correct": true },
+                { "text": "m = j + 1", "correct": false },
+                { "text": "m = 2j + 3", "correct": false }
+              ]
+            },
+            {
+              "question": "Zero force member occurs when —",
+              "options": [
+                {
+                  "text": "2 non-collinear members and no external load at joint",
+                  "correct": true
+                },
+                { "text": "Member under tension", "correct": false },
+                { "text": "Member under compression", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

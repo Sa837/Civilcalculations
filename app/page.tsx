@@ -34,8 +34,8 @@ export default function HomePage() {
           </h1>
 
           <p className="mx-auto mb-12 max-w-3xl font-sans text-xl text-body/80 dark:text-body-dark/80">
-            Professional-grade calculators and converters built specifically
-            for civil engineers. Save time and eliminate errors in your daily calculations.
+            Professional-grade calculators and converters built specifically for civil engineers.
+            Save time and eliminate errors in your daily calculations.
           </p>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
@@ -89,8 +89,8 @@ export default function HomePage() {
               Everything You Need
             </h2>
             <p className="mx-auto max-w-2xl font-sans text-lg text-body/80 dark:text-body-dark/80">
-              Professional-grade calculators and converters designed for civil engineering professionals. Built with
-              accuracy, speed, and reliability in mind.
+              Professional-grade calculators and converters designed for civil engineering
+              professionals. Built with accuracy, speed, and reliability in mind.
             </p>
           </div>
 
@@ -129,70 +129,9 @@ export default function HomePage() {
                 Engineering Resources
               </h3>
               <p className="font-sans text-body/80 dark:text-body-dark/80">
-                Comprehensive engineering resources and material databases to
-                streamline your workflow.
+                Comprehensive engineering resources and material databases to streamline your
+                workflow.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Educational Content Section */}
-      <section className="px-6 py-20 bg-white dark:bg-slate-900">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 font-display text-4xl font-bold text-heading dark:text-heading-dark">
-              Civil Engineering Resources
-            </h2>
-            <p className="mx-auto max-w-2xl font-sans text-lg text-body/80 dark:text-body-dark/80">
-              Learn from our comprehensive guides and resources for civil engineering professionals.
-            </p>
-          </div>
-
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <div className="overflow-hidden rounded-2xl border border-slate-200/20 bg-surface shadow-card transition-all hover:shadow-hover dark:border-slate-800/20 dark:bg-slate-800">
-              <div className="h-48 bg-gradient-to-r from-blue-500 to-cyan-500"></div>
-              <div className="p-6">
-                <h3 className="mb-2 font-display text-xl font-semibold text-heading dark:text-heading-dark">
-                  Concrete Mix Design Guide
-                </h3>
-                <p className="mb-4 font-sans text-body/80 dark:text-body-dark/80">
-                  Learn the step-by-step process of designing concrete mixes for different strength requirements and environmental conditions.
-                </p>
-                <a href="/guides/concrete-mix-design" className="text-sm font-medium text-primary hover:underline">
-                  Read Guide →
-                </a>
-              </div>
-            </div>
-
-            <div className="overflow-hidden rounded-2xl border border-slate-200/20 bg-surface shadow-card transition-all hover:shadow-hover dark:border-slate-800/20 dark:bg-slate-800">
-              <div className="h-48 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
-              <div className="p-6">
-                <h3 className="mb-2 font-display text-xl font-semibold text-heading dark:text-heading-dark">
-                  Structural Analysis Basics
-                </h3>
-                <p className="mb-4 font-sans text-body/80 dark:text-body-dark/80">
-                  Understand the fundamental principles of structural analysis and how to apply them in your projects.
-                </p>
-                <a href="/guides/structural-analysis" className="text-sm font-medium text-primary hover:underline">
-                  Learn More →
-                </a>
-              </div>
-            </div>
-
-            <div className="overflow-hidden rounded-2xl border border-slate-200/20 bg-surface shadow-card transition-all hover:shadow-hover dark:border-slate-800/20 dark:bg-slate-800">
-              <div className="h-48 bg-gradient-to-r from-purple-500 to-violet-600"></div>
-              <div className="p-6">
-                <h3 className="mb-2 font-display text-xl font-semibold text-heading dark:text-heading-dark">
-                  Construction Project Management
-                </h3>
-                <p className="mb-4 font-sans text-body/80 dark:text-body-dark/80">
-                  Essential techniques and best practices for managing construction projects effectively.
-                </p>
-                <a href="/guides/construction-management" className="text-sm font-medium text-primary hover:underline">
-                  Explore →
-                </a>
-              </div>
             </div>
           </div>
         </div>
@@ -220,8 +159,8 @@ export default function HomePage() {
               </div>
               <Quote className="mb-3 h-6 w-6 text-primary/40" />
               <p className="mb-4 font-sans text-sm text-body/80 dark:text-body-dark/80 italic">
-                &quot;This platform totally changed how I handle my daily calculations. The concrete mix
-                calculator saved me so much time on my last project!&quot;
+                &quot;This platform totally changed how I handle my daily calculations. The concrete
+                mix calculator saved me so much time on my last project!&quot;
               </p>
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-500">
@@ -245,8 +184,8 @@ export default function HomePage() {
               </div>
               <Quote className="mb-3 h-6 w-6 text-primary/40" />
               <p className="mb-4 font-sans text-sm text-body/80 dark:text-body-dark/80 italic">
-                &quot;The unit converters are spot-on and super fast. I use them every day for switching
-                between metric and imperial on my international projects.&quot;
+                &quot;The unit converters are spot-on and super fast. I use them every day for
+                switching between metric and imperial on my international projects.&quot;
               </p>
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-green-500 to-emerald-500">
@@ -270,8 +209,8 @@ export default function HomePage() {
               </div>
               <Quote className="mb-3 h-6 w-6 text-primary/40" />
               <p className="mb-4 font-sans text-sm text-body/80 dark:text-body-dark/80 italic">
-                &quot;Having these tools on my phone has been a total game-changer as a site engineer.
-                Instant calculations right when I need them!&quot;
+                &quot;Having these tools on my phone has been a total game-changer as a site
+                engineer. Instant calculations right when I need them!&quot;
               </p>
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500">

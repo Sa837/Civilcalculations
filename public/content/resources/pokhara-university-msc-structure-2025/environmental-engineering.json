@@ -1,0 +1,1007 @@
+{
+  "title": "Section F: Environmental Engineering (Water Supply and Sanitation)",
+  "ui": {
+    "show_toc": true,
+    "chapters_collapsible": true,
+    "mcq": {
+      "shuffle_options": true,
+      "show_correct_on_submit": true,
+      "track_progress": true
+    },
+    "tables": {
+      "style": "plain-3",
+      "wrap_long_text": true
+    },
+    "theme": {
+      "palette": {
+        "primary": "#1E88E5",
+        "secondary": "#00ACC1",
+        "accent": "#FDD835",
+        "background": "#FFFFFF",
+        "surface": "#FAFAFA",
+        "text_primary": "#0F172A",
+        "text_secondary": "#475569"
+      },
+      "typography": {
+        "font_family": "font-sans",
+        "scale": {
+          "h1": 1.75,
+          "h2": 1.5,
+          "h3": 1.25,
+          "body": 1.0,
+          "small": 0.9
+        }
+      },
+      "cards": {
+        "elevation": 1,
+        "radius": 10,
+        "padding": 16
+      }
+    }
+  },
+  "sections": [
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 1: Drinking Water",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Drinking Water - Core Concepts",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "DEFINITION & SCOPE",
+                "Branch of Environmental Engineering dealing with safe, adequate, and potable water supply for domestic, industrial, and public use. Ensures protection of public health and meets Nepal drinking water standards (NDWQS).",
+                ""
+              ],
+              [
+                "POLLUTANTS IN DRINKING WATER",
+                "Sources: Natural (Minerals, organic matter), Domestic (Sewage, detergents), Industrial (Heavy metals, chemicals), Agricultural (Fertilizers, pesticides)\nTypes: Physical (Turbidity, color, taste, odor), Chemical (Hardness, fluoride, nitrate, heavy metals), Biological (Bacteria, viruses, protozoa)\nEffects: Health hazards (Diarrhea, cholera, fluorosis), Aesthetic (Bad taste, color, odor), Operational (Scaling in pipes, corrosion)",
+                ""
+              ],
+              [
+                "SOURCES OF WATER",
+                "1 Surface water: Rivers, lakes, reservoirs\n2 Groundwater: Wells, tube wells, springs\n3 Other sources: Rainwater harvesting, desalination\nNepal relevance: Rivers and springs main sources; groundwater common in rural areas.",
+                ""
+              ],
+              [
+                "CHARACTERISTICS OF WATER",
+                "Physical: Color, taste, odor, turbidity, temperature\nChemical: pH (6.5–8.5), hardness, fluoride (<1.5 mg/L), nitrate (<45 mg/L)\nBiological: Total coliform < 0 per 100 mL\nNDWQS & WHO guidelines for safe water.",
+                ""
+              ],
+              [
+                "WATER DEMAND & QUANTITY",
+                "Types of demand: Domestic, industrial, commercial, firefighting, public use\nPer capita demand: 135–150 lpcd (urban), 70–100 lpcd (rural)\nEstimation of future population: Exponential growth\nDesign period: 20–25 years urban, 15–20 years rural",
+                ""
+              ],
+              [
+                "PRESENT STATUS & ISSUES",
+                "Urban Nepal: Leakage, contamination, intermittent supply\nRural Nepal: Lack of piped water, reliance on wells and springs\nCommon issues: Waterborne diseases, unsustainable sources, inequitable distribution, poor maintenance",
+                ""
+              ],
+              [
+                "DESIGN NORMS & PRINCIPLES",
+                "Nepal Drinking Water Standards (NDWQS), DoR, WHO:\nWater must be potable, continuous, adequate quantity\nMinimum pressure: 1–2 bar in distribution network\nWater treatment units: Aeration, Coagulation, Flocculation, Sedimentation, Filtration, Disinfection\nEquitable distribution and source sustainability",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas – Drinking Water",
+          "items": [
+            { "name": "FUTURE POPULATION", "expr": "P_f = P_c (1 + r)^t" },
+            { "name": "PER CAPITA DEMAND", "expr": "Q = P × q" },
+            { "name": "WATER REQUIREMENT FOR DESIGN PERIOD", "expr": "Q_d = P_f × q_per_capita" },
+            { "name": "POPULATION GROWTH RATE", "expr": "r = (P_f/P_c)^(1/t) - 1" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Drinking Water – MCQs",
+          "items": [
+            {
+              "question": "Per capita water demand in urban Nepal —",
+              "options": [
+                { "text": "135–150 lpcd", "correct": true },
+                { "text": "70–100 lpcd", "correct": false },
+                { "text": "200–250 lpcd", "correct": false }
+              ]
+            },
+            {
+              "question": "Per capita water demand in rural Nepal —",
+              "options": [
+                { "text": "70–100 lpcd", "correct": true },
+                { "text": "135–150 lpcd", "correct": false },
+                { "text": "50–70 lpcd", "correct": false }
+              ]
+            },
+            {
+              "question": "Exponential formula for future population —",
+              "options": [
+                { "text": "P_f = P_c (1 + r)^t", "correct": true },
+                { "text": "P_f = P_c × r × t", "correct": false },
+                { "text": "P_f = P_c + r × t", "correct": false }
+              ]
+            },
+            {
+              "question": "Design period for urban water supply —",
+              "options": [
+                { "text": "20–25 years", "correct": true },
+                { "text": "10–15 years", "correct": false },
+                { "text": "30–35 years", "correct": false }
+              ]
+            },
+            {
+              "question": "Design period for rural water supply —",
+              "options": [
+                { "text": "15–20 years", "correct": true },
+                { "text": "20–25 years", "correct": false },
+                { "text": "10–12 years", "correct": false }
+              ]
+            },
+            {
+              "question": "Minimum pH of potable water —",
+              "options": [
+                { "text": "6.5", "correct": true },
+                { "text": "5.5", "correct": false },
+                { "text": "7.0", "correct": false }
+              ]
+            },
+            {
+              "question": "Maximum fluoride in drinking water —",
+              "options": [
+                { "text": "1.5 mg/L", "correct": true },
+                { "text": "2.0 mg/L", "correct": false },
+                { "text": "1.0 mg/L", "correct": false }
+              ]
+            },
+            {
+              "question": "Total coliform in safe drinking water —",
+              "options": [
+                { "text": "0 per 100 mL", "correct": true },
+                { "text": "10 per 100 mL", "correct": false },
+                { "text": "50 per 100 mL", "correct": false }
+              ]
+            },
+            {
+              "question": "Main water sources in rural Nepal —",
+              "options": [
+                { "text": "Groundwater (wells, springs)", "correct": true },
+                { "text": "Surface water (rivers, reservoirs)", "correct": false },
+                { "text": "Rainwater harvesting", "correct": false }
+              ]
+            },
+            {
+              "question": "Main water sources in urban Nepal —",
+              "options": [
+                { "text": "Surface water (rivers, reservoirs)", "correct": true },
+                { "text": "Groundwater (wells, springs)", "correct": false },
+                { "text": "Desalination", "correct": false }
+              ]
+            },
+            {
+              "question": "Common issues in Nepal water supply —",
+              "options": [
+                { "text": "Leakage, intermittent supply, contamination", "correct": true },
+                { "text": "Over-supply, high pressure", "correct": false },
+                { "text": "Excessive treatment", "correct": false }
+              ]
+            },
+            {
+              "question": "Minimum pressure in distribution network —",
+              "options": [
+                { "text": "1–2 bar", "correct": true },
+                { "text": "3–4 bar", "correct": false },
+                { "text": "0.5–1 bar", "correct": false }
+              ]
+            },
+            {
+              "question": "Standards followed in Nepal —",
+              "options": [
+                { "text": "NDWQS / DoR / WHO", "correct": true },
+                { "text": "EPA / USGS", "correct": false },
+                { "text": "EU Standards", "correct": false }
+              ]
+            },
+            {
+              "question": "Pollutant types —",
+              "options": [
+                { "text": "Physical, Chemical, Biological", "correct": true },
+                { "text": "Organic, Inorganic, Gaseous", "correct": false },
+                { "text": "Solid, Liquid, Gas", "correct": false }
+              ]
+            },
+            {
+              "question": "Major health impact of water pollutants —",
+              "options": [
+                { "text": "Diarrhea, cholera, fluorosis", "correct": true },
+                { "text": "Cancer, heart disease", "correct": false },
+                { "text": "Respiratory problems", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 2: Drinking Water Treatment Processes",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Water Treatment Processes",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "AERATION",
+                "Removes dissolved gases (CO₂, H₂S) and oxidizes Fe & Mn\nImproves taste and odor\nMethods: Spray, cascade, diffused air\nO₂ transfer: O₂ transfer = K_L × A × (C_s – C)",
+                ""
+              ],
+              [
+                "COAGULATION & FLOCCULATION",
+                "Purpose: Remove colloidal and suspended particles\nCoagulants: Alum (Al₂(SO₄)₃), Ferric chloride\nProcess: Chemical added → destabilizes particles → flocs form\nFlocculation: Gentle mixing to enlarge flocs\nJar Test used for optimum dose determination",
+                ""
+              ],
+              [
+                "SEDIMENTATION",
+                "Removal of heavy particles by gravity settling\nSedimentation tank design:\nSurface overflow rate: V_o = Q/A (m³/s per m²)\nDetention time: t = V/Q (s)\nParticle settling velocity: V_s = (ρ_p - ρ) g d² / 18μ (Stoke's Law)",
+                ""
+              ],
+              [
+                "FILTRATION",
+                "Removes remaining suspended particles after sedimentation\nTypes: Slow Sand Filter (SSF): 0.1–0.3 m/h, Rapid Sand Filter (RSF): 5–15 m/h, Dual Media Filter: Sand + Anthracite\nFilter design: Hydraulic loading: HLR = Q/A_f",
+                ""
+              ],
+              [
+                "DISINFECTION",
+                "Purpose: Kill or inactivate pathogenic microorganisms\nMethods: Chlorination, UV, Ozone\nChlorination formula: Dose(mg/L) = C × Q / Flow\nFree chlorine residual: 0.2–0.5 mg/L (Nepal standards)\nContact time: C × t = 15–30 mg·min/L for effective disinfection",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas – Treatment Processes",
+          "items": [
+            { "name": "OXYGEN TRANSFER IN AERATION", "expr": "O₂ transfer = K_L × A × (C_s - C)" },
+            { "name": "CHEMICAL COAGULANT DOSE", "expr": "Dose = (C × V) / 1000" },
+            { "name": "SURFACE OVERFLOW RATE (SEDIMENTATION)", "expr": "V_o = Q/A" },
+            { "name": "DETENTION TIME (SEDIMENTATION)", "expr": "t = V/Q" },
+            {
+              "name": "PARTICLE SETTLING VELOCITY (STOKE'S LAW)",
+              "expr": "V_s = (ρ_p - ρ) g d² / 18μ"
+            },
+            { "name": "HYDRAULIC LOADING (FILTER)", "expr": "HLR = Q/A_f" },
+            { "name": "CHLORINATION DOSE", "expr": "Dose = (C × Q) / Flow" },
+            { "name": "CHLORINE CONTACT TIME", "expr": "C × t = 15–30 mg·min/L" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Treatment Processes – MCQs",
+          "items": [
+            {
+              "question": "Aeration removes which substances?",
+              "options": [
+                { "text": "CO₂, H₂S, Fe, Mn", "correct": true },
+                { "text": "Bacteria, viruses", "correct": false },
+                { "text": "Hardness, fluoride", "correct": false }
+              ]
+            },
+            {
+              "question": "Main coagulant used in Nepal —",
+              "options": [
+                { "text": "Alum / Ferric chloride", "correct": true },
+                { "text": "Lime / Soda ash", "correct": false },
+                { "text": "Chlorine / Ozone", "correct": false }
+              ]
+            },
+            {
+              "question": "Purpose of flocculation —",
+              "options": [
+                { "text": "Form larger flocs for sedimentation", "correct": true },
+                { "text": "Kill pathogens", "correct": false },
+                { "text": "Remove dissolved gases", "correct": false }
+              ]
+            },
+            {
+              "question": "Sedimentation tank overflow rate formula —",
+              "options": [
+                { "text": "V_o = Q/A", "correct": true },
+                { "text": "V_o = A/Q", "correct": false },
+                { "text": "V_o = Q × A", "correct": false }
+              ]
+            },
+            {
+              "question": "Detention time in sedimentation —",
+              "options": [
+                { "text": "t = V/Q", "correct": true },
+                { "text": "t = Q/V", "correct": false },
+                { "text": "t = V × Q", "correct": false }
+              ]
+            },
+            {
+              "question": "Settling velocity formula (Stoke's law) —",
+              "options": [
+                { "text": "V_s = (ρ_p - ρ) g d²/18μ", "correct": true },
+                { "text": "V_s = ρ g d/μ", "correct": false },
+                { "text": "V_s = (ρ_p + ρ) g d²/18μ", "correct": false }
+              ]
+            },
+            {
+              "question": "Slow sand filter rate —",
+              "options": [
+                { "text": "0.1–0.3 m/h", "correct": true },
+                { "text": "5–15 m/h", "correct": false },
+                { "text": "1–2 m/h", "correct": false }
+              ]
+            },
+            {
+              "question": "Rapid sand filter rate —",
+              "options": [
+                { "text": "5–15 m/h", "correct": true },
+                { "text": "0.1–0.3 m/h", "correct": false },
+                { "text": "2–4 m/h", "correct": false }
+              ]
+            },
+            {
+              "question": "Filter hydraulic loading —",
+              "options": [
+                { "text": "HLR = Q/A_f", "correct": true },
+                { "text": "HLR = A_f/Q", "correct": false },
+                { "text": "HLR = Q × A_f", "correct": false }
+              ]
+            },
+            {
+              "question": "Disinfection target —",
+              "options": [
+                { "text": "Kill pathogens, free chlorine 0.2–0.5 mg/L", "correct": true },
+                { "text": "Remove turbidity", "correct": false },
+                { "text": "Reduce hardness", "correct": false }
+              ]
+            },
+            {
+              "question": "Chlorination contact time —",
+              "options": [
+                { "text": "C × t = 15–30 mg·min/L", "correct": true },
+                { "text": "C × t = 5–10 mg·min/L", "correct": false },
+                { "text": "C × t = 50–100 mg·min/L", "correct": false }
+              ]
+            },
+            {
+              "question": "Method for determining optimum coagulant dose —",
+              "options": [
+                { "text": "Jar Test", "correct": true },
+                { "text": "Titration", "correct": false },
+                { "text": "Spectrophotometry", "correct": false }
+              ]
+            },
+            {
+              "question": "Nepal standard for safe water —",
+              "options": [
+                { "text": "NDWQS / DoR / WHO", "correct": true },
+                { "text": "EPA / FDA", "correct": false },
+                { "text": "EU Standards", "correct": false }
+              ]
+            },
+            {
+              "question": "Purpose of dual media filter —",
+              "options": [
+                { "text": "Better filtration efficiency", "correct": true },
+                { "text": "Lower cost", "correct": false },
+                { "text": "Smaller footprint", "correct": false }
+              ]
+            },
+            {
+              "question": "Aeration improves —",
+              "options": [
+                { "text": "Taste, odor, reduces dissolved gases", "correct": true },
+                { "text": "Hardness, alkalinity", "correct": false },
+                { "text": "Bacterial count", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 3: Wastewater Engineering – Sources, Characteristics & Treatment",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Wastewater Fundamentals",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "DEFINITION & SCOPE",
+                "Wastewater is water from domestic, industrial, and storm sources containing pollutants that require treatment before disposal or reuse. Ensures public health protection and environmental safety.",
+                ""
+              ],
+              [
+                "SOURCES OF WASTEWATER",
+                "1 Domestic: Toilets, kitchens, bathrooms\n2 Industrial: Factories, breweries, tanneries, paper mills\n3 Stormwater / Surface runoff: Carries debris, chemicals\n4 Combined sewer systems in urban Nepal — mixture of domestic + stormwater",
+                ""
+              ],
+              [
+                "NATURE & CHARACTERISTICS",
+                "Physical: Color, temperature, turbidity, suspended solids\nChemical: BOD, COD, pH, nutrients (N, P), heavy metals\nBiological: Coliforms, pathogens\nKey parameters:\nBOD₅: Amount of oxygen consumed in 5 days (mg/L)\nCOD: Total oxygen demand by chemical oxidation (mg/L)\nAerobic decomposition: Organic matter oxidized by bacteria → CO₂ + H₂O\nAnaerobic decomposition: Organic matter decomposed without oxygen → CH₄ + CO₂ + H₂S",
+                ""
+              ],
+              [
+                "PHYSICAL TREATMENT",
+                "1 Screening: Removes large debris; bar screens or mesh screens\n2 Grit Chamber: Removes sand, grit; prevents abrasion\n3 Gas Chamber / Equalization Tank: Balances flow and prevents shock loads\n4 Mixing: Ensures uniform chemical addition\n5 Sedimentation / Primary Clarifier: Settling of suspended solids\n6 Flocculation / Coagulation: Chemicals like alum added; promotes aggregation\n7 Floatation / DAF: Removes light solids using air bubbles",
+                ""
+              ],
+              [
+                "CHEMICAL TREATMENT",
+                "1 Chemical Precipitation: Removes phosphates, heavy metals; e.g., lime, alum\n2 Absorption: Pollutants adhere to activated carbon\n3 Ion Exchange: Removes hardness, heavy metals\n4 Electrolysis / Electrocoagulation: Electrical current precipitates contaminants",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas – Wastewater Treatment",
+          "items": [
+            { "name": "BOD REMOVAL EFFICIENCY", "expr": "η = (BOD_i - BOD_f)/BOD_i × 100%" },
+            { "name": "DETENTION TIME (SEDIMENTATION)", "expr": "t = V/Q" },
+            { "name": "OVERFLOW RATE (CLARIFIER)", "expr": "V_o = Q/A" },
+            { "name": "CHEMICAL COAGULANT DOSE", "expr": "Dose = (C × V)/1000" },
+            { "name": "COD/BOD RATIO", "expr": "Indicates biodegradability" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Wastewater Fundamentals – MCQs",
+          "items": [
+            {
+              "question": "BOD₅ represents —",
+              "options": [
+                { "text": "Oxygen consumed in 5 days", "correct": true },
+                { "text": "Total organic content", "correct": false },
+                { "text": "Chemical oxygen demand", "correct": false }
+              ]
+            },
+            {
+              "question": "COD measures —",
+              "options": [
+                { "text": "Total chemical oxygen demand", "correct": true },
+                { "text": "Biological oxygen demand", "correct": false },
+                { "text": "Dissolved oxygen", "correct": false }
+              ]
+            },
+            {
+              "question": "Aerobic decomposition products —",
+              "options": [
+                { "text": "CO₂ + H₂O", "correct": true },
+                { "text": "CH₄ + CO₂ + H₂S", "correct": false },
+                { "text": "NH₃ + H₂S", "correct": false }
+              ]
+            },
+            {
+              "question": "Anaerobic decomposition products —",
+              "options": [
+                { "text": "CH₄ + CO₂ + H₂S", "correct": true },
+                { "text": "CO₂ + H₂O", "correct": false },
+                { "text": "NO₂ + H₂O", "correct": false }
+              ]
+            },
+            {
+              "question": "Main purpose of screening —",
+              "options": [
+                { "text": "Remove large debris", "correct": true },
+                { "text": "Remove dissolved gases", "correct": false },
+                { "text": "Kill pathogens", "correct": false }
+              ]
+            },
+            {
+              "question": "Grit chamber removes —",
+              "options": [
+                { "text": "Sand, grit to protect equipment", "correct": true },
+                { "text": "Organic matter", "correct": false },
+                { "text": "Dissolved salts", "correct": false }
+              ]
+            },
+            {
+              "question": "Sedimentation tank overflow rate —",
+              "options": [
+                { "text": "V_o = Q/A", "correct": true },
+                { "text": "V_o = A/Q", "correct": false },
+                { "text": "V_o = Q × A", "correct": false }
+              ]
+            },
+            {
+              "question": "Detention time in clarifier —",
+              "options": [
+                { "text": "t = V/Q", "correct": true },
+                { "text": "t = Q/V", "correct": false },
+                { "text": "t = V × Q", "correct": false }
+              ]
+            },
+            {
+              "question": "Dissolved Air Flotation removes —",
+              "options": [
+                { "text": "Light solids, oil, grease", "correct": true },
+                { "text": "Heavy metals", "correct": false },
+                { "text": "Dissolved gases", "correct": false }
+              ]
+            },
+            {
+              "question": "Chemical precipitation removes —",
+              "options": [
+                { "text": "Phosphates, heavy metals", "correct": true },
+                { "text": "Bacteria, viruses", "correct": false },
+                { "text": "Dissolved oxygen", "correct": false }
+              ]
+            },
+            {
+              "question": "Common coagulants in wastewater —",
+              "options": [
+                { "text": "Alum, Ferric chloride", "correct": true },
+                { "text": "Chlorine, Ozone", "correct": false },
+                { "text": "Lime, Soda ash", "correct": false }
+              ]
+            },
+            {
+              "question": "Ion exchange removes —",
+              "options": [
+                { "text": "Hardness & heavy metals", "correct": true },
+                { "text": "Suspended solids", "correct": false },
+                { "text": "Pathogens", "correct": false }
+              ]
+            },
+            {
+              "question": "Absorption uses —",
+              "options": [
+                { "text": "Activated carbon", "correct": true },
+                { "text": "Sand filters", "correct": false },
+                { "text": "Membranes", "correct": false }
+              ]
+            },
+            {
+              "question": "Electrocoagulation principle —",
+              "options": [
+                { "text": "Electrical current precipitates pollutants", "correct": true },
+                { "text": "Chemical oxidation", "correct": false },
+                { "text": "Biological degradation", "correct": false }
+              ]
+            },
+            {
+              "question": "COD/BOD ratio >2 indicates —",
+              "options": [
+                { "text": "Low biodegradability", "correct": true },
+                { "text": "High biodegradability", "correct": false },
+                { "text": "Complete treatment", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 4: Biological Treatment & Sludge Management",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Biological Treatment Processes",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "BIOLOGICAL TREATMENT – OVERVIEW",
+                "Uses microorganisms to remove organic matter (BOD, COD) from wastewater.\nTypes: Aerobic (Requires oxygen, faster degradation), Anaerobic (Without oxygen, produces methane)",
+                ""
+              ],
+              [
+                "AEROBIC PROCESS",
+                "Microorganisms oxidize organic matter → CO₂ + H₂O\nCommon units: Activated Sludge Process, Trickling Filter, Aerated Lagoon, Oxidation Ditch",
+                ""
+              ],
+              [
+                "ACTIVATED SLUDGE PROCESS (ASP)",
+                "Suspended growth process; microorganisms in aeration tank\nWastewater mixed with return sludge\nDesign parameters: HRT = V/Q, SRT = XV/Q_wX_w\nOxygen requirement: O₂ = 1.42 × (BOD_i - BOD_f) kg/day",
+                ""
+              ],
+              [
+                "TRICKLING FILTER",
+                "Wastewater trickled over biological media colonized by biofilm\nOrganic removal efficiency: 70–90%\nOrganic loading rate = BOD applied / Area / day",
+                ""
+              ],
+              [
+                "AERATED LAGOONS / OXIDATION PONDS",
+                "Large shallow ponds; mechanical aeration or natural aeration\nHydraulic retention time: 3–10 days\nRemoval efficiency: 50–90% depending on depth, temperature",
+                ""
+              ],
+              [
+                "OXIDATION DITCH",
+                "Continuous loop channel, aeration provided via diffusers\nHRT: 12–24 h\nSuitable for small-medium towns in Nepal",
+                ""
+              ],
+              ["SLUDGE DRYING", "Reduces moisture by sun or mechanical drying; reduces volume", ""],
+              [
+                "DEWATERING",
+                "Removes free water using filter press, belt press, or centrifuge",
+                ""
+              ],
+              ["FILTRATION", "Water separated from sludge using media filters", ""],
+              [
+                "CENTRIFUGATION",
+                "Rapid separation using centrifugal force; effective for high-solid sludge",
+                ""
+              ],
+              [
+                "CHEMICAL CONDITIONING",
+                "Lime, polymers, or ferric chloride added to improve dewatering and stabilize sludge",
+                ""
+              ],
+              [
+                "INCINERATION",
+                "Complete burning of sludge to ash; reduces volume drastically; requires air pollution control",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas – Biological & Sludge Treatment",
+          "items": [
+            { "name": "HYDRAULIC RETENTION TIME (HRT)", "expr": "HRT = V/Q" },
+            { "name": "SLUDGE RETENTION TIME (SRT)", "expr": "SRT = XV/Q_wX_w" },
+            { "name": "OXYGEN REQUIREMENT FOR ASP", "expr": "O₂ = 1.42 × (BOD_i - BOD_f) kg/day" },
+            {
+              "name": "ORGANIC LOADING RATE (TRICKLING FILTER)",
+              "expr": "L_o = BOD applied / Area / day"
+            },
+            { "name": "BOD REMOVAL EFFICIENCY", "expr": "η = (BOD_i - BOD_f)/BOD_i × 100%" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Biological Treatment & Sludge – MCQs",
+          "items": [
+            {
+              "question": "Aerobic treatment produces —",
+              "options": [
+                { "text": "CO₂ + H₂O", "correct": true },
+                { "text": "CH₄ + CO₂ + H₂S", "correct": false },
+                { "text": "NH₃ + H₂S", "correct": false }
+              ]
+            },
+            {
+              "question": "Anaerobic treatment produces —",
+              "options": [
+                { "text": "CH₄ + CO₂ + H₂S", "correct": true },
+                { "text": "CO₂ + H₂O", "correct": false },
+                { "text": "NO₂ + H₂O", "correct": false }
+              ]
+            },
+            {
+              "question": "Activated Sludge HRT formula —",
+              "options": [
+                { "text": "HRT = V/Q", "correct": true },
+                { "text": "HRT = Q/V", "correct": false },
+                { "text": "HRT = V × Q", "correct": false }
+              ]
+            },
+            {
+              "question": "Activated Sludge SRT formula —",
+              "options": [
+                { "text": "SRT = XV/Q_wX_w", "correct": true },
+                { "text": "SRT = Q_wX_w/XV", "correct": false },
+                { "text": "SRT = X/VQ_w", "correct": false }
+              ]
+            },
+            {
+              "question": "Oxygen requirement for BOD removal —",
+              "options": [
+                { "text": "O₂ = 1.42 × (BOD_i - BOD_f)", "correct": true },
+                { "text": "O₂ = 2.0 × (BOD_i - BOD_f)", "correct": false },
+                { "text": "O₂ = 0.5 × (BOD_i - BOD_f)", "correct": false }
+              ]
+            },
+            {
+              "question": "Trickling filter organic loading —",
+              "options": [
+                { "text": "L_o = BOD / Area / day", "correct": true },
+                { "text": "L_o = BOD × Area × day", "correct": false },
+                { "text": "L_o = BOD / Volume / day", "correct": false }
+              ]
+            },
+            {
+              "question": "Aerated lagoon HRT —",
+              "options": [
+                { "text": "3-10 days", "correct": true },
+                { "text": "12-24 hours", "correct": false },
+                { "text": "1-2 days", "correct": false }
+              ]
+            },
+            {
+              "question": "Oxidation ditch HRT —",
+              "options": [
+                { "text": "12-24 h", "correct": true },
+                { "text": "3-10 days", "correct": false },
+                { "text": "1-2 hours", "correct": false }
+              ]
+            },
+            {
+              "question": "Sludge dewatering methods —",
+              "options": [
+                { "text": "Filter press, belt press, centrifuge", "correct": true },
+                { "text": "Screening, grit removal", "correct": false },
+                { "text": "Chlorination, UV", "correct": false }
+              ]
+            },
+            {
+              "question": "Chemical conditioning purpose —",
+              "options": [
+                { "text": "Improve dewatering & stabilization", "correct": true },
+                { "text": "Kill pathogens", "correct": false },
+                { "text": "Remove heavy metals", "correct": false }
+              ]
+            },
+            {
+              "question": "Incineration purpose —",
+              "options": [
+                { "text": "Reduce sludge volume drastically", "correct": true },
+                { "text": "Recover nutrients", "correct": false },
+                { "text": "Generate biogas", "correct": false }
+              ]
+            },
+            {
+              "question": "Typical BOD removal in trickling filter —",
+              "options": [
+                { "text": "70–90%", "correct": true },
+                { "text": "30–50%", "correct": false },
+                { "text": "95–99%", "correct": false }
+              ]
+            },
+            {
+              "question": "Aerated lagoon removal efficiency —",
+              "options": [
+                { "text": "50–90%", "correct": true },
+                { "text": "20–40%", "correct": false },
+                { "text": "95–99%", "correct": false }
+              ]
+            },
+            {
+              "question": "Suitable biological treatment for small towns in Nepal —",
+              "options": [
+                { "text": "Oxidation ditch / Aerated lagoon", "correct": true },
+                { "text": "Activated sludge only", "correct": false },
+                { "text": "Trickling filter only", "correct": false }
+              ]
+            },
+            {
+              "question": "Main problem in anaerobic sludge —",
+              "options": [
+                { "text": "Odor (H₂S)", "correct": true },
+                { "text": "High cost", "correct": false },
+                { "text": "Low efficiency", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "level": 2,
+      "title": "Section F: Environmental Engineering – Summary Table",
+      "table": {
+        "header": ["TOPIC / SUB-TOPIC", "KEY NOTES / FORMULAS", "HIGH-VALUE MCQS"],
+        "rows": [
+          [
+            "Drinking Water",
+            "- Per capita demand: Urban 135–150 lpcd, Rural 70–100 lpcd\n- Population growth: P_f = P_c (1 + r)^t\n- Water quality: NDWQS / WHO standards\n- Pollutants: Physical, Chemical, Biological\n- Treatment: Aeration, Coagulation, Sedimentation, Filtration, Disinfection",
+            "1. Urban demand = 135–150 lpcd\n2. Rural demand = 70–100 lpcd\n3. Future population = P_c (1 + r)^t\n4. NDWQS / WHO standards\n5. Free chlorine residual = 0.2–0.5 mg/L"
+          ],
+          [
+            "Water Treatment Processes",
+            "- Aeration: O₂ transfer = K_L × A × (C_s - C)\n- Coagulation: Alum, Ferric chloride\n- Sedimentation: V_o = Q/A, t = V/Q\n- Filtration: SSF 0.1–0.3 m/h, RSF 5–15 m/h\n- Disinfection: Chlorination, C × t = 15–30 mg·min/L",
+            "1. Sedimentation overflow rate = Q/A\n2. Detention time = V/Q\n3. Slow sand filter rate = 0.1–0.3 m/h\n4. Rapid sand filter rate = 5–15 m/h\n5. Chlorination contact time = 15–30 mg·min/L"
+          ],
+          [
+            "Wastewater Fundamentals",
+            "- Sources: Domestic, Industrial, Stormwater\n- Parameters: BOD₅, COD, pH, nutrients\n- Treatment: Screening, Grit removal, Sedimentation, Chemical precipitation\n- Aerobic: CO₂ + H₂O, Anaerobic: CH₄ + CO₂ + H₂S",
+            "1. BOD₅ = Oxygen consumed in 5 days\n2. COD = Total chemical oxygen demand\n3. Aerobic products = CO₂ + H₂O\n4. Anaerobic products = CH₄ + CO₂ + H₂S\n5. Screening removes large debris"
+          ],
+          [
+            "Biological Treatment & Sludge",
+            "- Aerobic: ASP, Trickling Filter, Aerated Lagoon\n- Anaerobic: CH₄ production\n- Formulas: HRT = V/Q, SRT = XV/Q_wX_w, O₂ = 1.42 × (BOD_i - BOD_f)\n- Sludge: Drying, Dewatering, Incineration",
+            "1. HRT = V/Q\n2. SRT = XV/Q_wX_w\n3. Oxygen requirement = 1.42 × (BOD_i - BOD_f)\n4. Aerobic products = CO₂ + H₂O\n5. Anaerobic products = CH₄ + CO₂ + H₂S"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "formulas",
+      "level": 2,
+      "title": "Important Formulas – Section F",
+      "items": [
+        { "name": "FUTURE POPULATION", "expr": "P_f = P_c (1 + r)^t" },
+        { "name": "PER CAPITA WATER DEMAND", "expr": "Q = P × q" },
+        { "name": "SEDIMENTATION OVERFLOW RATE", "expr": "V_o = Q/A" },
+        { "name": "DETENTION TIME", "expr": "t = V/Q" },
+        { "name": "FILTER HYDRAULIC LOADING", "expr": "HLR = Q/A_f" },
+        { "name": "CHLORINATION CONTACT TIME", "expr": "C × t = 15–30 mg·min/L" },
+        { "name": "BOD REMOVAL EFFICIENCY", "expr": "η = (BOD_i - BOD_f)/BOD_i × 100%" },
+        { "name": "HYDRAULIC RETENTION TIME (HRT)", "expr": "HRT = V/Q" },
+        { "name": "SLUDGE RETENTION TIME (SRT)", "expr": "SRT = XV/Q_wX_w" },
+        { "name": "OXYGEN REQUIREMENT FOR ASP", "expr": "O₂ = 1.42 × (BOD_i - BOD_f) kg/day" }
+      ]
+    },
+    {
+      "type": "mcqs",
+      "level": 2,
+      "title": "Very Important MCQs – Section F (High-Yield)",
+      "items": [
+        {
+          "question": "Urban Nepal per capita water demand —",
+          "options": [
+            { "text": "135–150 lpcd", "correct": true },
+            { "text": "70–100 lpcd", "correct": false }
+          ]
+        },
+        {
+          "question": "Rural Nepal per capita water demand —",
+          "options": [
+            { "text": "70–100 lpcd", "correct": true },
+            { "text": "135–150 lpcd", "correct": false }
+          ]
+        },
+        {
+          "question": "Future population formula —",
+          "options": [
+            { "text": "P_f = P_c (1 + r)^t", "correct": true },
+            { "text": "P_f = P_c + r × t", "correct": false }
+          ]
+        },
+        {
+          "question": "Sedimentation overflow rate formula —",
+          "options": [
+            { "text": "V_o = Q/A", "correct": true },
+            { "text": "V_o = A/Q", "correct": false }
+          ]
+        },
+        {
+          "question": "Detention time formula —",
+          "options": [
+            { "text": "t = V/Q", "correct": true },
+            { "text": "t = Q/V", "correct": false }
+          ]
+        },
+        {
+          "question": "Slow sand filter rate —",
+          "options": [
+            { "text": "0.1–0.3 m/h", "correct": true },
+            { "text": "5–15 m/h", "correct": false }
+          ]
+        },
+        {
+          "question": "Rapid sand filter rate —",
+          "options": [
+            { "text": "5–15 m/h", "correct": true },
+            { "text": "0.1–0.3 m/h", "correct": false }
+          ]
+        },
+        {
+          "question": "Chlorination contact time —",
+          "options": [
+            { "text": "15–30 mg·min/L", "correct": true },
+            { "text": "5–10 mg·min/L", "correct": false }
+          ]
+        },
+        {
+          "question": "BOD₅ measures —",
+          "options": [
+            { "text": "Oxygen consumed in 5 days", "correct": true },
+            { "text": "Total organic content", "correct": false }
+          ]
+        },
+        {
+          "question": "Aerobic treatment products —",
+          "options": [
+            { "text": "CO₂ + H₂O", "correct": true },
+            { "text": "CH₄ + CO₂ + H₂S", "correct": false }
+          ]
+        },
+        {
+          "question": "Anaerobic treatment products —",
+          "options": [
+            { "text": "CH₄ + CO₂ + H₂S", "correct": true },
+            { "text": "CO₂ + H₂O", "correct": false }
+          ]
+        },
+        {
+          "question": "HRT formula —",
+          "options": [
+            { "text": "HRT = V/Q", "correct": true },
+            { "text": "HRT = Q/V", "correct": false }
+          ]
+        },
+        {
+          "question": "SRT formula —",
+          "options": [
+            { "text": "SRT = XV/Q_wX_w", "correct": true },
+            { "text": "SRT = Q_wX_w/XV", "correct": false }
+          ]
+        },
+        {
+          "question": "Oxygen requirement for BOD removal —",
+          "options": [
+            { "text": "O₂ = 1.42 × (BOD_i - BOD_f)", "correct": true },
+            { "text": "O₂ = 2.0 × (BOD_i - BOD_f)", "correct": false }
+          ]
+        },
+        {
+          "question": "Main coagulant in water treatment —",
+          "options": [
+            { "text": "Alum / Ferric chloride", "correct": true },
+            { "text": "Chlorine / Ozone", "correct": false }
+          ]
+        },
+        {
+          "question": "Screening removes —",
+          "options": [
+            { "text": "Large debris", "correct": true },
+            { "text": "Dissolved gases", "correct": false }
+          ]
+        },
+        {
+          "question": "Grit chamber removes —",
+          "options": [
+            { "text": "Sand, grit", "correct": true },
+            { "text": "Organic matter", "correct": false }
+          ]
+        },
+        {
+          "question": "Chemical precipitation removes —",
+          "options": [
+            { "text": "Phosphates, heavy metals", "correct": true },
+            { "text": "Bacteria, viruses", "correct": false }
+          ]
+        },
+        {
+          "question": "Sludge dewatering methods —",
+          "options": [
+            { "text": "Filter press, belt press, centrifuge", "correct": true },
+            { "text": "Screening, grit removal", "correct": false }
+          ]
+        },
+        {
+          "question": "Standards followed in Nepal —",
+          "options": [
+            { "text": "NDWQS / DoR / WHO", "correct": true },
+            { "text": "EPA / FDA", "correct": false }
+          ]
+        }
+      ]
+    }
+  ]
+}

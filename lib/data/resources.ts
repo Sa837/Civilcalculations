@@ -68,7 +68,7 @@ export const resources: Resource[] = [
     createdAt: new Date('2024-01-10'),
     updatedAt: new Date('2024-01-10')
   },
-  {
+ /* {
     slug: 'nepal-construction-regulations',
     title: 'Construction Rules and Regulations',
     description: 'Rules and regulations governing construction activities in Nepal.',
@@ -77,7 +77,7 @@ export const resources: Resource[] = [
     createdAt: new Date('2024-01-08'),
     updatedAt: new Date('2024-01-08')
   },
-  {
+ {
     slug: 'nepal-construction-notes',
     title: 'Construction Notes',
     description: 'Practical notes and guidelines for construction projects in Nepal.',
@@ -85,7 +85,7 @@ export const resources: Resource[] = [
     region: 'Nepal',
     createdAt: new Date('2024-01-05'),
     updatedAt: new Date('2024-01-05')
-  },
+  },*/
   {
     slug: 'pokhara-university-msc-structure-2025',
     title: 'Pokhara University Entrance MSc Structure 2025',
@@ -103,7 +103,7 @@ export const resources: Resource[] = [
     createdAt: new Date('2025-01-01'),
     updatedAt: new Date('2025-01-01')
   },
-  {
+ /* {
     slug: 'nepal-construction-notices',
     title: 'Construction Notices',
     description: 'Latest notices and updates from Nepal construction industry.',

@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { useMemo, useRef, useCallback } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { resources } from '../../../../lib/data/resources'
+import AdSlot from '../../../../components/ads/AdSlot'
 
 interface SubPageProps {
   params: {
@@ -11,58 +12,389 @@ interface SubPageProps {
   }
 }
 
+interface MCQOption {
+  text: string
+  correct: boolean
+}
+
+interface MCQItem {
+  question: string
+  options: MCQOption[]
+  answer?: string
+}
+
 export default function SubPage({ params }: SubPageProps) {
   const { category, sub } = params
 
   const { resource, subItem } = useMemo(() => {
-    const res = resources.find(r => r.slug === category)
-    const item = res?.subItems?.find(si => si.url?.endsWith('/' + sub))
+    const res = resources.find((r) => r.slug === category)
+    const item = res?.subItems?.find((si) => si.url?.endsWith('/' + sub))
     return { resource: res, subItem: item }
   }, [category, sub])
 
-  // Hooks must be called unconditionally, before any early returns
-  const printRef = useRef<HTMLDivElement>(null)
+  // State
+  const [q, setQ] = useState('')
+  const [jsonData, setJsonData] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [activeChapter, setActiveChapter] = useState<number>(0)
+  const [mounted, setMounted] = useState(false)
+  const [userNotes, setUserNotes] = useState<Record<number, string>>({})
+  const [mcqSelections, setMcqSelections] = useState<Record<string, number>>({})
+  const [tableNotes, setTableNotes] = useState<Record<string, string>>({})
+  const [collapsedMCQs, setCollapsedMCQs] = useState<Record<string, boolean>>({})
 
-  const handleDownloadPdf = useCallback(() => {
-    const content = printRef.current
-    if (!content || !subItem || !resource) return
+  const slugify = (s: string) =>
+    s
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
 
-    const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=900,height=1200')
+  // Load notes and table notes from localStorage
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(`notes:${category}/${sub}`)
+      if (stored) setUserNotes(JSON.parse(stored))
+      const tableStored = localStorage.getItem(`tableNotes:${category}/${sub}`)
+      if (tableStored) setTableNotes(JSON.parse(tableStored))
+    } catch {}
+  }, [category, sub])
+
+  const saveNote = (chapterIdx: number, text: string) => {
+    const updated = { ...userNotes, [chapterIdx]: text }
+    setUserNotes(updated)
+    try {
+      localStorage.setItem(`notes:${category}/${sub}`, JSON.stringify(updated))
+    } catch {}
+  }
+
+  const saveTableNote = (key: string, text: string) => {
+    const updated = { ...tableNotes, [key]: text }
+    setTableNotes(updated)
+    try {
+      localStorage.setItem(`tableNotes:${category}/${sub}`, JSON.stringify(updated))
+    } catch {}
+  }
+
+  const toggleMCQSection = (key: string) => {
+    setCollapsedMCQs({ ...collapsedMCQs, [key]: !collapsedMCQs[key] })
+  }
+
+  // Search filter
+  const matchesSearch = (text: string) => {
+    if (!q.trim()) return true
+    const tokens = q.toLowerCase().split(/\s+/).filter(Boolean)
+    const lower = text.toLowerCase()
+    return tokens.every((t) => lower.includes(t))
+  }
+
+  // Minimal rich-text formatter: supports **bold**, *italic*, __underline__, and newlines
+  const formatRichText = (raw: string) => {
+    if (!raw) return ''
+    // Escape HTML first
+    const escaped = raw
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+
+    // Apply simple markup
+    const withUnderline = escaped.replace(/__([^_]+)__/g, '<u>$1</u>')
+    const withBold = withUnderline.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    const withItalic = withBold.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>')
+    // Optional inline code
+    const withCode = withItalic.replace(/`([^`]+)`/g, '<code>$1</code>')
+
+    // Newlines to <br/>
+    return withCode.replace(/\n/g, '<br/>')
+  }
+
+  // Filter chapters by search
+  const filteredChapters = useMemo(() => {
+    if (!jsonData || !q.trim())
+      return jsonData?.sections?.filter((s: any) => s.type === 'chapter') || []
+    const chapters = jsonData.sections?.filter((s: any) => s.type === 'chapter') || []
+    return chapters.filter((ch: any) => {
+      const chTitle = ch.title || ''
+      const content = JSON.stringify(ch).toLowerCase()
+      return matchesSearch(chTitle + ' ' + content)
+    })
+  }, [jsonData, q])
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Load JSON
+  useEffect(() => {
+    let cancelled = false
+    const run = async () => {
+      if (!resource || !subItem) return
+      setLoading(true)
+      setError('')
+      try {
+        const res = await fetch(`/content/resources/${category}/${sub}.json`, { cache: 'no-store' })
+        if (!res.ok) throw new Error('Not found')
+        const data = await res.json()
+        if (cancelled) return
+        setJsonData(data)
+      } catch (e) {
+        if (!cancelled) setError('No JSON content found for this topic.')
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+    run()
+    return () => {
+      cancelled = true
+    }
+  }, [category, sub, resource, subItem])
+
+  const handleDownloadPdf = () => {
+    const printWindow = window.open('', '_blank')
     if (!printWindow) return
 
-    const doc = printWindow.document
-    doc.open()
-    doc.write(`
+    const content = filteredChapters
+      .map((ch: any, chIdx: number) => {
+        let html = `<div class="chapter-print"><h2>${ch.title}</h2>`
+        ch.sections?.forEach((sec: any) => {
+          if (sec.title) html += `<h3>${sec.title}</h3>`
+          if (sec.type === 'table' && sec.table?.rows) {
+            const header =
+              sec.table.header?.map((h: string) => (h.toUpperCase() === 'EXTRA' ? 'NOTES' : h)) ||
+              []
+            html +=
+              '<table><thead><tr>' +
+              header.map((h: string) => `<th>${h}</th>`).join('') +
+              '</tr></thead><tbody>'
+            sec.table.rows.forEach((row: string[]) => {
+              html += '<tr>' + row.map((c: string) => `<td>${c}</td>`).join('') + '</tr>'
+            })
+            html += '</tbody></table>'
+          }
+          if (sec.type === 'formulas' && sec.items) {
+            html += '<ul class="formulas">'
+            sec.items.forEach((f: any) => {
+              html += `<li><strong>${f.name}:</strong> <code>${f.expr}</code></li>`
+            })
+            html += '</ul>'
+          }
+          if (sec.type === 'mcqs' && sec.items) {
+            html += '<div class="mcqs"><ol>'
+            sec.items.forEach((mcq: any, i: number) => {
+              html += `<li><p>${mcq.question}</p><ul>`
+              mcq.options?.slice(0, 4).forEach((opt: any, oi: number) => {
+                const mark = opt.correct ? ' ✓' : ''
+                html += `<li>${String.fromCharCode(65 + oi)}. ${opt.text}${mark}</li>`
+              })
+              html += '</ul></li>'
+            })
+            html += '</ol></div>'
+          }
+        })
+        html += '</div>'
+        return html
+      })
+      .join('')
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
       <html>
         <head>
-          <title>${subItem?.title ?? ''} - ${resource?.title ?? ''}</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <title>${subItem?.title} - ${resource?.title}</title>
           <style>
-            * { box-sizing: border-box; }
-            body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, Noto Sans, 'Helvetica Neue', 'Liberation Sans', sans-serif; margin: 24px; color: #0f172a; }
-            h1,h2,h3 { color: #0f172a; margin: 16px 0 8px; }
-            p,li { line-height: 1.6; }
-            code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; }
-            .prose :where(h1,h2,h3,h4){ margin-top: 1.2em; }
-            .prose :where(table){ width: 100%; border-collapse: collapse; margin: 12px 0; }
-            .prose :where(th, td){ border: 1px solid #e2e8f0; padding: 8px; text-align: left; vertical-align: top; }
-            @page { size: A4; margin: 16mm; }
-            @media print { .no-print { display: none; } }
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { font-family: sans-serif; font-size: 10pt; line-height: 1.4; }
+            @page { size: A4; margin: 25mm; }
+            header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+            header h1 { font-size: 18pt; color: #000; margin-bottom: 5px; }
+            header p { font-size: 10pt; color: #000; }
+            footer { position: fixed; bottom: 2px; width: 100%; text-align: center; font-size: 9pt; color: #666; border-top: 1px solid #ccc; padding-top: 5px; }
+            .chapter-print { page-break-after: always; }
+            h2 { font-size: 16pt; color: #1e40af; margin: 20px 0 10px; border-bottom: 2px solid #dbeafe; padding-bottom: 5px; }
+            h3 { font-size: 13pt; color: #333; margin: 15px 0 8px; }
+            table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 10pt; }
+            th { background: #dbeafe; color: #1e40af; font-weight: bold; border: 1px solid #93c5fd; padding: 8px; text-align: left; }
+            td { border: 1px solid #cbd5e1; padding: 6px; vertical-align: top; }
+            tbody tr:nth-child(even) { background: #f8fafc; }
+            .formulas { list-style: none; margin: 10px 0; }
+            .formulas li { padding: 5px 0; border-bottom: 1px solid #e2e8f0; }
+            .formulas code { background: #f1f5f9; padding: 2px 5px; border-radius: 3px; font-family: 'Courier New', monospace; }
+            .mcqs ol { margin-left: 20px; }
+            .mcqs li { margin: 10px 0; }
+            .mcqs ul { list-style: none; margin-left: 10px; }
+            .mcqs ul li { padding: 3px 0; }
           </style>
         </head>
         <body>
-          <h1>${subItem?.title ?? ''}</h1>
-          <h3>${resource?.title ?? ''}</h3>
-          <div class="prose">${content.innerHTML}</div>
-          <script>window.onload = () => { window.print(); setTimeout(() => window.close(), 300); }<\/script>
+          <header>
+            <h1>${subItem?.title}</h1>
+            <p>${resource?.title} | civilcalculation.com</p>
+          </header>
+          ${content}
+          <footer>
+            <p>© ${new Date().getFullYear()} PaveEngineeringConsultancy(civilcalculation.com) | Page <span class="pageNumber"></span></p>
+          </footer>
+          <script>
+            window.onload = () => {
+              window.print()
+              setTimeout(() => window.close(), 500)
+            }
+          </script>
         </body>
       </html>
     `)
-    doc.close()
-  }, [resource, subItem])
+    printWindow.document.close()
+  }
+
+  const toggleChapter = (idx: number) => {
+    setActiveChapter(activeChapter === idx ? -1 : idx)
+  }
+
+  const handleMCQSelect = (chIdx: number, qIdx: number, optIdx: number) => {
+    const key = `${chIdx}-${qIdx}`
+    setMcqSelections({ ...mcqSelections, [key]: optIdx })
+  }
+
+  // Render components
+  const renderTable = (table: any, chIdx: number, secIdx: number) => {
+    if (!table?.rows) return null
+    const header = table.header || []
+    // Replace "EXTRA" with "NOTES" in header
+    const displayHeader = header.map((h: string) => (h.toUpperCase() === 'EXTRA' ? 'NOTES' : h))
+    const notesColIdx = header.findIndex((h: string) => h.toUpperCase() === 'EXTRA')
+
+    return (
+      <div className="card table-card">
+        <table className="plain-table">
+          {displayHeader.length > 0 && (
+            <thead>
+              <tr>
+                {displayHeader.map((h: string, i: number) => (
+                  <th key={i}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+          )}
+          <tbody>
+            {table.rows.map((row: string[], ri: number) => (
+              <tr key={ri}>
+                {row.map((cell, ci) => {
+                  // If this is the notes column, make it editable
+                  if (ci === notesColIdx && notesColIdx !== -1) {
+                    const noteKey = `${chIdx}-${secIdx}-${ri}`
+                    return (
+                      <td key={ci} className="notes-cell">
+                        <textarea
+                          value={tableNotes[noteKey] || ''}
+                          onChange={(e) => saveTableNote(noteKey, e.target.value)}
+                          placeholder="Add notes..."
+                          className="table-notes-input"
+                        />
+                      </td>
+                    )
+                  }
+                  return <td key={ci} dangerouslySetInnerHTML={{ __html: formatRichText(cell) }} />
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+
+  const renderFormulas = (items: any[]) => {
+    if (!items || items.length === 0) return null
+    return (
+      <div className="card formulas-card">
+        <ul className="formula-list">
+          {items.map((f, i) => (
+            <li key={i}>
+              {f.name && <strong>{f.name}:</strong>} <code>{f.expr}</code>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  const renderMCQs = (items: any[], chIdx: number, secIdx: number, title: string) => {
+    if (!items || items.length === 0) return null
+    const collapseKey = `${chIdx}-${secIdx}-mcq`
+    const isCollapsed = collapsedMCQs[collapseKey]
+
+    return (
+      <div className="card mcq-card">
+        <button onClick={() => toggleMCQSection(collapseKey)} className="mcq-collapse-btn">
+          <span className="mcq-collapse-title">{title || 'MCQs'}</span>
+          <span className="mcq-collapse-icon">{isCollapsed ? '▶' : '▼'}</span>
+        </button>
+
+        {!isCollapsed && (
+          <div className="mcq-content">
+            {items.map((mcq, qIdx) => {
+              const key = `${chIdx}-${qIdx}`
+              const selected = mcqSelections[key]
+              const options = mcq.options || []
+              const hasAnswered = selected !== undefined
+
+              return (
+                <div key={qIdx} className="mcq-item">
+                  <div
+                    className="mcq-question"
+                    dangerouslySetInnerHTML={{
+                      __html: `${qIdx + 1}. ${formatRichText(mcq.question || '')}`,
+                    }}
+                  />
+                  <div className="mcq-options">
+                    {options.slice(0, 4).map((opt: any, optIdx: number) => {
+                      const isSelected = selected === optIdx
+                      const isCorrect = opt.correct
+                      let className = 'mcq-option'
+
+                      // Show correct answer in green after any selection
+                      if (hasAnswered && isCorrect) {
+                        className += ' show-correct'
+                      }
+                      // Show selected wrong answer in red
+                      if (isSelected && !isCorrect) {
+                        className += ' wrong'
+                      }
+                      // Highlight the selected correct answer
+                      if (isSelected && isCorrect) {
+                        className += ' correct'
+                      }
+
+                      return (
+                        <button
+                          key={optIdx}
+                          className={className}
+                          onClick={() => handleMCQSelect(chIdx, qIdx, optIdx)}
+                          disabled={hasAnswered}
+                        >
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: `${String.fromCharCode(65 + optIdx)}. ${formatRichText(opt.text || '')}`,
+                            }}
+                          />
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+    )
+  }
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-10">
+    <main className="mx-auto max-w-5xl px-4 py-8">
       {!resource || !subItem ? (
         <div className="text-center py-10">
           <h1 className="mb-4 font-display text-3xl font-bold text-heading dark:text-heading-dark">
@@ -79,192 +411,401 @@ export default function SubPage({ params }: SubPageProps) {
           </Link>
         </div>
       ) : (
-      <>
-      <div className="mb-6">
-        <Link
-          href={`/resources/${category}` as any}
-          className="mb-4 inline-block rounded-xl border border-slate-200/20 bg-surface px-4 py-2 font-display font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-surface-dark dark:text-heading-dark dark:hover:bg-slate-700"
-        >
-          ← Back
-        </Link>
-        <h1 className="font-display text-3xl font-bold text-heading dark:text-heading-dark">
-          {subItem.title}
-        </h1>
-        <p className="mt-2 font-sans text-body/80 dark:text-body-dark/80">
-          {resource.title}
-        </p>
+        <>
+          <div className="mb-6">
+            <Link
+              href={`/resources/${category}` as any}
+              className="mb-4 inline-block rounded-xl border border-slate-200/20 bg-surface px-4 py-2 font-display font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-surface-dark dark:text-heading-dark dark:hover:bg-slate-700"
+            >
+              ← Back
+            </Link>
 
-        {/* Download PDF Button */}
-        <div className="mt-4">
-          <button
-            onClick={handleDownloadPdf}
-            className="no-print inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 font-display font-medium text-white transition-colors hover:bg-primary/90"
-          >
-            Download PDF
-          </button>
-        </div>
-      </div>
+            <h1 className="font-display text-3xl font-bold text-heading dark:text-heading-dark mb-2">
+              {subItem.title}
+            </h1>
+            <p className="font-sans text-body/80 dark:text-body-dark/80 mb-4">{resource.title}</p>
 
-      <article ref={printRef} className="prose prose-slate max-w-none dark:prose-invert">
-        {/* Transportation Engineering Content */}
-        {category === 'pokhara-university-msc-structure-2025' && sub === 'transportation-engineering' ? (
-          <div>
-            <h2>Section B: Transportation Engineering</h2>
-
-            <h3>1) Traffic Engineering</h3>
-            <table className="w-full text-sm table-fixed border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
-              <thead>
-                <tr>
-                  <th className="bg-slate-100 dark:bg-slate-800 text-left p-2 border border-slate-200 dark:border-slate-700">SUB-TOPIC</th>
-                  <th className="bg-slate-100 dark:bg-slate-800 text-left p-2 border border-slate-200 dark:border-slate-700">SHORT DESCRIPTION / NOTES</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="align-top p-2 border border-slate-200 dark:border-slate-700">Definition</td>
-                  <td className="p-2 border border-slate-200 dark:border-slate-700">Planning, design, operation and control of traffic for safe and efficient movement.</td>
-                </tr>
-                <tr>
-                  <td className="align-top p-2 border border-slate-200 dark:border-slate-700">Traffic characteristics</td>
-                  <td className="p-2 border border-slate-200 dark:border-slate-700">Road users, vehicle traits; stream variables <strong>q, v, k</strong> with relation <strong>q = k × v</strong>.</td>
-                </tr>
-                <tr>
-                  <td className="align-top p-2 border border-slate-200 dark:border-slate-700">Traffic volume study</td>
-                  <td className="p-2 border border-slate-200 dark:border-slate-700">Counts (veh/hr, veh/day); ADT/AADT; uses in design, capacity, signals, planning.</td>
-                </tr>
-                <tr>
-                  <td className="align-top p-2 border border-slate-200 dark:border-slate-700">Speed studies</td>
-                  <td className="p-2 border border-slate-200 dark:border-slate-700">Spot, time-mean (Vt), space-mean (Vs), 85th percentile; running vs journey speed.</td>
-                </tr>
-                <tr>
-                  <td className="align-top p-2 border border-slate-200 dark:border-slate-700">Parking studies</td>
-                  <td className="p-2 border border-slate-200 dark:border-slate-700">On-street (parallel/angle/perpendicular), off-street; demand, design and management.</td>
-                </tr>
-                <tr>
-                  <td className="align-top p-2 border border-slate-200 dark:border-slate-700">Accident studies</td>
-                  <td className="p-2 border border-slate-200 dark:border-slate-700">Data collection and analysis; causes: human, geometry, vehicle, weather; black spots.</td>
-                </tr>
-                <tr>
-                  <td className="align-top p-2 border border-slate-200 dark:border-slate-700">Traffic control devices</td>
-                  <td className="p-2 border border-slate-200 dark:border-slate-700">Signs, signals, markings; Nepal practice: DoR manuals; use IRC if DoR silent.</td>
-                </tr>
-                <tr>
-                  <td className="align-top p-2 border border-slate-200 dark:border-slate-700">Highway capacity</td>
-                  <td className="p-2 border border-slate-200 dark:border-slate-700">Basic: <strong>C = V/PHF</strong>; ideal ≈ 2000 veh/hr/lane (conditions dependent).</td>
-                </tr>
-                <tr>
-                  <td className="align-top p-2 border border-slate-200 dark:border-slate-700">Street lighting</td>
-                  <td className="p-2 border border-slate-200 dark:border-slate-700">30–50 lux (main roads); consider uniformity, glare, pole height/spacing.</td>
-                </tr>
-                <tr>
-                  <td className="align-top p-2 border border-slate-200 dark:border-slate-700">Intersection design</td>
-                  <td className="p-2 border border-slate-200 dark:border-slate-700">At-grade/grade-separated; channelization; roundabouts and weaving length.</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h4 className="mt-6">Important Formulas</h4>
-            <table className="w-full text-sm table-fixed border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
-              <thead>
-                <tr>
-                  <th className="bg-slate-100 dark:bg-slate-800 text-left p-2 border border-slate-200 dark:border-slate-700">CONCEPT</th>
-                  <th className="bg-slate-100 dark:bg-slate-800 text-left p-2 border border-slate-200 dark:border-slate-700">FORMULA / NOTES</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Flow–Speed–Density</td><td className="p-2 border border-slate-200 dark:border-slate-700">q = k × v</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">AADT</td><td className="p-2 border border-slate-200 dark:border-slate-700">Total yearly traffic ÷ 365</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Time-mean speed</td><td className="p-2 border border-slate-200 dark:border-slate-700">Vt = ΣVi / n</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Space-mean speed</td><td className="p-2 border border-slate-200 dark:border-slate-700">Vs = n / Σ(1/Vi); Vt ≥ Vs</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Stopping Sight Distance</td><td className="p-2 border border-slate-200 dark:border-slate-700">SSD = 0.278 V t + V²/(254 f)</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Peak Hour Factor</td><td className="p-2 border border-slate-200 dark:border-slate-700">PHF = V60/(4 × V15)</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Parking Index</td><td className="p-2 border border-slate-200 dark:border-slate-700">Vehicles parked / Total spaces × 100%</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Accident rate</td><td className="p-2 border border-slate-200 dark:border-slate-700">(Accidents × 10⁶)/(AADT × Length × 365)</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Weaving length (guide)</td><td className="p-2 border border-slate-200 dark:border-slate-700">L ≈ 2.7(W + 3.5) + V²</td></tr>
-              </tbody>
-            </table>
-
-            <h4 className="mt-6">High-Value MCQs</h4>
-            <ul>
-              <li>q = k × v relates flow, density and speed.</li>
-              <li>Unit of traffic flow: veh/hr; AADT = yearly traffic ÷ 365.</li>
-              <li>85th percentile speed for setting speed limits.</li>
-              <li>Typical ideal capacity ≈ 2000 veh/hr/lane.</li>
-              <li>PHF uses busiest 15-minute flow.</li>
-            </ul>
-
-            <h3 className="mt-10">2) Highway Geometric Design</h3>
-            <table className="w-full text-sm table-fixed border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
-              <thead>
-                <tr>
-                  <th className="bg-slate-100 dark:bg-slate-800 text-left p-2 border border-slate-200 dark:border-slate-700">SUB-TOPIC</th>
-                  <th className="bg-slate-100 dark:bg-slate-800 text-left p-2 border border-slate-200 dark:border-slate-700">SHORT DESCRIPTION / NOTES</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Design speed</td><td className="p-2 border border-slate-200 dark:border-slate-700">Basis of all features (NRS/IRC): Plain 100, Rolling 80, Mountainous 50, Steep 40 km/h.</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Cross-section</td><td className="p-2 border border-slate-200 dark:border-slate-700">Carriageway: 3.75 / 7.0 / 14.0 m; shoulders ≈ 2.5 m; camber 2–3% (bituminous).</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Sight distance</td><td className="p-2 border border-slate-200 dark:border-slate-700">SSD = 0.278 V t + V²/[254(f ± G)]; OSD ≈ d1 + d2 + d3; ISD = 2 × SSD.</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Horizontal alignment</td><td className="p-2 border border-slate-200 dark:border-slate-700">R = V²/[127(e + f)]; e = V²/(127R) − f; Ls = 0.0215 V³/CR; We = n l²/(2R) + V/(9.5 √R).</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Vertical alignment</td><td className="p-2 border border-slate-200 dark:border-slate-700">Ruling gradients: plain 3%, hill 5%; compensation C = (30 + R)/R % (max 75/R).</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Hill roads</td><td className="p-2 border border-slate-200 dark:border-slate-700">Hairpin bends with widening; retaining/breast walls; catch water drains; safety structures.</td></tr>
-              </tbody>
-            </table>
-
-            <h4 className="mt-6">Key Formulas (Geometrics)</h4>
-            <table className="w-full text-sm table-fixed border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
-              <tbody>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">q = k × v</td><td className="p-2 border border-slate-200 dark:border-slate-700">Flow relation</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">R = V²/[127(e + f)]</td><td className="p-2 border border-slate-200 dark:border-slate-700">Curve radius</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">e = V²/(127R) − f</td><td className="p-2 border border-slate-200 dark:border-slate-700">Superelevation</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Ls = 0.0215 V³/CR</td><td className="p-2 border border-slate-200 dark:border-slate-700">Transition length</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">h = w × n / 100</td><td className="p-2 border border-slate-200 dark:border-slate-700">Camber height</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">L = 0.6 V + V²/6.5</td><td className="p-2 border border-slate-200 dark:border-slate-700">Valley curve</td></tr>
-              </tbody>
-            </table>
-
-            <h3 className="mt-10">3) Pavement Design and Construction</h3>
-            <table className="w-full text-sm table-fixed border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
-              <thead>
-                <tr>
-                  <th className="bg-slate-100 dark:bg-slate-800 text-left p-2 border border-slate-200 dark:border-slate-700">SUB-TOPIC</th>
-                  <th className="bg-slate-100 dark:bg-slate-800 text-left p-2 border border-slate-200 dark:border-slate-700">SHORT DESCRIPTION / NOTES</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Traffic consideration</td><td className="p-2 border border-slate-200 dark:border-slate-700">ESAL, growth factor; design life 15–20 yrs (typ.).</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Subgrade preparation</td><td className="p-2 border border-slate-200 dark:border-slate-700">95–98% MDD at OMC; improve if CBR &lt; 5%; cut &amp; fill; slope ≈ 1:1.5.</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Flexible pavement</td><td className="p-2 border border-slate-200 dark:border-slate-700">Layers: Subgrade → Sub-base → Base → Bituminous surfacing; D = k1 log10(W18) − k2 (empirical).</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Rigid pavement</td><td className="p-2 border border-slate-200 dark:border-slate-700">IRC:58; thickness from stress/deflection; dowels &amp; tie bars; M25–M30; curing 7–14 days.</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Construction</td><td className="p-2 border border-slate-200 dark:border-slate-700">Flexible: WBM/WMM, coats, BM, BC with compaction. Rigid: lean sub-base, PCC slab, joints, dowels/ties.</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Drainage &amp; shoulders</td><td className="p-2 border border-slate-200 dark:border-slate-700">Side/longitudinal/cross drains; shoulders 1.5–2.5 m.</td></tr>
-              </tbody>
-            </table>
-
-            <h4 className="mt-6">Important Formulas – Pavement</h4>
-            <table className="w-full text-sm table-fixed border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
-              <tbody>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">D = k1 log10(W18) − k2</td><td className="p-2 border border-slate-200 dark:border-slate-700">Flexible thickness (empirical)</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">SSD = 0.278 V t + V²/[254 (f ± G)]</td><td className="p-2 border border-slate-200 dark:border-slate-700">Stopping sight distance</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">e = V²/(127R) − f</td><td className="p-2 border border-slate-200 dark:border-slate-700">Superelevation</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">Degree of compaction</td><td className="p-2 border border-slate-200 dark:border-slate-700">Field dry density / MDD × 100%</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">h = w × n / 100</td><td className="p-2 border border-slate-200 dark:border-slate-700">Camber height</td></tr>
-                <tr><td className="p-2 border border-slate-200 dark:border-slate-700">LTE = Δ/Δneigh × 100%</td><td className="p-2 border border-slate-200 dark:border-slate-700">Load transfer efficiency</td></tr>
-              </tbody>
-            </table>
-
-            <h4 className="mt-6">Important MCQs – Pavement</h4>
-            <ul>
-              <li>ESAL = Equivalent Standard Axle Load; Subgrade compaction target 95–98% MDD.</li>
-              <li>Binder course = Bituminous Macadam; Surface = Bituminous Concrete.</li>
-              <li>Rigid pavement load transfer by dowel bars; design life 15–20 yrs.</li>
-            </ul>
+            <div className="flex flex-wrap items-center gap-3 mb-4">
+              <input
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="Search chapters, formulas, MCQs..."
+                className="flex-1 min-w-[250px] rounded-xl border-2 border-slate-300 bg-surface px-4 py-3 font-sans text-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-surface-dark dark:focus:border-primary"
+              />
+              <button
+                onClick={handleDownloadPdf}
+                className="no-print inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-3 font-display text-sm font-medium text-white transition-colors hover:bg-primary/90"
+              >
+                📄 Download PDF
+              </button>
+            </div>
           </div>
-        ) : (
-          <p>Start writing your blog-style content for this section here.</p>
-        )}
-      </article>
-      </>
+
+          {mounted && <AdSlot position="inline" slotId="pu-sub-top" className="my-4" />}
+
+          <div className="grid gap-6 lg:grid-cols-[200px_1fr]">
+            <aside className="hidden lg:block">
+              <div className="card toc-card sticky top-24">
+                <div className="font-display text-sm font-semibold text-heading dark:text-heading-dark mb-3">
+                  Chapters
+                </div>
+                <nav>
+                  <ul className="space-y-1">
+                    {filteredChapters.map((ch: any, i: number) => (
+                      <li key={i}>
+                        <button
+                          onClick={() => toggleChapter(i)}
+                          className={`w-full text-left text-sm px-2 py-1.5 rounded transition-colors ${
+                            activeChapter === i
+                              ? 'bg-primary/10 text-primary font-medium'
+                              : 'text-body hover:bg-slate-100 dark:text-body-dark dark:hover:bg-slate-800'
+                          }`}
+                        >
+                          {ch.title}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+              </div>
+            </aside>
+
+            <article className="space-y-6">
+              {loading ? (
+                <p className="text-sm text-body/70">Loading content…</p>
+              ) : error ? (
+                <p className="text-sm text-red-600">{error}</p>
+              ) : filteredChapters.length === 0 ? (
+                <div className="card text-center py-8">
+                  <p className="text-body/70">No chapters match your search.</p>
+                </div>
+              ) : (
+                filteredChapters.map((chapter: any, chIdx: number) => (
+                  <div key={chIdx} className="chapter-section">
+                    <button
+                      onClick={() => toggleChapter(chIdx)}
+                      className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-primary/5 to-transparent rounded-xl border border-slate-200 dark:border-slate-700 hover:border-primary/30 transition-all"
+                    >
+                      <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark">
+                        {chapter.title}
+                      </h2>
+                      <span className="text-2xl text-primary">
+                        {activeChapter === chIdx ? '▼' : '▶'}
+                      </span>
+                    </button>
+
+                    {activeChapter === chIdx && (
+                      <div className="mt-4 space-y-4">
+                        {chapter.sections?.map((sec: any, secIdx: number) => (
+                          <div key={secIdx}>
+                            {sec.title && sec.type !== 'mcqs' && (
+                              <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-3">
+                                {sec.title}
+                              </h3>
+                            )}
+                            {sec.type === 'table' && renderTable(sec.table, chIdx, secIdx)}
+                            {sec.type === 'formulas' && renderFormulas(sec.items)}
+                            {sec.type === 'mcqs' && renderMCQs(sec.items, chIdx, secIdx, sec.title)}
+                            {sec.type === 'notes' && sec.content && (
+                              <div
+                                className="card"
+                                dangerouslySetInnerHTML={{ __html: formatRichText(sec.content) }}
+                              />
+                            )}
+                          </div>
+                        ))}
+
+                        <div className="card notes-card">
+                          <label className="block font-display text-sm font-semibold text-heading dark:text-heading-dark mb-2">
+                            📝 Your Notes
+                          </label>
+                          <textarea
+                            value={userNotes[chIdx] || ''}
+                            onChange={(e) => saveNote(chIdx, e.target.value)}
+                            placeholder="Write your personal notes here..."
+                            className="w-full min-h-[100px] p-3 rounded-lg border border-slate-300 bg-surface text-body dark:border-slate-700 dark:bg-surface-dark dark:text-body-dark resize-y focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </article>
+          </div>
+
+          {mounted && <AdSlot position="inline" slotId="pu-sub-bottom" className="my-6" />}
+
+          <style jsx>{`
+            :global(.card) {
+              background: #ffffff;
+              border: 1px solid #e2e8f0;
+              border-radius: 12px;
+              padding: 16px;
+              box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            }
+            :global(.dark .card) {
+              background: #1e293b;
+              border-color: #334155;
+            }
+
+            /* Rich text formatting styles */
+            :global(.card strong) {
+              font-weight: 700;
+              color: #1e40af;
+            }
+            :global(.dark .card strong) {
+              color: #60a5fa;
+            }
+            :global(.card em) {
+              font-style: italic;
+              color: #7c3aed;
+            }
+            :global(.dark .card em) {
+              color: #a78bfa;
+            }
+            :global(.card u) {
+              text-decoration: underline;
+              text-decoration-color: #f59e0b;
+              text-decoration-thickness: 2px;
+            }
+            :global(.card code) {
+              background: #f1f5f9;
+              padding: 2px 6px;
+              border-radius: 4px;
+              font-family: 'Courier New', monospace;
+              font-size: 0.9em;
+              color: #dc2626;
+            }
+            :global(.dark .card code) {
+              background: #0f172a;
+              color: #fca5a5;
+            }
+            :global(.plain-table td strong) {
+              font-weight: 700;
+              color: #1e40af;
+            }
+            :global(.dark .plain-table td strong) {
+              color: #60a5fa;
+            }
+            :global(.plain-table td em) {
+              font-style: italic;
+              color: #7c3aed;
+            }
+            :global(.dark .plain-table td em) {
+              color: #a78bfa;
+            }
+            :global(.plain-table td u) {
+              text-decoration: underline;
+              text-decoration-color: #f59e0b;
+              text-decoration-thickness: 2px;
+            }
+            :global(.plain-table td code) {
+              background: #f1f5f9;
+              padding: 2px 6px;
+              border-radius: 4px;
+              font-family: 'Courier New', monospace;
+              font-size: 0.9em;
+              color: #dc2626;
+            }
+            :global(.dark .plain-table td code) {
+              background: #0f172a;
+              color: #fca5a5;
+            }
+
+            :global(.plain-table) {
+              width: 100%;
+              border-collapse: collapse;
+              font-size: 0.95rem;
+            }
+            :global(.plain-table thead th) {
+              background: #dbeafe;
+              color: #1e40af;
+              font-weight: 700;
+              border: 1px solid #93c5fd;
+              padding: 12px;
+              text-align: left;
+            }
+            :global(.plain-table td) {
+              border: 1px solid #cbd5e1;
+              padding: 10px 12px;
+              vertical-align: top;
+            }
+            :global(.plain-table tbody tr:nth-child(even)) {
+              background: #f8fafc;
+            }
+            :global(.dark .plain-table thead th) {
+              background: #1e3a8a;
+              color: #dbeafe;
+              border-color: #3b82f6;
+            }
+            :global(.dark .plain-table td) {
+              border-color: #475569;
+            }
+            :global(.dark .plain-table tbody tr:nth-child(even)) {
+              background: #0f172a;
+            }
+
+            :global(.formula-list) {
+              list-style: none;
+              padding: 0;
+              margin: 0;
+            }
+            :global(.formula-list li) {
+              padding: 8px 0;
+              border-bottom: 1px solid #e2e8f0;
+            }
+            :global(.formula-list li:last-child) {
+              border-bottom: none;
+            }
+            :global(.formula-list code) {
+              background: #f1f5f9;
+              padding: 2px 6px;
+              border-radius: 4px;
+              font-family: 'sans;
+              font-size: 0.9em;
+            }
+            :global(.dark .formula-list code) {
+              background: #0f172a;
+            }
+
+            :global(.mcq-item) {
+              margin-bottom: 20px;
+              padding-bottom: 16px;
+              border-bottom: 1px solid #e2e8f0;
+            }
+            :global(.mcq-item:last-child) {
+              border-bottom: none;
+            }
+            :global(.mcq-question) {
+              font-weight: 600;
+              margin-bottom: 12px;
+              color: #0f172a;
+            }
+            :global(.dark .mcq-question) {
+              color: #e2e8f0;
+            }
+            :global(.mcq-options) {
+              display: grid;
+              gap: 8px;
+            }
+            :global(.mcq-option) {
+              padding: 12px 16px;
+              border: 2px solid #e2e8f0;
+              border-radius: 8px;
+              background: #ffffff;
+              text-align: left;
+              cursor: pointer;
+              transition: all 0.2s;
+              font-size: 0.95rem;
+            }
+            :global(.mcq-option:hover:not(:disabled)) {
+              border-color: #3b82f6;
+              background: #eff6ff;
+            }
+            :global(.mcq-option:disabled) {
+              cursor: not-allowed;
+              opacity: 0.7;
+            }
+            :global(.mcq-option.correct) {
+              border-color: #10b981;
+              background: #d1fae5;
+              color: #065f46;
+              font-weight: 600;
+            }
+            :global(.mcq-option.show-correct) {
+              border-color: #10b981;
+              background: #d1fae5;
+              color: #065f46;
+              font-weight: 600;
+            }
+            :global(.mcq-option.wrong) {
+              border-color: #ef4444;
+              background: #fee2e2;
+              color: #991b1b;
+              font-weight: 600;
+            }
+            :global(.dark .mcq-option) {
+              background: #0f172a;
+              border-color: #334155;
+              color: #e2e8f0;
+            }
+            :global(.dark .mcq-option:hover:not(:disabled)) {
+              border-color: #3b82f6;
+              background: #1e3a8a;
+            }
+
+            :global(.table-notes-input) {
+              width: 100%;
+              min-height: 60px;
+              padding: 6px;
+              border: 1px solid #cbd5e1;
+              border-radius: 4px;
+              font-size: 0.9rem;
+              font-family: inherit;
+              resize: vertical;
+              background: #f8fafc;
+            }
+            :global(.table-notes-input:focus) {
+              outline: none;
+              border-color: #3b82f6;
+              background: #ffffff;
+            }
+            :global(.dark .table-notes-input) {
+              background: #0f172a;
+              border-color: #475569;
+              color: #e2e8f0;
+            }
+            :global(.notes-cell) {
+              padding: 4px !important;
+            }
+
+            :global(.mcq-collapse-btn) {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-between;
+              padding: 12px;
+              background: #eff6ff;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+              margin-bottom: 12px;
+              transition: all 0.2s;
+            }
+            :global(.mcq-collapse-btn:hover) {
+              background: #dbeafe;
+            }
+            :global(.mcq-collapse-title) {
+              font-weight: 600;
+              font-size: 1.05rem;
+              color: #1e40af;
+            }
+            :global(.mcq-collapse-icon) {
+              font-size: 1.2rem;
+              color: #3b82f6;
+            }
+            :global(.dark .mcq-collapse-btn) {
+              background: #1e3a8a;
+            }
+            :global(.dark .mcq-collapse-btn:hover) {
+              background: #1e40af;
+            }
+            :global(.dark .mcq-collapse-title) {
+              color: #dbeafe;
+            }
+            :global(.mcq-content) {
+              padding-top: 8px;
+            }
+
+            @media print {
+              :global(.no-print) { display: none !important; }
+              :global(.plain-table thead) { display: table-header-group; }
+              :global(.plain-table tr) { page-break-inside: avoid; }
+              :global(.table-notes-input) { border: none; background: transparent; }
+            }
+          `}</style>
+        </>
       )}
     </main>
   )

@@ -1,0 +1,837 @@
+{
+  "title": "Section B: Transportation Engineering",
+  "ui": {
+    "show_toc": true,
+    "chapters_collapsible": true,
+    "mcq": {
+      "shuffle_options": true,
+      "show_correct_on_submit": true,
+      "track_progress": true
+    },
+    "tables": {
+      "style": "plain-3",
+      "wrap_long_text": true
+    },
+    "theme": {
+      "palette": {
+        "primary": "#1E88E5",
+        "secondary": "#00ACC1",
+        "accent": "#FDD835",
+        "background": "#FFFFFF",
+        "surface": "#FAFAFA",
+        "text_primary": "#0F172A",
+        "text_secondary": "#475569"
+      },
+      "typography": {
+        "font_family": "font-sans",
+        "scale": {
+          "h1": 1.75,
+          "h2": 1.5,
+          "h3": 1.25,
+          "body": 1.0,
+          "small": 0.9
+        }
+      },
+      "cards": {
+        "elevation": 1,
+        "radius": 10,
+        "padding": 16
+      }
+    }
+  },
+  "sections": [
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 1: Traffic Engineering",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Traffic Engineering",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "TRAFFIC ENGINEERING DEFINITION",
+                "Branch of transportation engineering for planning, design, operation & control of traffic so people and goods move safely and efficiently.",
+                ""
+              ],
+              [
+                "TRAFFIC CHARACTERISTICS",
+                "**Road users:** Drivers, pedestrians, cyclists, animals.\nVehicle traits: Length, width, weight, acceleration, braking, max speed.\nTraffic stream: Flow (q), Speed (v), Density (k) related by q = k × v (q in veh/hr, v in km/hr, k in veh/km).",
+                ""
+              ],
+              [
+                "TRAFFIC VOLUME STUDY",
+                "Counts vehicles crossing a point/section in specified time.\nUnits: veh/hr, veh/day.\nADT & AADT used for design, capacity, signal timings, planning.",
+                ""
+              ],
+              [
+                "SPEED STUDIES",
+                "Spot speed; Time-mean speed (arithmetic mean of spot speeds); Space-mean speed (harmonic mean; correct travel time); 85th percentile speed; Running vs Journey speed.",
+                ""
+              ],
+              [
+                "PARKING STUDIES",
+                "Inventory, accumulation, duration, turnover. Types: On-street (parallel, angle, perpendicular), Off-street (lots, garages).",
+                ""
+              ],
+              [
+                "ACCIDENT STUDIES",
+                "Causes: Human error, road geometry, vehicle condition, weather, lighting. Data: location, time, vehicles, severity, road condition. Uses: black spots, countermeasures.",
+                ""
+              ],
+              [
+                "TRAFFIC CONTROL DEVICES",
+                "Signs (Regulatory/Warning/Informational), Signals (fixed-time/actuated/coordinated), Markings (longitudinal/transverse/hazard). Nepal: DoR manuals first; IRC if DoR is silent.",
+                ""
+              ],
+              [
+                "HIGHWAY CAPACITY",
+                "C = V / PHF. Typical ideal ≈ 2000 veh/hr/lane under good conditions.",
+                ""
+              ],
+              [
+                "STREET LIGHTING",
+                "Design: average illuminance (30–50 lux main roads), uniformity, glare control, pole height & spacing.",
+                ""
+              ],
+              [
+                "INTERSECTION DESIGN",
+                "Design junctions for safety & flow. Types: At-grade (T, Y, cross), Grade-separated (flyovers/underpasses). Channelization. Rotary/Roundabout reduces conflict points. Design elements: entry/exit radius, entry angle, flare, weaving length.",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas (quick reference)",
+          "items": [
+            { "name": "Flow–Speed–Density", "expr": "q = k × v" },
+            { "name": "AADT", "expr": "AADT = Total yearly traffic / 365" },
+            { "name": "Time-mean speed (Vt)", "expr": "Vt = (ΣVi) / n" },
+            { "name": "Space-mean speed (Vs)", "expr": "Vs = n / Σ(1/Vi)" },
+            { "name": "Relationship", "expr": "Vt ≥ Vs" },
+            { "name": "Stopping Sight Distance (SSD)", "expr": "SSD = 0.278 V t + V² / (254 f)" },
+            { "name": "Highway capacity (basic)", "expr": "C = V / PHF" },
+            { "name": "Peak Hour Factor (PHF)", "expr": "PHF = V60 / (4 × V15)" },
+            {
+              "name": "Parking Index (%)",
+              "expr": "Parking Index = (Vehicles parked / Total parking spaces) × 100"
+            },
+            {
+              "name": "Accident rate (per million vehicle-km)",
+              "expr": "Accident rate = (No. of accidents × 10^6) / (AADT × Length(km) × 365)"
+            },
+            { "name": "Approx. Weaving length (empirical)", "expr": "L ≈ 2.7 (W + 3.5) + V/2" }
+          ]
+        },
+        {
+          "type": "notes",
+          "level": 3,
+          "title": "Important Points / Exam Tips (short & sharp)",
+          "content": "**Key Points:**\n- Always state units (km/h, veh/hr, veh/km).\n- For SSD use reaction time `t = 2.5 s` (conservative) or `2.0 s` (urban) depending on code.\n- Use *85th percentile speed* to justify speed limits.\n- For capacity problems mention __lane width__, __lateral clearance__, __heavy vehicle %__ as adjustment factors.\n- **Black-spot remedies:** signage, speed calming, improved lighting, channelization.\n- For Nepal code, cite DoR / Nepal road manuals; refer to IRC where DoR is silent."
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Traffic Engineering – MCQs",
+          "items": [
+            {
+              "question": "q = k × v relates —",
+              "options": [
+                { "text": "Flow, density and speed", "correct": true },
+                { "text": "Flow and headway", "correct": false },
+                { "text": "Gap and lag", "correct": false }
+              ]
+            },
+            {
+              "question": "Unit of traffic flow commonly used —",
+              "options": [
+                { "text": "veh/day", "correct": false },
+                { "text": "veh/hr", "correct": true },
+                { "text": "veh/km", "correct": false }
+              ]
+            },
+            {
+              "question": "AADT equals —",
+              "options": [
+                { "text": "Total yearly traffic ÷ 365", "correct": true },
+                { "text": "Peak hour × 24", "correct": false },
+                { "text": "ADT × 30", "correct": false }
+              ]
+            },
+            {
+              "question": "Time-mean speed is —",
+              "options": [
+                { "text": "Arithmetic mean of spot speeds", "correct": true },
+                { "text": "Harmonic mean of speeds", "correct": false },
+                { "text": "Geometric mean", "correct": false }
+              ]
+            },
+            {
+              "question": "Space-mean speed is —",
+              "options": [
+                { "text": "Harmonic mean of speeds", "correct": true },
+                { "text": "Arithmetic mean", "correct": false },
+                { "text": "Median", "correct": false }
+              ]
+            },
+            {
+              "question": "Which speed is used for setting speed limits?",
+              "options": [
+                { "text": "85th percentile speed", "correct": true },
+                { "text": "Mean speed", "correct": false },
+                { "text": "Median speed", "correct": false }
+              ]
+            },
+            {
+              "question": "SSD formula term V²/(254f) uses V in —",
+              "options": [
+                { "text": "km/h", "correct": true },
+                { "text": "m/s", "correct": false },
+                { "text": "mph", "correct": false }
+              ]
+            },
+            {
+              "question": "Typical ideal capacity per lane (good conditions) —",
+              "options": [
+                { "text": "≈ 2000 veh/hr/lane", "correct": true },
+                { "text": "≈ 1200 veh/hr/lane", "correct": false },
+                { "text": "≈ 3000 veh/hr/lane", "correct": false }
+              ]
+            },
+            {
+              "question": "PHF formula uses busiest 15-minute flow — true or false?",
+              "options": [
+                { "text": "True", "correct": true },
+                { "text": "False", "correct": false }
+              ]
+            },
+            {
+              "question": "Parking index of 80% means —",
+              "options": [
+                { "text": "80% of parking spaces occupied", "correct": true },
+                { "text": "80% turnover", "correct": false },
+                { "text": "80% duration", "correct": false }
+              ]
+            },
+            {
+              "question": "Major cause of accidents on roads —",
+              "options": [
+                { "text": "Human error", "correct": true },
+                { "text": "Vehicle failure", "correct": false },
+                { "text": "Weather", "correct": false }
+              ]
+            },
+            {
+              "question": "Best parking arrangement for max capacity —",
+              "options": [
+                { "text": "Perpendicular parking", "correct": true },
+                { "text": "Parallel", "correct": false },
+                { "text": "Angle", "correct": false }
+              ]
+            },
+            {
+              "question": "A good black-spot countermeasure —",
+              "options": [
+                { "text": "Improve lighting + signage + channelization", "correct": true },
+                { "text": "Narrow lanes", "correct": false },
+                { "text": "Remove markings", "correct": false }
+              ]
+            },
+            {
+              "question": "Roundabouts mainly reduce —",
+              "options": [
+                { "text": "Conflict points and severe injury crashes", "correct": true },
+                { "text": "Capacity", "correct": false },
+                { "text": "Visibility", "correct": false }
+              ]
+            },
+            {
+              "question": "Which speed is higher generally: Vt or Vs?",
+              "options": [
+                { "text": "Vt (Time mean)", "correct": true },
+                { "text": "Vs (Space mean)", "correct": false }
+              ]
+            },
+            {
+              "question": "Accident rate per million vehicle-km denominator includes —",
+              "options": [
+                { "text": "AADT × Length × 365", "correct": true },
+                { "text": "ADT × width", "correct": false },
+                { "text": "PHF × V15", "correct": false }
+              ]
+            },
+            {
+              "question": "Typical reaction time used in urban SSD design —",
+              "options": [
+                { "text": "2.0–2.5 s", "correct": true },
+                { "text": "1.0 s", "correct": false },
+                { "text": "3.5 s", "correct": false }
+              ]
+            },
+            {
+              "question": "Traffic control devices categories —",
+              "options": [
+                { "text": "Signs, signals, markings", "correct": true },
+                { "text": "Barriers, cones, fences", "correct": false },
+                { "text": "Signals only", "correct": false }
+              ]
+            },
+            {
+              "question": "For capacity calc, higher heavy vehicle % —",
+              "options": [
+                { "text": "Reduces effective capacity", "correct": true },
+                { "text": "No effect", "correct": false },
+                { "text": "Increases capacity", "correct": false }
+              ]
+            },
+            {
+              "question": "DoR / Nepal manuals vs IRC — choose —",
+              "options": [
+                { "text": "Use DoR first; use IRC if DoR lacks details", "correct": true },
+                { "text": "Use IRC only", "correct": false },
+                { "text": "Use none", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 2: Highway Geometric Design",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Highway Geometric Design – Plain Table (3 cols)",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "Definition & Objective",
+                "Dimensions/layout of alignment, cross-section, sight distance, curvature for safe & efficient movement.",
+                ""
+              ],
+              [
+                "Elements of Geometric Design",
+                "1) Cross-sectional elements 2) Sight distance 3) Horizontal alignment 4) Vertical alignment 5) Intersection design.",
+                ""
+              ],
+              [
+                "Design Speed",
+                "NRS/IRC typical: Plain 100 km/h, Rolling 80 km/h, Mountainous 50 km/h, Steep 40 km/h.",
+                ""
+              ],
+              [
+                "Cross-Section – Carriageway",
+                "Single 3.75 m; Two-lane 7.0 m; Four-lane 14.0 m.",
+                ""
+              ],
+              ["Cross-Section – Shoulders", "≈2.5 m (paved/earthen).", ""],
+              [
+                "Road Margin / Building & Control Lines",
+                "Margins to control encroachment and for future widening/safety.",
+                ""
+              ],
+              [
+                "Camber (Cross Slope)",
+                "Bituminous 2–3%; WBM 2.5–3%; Earthen 3–4%; h = (w × n)/100.",
+                ""
+              ],
+              ["Side Drain", "Provided both sides for runoff collection and disposal.", ""],
+              [
+                "Sight Distance",
+                "SSD with V, t=2.5 s, f≈0.35–0.4, grade; ISD = 2×SSD; OSD ≈ 640 m at 100 km/h.",
+                ""
+              ],
+              [
+                "Horizontal Alignment",
+                "Simple circular curve, transition curve; e_max = 0.07 (plain), 0.10 (hill); extra widening by n, l, R.",
+                ""
+              ],
+              [
+                "Vertical Alignment",
+                "Gradients: ruling plain 3%, hill 5%; limiting 5–7%; exceptional up to 10%; summit and valley curves.",
+                ""
+              ],
+              ["Gradient Compensation", "% (max 75/R).", ""],
+              [
+                "Hill Road Design",
+                "Hairpin bends (widening 1.5–3.5 m), retaining/breast walls, catch water drains, scuppers, culverts, parapets.",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Key Formulas (as per notes)",
+          "items": [
+            {
+              "name": "Stopping Sight Distance (SSD)",
+              "expr": "SSD = 0.278 V t + V² / [254 (f ± G)]"
+            },
+            {
+              "name": "Overtaking Sight Distance (OSD)",
+              "expr": "OSD = d1 + d2 + d3 (≈ 640 m for 100 km/h)"
+            },
+            { "name": "Intermediate Sight Distance (ISD)", "expr": "ISD = 2 × SSD" },
+            { "name": "Length of simple circular curve", "expr": "L = (π R Δ) / 180" },
+            { "name": "Tangent length", "expr": "T = R tan(Δ / 2)" },
+            { "name": "Superelevation (IRC form)", "expr": "e = V² / (127 R) − f" },
+            { "name": "Transition curve length", "expr": "Ls = 0.0215 V³ / (C R)" },
+            { "name": "Extra widening", "expr": "We = (n l²) / (2 R) + V / (9.5 √R)" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Highway Geometric Design – MCQs",
+          "items": [
+            {
+              "question": "Design speed in mountainous terrain (NRS/IRC) —",
+              "options": [
+                { "text": "40 km/h", "correct": false },
+                { "text": "50 km/h", "correct": true },
+                { "text": "60 km/h", "correct": false }
+              ]
+            },
+            {
+              "question": "Recommended camber for bituminous road —",
+              "options": [
+                { "text": "1%", "correct": false },
+                { "text": "2.5%", "correct": true },
+                { "text": "4%", "correct": false }
+              ]
+            },
+            {
+              "question": "Max superelevation (plain) —",
+              "options": [
+                { "text": "0.07", "correct": true },
+                { "text": "0.10", "correct": false },
+                { "text": "0.12", "correct": false }
+              ]
+            },
+            {
+              "question": "Hairpin bends are provided to —",
+              "options": [
+                { "text": "Reduce camber", "correct": false },
+                { "text": "Gain elevation", "correct": true },
+                { "text": "Reduce gradient", "correct": false }
+              ]
+            },
+            {
+              "question": "Extra widening on curves depends on —",
+              "options": [
+                { "text": "Lane width only", "correct": false },
+                { "text": "Radius & speed", "correct": true },
+                { "text": "Number of lanes only", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 3: Pavement Design and Construction",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Pavement Design & Construction – Plain Table (3 cols)",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "Definition",
+                "Pavement design ensures a durable surface distributing traffic loads safely to subgrade and minimizing maintenance.",
+                ""
+              ],
+              [
+                "Traffic Consideration",
+                "ESAL (80 kN standard axle), traffic growth factor, design period 15–20 years.",
+                ""
+              ],
+              [
+                "Subgrade Preparation",
+                "Remove weak soil/soft spots; compact to MDD at OMC; ensure CBR ≥5% or improve.",
+                ""
+              ],
+              [
+                "Cut & Fill Embankment",
+                "Cut: excavation in high terrain. Fill: embankment in low terrain. Compaction 95–98% MDD; side slope ≈1:1.5 (depends on soil).",
+                ""
+              ],
+              [
+                "Flexible Pavement Design",
+                "IRC:37/NRS equivalent; thickness by CBR, ESALs, materials; layers: Subgrade→Sub-base→Base→Bituminous surfacing.",
+                ""
+              ],
+              [
+                "Rigid Pavement Design",
+                "IRC:58; slab thickness depends on load, subgrade modulus, concrete strength, repetitions; joints; load transfer with dowels (transverse) & tie bars (longitudinal); concrete M25–M30 common.",
+                ""
+              ],
+              [
+                "Construction – Flexible",
+                "1) Subgrade 2) Sub-base 3) Base (WBM/WMM) 4) Primer 0.8–1.2 kg/m² 5) Binder (BM) 6) Tack 0.25–0.5 kg/m² 7) Surface (BC) 8) Rolling/compaction after each layer.",
+                ""
+              ],
+              [
+                "Construction – Rigid",
+                "1) Subgrade 2) Sub-base (lean concrete) 3) PCC slab with joints 4) Dowels/tie bars 5) Curing 7–14 days 6) Open ≥7 days.",
+                ""
+              ],
+              [
+                "Drainage & Shoulders",
+                "Side/longitudinal/cross drains; shoulder 1.5–2.5 m (support & emergency).",
+                ""
+              ],
+              [
+                "Maintenance",
+                "Routine: potholes/drains; Periodic: resurfacing/overlay; Emergency: landslide/flood repair.",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas – Pavement Design",
+          "items": [
+            {
+              "name": "Flexible pavement thickness (CBR method)",
+              "expr": "D = k1 × log10(W18) − k2"
+            },
+            { "name": "Cumulative ESAL", "expr": "W18 = Σ(No. of axles × LoadFactor)" },
+            {
+              "name": "Stopping Sight Distance (hill sections)",
+              "expr": "SSD = 0.278 V t + V² / [254 (f ± G)]"
+            },
+            { "name": "Superelevation (for curves)", "expr": "e = V²/(127 R) − f" },
+            { "name": "PCC slab stress (flexural)", "expr": "σ = 6 M / (b h²)" },
+            {
+              "name": "Load transfer efficiency (LTE)",
+              "expr": "LTE = (Δunloaded / Δloaded) × 100%"
+            },
+            {
+              "name": "Compaction degree",
+              "expr": "Degree of compaction = (Field dry density / MDD) × 100%"
+            },
+            { "name": "Camber height", "expr": "h = w × n / 100" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Pavement Design & Construction – MCQs",
+          "items": [
+            {
+              "question": "ESAL stands for —",
+              "options": [
+                { "text": "Equivalent Standard Axle Load", "correct": true },
+                { "text": "Estimated Single Axle Load", "correct": false },
+                { "text": "Equivalent Single Average Load", "correct": false }
+              ]
+            },
+            {
+              "question": "Minimum CBR of subgrade for flexible pavement —",
+              "options": [
+                { "text": "3%", "correct": false },
+                { "text": "5%", "correct": true },
+                { "text": "8%", "correct": false }
+              ]
+            },
+            {
+              "question": "Binder course in flexible pavement —",
+              "options": [
+                { "text": "Bituminous Macadam", "correct": true },
+                { "text": "Dense Bituminous Macadam", "correct": false },
+                { "text": "Bituminous Concrete", "correct": false }
+              ]
+            },
+            {
+              "question": "Primer coat typical rate —",
+              "options": [
+                { "text": "0.3–0.5 kg/m²", "correct": false },
+                { "text": "0.8–1.2 kg/m²", "correct": true },
+                { "text": "1.5–2.0 kg/m²", "correct": false }
+              ]
+            },
+            {
+              "question": "Maximum ruling gradient for hill roads —",
+              "options": [
+                { "text": "3%", "correct": false },
+                { "text": "5%", "correct": true },
+                { "text": "7%", "correct": false }
+              ]
+            },
+            {
+              "question": "Load transfer in rigid pavement done by —",
+              "options": [
+                { "text": "Tie bars (transverse)", "correct": false },
+                { "text": "Dowel bars (transverse)", "correct": true },
+                { "text": "Aggregates", "correct": false }
+              ]
+            },
+            {
+              "question": "Construction joint in PCC slab uses —",
+              "options": [
+                { "text": "Dowel bars", "correct": false },
+                { "text": "Tie bars", "correct": true },
+                { "text": "No bars", "correct": false }
+              ]
+            },
+            {
+              "question": "Typical concrete grade for Nepal rigid pavements —",
+              "options": [
+                { "text": "M15–M20", "correct": false },
+                { "text": "M25–M30", "correct": true },
+                { "text": "M35–M40", "correct": false }
+              ]
+            },
+            {
+              "question": "Subgrade compaction target —",
+              "options": [
+                { "text": "85–90% MDD", "correct": false },
+                { "text": "95–98% MDD", "correct": true },
+                { "text": ">100% MDD", "correct": false }
+              ]
+            },
+            {
+              "question": "SSD formula includes —",
+              "options": [
+                { "text": "Vehicle speed, reaction time, friction, grade", "correct": true },
+                { "text": "Only speed", "correct": false },
+                { "text": "Only grade", "correct": false }
+              ]
+            },
+            {
+              "question": "WBM / WMM used for —",
+              "options": [
+                { "text": "Surface course", "correct": false },
+                { "text": "Base or sub-base layer", "correct": true },
+                { "text": "Seal coat", "correct": false }
+              ]
+            },
+            {
+              "question": "Surface course in flexible pavement —",
+              "options": [
+                { "text": "Bituminous Concrete (BC)", "correct": true },
+                { "text": "WBM", "correct": false },
+                { "text": "Prime coat", "correct": false }
+              ]
+            },
+            {
+              "question": "Emergency maintenance includes —",
+              "options": [
+                { "text": "Flood, landslide repair", "correct": true },
+                { "text": "Line marking only", "correct": false },
+                { "text": "Sweeping", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "level": 2,
+      "title": "Section B: Transportation Engineering – Summary Table",
+      "table": {
+        "header": ["TOPIC / SUB-TOPIC", "KEY NOTES / FORMULAS", "HIGH-VALUE MCQS"],
+        "rows": [
+          [
+            "Traffic Engineering",
+            "- Traffic characteristics: q = k × v\n- Traffic volume: ADT, AADT\n- Speed studies: Spot, Running, Time-mean, Space-mean\n- Parking: On-street (parallel, angle, perpendicular), Off-street\n- Accident studies: Human error main cause\n- Traffic control: Signs, signals, markings\n- Highway capacity: C = V / PHF (~2000 veh/hr/lane)\n- Street lighting: 30–50 lux\n- Intersection: At-grade, grade-separated, rotary",
+            "1. q = k × v\n2. 85th percentile speed used for speed limits\n3. Unit of traffic volume = veh/hr\n4. Capacity per lane = 2000 veh/hr\n5. Major cause of accidents = Human error"
+          ],
+          [
+            "Highway Geometric Design",
+            "- Cross-section: carriageway width, shoulders, camber, side drains, building & control line\n- Horizontal alignment: L = πRΔ/180, T = R tan(Δ/2), e = V²/127R − f, Ls = 0.0215 V³/CR\n- Vertical alignment: gradient (ruling, limiting, exceptional), summit/valley curves, SSD = 0.278Vt + V²/254(f±G)\n- Hill roads: hairpin bends, retaining/breast walls, catch water drains, special structures",
+            "1. Max superelevation in plain = 0.07\n2. Design speed hilly terrain = 50 km/h\n3. Hairpin bends used to gain elevation\n4. Extra widening depends on R and speed\n5. Camber typical 2–3%"
+          ],
+          [
+            "Pavement Design & Construction",
+            "- Traffic: ESAL, growth factor, design period 15–20 yrs\n- Subgrade: Compaction 95–98% MDD, CBR ≥5%\n- Cut/fill: slope 1:1.5, compaction 95–98%\n- Flexible pavement: Subgrade → Sub-base → Base → Surface\n- Rigid pavement: PCC slab, dowels & tie bars, M25–M30, curing 7–14 days\n- Drainage & shoulders essential",
+            "1. ESAL = Equivalent Standard Axle Load\n2. Binder course = Bituminous Macadam\n3. Surface course = BC\n4. Subgrade compaction 95–98%\n5. Load transfer by dowels"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "formulas",
+      "level": 2,
+      "title": "Important Formulas – Section B",
+      "items": [
+        { "name": "Flow-speed-density", "expr": "q = k × v" },
+        { "name": "AADT", "expr": "AADT = Total yearly traffic / 365" },
+        { "name": "Time-mean speed", "expr": "Vt = ΣVi / n" },
+        { "name": "Space-mean speed", "expr": "Vs = n / Σ(1/Vi)" },
+        { "name": "Stopping Sight Distance", "expr": "SSD = 0.278Vt + V²/254(f±G)" },
+        { "name": "Radius of circular curve", "expr": "R = V² / [127 (e + f)]" },
+        { "name": "Length of circular curve", "expr": "L = πRΔ / 180" },
+        { "name": "Transition curve length", "expr": "Ls = 0.0215 V³ / (C R)" },
+        { "name": "Superelevation", "expr": "e = V² / 127R − f" }
+      ]
+    },
+    {
+      "type": "mcqs",
+      "level": 2,
+      "title": "Very Important MCQs – Section B (High-Yield)",
+      "items": [
+        {
+          "question": "Relationship between speed, flow, and density —",
+          "options": [
+            { "text": "q = k × v", "correct": true },
+            { "text": "q = v/k", "correct": false }
+          ]
+        },
+        {
+          "question": "85th percentile speed used for —",
+          "options": [
+            { "text": "Speed limits", "correct": true },
+            { "text": "Lane width", "correct": false }
+          ]
+        },
+        {
+          "question": "Ideal lane capacity —",
+          "options": [
+            { "text": "2000 veh/hr/lane", "correct": true },
+            { "text": "1200 veh/hr/lane", "correct": false }
+          ]
+        },
+        {
+          "question": "Main cause of accidents —",
+          "options": [
+            { "text": "Human error", "correct": true },
+            { "text": "Roadside trees", "correct": false }
+          ]
+        },
+        {
+          "question": "Design speed in hilly terrain —",
+          "options": [
+            { "text": "50 km/h", "correct": true },
+            { "text": "80 km/h", "correct": false }
+          ]
+        },
+        {
+          "question": "Superelevation max (plain) —",
+          "options": [
+            { "text": "0.07", "correct": true },
+            { "text": "0.10", "correct": false }
+          ]
+        },
+        {
+          "question": "Hairpin bends purpose —",
+          "options": [
+            { "text": "Gain elevation", "correct": true },
+            { "text": "Reduce camber", "correct": false }
+          ]
+        },
+        {
+          "question": "Camber for bituminous road —",
+          "options": [
+            { "text": "2–3%", "correct": true },
+            { "text": "5–6%", "correct": false }
+          ]
+        },
+        {
+          "question": "SSD formula includes —",
+          "options": [
+            { "text": "V, t, f, G", "correct": true },
+            { "text": "Only V", "correct": false }
+          ]
+        },
+        {
+          "question": "ESAL full form —",
+          "options": [
+            { "text": "Equivalent Standard Axle Load", "correct": true },
+            { "text": "Estimated Single Axle Load", "correct": false }
+          ]
+        },
+        {
+          "question": "Subgrade compaction target —",
+          "options": [
+            { "text": "95–98% MDD", "correct": true },
+            { "text": "80–85% MDD", "correct": false }
+          ]
+        },
+        {
+          "question": "Binder course in flexible pavement —",
+          "options": [
+            { "text": "Bituminous Macadam", "correct": true },
+            { "text": "Prime coat", "correct": false }
+          ]
+        },
+        {
+          "question": "Surface course in flexible pavement —",
+          "options": [
+            { "text": "Bituminous Concrete (BC)", "correct": true },
+            { "text": "WMM", "correct": false }
+          ]
+        },
+        {
+          "question": "Load transfer in rigid pavement —",
+          "options": [
+            { "text": "Dowel bars", "correct": true },
+            { "text": "Tie bars", "correct": false }
+          ]
+        },
+        {
+          "question": "Pavement design life in Nepal —",
+          "options": [
+            { "text": "15–20 years", "correct": true },
+            { "text": "5–10 years", "correct": false }
+          ]
+        },
+        {
+          "question": "Gradient limit (ruling) in hills —",
+          "options": [
+            { "text": "5%", "correct": true },
+            { "text": "7%", "correct": false }
+          ]
+        },
+        {
+          "question": "Extra widening depends on —",
+          "options": [
+            { "text": "Radius & speed", "correct": true },
+            { "text": "Lane markings", "correct": false }
+          ]
+        },
+        {
+          "question": "Parking type with max capacity —",
+          "options": [
+            { "text": "Perpendicular", "correct": true },
+            { "text": "Parallel", "correct": false }
+          ]
+        },
+        {
+          "question": "Street lighting recommended —",
+          "options": [
+            { "text": "30–50 lux", "correct": true },
+            { "text": "5–10 lux", "correct": false }
+          ]
+        },
+        {
+          "question": "DoR / Nepal manuals vs IRC —",
+          "options": [
+            { "text": "Use DoR first, IRC if needed", "correct": true },
+            { "text": "Use IRC only", "correct": false }
+          ]
+        }
+      ]
+    }
+  ]
+}

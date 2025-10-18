@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useEffect, useRef } from 'react'
 
@@ -30,50 +30,67 @@ export default function AdSlot({
   const adInitialized = useRef(false)
 
   // Type for adsbygoogle array elements
-  type AdSensePushable = { 
-    push: (params?: Record<string, unknown>) => void 
+  type AdSensePushable = {
+    push: (params?: Record<string, unknown>) => void
   }
 
   useEffect(() => {
-    // Only run on client-side
-    if (typeof window === 'undefined' || adInitialized.current) return
+    // Client-only
+    if (typeof window === 'undefined') return
+    if (!adRef.current) return
+    if (adInitialized.current) return
 
-    try {
-      const pushAd = () => {
-        if (adRef.current) {
-          // Initialize adsbygoogle array if it doesn't exist
-          if (!window.adsbygoogle) {
-            window.adsbygoogle = [] as unknown as AdSensePushable[]
-          }
-          
-          // Push ad configuration
-          if (Array.isArray(window.adsbygoogle)) {
-            window.adsbygoogle.push({} as any)
-            adInitialized.current = true
-          }
+    const ins = adRef.current.querySelector('ins.adsbygoogle') as HTMLElement | null
+    const alreadyDone = ins?.getAttribute('data-adsbygoogle-status') === 'done'
+    const alreadyFlagged = !!ins?.dataset?.adInit
+    if (alreadyDone || alreadyFlagged) return
+
+    const pushAd = () => {
+      try {
+        if (!window.adsbygoogle) {
+          window.adsbygoogle = [] as unknown as AdSensePushable[]
         }
+        if (Array.isArray(window.adsbygoogle)) {
+          window.adsbygoogle.push({} as any)
+          if (ins) (ins as any).dataset.adInit = 'true'
+          adInitialized.current = true
+        }
+      } catch (e) {
+        console.error('AdSense Error:', e)
       }
-
-      // Check if adsbygoogle is already loaded
-      if (window.adsbygoogle) {
-        pushAd()
-      } else {
-        // If not, wait for it to load
-        const script = document.createElement('script')
-        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
-        script.async = true
-        script.crossOrigin = 'anonymous'
-        script.onload = pushAd
-        document.head.appendChild(script)
-      }
-    } catch (e) {
-      console.error('AdSense Error:', e)
     }
+
+    // If library is present, push now
+    if (window.adsbygoogle) {
+      pushAd()
+      return
+    }
+
+    // Ensure single script load across app
+    const existing = document.querySelector('script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]')
+    if (!existing) {
+      const script = document.createElement('script')
+      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922'
+      script.async = true
+      script.crossOrigin = 'anonymous'
+      document.head.appendChild(script)
+    }
+
+    // Poll until ready, then push once
+    let tries = 0
+    const id = window.setInterval(() => {
+      if (window.adsbygoogle) {
+        window.clearInterval(id)
+        pushAd()
+      } else if (++tries > 50) {
+        window.clearInterval(id)
+      }
+    }, 200)
 
     return () => {
-      // Cleanup if needed
+      // no-op
     }
-  }, [])
+  }, [slotId])
 
   // Don't render anything during SSR or if no slotId is provided
   if (typeof window === 'undefined' || !slotId) {
@@ -97,7 +114,7 @@ export default function AdSlot({
       <ins
         className="adsbygoogle"
         style={{ display: 'block' }}
-        data-ad-client="ca-pub-1234567890123456" // Replace with your actual publisher ID
+        data-ad-client="ca-pub-2472384896413922"
         data-ad-slot={slotId}
         data-ad-format={format}
         data-ad-layout={layout}

@@ -64,9 +64,16 @@ const AdSenseAd = ({
   const adRef = useRef<HTMLModElement>(null)
 
   useEffect(() => {
+    const el = adRef.current
+    if (!el) return
+    const alreadyDone = el.getAttribute('data-adsbygoogle-status') === 'done'
+    const alreadyInitialized = el.dataset.adInit === 'true'
+    if (alreadyDone || alreadyInitialized) return
+
     try {
-      if (typeof window !== 'undefined' && adRef.current) {
+      if (typeof window !== 'undefined') {
         ;((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({})
+        el.dataset.adInit = 'true'
       }
     } catch (err) {
       console.error('AdSense error:', err)

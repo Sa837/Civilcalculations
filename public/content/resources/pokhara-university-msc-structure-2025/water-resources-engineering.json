@@ -1,0 +1,1083 @@
+{
+  "title": "Section E: Water Resources Engineering",
+  "ui": {
+    "show_toc": true,
+    "chapters_collapsible": true,
+    "mcq": {
+      "shuffle_options": true,
+      "show_correct_on_submit": true,
+      "track_progress": true
+    },
+    "tables": {
+      "style": "plain-3",
+      "wrap_long_text": true
+    },
+    "theme": {
+      "palette": {
+        "primary": "#1E88E5",
+        "secondary": "#00ACC1",
+        "accent": "#FDD835",
+        "background": "#FFFFFF",
+        "surface": "#FAFAFA",
+        "text_primary": "#0F172A",
+        "text_secondary": "#475569"
+      },
+      "typography": {
+        "font_family": "font-sans",
+        "scale": {
+          "h1": 1.75,
+          "h2": 1.5,
+          "h3": 1.25,
+          "body": 1.0,
+          "small": 0.9
+        }
+      },
+      "cards": {
+        "elevation": 1,
+        "radius": 10,
+        "padding": 16
+      }
+    }
+  },
+  "sections": [
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 1: Fluid Mechanics & Hydraulics",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Fluid Mechanics & Hydraulics - Core Concepts",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES / KEY FORMULAS", "EXTRA"],
+            "rows": [
+              [
+                "PHYSICAL PROPERTIES OF FLUID",
+                "• Density ρ = Mass/Volume (kg/m³)\n• Specific Weight γ = ρ × g (N/m³)\n• Specific Gravity σ = ρ/ρ_water\n• Viscosity μ – Resistance to flow (N·s/m²); Kinematic viscosity ν = μ/ρ (m²/s)\n• Surface Tension σ – Force per unit length (N/m)\n• Capillary Rise h = (4σ cos θ)/(ρ g r)",
+                ""
+              ],
+              [
+                "PRESSURE AND PASCAL'S LAW",
+                "• Pressure p = Force/Area (N/m²)\n• Pascal's Law: Pressure applied to confined fluid is transmitted equally in all directions.\n• Gauge Pressure = Absolute – Atmospheric Pressure\n• Pressure Head h = p/(ρg)",
+                ""
+              ],
+              [
+                "HYDROSTATIC PRESSURE ON PLANE SURFACES",
+                "• Pressure varies linearly with depth: p = ρgh\n• Total Pressure P = ρg ħ A\n• Center of Pressure h_cp = ħ + (IG sin²θ)/(ħA)",
+                ""
+              ],
+              [
+                "BUOYANCY AND STABILITY OF FLOATING BODIES",
+                "• Archimedes' Principle: Upthrust = Weight of displaced fluid\n• Condition for floatation: W = ρgV_displaced\n• Metacentric Height GM = BM - BG; for stable equilibrium, GM > 0\n• BM = I/V (I = Moment of inertia of waterline area, V = displaced volume)",
+                ""
+              ],
+              [
+                "FLUID KINEMATICS",
+                "• Studies motion of fluid without forces.\n• Types of Flow: Steady/Unsteady, Uniform/Non-uniform, Laminar/Turbulent, Compressible/Incompressible.\n• Continuity Equation: Q = A₁V₁ = A₂V₂\n• Streamline – tangent to velocity; Pathline – actual path; Streakline – locus of successive particles.",
+                ""
+              ],
+              [
+                "FLUID DYNAMICS",
+                "• Euler's Equation: (dp/ρg) + (dv²/2g) + dz = 0\n• Bernoulli's Equation: (p/ρg) + (v²/2g) + z = constant\n• Head Loss (Darcy–Weisbach): h_f = f (L/D) (V²/2g)\n• Power through pipe: P = ρgQH\n• Hydraulic gradient line (HGL) and Total energy line (TEL) used for flow energy visualization.",
+                ""
+              ],
+              [
+                "NAVIER-STOKES EQUATION",
+                "Represents motion of viscous fluids (momentum balance).\nGeneral form: ρ (du/dt) = ρg - ∇p + μ∇²u",
+                ""
+              ],
+              [
+                "BOUNDARY LAYER THEORY",
+                "• Thin layer near a boundary where viscous effects dominate.\n• Boundary layer thickness (δ): Distance from wall where V = 0.99 V_∞\n• Reynolds number: Re = ρVD/μ (Re < 2300 → Laminar, Re > 4000 → Turbulent)\n• Flow separation occurs if adverse pressure gradient develops.",
+                ""
+              ],
+              [
+                "MOMENTUM EQUATION",
+                "From Newton's 2nd Law: ΣF = ρQ(V₂ - V₁)\nUsed to calculate forces on pipe bends, nozzles, and vanes.",
+                ""
+              ],
+              [
+                "OPEN CHANNEL FLOW – BASICS",
+                "Flow with a free surface under gravity.\nFlow Types: Steady/Unsteady, Uniform/Non-uniform, Laminar/Turbulent, Subcritical/Supercritical.\nFroude Number (Fr) = V/√(gD) → Fr < 1: Subcritical, Fr = 1: Critical, Fr > 1: Supercritical.",
+                ""
+              ],
+              [
+                "UNIFORM FLOW (CHEZY & MANNING FORMULAS)",
+                "• Chezy Formula: V = C√(RS)\n• Manning Formula: V = (1/n) R^(2/3) S^(1/2)\nWhere R = A/P (Hydraulic radius), S = slope, n = Manning's coefficient.",
+                ""
+              ],
+              [
+                "ENERGY & MOMENTUM PRINCIPLES IN CHANNEL FLOW",
+                "• Specific Energy (E): E = y + (V²/2g)\n• Critical Depth (y_c): Occurs when E is minimum for a given Q → y_c = (q²/g)^(1/3), q = Q/b\n• Specific Force (F): F = Q²/gA + Aȳ",
+                ""
+              ],
+              [
+                "FLOW OVER NOTCHES & WEIRS",
+                "• Rectangular Notch: Q = (2/3) C_d √(2g) b H^(3/2)\n• Triangular (V) Notch: Q = (8/15) C_d √(2g) tan(θ/2) H^(5/2)\n• Cipolletti Weir: Q = (2/3) C_d √(2g) b H^(3/2) (approx.)\n• Broad-crested weir: Q = C_d b h √(2gh)",
+                ""
+              ],
+              [
+                "GRADUALLY VARIED FLOW (GVF)",
+                "Flow with gradual depth variation.\nDifferential Equation: dy/dx = (S₀ - S_f)/(1 - Fr²)\nProfile depends on bed slope (Mild, Steep, Critical, Horizontal, Adverse).",
+                ""
+              ],
+              [
+                "HYDRAULIC JUMP",
+                "Rapid transition from supercritical to subcritical flow.\nSequent Depth Ratio: y₂/y₁ = ½[√(1 + 8Fr₁²) - 1]\nEnergy Loss: ΔE = ((y₂ - y₁)³)/(4y₁y₂)\nApplication: Energy dissipation below spillways.",
+                ""
+              ],
+              [
+                "FLOW IN MOBILE BOUNDARY CHANNELS",
+                "Occurs when bed and banks are erodible.\nRegime Channel Design (Lacey's Equations):\nV = (2/5) √f R^(2/3), P = 4.75 √Q, A = 2.5 Q/f^(1/3), S = 0.0003 f^(5/3)/Q^(1/6)\n(f = silt factor = 1.76 √d, where d = mean particle size in mm).",
+                ""
+              ],
+              [
+                "FLOW MEASUREMENT DEVICES",
+                "• Venturimeter: Q = C_d A₂ √[2gh/(1 - (A₂/A₁)²)]\n• Orifice meter: Q = C_d a √(2gh)\n• Pitot tube: h = V²/(2g)\n• Weir/Notch: Flow measurement in open channels.",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas – Fluid Mechanics & Hydraulics",
+          "items": [
+            { "name": "Continuity Equation", "expr": "Q = A₁V₁ = A₂V₂" },
+            { "name": "Bernoulli's Equation", "expr": "(p/ρg) + (v²/2g) + z = constant" },
+            { "name": "Reynolds Number", "expr": "Re = ρVD/μ" },
+            { "name": "Froude Number", "expr": "Fr = V/√(gD)" },
+            { "name": "Manning Formula", "expr": "V = (1/n) R^(2/3) S^(1/2)" },
+            { "name": "Critical Depth (Rectangular)", "expr": "y_c = (q²/g)^(1/3)" },
+            { "name": "Hydraulic Jump Sequent Depth", "expr": "y₂/y₁ = ½[√(1 + 8Fr₁²) - 1]" },
+            { "name": "Rectangular Weir Discharge", "expr": "Q = (2/3) C_d √(2g) b H^(3/2)" },
+            { "name": "Venturimeter", "expr": "Q = C_d A₂ √[2gh/(1 - (A₂/A₁)²)]" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Fluid Mechanics & Hydraulics – MCQs",
+          "items": [
+            {
+              "question": "Continuity equation is based on —",
+              "options": [
+                { "text": "Conservation of mass", "correct": true },
+                { "text": "Conservation of energy", "correct": false },
+                { "text": "Conservation of momentum", "correct": false }
+              ]
+            },
+            {
+              "question": "Bernoulli's equation represents —",
+              "options": [
+                { "text": "Conservation of energy", "correct": true },
+                { "text": "Conservation of mass", "correct": false },
+                { "text": "Conservation of momentum", "correct": false }
+              ]
+            },
+            {
+              "question": "Pascal's law applies to —",
+              "options": [
+                { "text": "Static fluids", "correct": true },
+                { "text": "Dynamic fluids", "correct": false },
+                { "text": "Compressible fluids", "correct": false }
+              ]
+            },
+            {
+              "question": "Center of pressure is always —",
+              "options": [
+                { "text": "Below centroid", "correct": true },
+                { "text": "Above centroid", "correct": false },
+                { "text": "At centroid", "correct": false }
+              ]
+            },
+            {
+              "question": "Metacentric height positive ⇒ Body is —",
+              "options": [
+                { "text": "Stable", "correct": true },
+                { "text": "Unstable", "correct": false },
+                { "text": "Neutral", "correct": false }
+              ]
+            },
+            {
+              "question": "Reynolds number < 2300 indicates —",
+              "options": [
+                { "text": "Laminar flow", "correct": true },
+                { "text": "Turbulent flow", "correct": false },
+                { "text": "Transition flow", "correct": false }
+              ]
+            },
+            {
+              "question": "Fr < 1 indicates —",
+              "options": [
+                { "text": "Subcritical flow", "correct": true },
+                { "text": "Supercritical flow", "correct": false },
+                { "text": "Critical flow", "correct": false }
+              ]
+            },
+            {
+              "question": "Specific energy minimum ⇒",
+              "options": [
+                { "text": "Critical depth", "correct": true },
+                { "text": "Normal depth", "correct": false },
+                { "text": "Sequent depth", "correct": false }
+              ]
+            },
+            {
+              "question": "Hydraulic jump is —",
+              "options": [
+                { "text": "Sudden change from supercritical to subcritical", "correct": true },
+                { "text": "Gradual depth variation", "correct": false },
+                { "text": "Uniform flow condition", "correct": false }
+              ]
+            },
+            {
+              "question": "Manning's formula used for —",
+              "options": [
+                { "text": "Uniform open channel flow", "correct": true },
+                { "text": "Pipe flow only", "correct": false },
+                { "text": "Compressible flow", "correct": false }
+              ]
+            },
+            {
+              "question": "Energy loss in hydraulic jump —",
+              "options": [
+                { "text": "ΔE = ((y₂ - y₁)³)/(4y₁y₂)", "correct": true },
+                { "text": "ΔE = (y₂ - y₁)/2", "correct": false },
+                { "text": "ΔE = V²/2g", "correct": false }
+              ]
+            },
+            {
+              "question": "Lacey's equations apply to —",
+              "options": [
+                { "text": "Alluvial channels", "correct": true },
+                { "text": "Rigid boundary channels", "correct": false },
+                { "text": "Pipe networks", "correct": false }
+              ]
+            },
+            {
+              "question": "Discharge over V-notch —",
+              "options": [
+                { "text": "Q ∝ H^(5/2)", "correct": true },
+                { "text": "Q ∝ H^(3/2)", "correct": false },
+                { "text": "Q ∝ H^(1/2)", "correct": false }
+              ]
+            },
+            {
+              "question": "Dynamic viscosity unit —",
+              "options": [
+                { "text": "N·s/m²", "correct": true },
+                { "text": "m²/s", "correct": false },
+                { "text": "N/m", "correct": false }
+              ]
+            },
+            {
+              "question": "Froude number determines —",
+              "options": [
+                { "text": "Flow regime (Subcritical, Critical, Supercritical)", "correct": true },
+                { "text": "Laminar/Turbulent flow", "correct": false },
+                { "text": "Compressibility effects", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 2: Hydrology",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Hydrology - Core Concepts",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "HYDROLOGIC CYCLE",
+                "Continuous movement of water through atmosphere, land, and water bodies.\nComponents include Precipitation, Evaporation, Transpiration, Infiltration, Runoff, Groundwater flow. Maintains water balance.",
+                ""
+              ],
+              [
+                "PRECIPITATION",
+                "Types: Cyclonic, Orographic, Convective. Measured using rain gauges. Estimation methods: Arithmetic Mean, Thiessen Polygon, Isohyetal method.",
+                ""
+              ],
+              [
+                "HYDROLOGICAL LOSSES",
+                "Losses from rainfall: Evaporation, Infiltration, Interception, Depression storage. Important for runoff calculation.",
+                ""
+              ],
+              [
+                "SURFACE RUNOFF",
+                "Portion of precipitation appearing in streams. Depends on intensity, soil, land cover, slope, catchment area.",
+                ""
+              ],
+              [
+                "STREAMFLOW / HYDROGRAPH",
+                "Graph of discharge vs time at a point. Shows Rising limb, Peak, Recession limb, Base flow.",
+                ""
+              ],
+              [
+                "UNIT HYDROGRAPH (UG)",
+                "Hydrograph from 1 cm effective rainfall of uniform duration. Used to estimate runoff from storm events.",
+                ""
+              ],
+              [
+                "PEAK FLOW ESTIMATION",
+                "Maximum expected discharge at a point; important for flood design. Methods: Rational formula, Empirical formulas (Dicken, Ryve, Inglis).",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas – Hydrology",
+          "items": [
+            { "name": "WATER BALANCE", "expr": "P = R + I + E + ΔS" },
+            { "name": "HORTON'S INFILTRATION", "expr": "f_t = f_c + (f_o - f_c)e^(-kt)" },
+            { "name": "RATIONAL FORMULA (RUNOFF)", "expr": "Q = CIA" },
+            { "name": "UNIT HYDROGRAPH SUPERPOSITION", "expr": "Q = ΣP_i · UH_i" },
+            { "name": "PEAK FLOW (DICKEN)", "expr": "Q = C_d A^(3/4)" },
+            { "name": "PEAK FLOW (RYVE)", "expr": "Q = C_r A^(2/3)" },
+            { "name": "PEAK FLOW (INGLIS)", "expr": "Q = 124A^(0.75)" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Hydrology – MCQs",
+          "items": [
+            {
+              "question": "Water balance equation:",
+              "options": [
+                { "text": "P = R + I + E + ΔS", "correct": true },
+                { "text": "P = R - I - E", "correct": false },
+                { "text": "P = R × I × E", "correct": false }
+              ]
+            },
+            {
+              "question": "Horton's infiltration describes —",
+              "options": [
+                { "text": "Rate decreases exponentially with time", "correct": true },
+                { "text": "Constant infiltration rate", "correct": false },
+                { "text": "Linear increase with time", "correct": false }
+              ]
+            },
+            {
+              "question": "Rational formula estimates —",
+              "options": [
+                { "text": "Peak runoff for small catchments", "correct": true },
+                { "text": "Total annual runoff", "correct": false },
+                { "text": "Groundwater recharge", "correct": false }
+              ]
+            },
+            {
+              "question": "Unit hydrograph represents —",
+              "options": [
+                { "text": "Runoff from 1 cm effective rainfall", "correct": true },
+                { "text": "Total annual flow", "correct": false },
+                { "text": "Base flow only", "correct": false }
+              ]
+            },
+            {
+              "question": "Dicken formula applies to —",
+              "options": [
+                { "text": "Peak flow estimation", "correct": true },
+                { "text": "Infiltration calculation", "correct": false },
+                { "text": "Evaporation estimation", "correct": false }
+              ]
+            },
+            {
+              "question": "Ryve formula —",
+              "options": [
+                { "text": "Alternative empirical formula for peak flow", "correct": true },
+                { "text": "Infiltration formula", "correct": false },
+                { "text": "Evaporation formula", "correct": false }
+              ]
+            },
+            {
+              "question": "Inglis formula —",
+              "options": [
+                { "text": "Peak flow estimation in rivers", "correct": true },
+                { "text": "Canal design", "correct": false },
+                { "text": "Dam safety", "correct": false }
+              ]
+            },
+            {
+              "question": "Hydrograph rising limb represents —",
+              "options": [
+                { "text": "Increasing discharge due to rainfall", "correct": true },
+                { "text": "Base flow recession", "correct": false },
+                { "text": "Evaporation losses", "correct": false }
+              ]
+            },
+            {
+              "question": "Base flow represents —",
+              "options": [
+                { "text": "Contribution from groundwater", "correct": true },
+                { "text": "Surface runoff", "correct": false },
+                { "text": "Direct rainfall", "correct": false }
+              ]
+            },
+            {
+              "question": "Superposition principle is used in —",
+              "options": [
+                { "text": "Unit hydrograph analysis", "correct": true },
+                { "text": "Infiltration calculation", "correct": false },
+                { "text": "Evaporation estimation", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 3: Irrigation Engineering",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Irrigation Engineering - Core Concepts",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "STATUS OF IRRIGATION IN NEPAL",
+                "Major irrigation from rivers, canals, and groundwater. Types: Surface, Sub-surface, Sprinkler, Drip. Small-scale and large-scale systems coexist.",
+                ""
+              ],
+              [
+                "IRRIGATION WATER REQUIREMENT",
+                "Water needed for crops, considering evapotranspiration, effective rainfall, losses. Components: Net irrigation requirement, Gross irrigation requirement, Duty of water, Delta.",
+                ""
+              ],
+              [
+                "SURFACE IRRIGATION METHODS",
+                "Water applied over field by gravity. Types: Border, Furrow, Basin, Check basin. Efficiency 30–60%.",
+                ""
+              ],
+              [
+                "SUB-SURFACE IRRIGATION METHODS",
+                "Water delivered below soil surface by pipes, porous media. Advantages: Less evaporation, efficient.",
+                ""
+              ],
+              [
+                "CANAL TYPES",
+                "Main, Branch, Distributary, Field channels. Open channels conveying water from source to fields.",
+                ""
+              ],
+              [
+                "DESIGN OF CANALS",
+                "Cross-section, longitudinal slope, velocity, sediment transport. Canal lining to reduce losses. Hydraulic design considers uniform flow.",
+                ""
+              ],
+              [
+                "IRRIGATION STRUCTURES",
+                "Headworks, diversion weirs, barrages, regulators, sluices. Purpose: Divert, control, and distribute water efficiently.",
+                ""
+              ],
+              [
+                "RIVER TRAINING",
+                "Protects riverbanks and irrigation channels from erosion. Methods: Spurs, Guide banks, Embankments.",
+                ""
+              ],
+              [
+                "WATERLOGGING & SALINITY",
+                "Caused by poor drainage, over-irrigation. Solutions: Sub-surface drainage, proper canal design, crop rotation.",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas – Irrigation Engineering",
+          "items": [
+            { "name": "NET IRRIGATION REQUIREMENT", "expr": "NIR = ET_c - P_e" },
+            { "name": "GROSS IRRIGATION REQUIREMENT", "expr": "GIR = NIR / Irrigation Efficiency" },
+            { "name": "DUTY OF WATER", "expr": "D = Area irrigated / Volume of water supplied" },
+            { "name": "DELTA (Δ)", "expr": "Δ = ET_c / Crop Coefficient" },
+            { "name": "CANAL FLOW – MANNING", "expr": "V = (1/n) R^(2/3) S^(1/2); Q = V × A" },
+            { "name": "TIME OF SUPPLY", "expr": "t = Volume / Discharge" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Irrigation Engineering – MCQs",
+          "items": [
+            {
+              "question": "Net irrigation requirement formula —",
+              "options": [
+                { "text": "NIR = ET_c - P_e", "correct": true },
+                { "text": "NIR = ET_c + P_e", "correct": false },
+                { "text": "NIR = P_e - ET_c", "correct": false }
+              ]
+            },
+            {
+              "question": "Gross irrigation requirement depends on —",
+              "options": [
+                { "text": "Net requirement and efficiency", "correct": true },
+                { "text": "Crop type only", "correct": false },
+                { "text": "Soil color", "correct": false }
+              ]
+            },
+            {
+              "question": "Duty of water measures —",
+              "options": [
+                { "text": "Area irrigated per unit water supplied", "correct": true },
+                { "text": "Water depth applied", "correct": false },
+                { "text": "Irrigation time", "correct": false }
+              ]
+            },
+            {
+              "question": "Delta represents —",
+              "options": [
+                { "text": "Depth of water applied per unit area", "correct": true },
+                { "text": "Flow rate in canal", "correct": false },
+                { "text": "Irrigation frequency", "correct": false }
+              ]
+            },
+            {
+              "question": "Canal design considers —",
+              "options": [
+                { "text": "Uniform flow, sediment transport, velocity", "correct": true },
+                { "text": "Only water quality", "correct": false },
+                { "text": "Only crop type", "correct": false }
+              ]
+            },
+            {
+              "question": "Sub-surface irrigation advantage —",
+              "options": [
+                { "text": "Reduces evaporation", "correct": true },
+                { "text": "Higher installation cost", "correct": false },
+                { "text": "More labor intensive", "correct": false }
+              ]
+            },
+            {
+              "question": "Border irrigation —",
+              "options": [
+                { "text": "Water flows over flat, bordered fields", "correct": true },
+                { "text": "Water flows in small channels", "correct": false },
+                { "text": "Water applied below surface", "correct": false }
+              ]
+            },
+            {
+              "question": "Furrow irrigation —",
+              "options": [
+                { "text": "Water flows in small channels along field", "correct": true },
+                { "text": "Water applied over entire surface", "correct": false },
+                { "text": "Water sprayed overhead", "correct": false }
+              ]
+            },
+            {
+              "question": "River training purpose —",
+              "options": [
+                { "text": "Prevent erosion, protect canals", "correct": true },
+                { "text": "Increase evaporation", "correct": false },
+                { "text": "Reduce crop yield", "correct": false }
+              ]
+            },
+            {
+              "question": "Waterlogging solution —",
+              "options": [
+                { "text": "Sub-surface drainage, proper irrigation schedule", "correct": true },
+                { "text": "More frequent irrigation", "correct": false },
+                { "text": "Reduce canal lining", "correct": false }
+              ]
+            },
+            {
+              "question": "Crop water requirement unit —",
+              "options": [
+                { "text": "mm/day or m³/day", "correct": true },
+                { "text": "kg/ha", "correct": false },
+                { "text": "m/s", "correct": false }
+              ]
+            },
+            {
+              "question": "Irrigation efficiency typical —",
+              "options": [
+                { "text": "30–60% for surface, 70–90% for drip", "correct": true },
+                { "text": "90–100% for all methods", "correct": false },
+                { "text": "10–20% for all methods", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "level": 2,
+      "title": "Chapter 4: Hydropower Engineering",
+      "sections": [
+        {
+          "type": "table",
+          "level": 3,
+          "title": "Hydropower Engineering - Core Concepts",
+          "table": {
+            "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "EXTRA"],
+            "rows": [
+              [
+                "HISTORY & STATUS IN NEPAL",
+                "Hydropower is major renewable energy source. Small, medium, and large-scale plants exist. Focus on micro-hydro in rural areas.",
+                ""
+              ],
+              [
+                "PRINCIPLE OF HYDROPOWER",
+                "Converts potential energy of water into mechanical energy (turbine) and then electrical energy (generator).",
+                ""
+              ],
+              [
+                "COMMON TERMS",
+                "Head (H), Discharge (Q), Power (P), Efficiency (η), Tailrace, Forebay, Penstock, Surge tank.",
+                ""
+              ],
+              [
+                "ADVANTAGES",
+                "Renewable, clean, flexible output, flood control, irrigation support.",
+                ""
+              ],
+              [
+                "COMPONENTS OF HYDROPOWER PLANT",
+                "Intake, Headworks, Penstock, Surge tank, Forebay, Turbine, Generator, Tailrace, Control system.",
+                ""
+              ],
+              [
+                "HYDROPOWER POTENTIAL",
+                "Theoretical, Technical, and Economic potential based on river flow, head, and site conditions.",
+                ""
+              ],
+              [
+                "CLASSIFICATION OF HYDROPOWER PLANTS",
+                "Based on installed capacity: Micro (<100 kW), Mini (100 kW–1 MW), Small (1–10 MW), Large (>10 MW); Based on flow regulation: Run-of-river, Reservoir type.",
+                ""
+              ],
+              [
+                "WATER CONVEYANCE STRUCTURES",
+                "Canals, penstocks, tunnels; guide water to turbine efficiently, minimize losses.",
+                ""
+              ],
+              [
+                "DAM & SPILLWAYS",
+                "Dam stores water, creates head. Spillway safely passes flood. Types: Gravity, Arch, Embankment. Spillway types: Ogee, Chute, Shaft, Side-channel.",
+                ""
+              ],
+              [
+                "ENERGY DISSIPATORS",
+                "Hydraulic structures (stilling basin, baffle blocks) reduce kinetic energy downstream of spillway to prevent erosion.",
+                ""
+              ],
+              [
+                "HYDRO-MECHANICAL & ELECTRO-MECHANICAL EQUIPMENT",
+                "Turbines: Pelton, Francis, Kaplan, Propeller. Pumps, generators, governors, transformers for energy conversion.",
+                ""
+              ],
+              [
+                "MICRO-HYDROPOWER",
+                "Small-scale local plants for villages. Simplified design, lower cost, usually run-of-river type.",
+                ""
+              ]
+            ]
+          }
+        },
+        {
+          "type": "formulas",
+          "level": 3,
+          "title": "Important Formulas – Hydropower Engineering",
+          "items": [
+            { "name": "THEORETICAL POWER", "expr": "P_t = ρgQH (Watt)" },
+            { "name": "USEFUL POWER", "expr": "P_u = ηP_t" },
+            { "name": "FLOW RATE", "expr": "Q = A·V (m³/s)" },
+            { "name": "HEAD", "expr": "H = H_gross - H_loss" },
+            { "name": "SPECIFIC SPEED OF TURBINE", "expr": "N_s = N√P/H^(5/4)" },
+            { "name": "VELOCITY OF JET (PELTON)", "expr": "V_j = √(2gH)" },
+            { "name": "HYDRAULIC EFFICIENCY", "expr": "η_h = P_mechanical / P_water" },
+            { "name": "OVERALL EFFICIENCY", "expr": "η = η_h × η_m" }
+          ]
+        },
+        {
+          "type": "mcqs",
+          "level": 3,
+          "title": "Hydropower Engineering – MCQs",
+          "items": [
+            {
+              "question": "Theoretical power formula —",
+              "options": [
+                { "text": "P_t = ρgQH", "correct": true },
+                { "text": "P_t = QH", "correct": false },
+                { "text": "P_t = ρQ", "correct": false }
+              ]
+            },
+            {
+              "question": "Useful power —",
+              "options": [
+                { "text": "Depends on turbine and generator efficiency", "correct": true },
+                { "text": "Same as theoretical power", "correct": false },
+                { "text": "Independent of head", "correct": false }
+              ]
+            },
+            {
+              "question": "Micro-hydropower capacity —",
+              "options": [
+                { "text": "<100 kW", "correct": true },
+                { "text": "100 kW–1 MW", "correct": false },
+                { "text": "1–10 MW", "correct": false }
+              ]
+            },
+            {
+              "question": "Run-of-river plant —",
+              "options": [
+                { "text": "No significant storage", "correct": true },
+                { "text": "Large reservoir", "correct": false },
+                { "text": "Pumped storage", "correct": false }
+              ]
+            },
+            {
+              "question": "Reservoir type plant —",
+              "options": [
+                { "text": "Has storage to regulate flow", "correct": true },
+                { "text": "No storage", "correct": false },
+                { "text": "Only for irrigation", "correct": false }
+              ]
+            },
+            {
+              "question": "Pelton turbine —",
+              "options": [
+                { "text": "High head, low flow", "correct": true },
+                { "text": "Low head, high flow", "correct": false },
+                { "text": "Medium head and flow", "correct": false }
+              ]
+            },
+            {
+              "question": "Francis turbine —",
+              "options": [
+                { "text": "Medium head and flow", "correct": true },
+                { "text": "High head, low flow", "correct": false },
+                { "text": "Low head, high flow", "correct": false }
+              ]
+            },
+            {
+              "question": "Kaplan turbine —",
+              "options": [
+                { "text": "Low head, high flow", "correct": true },
+                { "text": "High head, low flow", "correct": false },
+                { "text": "Medium head and flow", "correct": false }
+              ]
+            },
+            {
+              "question": "Spillway purpose —",
+              "options": [
+                { "text": "Pass flood safely", "correct": true },
+                { "text": "Generate power", "correct": false },
+                { "text": "Store water", "correct": false }
+              ]
+            },
+            {
+              "question": "Energy dissipator —",
+              "options": [
+                { "text": "Reduces downstream erosion", "correct": true },
+                { "text": "Increases flow velocity", "correct": false },
+                { "text": "Stores energy", "correct": false }
+              ]
+            },
+            {
+              "question": "Specific speed —",
+              "options": [
+                { "text": "Determines turbine selection", "correct": true },
+                { "text": "Measures flow rate", "correct": false },
+                { "text": "Calculates head", "correct": false }
+              ]
+            },
+            {
+              "question": "Hydraulic efficiency —",
+              "options": [
+                { "text": "Mechanical power / Water power", "correct": true },
+                { "text": "Electrical output / Input", "correct": false },
+                { "text": "Flow rate / Head", "correct": false }
+              ]
+            },
+            {
+              "question": "Overall efficiency —",
+              "options": [
+                { "text": "η = η_h × η_m", "correct": true },
+                { "text": "η = η_h + η_m", "correct": false },
+                { "text": "η = η_h / η_m", "correct": false }
+              ]
+            },
+            {
+              "question": "Nepal micro-hydro typical application —",
+              "options": [
+                { "text": "Rural villages", "correct": true },
+                { "text": "Large cities", "correct": false },
+                { "text": "Industrial zones", "correct": false }
+              ]
+            },
+            {
+              "question": "Dam types —",
+              "options": [
+                { "text": "Gravity, Arch, Embankment", "correct": true },
+                { "text": "Francis, Kaplan, Pelton", "correct": false },
+                { "text": "Steel, Concrete, Wood", "correct": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "level": 2,
+      "title": "Section E: Water Resources Engineering – Consolidated Summary",
+      "table": {
+        "header": ["SUB-TOPIC", "SHORT DESCRIPTION / NOTES", "KEY FORMULAS"],
+        "rows": [
+          [
+            "PHYSICAL PROPERTIES OF FLUID",
+            "Density (ρ), Specific weight (γ), Specific Gravity (SG), Viscosity (μ), Kinematic viscosity (ν), Surface tension (σ), Capillary rise",
+            "ρ = m/V, γ = ρg, SG = ρ/ρ_water, ν = μ/ρ, h = 4σ cosθ/(ρ g r)"
+          ],
+          [
+            "PRESSURE & HYDROSTATICS",
+            "Pressure p, Pascal's law, Gauge pressure, Pressure head, Hydrostatic pressure on plane surfaces, Center of pressure",
+            "p = F/A, P = ρg ħ A, h_cp = ħ + (IG sin²θ)/(ħA)"
+          ],
+          [
+            "BUOYANCY & STABILITY",
+            "Archimedes' principle, condition of floatation, metacentric height (GM)",
+            "Upthrust = W_displaced, GM = BM – BG, BM = I/V"
+          ],
+          [
+            "FLUID KINEMATICS & DYNAMICS",
+            "Types of flow, Continuity eq., Streamline, Pathline, Streakline, Euler eq., Bernoulli eq., Darcy-Weisbach head loss",
+            "Q = AV, (p/ρg)+(v²/2g)+z=constant, h_f = f (L/D) (v²/2g), P = ρgQH"
+          ],
+          [
+            "NAVIER-STOKES & BOUNDARY LAYER",
+            "Momentum balance for viscous fluids, laminar/turbulent flow, flow separation",
+            "ρ (du/dt) = ρg - ∇p + μ∇²u, Re = ρVD/μ"
+          ],
+          ["MOMENTUM EQUATION", "Forces on bends, nozzles, vanes", "ΣF = ρQ(V₂ - V₁)"],
+          [
+            "OPEN CHANNEL FLOW",
+            "Free-surface flow, uniform & non-uniform, critical depth, specific energy, Froude number",
+            "Fr = V/√(gD), E = y + V²/2g, y_c = (q²/g)^(1/3), F = Q²/gA + Aȳ"
+          ],
+          [
+            "FLOW OVER NOTCHES & WEIRS",
+            "Rectangular, Triangular (V-notch), Broad-crested, Cipolletti",
+            "Q_rect = (2/3) C_d √(2g) b H^(3/2), Q_tri = (8/15) C_d √(2g) tan(θ/2) H^(5/2)"
+          ],
+          [
+            "GRADUALLY VARIED FLOW (GVF)",
+            "Flow with gradual depth change; differential eq.",
+            "dy/dx = (S₀ - S_f)/(1 - Fr²)"
+          ],
+          [
+            "HYDRAULIC JUMP",
+            "Rapid change from supercritical to subcritical",
+            "y₂/y₁ = ½[√(1 + 8Fr₁²) - 1], ΔE = ((y₂ - y₁)³)/(4y₁y₂)"
+          ],
+          [
+            "FLOW IN MOBILE BOUNDARY CHANNELS",
+            "Regime channel design, erodible beds",
+            "V = (2/5) √f R^(2/3), P = 4.75 √Q, A = 2.5 Q/f^(1/3), S = 0.0003 f^(5/3)/Q^(1/6)"
+          ],
+          [
+            "FLOW MEASUREMENT DEVICES",
+            "Venturimeter, Orifice, Pitot tube, Weirs",
+            "Q = C_d A₂ √[2gh/(1 - (A₂/A₁)²)], Q = C_d a √(2gh), h = V²/2g"
+          ],
+          [
+            "HYDROLOGY",
+            "Hydrologic cycle, precipitation, runoff, hydrograph, unit hydrograph, peak flow",
+            "Q = Rainfall × Catchment Area – Losses, Peak Flow = Q_peak = f(Unit Hydrograph)"
+          ],
+          [
+            "IRRIGATION ENGINEERING",
+            "Water requirement, methods (surface/subsurface), canal types, irrigation structures, river training, waterlogging",
+            "Duty = Area irrigated / Discharge, Delta = Depth of water applied / Duty"
+          ],
+          [
+            "HYDROPOWER ENGINEERING",
+            "History, principle, components, dam & spillway, turbines, generators, micro-hydro",
+            "P_t = ρgQH, P_u = ηP_t, Q = AV, H = H_gross – H_loss, N_s = N√P/H^(5/4), V_j = √(2gH), η = η_h × η_m"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "formulas",
+      "level": 2,
+      "title": "Important Formulas – Section E",
+      "items": [
+        { "name": "Continuity Equation", "expr": "Q = A₁V₁ = A₂V₂" },
+        { "name": "Bernoulli's Equation", "expr": "(p/ρg) + (v²/2g) + z = constant" },
+        { "name": "Manning Formula", "expr": "V = (1/n) R^(2/3) S^(1/2)" },
+        { "name": "Froude Number", "expr": "Fr = V/√(gD)" },
+        { "name": "Hydraulic Jump", "expr": "y₂/y₁ = ½[√(1 + 8Fr₁²) - 1]" },
+        { "name": "Theoretical Hydropower", "expr": "P_t = ρgQH" },
+        { "name": "Rational Formula", "expr": "Q = CIA" },
+        { "name": "Net Irrigation Requirement", "expr": "NIR = ET_c - P_e" },
+        { "name": "Specific Speed of Turbine", "expr": "N_s = N√P/H^(5/4)" }
+      ]
+    },
+    {
+      "type": "mcqs",
+      "level": 2,
+      "title": "Very Important MCQs – Section E (High-Yield)",
+      "items": [
+        {
+          "question": "Continuity equation →",
+          "options": [
+            { "text": "Conservation of mass", "correct": true },
+            { "text": "Conservation of energy", "correct": false }
+          ]
+        },
+        {
+          "question": "Bernoulli equation →",
+          "options": [
+            { "text": "Conservation of energy", "correct": true },
+            { "text": "Conservation of mass", "correct": false }
+          ]
+        },
+        {
+          "question": "Reynolds number <2300 →",
+          "options": [
+            { "text": "Laminar flow", "correct": true },
+            { "text": "Turbulent flow", "correct": false }
+          ]
+        },
+        {
+          "question": "Fr < 1 →",
+          "options": [
+            { "text": "Subcritical flow", "correct": true },
+            { "text": "Supercritical flow", "correct": false }
+          ]
+        },
+        {
+          "question": "Critical depth →",
+          "options": [
+            { "text": "Specific energy minimum", "correct": true },
+            { "text": "Maximum velocity", "correct": false }
+          ]
+        },
+        {
+          "question": "Hydraulic jump →",
+          "options": [
+            { "text": "Supercritical to subcritical", "correct": true },
+            { "text": "Subcritical to supercritical", "correct": false }
+          ]
+        },
+        {
+          "question": "Manning formula →",
+          "options": [
+            { "text": "Uniform open channel flow", "correct": true },
+            { "text": "Pipe flow only", "correct": false }
+          ]
+        },
+        {
+          "question": "Lacey's equations →",
+          "options": [
+            { "text": "Alluvial channel design", "correct": true },
+            { "text": "Concrete channel design", "correct": false }
+          ]
+        },
+        {
+          "question": "Rectangular weir →",
+          "options": [
+            { "text": "Q = (2/3) C_d √(2g) b H^(3/2)", "correct": true },
+            { "text": "Q = (8/15) C_d √(2g) tan(θ/2) H^(5/2)", "correct": false }
+          ]
+        },
+        {
+          "question": "Tailrace depth →",
+          "options": [
+            { "text": "Prevent turbine submergence", "correct": true },
+            { "text": "Increase head", "correct": false }
+          ]
+        },
+        {
+          "question": "Hydropower theoretical power →",
+          "options": [
+            { "text": "P_t = ρgQH", "correct": true },
+            { "text": "P_t = QH", "correct": false }
+          ]
+        },
+        {
+          "question": "Useful power →",
+          "options": [
+            { "text": "P_u = ηP_t", "correct": true },
+            { "text": "P_u = P_t", "correct": false }
+          ]
+        },
+        {
+          "question": "Micro-hydro capacity →",
+          "options": [
+            { "text": "<100 kW", "correct": true },
+            { "text": ">1 MW", "correct": false }
+          ]
+        },
+        {
+          "question": "Pelton turbine →",
+          "options": [
+            { "text": "High head, low flow", "correct": true },
+            { "text": "Low head, high flow", "correct": false }
+          ]
+        },
+        {
+          "question": "Francis turbine →",
+          "options": [
+            { "text": "Medium head & flow", "correct": true },
+            { "text": "High head, low flow", "correct": false }
+          ]
+        },
+        {
+          "question": "Kaplan turbine →",
+          "options": [
+            { "text": "Low head, high flow", "correct": true },
+            { "text": "High head, low flow", "correct": false }
+          ]
+        },
+        {
+          "question": "Overall hydropower efficiency →",
+          "options": [
+            { "text": "η = η_h × η_m", "correct": true },
+            { "text": "η = η_h + η_m", "correct": false }
+          ]
+        },
+        {
+          "question": "Duty of canal →",
+          "options": [
+            { "text": "Area irrigated / Discharge", "correct": true },
+            { "text": "Discharge / Area", "correct": false }
+          ]
+        },
+        {
+          "question": "Net irrigation requirement →",
+          "options": [
+            { "text": "NIR = ET_c - P_e", "correct": true },
+            { "text": "NIR = ET_c + P_e", "correct": false }
+          ]
+        },
+        {
+          "question": "Specific speed determines →",
+          "options": [
+            { "text": "Turbine selection", "correct": true },
+            { "text": "Dam height", "correct": false }
+          ]
+        }
+      ]
+    }
+  ]
+}
