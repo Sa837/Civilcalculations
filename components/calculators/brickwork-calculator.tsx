@@ -20,6 +20,10 @@ import {
 } from '@/lib/registry/calculator/brickwork-calculator'
 import { UnitConverter, UNIT_PRESETS } from '@/lib/registry/globalunits'
 
+// =============================================================================
+// TYPES & INTERFACES
+// =============================================================================
+
 interface BrickworkResult {
   numberOfBricks: number
   cementWeight: number
@@ -63,20 +67,546 @@ interface BrickworkCalculatorProps {
   globalUnit?: 'm' | 'ft'
 }
 
-// SVG Component for wall visualization
+// =============================================================================
+// DATA CONFIGURATION
+// =============================================================================
+
+const BENEFIT_CARDS = [
+  {
+    title: 'Cost Control',
+    color: 'green',
+    content:
+      'Over-ordering wastes 10-15% of material costs, while under-ordering causes project delays and additional delivery charges. Accurate calculations save 8-12% on total masonry budgets.',
+  },
+  {
+    title: 'Project Planning',
+    color: 'blue',
+    content:
+      'Knowing exact quantities helps schedule deliveries, manage storage space, and coordinate labor efficiently. Proper planning reduces construction time by 15-20%.',
+  },
+  {
+    title: 'Quality Assurance',
+    color: 'amber',
+    content:
+      'Consistent mortar mix ratios and proper brick placement ensure structural strength. Standardized calculations maintain quality across all wall sections.',
+  },
+  {
+    title: 'Environmental Impact',
+    color: 'purple',
+    content:
+      'Precise calculations minimize construction waste. Brick manufacturing produces 0.8-1.0 kg CO₂ per brick—reducing waste directly lowers environmental impact.',
+  },
+]
+
+const BRICK_TYPES = [
+  {
+    type: 'Standard Modular',
+    dim: '190 × 90 × 90',
+    use: 'General construction',
+    props: 'Uniform size, easy to handle',
+  },
+  {
+    type: 'Traditional/Non-Modular',
+    dim: '230 × 110 × 75',
+    use: 'Traditional buildings',
+    props: 'Varied sizes, rustic appearance',
+  },
+  {
+    type: 'Facing Bricks',
+    dim: '215 × 102.5 × 65',
+    use: 'Exterior walls',
+    props: 'Aesthetic finish, weather-resistant',
+  },
+  {
+    type: 'Engineering Bricks',
+    dim: '215 × 102.5 × 65',
+    use: 'Structural work',
+    props: 'High strength, low water absorption',
+  },
+  {
+    type: 'Concrete Bricks',
+    dim: '200 × 100 × 100',
+    use: 'Load-bearing walls',
+    props: 'High compressive strength',
+  },
+  {
+    type: 'Fly Ash Bricks',
+    dim: '230 × 110 × 75',
+    use: 'Eco-friendly projects',
+    props: 'Lightweight, thermal insulation',
+  },
+  {
+    type: 'Fire Bricks',
+    dim: '230 × 115 × 75',
+    use: 'Fireplaces, furnaces',
+    props: 'High heat resistance',
+  },
+  {
+    type: 'Hollow Bricks',
+    dim: '400 × 200 × 200',
+    use: 'Non-load bearing',
+    props: 'Lightweight, sound insulation',
+  },
+]
+
+const WALL_THICKNESS_CARDS = [
+  {
+    emoji: '🧱',
+    title: '4-Inch Wall (Half Brick)',
+    subtitle: '102-115mm thickness',
+    features: [
+      'Interior partitions',
+      'Non-load bearing walls',
+      'Cladding over RCC',
+      'Cost-effective option',
+    ],
+    gradient: 'from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700',
+    border: 'border-slate-200 dark:border-slate-600',
+  },
+  {
+    emoji: '🏗️',
+    title: '9-Inch Wall (One Brick)',
+    subtitle: '215-230mm thickness',
+    features: ['Load-bearing walls', 'Exterior walls', 'Structural columns', 'Two-story buildings'],
+    gradient: 'from-amber-50 to-amber-100 dark:from-amber-900/30 dark:to-amber-800/30',
+    border: 'border-amber-200 dark:border-amber-700',
+  },
+  {
+    emoji: '🏢',
+    title: '13.5-Inch Wall (1.5 Brick)',
+    subtitle: '330-345mm thickness',
+    features: [
+      'Heavy load-bearing',
+      'Multi-story buildings',
+      'Retaining walls',
+      'Foundation walls',
+    ],
+    gradient: 'from-rose-50 to-rose-100 dark:from-rose-900/30 dark:to-rose-800/30',
+    border: 'border-rose-200 dark:border-rose-700',
+  },
+]
+
+const MORTAR_RATIOS = [
+  {
+    ratio: '1:6',
+    label: 'Low Strength',
+    color: 'green',
+    application:
+      'Non-load bearing interior walls, garden walls, boundary walls, temporary structures.',
+    strength: '3-4 MPa compressive strength.',
+    cement: '~190 kg per m³ of mortar.',
+    bestFor: 'Cost-effective projects where high strength is not required.',
+  },
+  {
+    ratio: '1:5',
+    label: 'Standard',
+    color: 'blue',
+    application:
+      'General purpose masonry, standard exterior walls, single-story residential buildings.',
+    strength: '5-6 MPa compressive strength.',
+    cement: '~220 kg per m³ of mortar.',
+    bestFor: 'Most residential construction projects.',
+  },
+  {
+    ratio: '1:4',
+    label: 'High Strength',
+    color: 'amber',
+    application: 'Load-bearing walls, structural columns, beams, multi-story buildings.',
+    strength: '7-8 MPa compressive strength.',
+    cement: '~270 kg per m³ of mortar.',
+    bestFor: 'Commercial buildings and structural elements.',
+  },
+  {
+    ratio: '1:3',
+    label: 'Very High Strength',
+    color: 'rose',
+    application:
+      'Heavy load-bearing structures, foundation walls, retaining walls, high-rise buildings.',
+    strength: '10-12 MPa compressive strength.',
+    cement: '~340 kg per m³ of mortar.',
+    bestFor: 'Critical structural applications requiring maximum strength.',
+  },
+]
+
+const BEST_PRACTICES = [
+  {
+    title: 'Soak Bricks Before Use',
+    content:
+      'Immerse bricks in water for 2-4 hours before laying. Dry bricks absorb water from mortar too quickly, weakening the bond strength by up to 40%.',
+  },
+  {
+    title: 'Use Gauge Rods',
+    content:
+      'Set up gauge rods at corners showing course heights. Standard brick + mortar height is 75mm. This ensures level courses throughout the wall.',
+  },
+  {
+    title: 'Maintain Consistent Joints',
+    content:
+      'Keep horizontal joints 10-12mm and vertical joints 10mm. Use joint spacers or a wooden batten cut to mortar thickness for consistency.',
+  },
+  {
+    title: 'Proper Bond Patterns',
+    content:
+      'Use English bond for maximum strength in structural walls. Stretcher bond works for half-brick walls. Flemish bond provides good aesthetics and strength.',
+  },
+  {
+    title: 'Curing is Critical',
+    content:
+      'Keep masonry damp for 7 days after construction. Proper curing increases strength by 50% and prevents cracks from shrinkage.',
+  },
+  {
+    title: 'Check Alignment Frequently',
+    content:
+      'Use spirit levels every 3-4 courses. Check both faces of the wall. A 1mm error per course becomes 20mm in a 3-meter wall.',
+  },
+]
+
+const COMMON_MISTAKES = [
+  {
+    title: 'Incorrect Mortar Consistency',
+    content:
+      "Too wet mortar causes bricks to float and weakens bond. Too dry mortar doesn't adhere properly. Aim for butter-like consistency that holds its shape.",
+  },
+  {
+    title: 'Skipping DPC (Damp Proof Course)',
+    content:
+      'A DPC at 150mm above ground level prevents rising damp. Without it, moisture damages walls and interior finishes. Use 20mm cement mortar or bitumen felt.',
+  },
+  {
+    title: 'Poor Bonding at Intersections',
+    content:
+      'Intersecting walls need proper bonding with quoin bricks. Metal ties every 4-6 courses strengthen junctions and prevent cracking.',
+  },
+  {
+    title: 'Inadequate Curing',
+    content:
+      'Skipping the 7-day curing period reduces mortar strength by 40-50%. Keep walls covered with wet sacks and sprinkle water twice daily.',
+  },
+  {
+    title: 'Wrong Mortar for the Job',
+    content:
+      'Using 1:6 mix for load-bearing walls compromises structural safety. Match mortar strength to wall function and building height.',
+  },
+  {
+    title: 'Ignoring Thermal Expansion',
+    content:
+      'Walls over 12 meters need expansion joints every 8-10 meters. Without them, temperature changes cause cracking and structural damage.',
+  },
+]
+
+const FAQS = [
+  {
+    q: 'How many bricks are needed per square meter of wall?',
+    a: 'For a standard half-brick wall (102mm thick) using 215×102.5×65mm bricks with 10mm joints, you need approximately 60 bricks per m². For a one-brick wall (215mm thick), you need approximately 120 bricks per m². Always add 5-10% for wastage.',
+  },
+  {
+    q: 'How much cement and sand do I need for 1000 bricks?',
+    a: 'For 1000 bricks using 1:5 mortar mix: you need approximately 210-230 kg of cement (4-5 bags of 50kg) and 1.05-1.15 cubic meters of sand. For 1:4 mix, increase cement to 260-280 kg and reduce sand to 0.9-1.0 cubic meters.',
+  },
+  {
+    q: 'What is the standard mortar thickness for brickwork?',
+    a: 'Standard mortar joint thickness is 10mm (3/8 inch) for both horizontal (bed) joints and vertical (perpend) joints. This provides adequate strength while allowing for minor brick size variations. For lightweight blocks, 8-12mm is common.',
+  },
+  {
+    q: 'How do I calculate bricks for a wall with doors and windows?',
+    a: 'Calculate the gross wall area (length × height), then subtract the area of all openings (door width × height, window width × height). Multiply net area by bricks per m² for your wall thickness. This calculator automates this process with precise volume calculations.',
+  },
+  {
+    q: 'Why is 33% added to mortar volume calculations?',
+    a: 'The 1.33 factor (33% increase) converts wet mortar volume to dry material volume. When mixed with water, sand and cement compact and fill voids. This bulking factor ensures you order enough dry materials to produce the required wet mortar volume.',
+  },
+  {
+    q: 'What is the difference between nominal and actual brick size?',
+    a: 'Actual brick size is the physical dimension of the brick itself. Nominal size includes the mortar joint (typically +10mm on each dimension). For example, a 190×90×90mm actual brick has a 200×100×100mm nominal size with 10mm joints.',
+  },
+  {
+    q: 'How many bricks are in 1 cubic meter?',
+    a: 'For standard Indian modular bricks (190×90×90mm) with 10mm mortar: approximately 500 bricks per m³ of brickwork. For traditional bricks (230×110×75mm): approximately 350-400 bricks per m³. This varies based on mortar thickness and brick dimensions.',
+  },
+  {
+    q: 'What is the cost estimate for brick wall construction per m²?',
+    a: 'In India (2024): Half-brick wall costs ₹800-1200 per m², one-brick wall costs ₹1600-2200 per m² including materials and labor. In the US: $15-25 per sq ft for materials only. Prices vary by location, brick type, and mortar mix ratio used.',
+  },
+  {
+    q: 'Can I use the same mortar mix for all types of brickwork?',
+    a: 'No. Load-bearing walls need stronger mortar (1:4 or 1:3) than non-load bearing walls (1:6). Below-grade work needs 1:3 or 1:4 for moisture resistance. Always match mortar strength to structural requirements and exposure conditions.',
+  },
+  {
+    q: 'How long should I wait before loading a new brick wall?',
+    a: 'Allow 14-28 days for mortar to reach sufficient strength before applying heavy loads. Concrete block walls need 28 days minimum. Keep walls supported during this curing period and protect from vibration and impact.',
+  },
+]
+
+const STEP_COLORS = [
+  {
+    border: 'border-blue-500',
+    bg: 'bg-blue-500',
+    text: 'text-blue-900 dark:text-blue-100',
+    desc: 'text-blue-800/80 dark:text-blue-200/80',
+  },
+  {
+    border: 'border-amber-500',
+    bg: 'bg-amber-500',
+    text: 'text-amber-900 dark:text-amber-100',
+    desc: 'text-amber-800/80 dark:text-amber-200/80',
+  },
+  {
+    border: 'border-green-500',
+    bg: 'bg-green-500',
+    text: 'text-green-900 dark:text-green-100',
+    desc: 'text-green-800/80 dark:text-green-200/80',
+  },
+  {
+    border: 'border-purple-500',
+    bg: 'bg-purple-500',
+    text: 'text-purple-900 dark:text-purple-100',
+    desc: 'text-purple-800/80 dark:text-purple-200/80',
+  },
+  {
+    border: 'border-indigo-500',
+    bg: 'bg-indigo-500',
+    text: 'text-indigo-900 dark:text-indigo-100',
+    desc: 'text-indigo-800/80 dark:text-indigo-200/80',
+  },
+  {
+    border: 'border-cyan-500',
+    bg: 'bg-cyan-500',
+    text: 'text-cyan-900 dark:text-cyan-100',
+    desc: 'text-cyan-800/80 dark:text-cyan-200/80',
+  },
+  {
+    border: 'border-rose-500',
+    bg: 'bg-rose-500',
+    text: 'text-rose-900 dark:text-rose-100',
+    desc: 'text-rose-800/80 dark:text-rose-200/80',
+  },
+  {
+    border: 'border-yellow-500',
+    bg: 'bg-yellow-500',
+    text: 'text-yellow-900 dark:text-yellow-100',
+    desc: 'text-yellow-800/80 dark:text-yellow-200/80',
+  },
+]
+
+// =============================================================================
+// REUSABLE UI COMPONENTS
+// =============================================================================
+
+const SectionHeader = ({ number, title }: { number: number; title: string }) => (
+  <h3 className="text-lg sm:text-xl font-bold text-heading dark:text-heading-dark mb-4 flex items-center gap-2">
+    <span className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary text-white text-xs sm:text-sm font-bold">
+      {number}
+    </span>
+    <span className="leading-tight">{title}</span>
+  </h3>
+)
+
+const InfoCard = ({
+  title,
+  color,
+  children,
+}: {
+  title: string
+  color: string
+  children: React.ReactNode
+}) => {
+  const styles: Record<string, string> = {
+    green: 'bg-green-50/50 dark:bg-green-900/20 border-green-200/30 dark:border-green-700/30',
+    blue: 'bg-blue-50/50 dark:bg-blue-900/20 border-blue-200/30 dark:border-blue-700/30',
+    amber: 'bg-amber-50/50 dark:bg-amber-900/20 border-amber-200/30 dark:border-amber-700/30',
+    purple: 'bg-purple-50/50 dark:bg-purple-900/20 border-purple-200/30 dark:border-purple-700/30',
+    red: 'bg-red-50/50 dark:bg-red-900/20 border-red-200/30 dark:border-red-700/30',
+    rose: 'bg-rose-50/50 dark:bg-rose-900/20 border-rose-200/30 dark:border-rose-700/30',
+    cyan: 'bg-cyan-50/50 dark:bg-cyan-900/20 border-cyan-200/30 dark:border-cyan-700/30',
+    indigo: 'bg-indigo-50/50 dark:bg-indigo-900/20 border-indigo-200/30 dark:border-indigo-700/30',
+  }
+  const textColors: Record<string, string> = {
+    green: 'text-green-800 dark:text-green-200',
+    blue: 'text-blue-800 dark:text-blue-200',
+    amber: 'text-amber-800 dark:text-amber-200',
+    purple: 'text-purple-800 dark:text-purple-200',
+    red: 'text-red-800 dark:text-red-200',
+    rose: 'text-rose-800 dark:text-rose-200',
+    cyan: 'text-cyan-800 dark:text-cyan-200',
+    indigo: 'text-indigo-800 dark:text-indigo-200',
+  }
+  return (
+    <div className={`rounded-lg p-3 sm:p-4 border ${styles[color] || styles.blue}`}>
+      <h4
+        className={`font-semibold ${textColors[color] || textColors.blue} mb-1 sm:mb-2 text-sm sm:text-base`}
+      >
+        {title}
+      </h4>
+      <p className="text-xs sm:text-sm text-body/80 dark:text-body-dark/80">{children}</p>
+    </div>
+  )
+}
+
+const WallThicknessCard = ({
+  emoji,
+  title,
+  subtitle,
+  features,
+  gradient,
+  border,
+}: {
+  emoji: string
+  title: string
+  subtitle: string
+  features: string[]
+  gradient: string
+  border: string
+}) => (
+  <div className={`rounded-xl bg-gradient-to-br ${gradient} p-4 sm:p-5 border ${border}`}>
+    <div className="mb-2 sm:mb-3 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-white/50 dark:bg-black/20">
+      <span className="text-xl sm:text-2xl">{emoji}</span>
+    </div>
+    <h4 className="font-bold text-heading dark:text-heading-dark mb-1 text-sm sm:text-base">
+      {title}
+    </h4>
+    <p className="text-xs text-body/70 dark:text-body-dark/70 mb-2 sm:mb-3">{subtitle}</p>
+    <ul className="space-y-0.5 sm:space-y-1 text-xs sm:text-sm text-body/80 dark:text-body-dark/80">
+      {features.map((f, i) => (
+        <li key={i}>• {f}</li>
+      ))}
+    </ul>
+  </div>
+)
+
+const MortarRatioCard = ({
+  ratio,
+  label,
+  color,
+  application,
+  strength,
+  cement,
+  bestFor,
+}: {
+  ratio: string
+  label: string
+  color: string
+  application: string
+  strength: string
+  cement: string
+  bestFor: string
+}) => {
+  const borderColors: Record<string, string> = {
+    green: 'border-green-500',
+    blue: 'border-blue-500',
+    amber: 'border-amber-500',
+    rose: 'border-rose-500',
+  }
+  const textColors: Record<string, string> = {
+    green: 'text-green-800 dark:text-green-200',
+    blue: 'text-blue-800 dark:text-blue-200',
+    amber: 'text-amber-800 dark:text-amber-200',
+    rose: 'text-rose-800 dark:text-rose-200',
+  }
+  return (
+    <div
+      className={`rounded-lg border-l-4 ${borderColors[color]} bg-white/50 dark:bg-slate-800/50 p-3 sm:p-4`}
+    >
+      <h4 className={`font-bold ${textColors[color]} text-sm sm:text-base`}>
+        {ratio} Mix Ratio ({label})
+      </h4>
+      <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-body/80 dark:text-body-dark/80">
+        <strong>Application:</strong> {application}
+        <br />
+        <strong>Strength:</strong> {strength}
+        <br />
+        <strong>Cement needed:</strong> {cement}
+        <br />
+        <strong>Best for:</strong> {bestFor}
+      </p>
+    </div>
+  )
+}
+
+const BestPracticeItem = ({
+  number,
+  title,
+  content,
+}: {
+  number: number
+  title: string
+  content: string
+}) => (
+  <div className="flex gap-2 sm:gap-3">
+    <div className="flex h-5 w-5 sm:h-6 sm:w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold">
+      {number}
+    </div>
+    <div>
+      <h5 className="font-semibold text-heading dark:text-heading-dark text-sm sm:text-base">
+        {title}
+      </h5>
+      <p className="text-xs sm:text-sm text-body/70 dark:text-body-dark/70">{content}</p>
+    </div>
+  </div>
+)
+
+const FAQItem = ({ question, answer }: { question: string; answer: string }) => (
+  <div className="rounded-lg border border-slate-200/50 dark:border-slate-700/50 p-3 sm:p-4">
+    <h4 className="font-semibold text-heading dark:text-heading-dark mb-1 sm:mb-2 text-sm sm:text-base">
+      {question}
+    </h4>
+    <p className="text-xs sm:text-sm text-body/80 dark:text-body-dark/80">{answer}</p>
+  </div>
+)
+
+const StepCard = ({
+  stepNumber,
+  title,
+  children,
+  description,
+  colorIndex,
+}: {
+  stepNumber: number | string
+  title: string
+  children: React.ReactNode
+  description?: string
+  colorIndex: number
+}) => {
+  const color = STEP_COLORS[colorIndex % STEP_COLORS.length]
+  return (
+    <div
+      className={`rounded-lg bg-white/60 dark:bg-slate-800/60 border-l-4 ${color.border} p-3 sm:p-4`}
+    >
+      <div className="flex items-start gap-2 sm:gap-3">
+        <div
+          className={`flex h-6 w-6 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-full ${color.bg} text-white font-bold text-xs sm:text-sm`}
+        >
+          {stepNumber}
+        </div>
+        <div className="flex-1 min-w-0">
+          <h4 className={`font-semibold ${color.text} mb-1 sm:mb-2 text-sm sm:text-base`}>
+            {title}
+          </h4>
+          <div className="bg-slate-100 dark:bg-slate-700/50 rounded p-2 mb-1 sm:mb-2 font-mono text-xs sm:text-sm break-all overflow-x-auto">
+            {children}
+          </div>
+          {description && <p className={`text-xs sm:text-sm ${color.desc}`}>{description}</p>}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// =============================================================================
+// SVG COMPONENT
+// =============================================================================
+
 const BrickworkSVG = ({ formData }: { formData: BrickworkFormData }) => {
   return (
-    <div className="mt-6 p-4 rounded-xl">
-      <h3 className="  font-medium text-heading dark:text-heading-dark mb-3 text-center">
+    <div className="mt-4 sm:mt-6 p-3 sm:p-4 rounded-xl">
+      <h3 className="font-medium text-heading dark:text-heading-dark mb-2 sm:mb-3 text-center text-sm sm:text-base">
         Wall Diagram
       </h3>
       <svg
         width="300"
         height="200"
-        className="border dark:border-slate-600 rounded-lg bg-white mx-auto"
+        className="border dark:border-slate-600 rounded-lg bg-white mx-auto max-w-full h-auto"
         viewBox="0 0 300 200"
       >
-        {/* Wall background */}
         <rect
           x="50"
           y="50"
@@ -86,40 +616,19 @@ const BrickworkSVG = ({ formData }: { formData: BrickworkFormData }) => {
           stroke="#b94238ff"
           strokeWidth="2"
         />
-
-        {/* Brick pattern */}
         <g fill="none" stroke="#544a49ff" strokeWidth="1">
-          {/* Horizontal lines */}
-          <line x1="50" y1="60" x2="250" y2="60" />
-          <line x1="50" y1="70" x2="250" y2="70" />
-          <line x1="50" y1="80" x2="250" y2="80" />
-          <line x1="50" y1="90" x2="250" y2="90" />
-          <line x1="50" y1="100" x2="250" y2="100" />
-          <line x1="50" y1="110" x2="250" y2="110" />
-          <line x1="50" y1="120" x2="250" y2="120" />
-          <line x1="50" y1="130" x2="250" y2="130" />
-          <line x1="50" y1="140" x2="250" y2="140" />
-
-          {/* Vertical lines - staggered for brick pattern */}
-          <line x1="60" y1="50" x2="60" y2="150" />
-          <line x1="80" y1="50" x2="80" y2="150" />
-          <line x1="100" y1="50" x2="100" y2="150" />
-          <line x1="120" y1="50" x2="120" y2="150" />
-          <line x1="140" y1="50" x2="140" y2="150" />
-          <line x1="160" y1="50" x2="160" y2="150" />
-          <line x1="180" y1="50" x2="180" y2="150" />
-          <line x1="200" y1="50" x2="200" y2="150" />
-          <line x1="220" y1="50" x2="220" y2="150" />
-          <line x1="240" y1="50" x2="240" y2="150" />
+          {[60, 70, 80, 90, 100, 110, 120, 130, 140].map((y) => (
+            <line key={`h-${y}`} x1="50" y1={y} x2="250" y2={y} />
+          ))}
+          {[60, 80, 100, 120, 140, 160, 180, 200, 220, 240].map((x) => (
+            <line key={`v-${x}`} x1={x} y1="50" x2={x} y2="150" />
+          ))}
         </g>
-
-        {/* Openings */}
         {formData.openings.map((opening, index) => {
-          const x = 70 + index * 40
-          const y = 75
-          const width = 30
-          const height = 50
-
+          const x = 70 + index * 40,
+            y = 75,
+            width = 30,
+            height = 50
           return (
             <g key={opening.id}>
               <rect
@@ -146,16 +655,11 @@ const BrickworkSVG = ({ formData }: { formData: BrickworkFormData }) => {
             </g>
           )
         })}
-
-        {/* Dimensions */}
         <g fontSize="10" fill="#666" textAnchor="middle">
-          {/* Wall length */}
           <line x1="50" y1="160" x2="250" y2="160" stroke="#666" strokeWidth="1" />
           <text x="150" y="175" fontWeight="bold" fontSize="12">
             {formData.wallLength || '0'} {formData.unit}
           </text>
-
-          {/* Wall height */}
           <line x1="260" y1="50" x2="260" y2="150" stroke="#666" strokeWidth="1" />
           <text
             x="275"
@@ -168,8 +672,6 @@ const BrickworkSVG = ({ formData }: { formData: BrickworkFormData }) => {
             {formData.wallHeight || '0'} {formData.unit}
           </text>
         </g>
-
-        {/* Wall thickness indicator */}
         <g>
           <line x1="40" y1="50" x2="40" y2="150" stroke="#8b1313ff" strokeWidth="3" />
           <text
@@ -177,15 +679,13 @@ const BrickworkSVG = ({ formData }: { formData: BrickworkFormData }) => {
             y="100"
             textAnchor="middle"
             fontSize="12"
-            fontWeight={'bold'}
+            fontWeight="bold"
             fill="#8b1313ff"
             transform="rotate(-90, 35, 100)"
           >
             {formData.wallThickness || '0'} {formData.unit}
           </text>
         </g>
-
-        {/* Title */}
         <text
           x="150"
           y="30"
@@ -198,8 +698,7 @@ const BrickworkSVG = ({ formData }: { formData: BrickworkFormData }) => {
           Brick Wall
         </text>
       </svg>
-
-      <div className="mt-2   text-xs text-center text-slate-600 dark:text-slate-300">
+      <div className="mt-2 text-xs text-center text-slate-600 dark:text-slate-300">
         Dimensions: {formData.wallLength || '0'} × {formData.wallHeight || '0'} {formData.unit}
         {formData.openings.length > 0 &&
           ` • ${formData.openings.length} opening${formData.openings.length !== 1 ? 's' : ''}`}
@@ -215,7 +714,7 @@ const InputField = memo(
     value,
     onChange,
     error,
-    type = 'number',
+    type = 'text',
     min = '0',
     unit,
     isLength = false,
@@ -295,18 +794,18 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
     wallHeight: '',
     wallThickness: '',
     wallThicknessType: 'custom',
-    brickLength: '',
-    brickWidth: '',
-    brickHeight: '',
-    mortarThickness: '',
-    mortarMixType: '1:6',
+    brickLength: '240',
+    brickWidth: '115',
+    brickHeight: '57',
+    mortarThickness: '10',
+    mortarMixType: '1:5',
     wastageFactor: '5',
     unit: globalUnit,
     showStepByStep: false,
     area: '',
     openings: [],
     brickSizeType: 'standard',
-    standardBrickSize: '240x115x71',
+    standardBrickSize: '240x115x57',
     customBrickInput: '',
   })
 
@@ -671,14 +1170,14 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
       brickWidth: defaults.brickWidth,
       brickHeight: defaults.brickHeight,
       mortarThickness: defaults.mortarThickness,
-      mortarMixType: '1:6',
+      mortarMixType: '1:5',
       wastageFactor: '5',
       unit: globalUnit,
       showStepByStep: false,
       area: '',
       openings: [],
       brickSizeType: 'standard',
-      standardBrickSize: '240x115x71',
+      standardBrickSize: '240x115x57',
       customBrickInput: '',
     })
     setResult(null)
@@ -730,13 +1229,17 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
           <BrickworkSVG formData={formData} />
         </div>
         {/* Form */}
-        <div className="p-8">
-          <div className="flex justify-end gap-4 mb-6">
+        <div className="p-4 sm:p-6 md:p-8">
+          {/* Use Area Toggle Button */}
+          <div className="flex flex-wrap justify-end gap-2 sm:gap-4 mb-4 sm:mb-6">
             <button
               type="button"
               onClick={() => setUseArea(!useArea)}
-              className={`flex items-center gap-2 rounded-xl px-6 py-2   font-medium shadow-soft transition-all 
-                ${useArea ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-secondary text-white hover:bg-secondary/90'}`}
+              className={`flex items-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-6 py-2 font-medium shadow-soft transition-all text-sm sm:text-base whitespace-nowrap ${
+                useArea
+                  ? 'bg-green-600 text-white hover:bg-green-700'
+                  : 'bg-secondary text-white hover:bg-secondary/90'
+              }`}
             >
               <Info className="h-4 w-4" />
               {useArea ? 'Use Length & Height' : 'Use Area'}
@@ -783,62 +1286,62 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
 
             {/* Wall Thickness with Dropdown */}
             <div className="md:col-span-2">
-              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
                 Wall Thickness
               </label>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="flex flex-wrap gap-2 sm:gap-4">
                 <button
                   type="button"
                   onClick={() => handleWallThicknessTypeChange('4inch')}
-                  className={`px-1 py-1 rounded-lg font-medium   transition-colors ${
+                  className={`px-2 sm:px-4 py-2 rounded-lg font-medium transition-colors text-xs sm:text-sm flex-1 min-w-[100px] max-w-[140px] ${
                     formData.wallThicknessType === '4inch'
                       ? 'bg-primary text-white'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300'
                   }`}
                 >
-                  4 inch Wall
-                  <div className="text-xs opacity-80">
+                  <span className="block">4 inch Wall</span>
+                  <span className="block text-[10px] sm:text-xs opacity-80">
                     {formData.unit === 'm' ? '0.102 m' : '0.33 ft'}
-                  </div>
+                  </span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => handleWallThicknessTypeChange('9inch')}
-                  className={`px-1 py-1 rounded-lg font-medium   transition-colors ${
+                  className={`px-2 sm:px-4 py-2 rounded-lg font-medium transition-colors text-xs sm:text-sm flex-1 min-w-[100px] max-w-[140px] ${
                     formData.wallThicknessType === '9inch'
                       ? 'bg-primary text-white'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300'
                   }`}
                 >
-                  9 inch Wall
-                  <div className="text-xs opacity-80">
+                  <span className="block">9 inch Wall</span>
+                  <span className="block text-[10px] sm:text-xs opacity-80">
                     {formData.unit === 'm' ? '0.229 m' : '0.75 ft'}
-                  </div>
+                  </span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => handleWallThicknessTypeChange('custom')}
-                  className={`px-4 py-1 rounded-lg font-medium   transition-colors ${
+                  className={`px-2 sm:px-4 py-2 rounded-lg font-medium transition-colors text-xs sm:text-sm flex-1 min-w-[100px] max-w-[140px] ${
                     formData.wallThicknessType === 'custom'
                       ? 'bg-primary text-white'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300'
                   }`}
                 >
-                  Custom Thickness
+                  Custom
                 </button>
 
                 {formData.wallThicknessType === 'custom' && (
-                  <div className="relative">
+                  <div className="relative flex-1 min-w-[120px] max-w-[200px]">
                     <input
                       type="number"
                       value={formData.wallThickness}
                       onChange={(e) => handleInputChange('wallThickness', e.target.value)}
-                      placeholder="Enter thickness"
-                      className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 font-sans transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-600 dark:bg-slate-800"
+                      placeholder="Thickness"
+                      className="w-full rounded-xl border border-slate-300 bg-white px-3 sm:px-4 py-2 font-sans transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-600 dark:bg-slate-800 text-sm"
                     />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body/60 dark:text-body-dark/60">
+                    <div className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-xs sm:text-sm text-body/60 dark:text-body-dark/60">
                       {getLengthUnit()}
                     </div>
                   </div>
@@ -858,16 +1361,16 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
 
             {/* Openings Section */}
             <div className="md:col-span-2">
-              <div className="flex justify-between items-center mb-4">
-                <label className="block   font-medium text-heading dark:text-heading-dark">
+              <div className="flex flex-wrap justify-between items-center gap-2 mb-3 sm:mb-4">
+                <label className="block font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
                   Door/Window Openings (Optional)
                 </label>
                 <button
                   type="button"
                   onClick={addOpening}
-                  className="flex items-center gap-2 px-4 py-2 bg-green-600   text-white rounded-lg hover:bg-green-700 transition-colors"
+                  className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs sm:text-sm whitespace-nowrap"
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   Add Opening
                 </button>
               </div>
@@ -948,15 +1451,15 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
 
             {/* Brick Size Selection */}
             <div className="md:col-span-2">
-              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
                 Brick Size (Length × Width × Height)
               </label>
 
-              <div className="mb-4 flex gap-4">
+              <div className="mb-4 flex flex-wrap gap-2 sm:gap-4">
                 <button
                   type="button"
                   onClick={() => handleBrickSizeChange('standard', '240x115x71')}
-                  className={`px-4 py-2 rounded-lg font-medium   transition-colors ${
+                  className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-xs sm:text-sm ${
                     formData.brickSizeType === 'standard'
                       ? 'bg-primary text-white'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300'
@@ -967,7 +1470,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                 <button
                   type="button"
                   onClick={() => handleBrickSizeChange('custom', '')}
-                  className={`px-4 py-2 rounded-lg font-medium   transition-colors ${
+                  className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-xs sm:text-sm ${
                     formData.brickSizeType === 'custom'
                       ? 'bg-primary text-white'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300'
@@ -1091,30 +1594,30 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
           </div>
 
           {/* Action Buttons */}
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-between">
-            <div className="flex gap-4">
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-2 sm:gap-4 justify-between">
+            <div className="flex flex-wrap gap-2 sm:gap-4">
               <button
                 type="button"
                 onClick={resetForm}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3   font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
+                className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl border border-slate-300 bg-white px-3 sm:px-6 py-2 sm:py-3 font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700 text-xs sm:text-sm whitespace-nowrap"
               >
-                <RotateCcw className="h-4 w-4" />
+                <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 Reset
               </button>
 
               <button
                 type="button"
                 onClick={() => handleInputChange('showStepByStep', !formData.showStepByStep)}
-                className={`flex items-center justify-center gap-2 rounded-xl px-4 py-3   font-medium transition-colors ${
+                className={`flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 font-medium transition-colors text-xs sm:text-sm whitespace-nowrap ${
                   formData.showStepByStep
                     ? 'bg-primary text-white'
                     : 'border border-slate-300 bg-white text-heading dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark'
                 }`}
               >
                 {formData.showStepByStep ? (
-                  <EyeOff className="h-4 w-4" />
+                  <EyeOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 ) : (
-                  <Eye className="h-4 w-4" />
+                  <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 )}
                 {formData.showStepByStep ? 'Hide' : 'Show'} Steps
               </button>
@@ -1124,16 +1627,16 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
               type="button"
               onClick={calculateBrickwork}
               disabled={isCalculating}
-              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3   font-semibold text-white shadow-soft transition-all hover:bg-primary/90 hover:shadow-hover disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-primary px-4 sm:px-8 py-2 sm:py-3 font-semibold text-white shadow-soft transition-all hover:bg-primary/90 hover:shadow-hover disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm whitespace-nowrap"
             >
               {isCalculating ? (
                 <>
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  <div className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   Calculating...
                 </>
               ) : (
                 <>
-                  <Calculator className="h-4 w-4" />
+                  <Calculator className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   Calculate
                 </>
               )}
@@ -1228,154 +1731,987 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
 
               {/* Step-by-step Calculation */}
               {formData.showStepByStep && (
-                <div className="mb-8 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
-                  <h3 className="mb-4   text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
+                <div className="mb-8 rounded-xl border border-blue-200/40 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 dark:border-blue-700/30 dark:from-blue-900/40 dark:to-indigo-900/40">
+                  <h3 className="mb-6 text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
                     <Eye className="h-5 w-5 text-blue-500 dark:text-blue-300" />
-                    Step-by-Step Calculation
+                    Step-by-Step Calculation with Formulas
                   </h3>
-                  <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
-                    <li>
-                      <span className="font-semibold">Wall Volume:</span>{' '}
-                      {result.wallVolume.toFixed(3)} m³
-                    </li>
+
+                  {/* Formula Reference Card */}
+                  <div className="mb-6 rounded-lg bg-white/70 p-4 dark:bg-slate-800/70 border border-blue-200/30 dark:border-blue-700/30">
+                    <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-3 text-sm uppercase tracking-wide">
+                      Key Formulas Used
+                    </h4>
+                    <div className="grid gap-3 text-sm">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-1 bg-blue-100 dark:bg-blue-800 rounded font-mono text-blue-800 dark:text-blue-200">
+                          Wall Volume = L × H × T
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-1 bg-blue-100 dark:bg-blue-800 rounded font-mono text-blue-800 dark:text-blue-200">
+                          Brick Volume = (l + m) × (w + m) × (h + m)
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-1 bg-blue-100 dark:bg-blue-800 rounded font-mono text-blue-800 dark:text-blue-200">
+                          No. of Bricks = Net Wall Volume / Brick Volume
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-1 bg-blue-100 dark:bg-blue-800 rounded font-mono text-blue-800 dark:text-blue-200">
+                          Mortar Volume = Net Wall Volume - (Brick Volume × No. of Bricks)
+                        </span>
+                      </div>
+                    </div>
+                    <p className="mt-3 text-xs text-blue-600 dark:text-blue-400">
+                      Where: L=Length, H=Height, T=Thickness, l=brick length, w=brick width, h=brick
+                      height, m=mortar thickness
+                    </p>
+                  </div>
+
+                  {/* Visual Step Cards */}
+                  <div className="space-y-4">
+                    {/* Step 1 */}
+                    <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-blue-500">
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-500 text-white font-bold text-sm">
+                          1
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                            Calculate Gross Wall Volume
+                          </h4>
+                          <div className="bg-slate-100 dark:bg-slate-700/50 rounded p-2 mb-2 font-mono text-sm text-center">
+                            {useArea ? (
+                              <span>
+                                Wall Volume = {formData.area} {getAreaUnit()} ×{' '}
+                                {formData.wallThickness} {getLengthUnit()} ={' '}
+                                <strong>{result.wallVolume.toFixed(4)} m³</strong>
+                              </span>
+                            ) : (
+                              <span>
+                                Wall Volume = {formData.wallLength} × {formData.wallHeight} ×{' '}
+                                {formData.wallThickness} ={' '}
+                                <strong>{result.wallVolume.toFixed(4)} m³</strong>
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-sm text-blue-800/80 dark:text-blue-200/80">
+                            Total volume of the wall before deducting openings.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Step 2 - Openings */}
                     {result.totalOpeningVolume > 0 && (
-                      <li>
-                        <span className="font-semibold">Opening Deduction:</span> Deducted{' '}
-                        {result.totalOpeningVolume.toFixed(3)} m³ from {formData.openings.length}{' '}
-                        opening(s)
-                      </li>
+                      <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-amber-500">
+                        <div className="flex items-start gap-3">
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-500 text-white font-bold text-sm">
+                            2
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-2">
+                              Deduct Opening Volumes
+                            </h4>
+                            <div className="bg-slate-100 dark:bg-slate-700/50 rounded p-2 mb-2 font-mono text-sm">
+                              {formData.openings.map((op, i) => (
+                                <div key={op.id} className="text-center">
+                                  Opening {i + 1}: {op.width} × {op.height} ×{' '}
+                                  {formData.wallThickness} ={' '}
+                                  {(
+                                    parseFloat(op.width || '0') *
+                                    parseFloat(op.height || '0') *
+                                    parseFloat(formData.wallThickness)
+                                  ).toFixed(4)}{' '}
+                                  m³
+                                </div>
+                              ))}
+                              <div className="border-t border-slate-300 dark:border-slate-600 mt-1 pt-1 text-center font-semibold">
+                                Total Openings = {result.totalOpeningVolume.toFixed(4)} m³
+                              </div>
+                            </div>
+                            <p className="text-sm text-amber-800/80 dark:text-amber-200/80">
+                              Volume deducted for {formData.openings.length} opening(s) (doors,
+                              windows, etc.)
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                     )}
-                    <li>
-                      <span className="font-semibold">Net Wall Volume:</span>{' '}
-                      {result.netWallVolume.toFixed(3)} m³
-                    </li>
-                    <li>
-                      <span className="font-semibold">Brick Volume Calculation:</span> Including
-                      mortar joints
-                    </li>
-                    <li>
-                      <span className="font-semibold">Number of Bricks:</span>{' '}
-                      {result.numberOfBricks} pieces
-                    </li>
-                    <li>
-                      <span className="font-semibold">Mortar Volume:</span>{' '}
-                      {result.mortarVolume.toFixed(3)} m³
-                    </li>
-                    <li>
-                      <span className="font-semibold">Cement Needed:</span>{' '}
-                      {result.cementWeight.toFixed(1)} kg ({result.cementBags} bags)
-                    </li>
-                    <li>
-                      <span className="font-semibold">Sand Needed:</span>{' '}
-                      {result.sandWeight.toFixed(1)} kg
-                    </li>
-                  </ol>
+
+                    {/* Step 3 */}
+                    <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-green-500">
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-500 text-white font-bold text-sm">
+                          {result.totalOpeningVolume > 0 ? '3' : '2'}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">
+                            Calculate Net Wall Volume
+                          </h4>
+                          <div className="bg-slate-100 dark:bg-slate-700/50 rounded p-2 mb-2 font-mono text-sm text-center">
+                            Net Volume = {result.wallVolume.toFixed(4)} -{' '}
+                            {result.totalOpeningVolume.toFixed(4)} ={' '}
+                            <strong className="text-green-700 dark:text-green-400">
+                              {result.netWallVolume.toFixed(4)} m³
+                            </strong>
+                          </div>
+                          <p className="text-sm text-green-800/80 dark:text-green-200/80">
+                            Actual masonry volume after openings deduction.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Step 4 */}
+                    <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-purple-500">
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-purple-500 text-white font-bold text-sm">
+                          {result.totalOpeningVolume > 0 ? '4' : '3'}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">
+                            Calculate Brick Volume (with mortar)
+                          </h4>
+                          <div className="bg-slate-100 dark:bg-slate-700/50 rounded p-2 mb-2 font-mono text-sm">
+                            <div className="text-center mb-1">Brick + Mortar Dimensions:</div>
+                            <div className="text-center">
+                              ({formData.brickLength} + {formData.mortarThickness}) × (
+                              {formData.brickWidth} + {formData.mortarThickness}) × (
+                              {formData.brickHeight} + {formData.mortarThickness})
+                            </div>
+                            <div className="text-center font-semibold text-purple-700 dark:text-purple-400 mt-1">
+                              ={' '}
+                              {(
+                                (((((parseFloat(formData.brickLength) +
+                                  parseFloat(formData.mortarThickness)) /
+                                  1000) *
+                                  (parseFloat(formData.brickWidth) +
+                                    parseFloat(formData.mortarThickness))) /
+                                  1000) *
+                                  (parseFloat(formData.brickHeight) +
+                                    parseFloat(formData.mortarThickness))) /
+                                1000
+                              ).toFixed(6)}{' '}
+                              m³ per brick
+                            </div>
+                          </div>
+                          <p className="text-sm text-purple-800/80 dark:text-purple-200/80">
+                            Each brick occupies this volume including mortar joints on all sides.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Step 5 */}
+                    <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-indigo-500">
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-500 text-white font-bold text-sm">
+                          {result.totalOpeningVolume > 0 ? '5' : '4'}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-indigo-900 dark:text-indigo-100 mb-2">
+                            Calculate Number of Bricks
+                          </h4>
+                          <div className="bg-slate-100 dark:bg-slate-700/50 rounded p-2 mb-2 font-mono text-sm">
+                            <div className="text-center">
+                              No. of Bricks = {result.netWallVolume.toFixed(4)} ÷{' '}
+                              {(
+                                (((((parseFloat(formData.brickLength) +
+                                  parseFloat(formData.mortarThickness)) /
+                                  1000) *
+                                  (parseFloat(formData.brickWidth) +
+                                    parseFloat(formData.mortarThickness))) /
+                                  1000) *
+                                  (parseFloat(formData.brickHeight) +
+                                    parseFloat(formData.mortarThickness))) /
+                                1000
+                              ).toFixed(6)}
+                            </div>
+                            <div className="text-center mt-1">
+                              ={' '}
+                              {Math.ceil(
+                                result.netWallVolume /
+                                  ((((((parseFloat(formData.brickLength) +
+                                    parseFloat(formData.mortarThickness)) /
+                                    1000) *
+                                    (parseFloat(formData.brickWidth) +
+                                      parseFloat(formData.mortarThickness))) /
+                                    1000) *
+                                    (parseFloat(formData.brickHeight) +
+                                      parseFloat(formData.mortarThickness))) /
+                                    1000),
+                              )}{' '}
+                              bricks (raw)
+                            </div>
+                            <div className="text-center mt-1 text-amber-600 dark:text-amber-400">
+                              + {formData.wastageFactor}% wastage
+                            </div>
+                            <div className="text-center mt-1 font-bold text-indigo-700 dark:text-indigo-400 text-lg">
+                              = {result.numberOfBricks.toLocaleString()} bricks
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Step 6 */}
+                    <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-cyan-500">
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-cyan-500 text-white font-bold text-sm">
+                          {result.totalOpeningVolume > 0 ? '6' : '5'}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-cyan-900 dark:text-cyan-100 mb-2">
+                            Calculate Mortar Volume
+                          </h4>
+                          <div className="bg-slate-100 dark:bg-slate-700/50 rounded p-2 mb-2 font-mono text-sm">
+                            <div className="text-center">
+                              Wet Mortar = {result.netWallVolume.toFixed(4)} - (Brick Volume ×{' '}
+                              {result.numberOfBricks})
+                            </div>
+                            <div className="text-center mt-1">
+                              ={' '}
+                              <strong className="text-cyan-700 dark:text-cyan-400">
+                                {result.mortarVolume.toFixed(4)} m³
+                              </strong>{' '}
+                              (wet volume)
+                            </div>
+                          </div>
+                          <p className="text-sm text-cyan-800/80 dark:text-cyan-200/80">
+                            Volume of cement-sand mixture needed to fill gaps between bricks.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Step 7 - Cement */}
+                    <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-rose-500">
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-rose-500 text-white font-bold text-sm">
+                          {result.totalOpeningVolume > 0 ? '7' : '6'}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-rose-900 dark:text-rose-100 mb-2">
+                            Calculate Cement Required
+                          </h4>
+                          <div className="bg-slate-100 dark:bg-slate-700/50 rounded p-2 mb-2 font-mono text-sm">
+                            <div className="text-center">
+                              Mix Ratio: {formData.mortarMixType} (Cement:Sand)
+                            </div>
+                            <div className="text-center mt-1">
+                              Sum of ratio ={' '}
+                              {parseInt(formData.mortarMixType.split(':')[0]) +
+                                parseInt(formData.mortarMixType.split(':')[1])}
+                            </div>
+                            <div className="text-center mt-1">
+                              Cement = {result.mortarVolume.toFixed(4)} × (1/
+                              {parseInt(formData.mortarMixType.split(':')[0]) +
+                                parseInt(formData.mortarMixType.split(':')[1])}
+                              ) × 1440 kg/m³ × 1.33 (dry)
+                            </div>
+                            <div className="text-center mt-1 font-bold text-rose-700 dark:text-rose-400 text-lg">
+                              = {result.cementWeight.toFixed(1)} kg ({result.cementBags} bags of
+                              50kg)
+                            </div>
+                          </div>
+                          <p className="text-sm text-rose-800/80 dark:text-rose-200/80">
+                            1440 kg/m³ is cement density. 1.33 factor converts wet to dry volume.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Step 8 - Sand */}
+                    <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-yellow-500">
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-yellow-500 text-white font-bold text-sm">
+                          {result.totalOpeningVolume > 0 ? '8' : '7'}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2">
+                            Calculate Sand Required
+                          </h4>
+                          <div className="bg-slate-100 dark:bg-slate-700/50 rounded p-2 mb-2 font-mono text-sm">
+                            <div className="text-center">
+                              Sand = {result.mortarVolume.toFixed(4)} × (
+                              {parseInt(formData.mortarMixType.split(':')[1])}/
+                              {parseInt(formData.mortarMixType.split(':')[0]) +
+                                parseInt(formData.mortarMixType.split(':')[1])}
+                              ) × 1600 kg/m³ × 1.33
+                            </div>
+                            <div className="text-center mt-1 font-bold text-yellow-700 dark:text-yellow-400 text-lg">
+                              = {result.sandWeight.toFixed(1)} kg
+                            </div>
+                            <div className="text-center mt-1 text-sm">
+                              ≈ {(result.sandWeight / 1600).toFixed(3)} m³ or{' '}
+                              {(result.sandWeight / 25).toFixed(1)} bags (25kg each)
+                            </div>
+                          </div>
+                          <p className="text-sm text-yellow-800/80 dark:text-yellow-200/80">
+                            1600 kg/m³ is dry sand density. Sand fills the remaining mix proportion.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
             </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
-      {/* Enhanced Info & FAQ Section */}
-      <div className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
-        <h2 className="  text-2xl font-bold text-heading dark:text-heading-dark mb-2">
-          Brickwork Calculator & Estimator – Accurate Material Estimation Tool
-        </h2>
-        <p className="text-body/80 dark:text-body-dark/80 mb-4">
-          A Brickwork Calculator is an essential online tool for civil engineers, builders,
-          contractors, and DIY enthusiasts to quickly and accurately estimate the number of bricks,
-          cement, sand, and mortar required for walls, columns, partitions, and other masonry work.
-          This tool ensures efficient project planning, cost-saving, and minimal material wastage.
-        </p>
-        <hr className="my-4 border-slate-200 dark:border-slate-700" />
-        <div className="mb-4">
-          <h3 className="  text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-            Why Use a Brickwork Calculator?
-          </h3>
-          <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-            <li>Calculate the exact number of bricks needed.</li>
-            <li>Estimate cement and sand for mortar accurately.</li>
-            <li>Save money by reducing waste.</li>
-            <li>Plan masonry projects efficiently.</li>
-            <li>Ensure walls and structures have the right strength and stability.</li>
-          </ul>
+      {/* Enhanced Info & Educational Section */}
+      <div className="mt-12 space-y-8">
+        {/* Main Introduction */}
+        <div className="rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
+          <h2 className="text-2xl font-bold text-heading dark:text-heading-dark mb-4">
+            Complete Guide to Brickwork Calculation & Masonry Construction
+          </h2>
+          <p className="text-body/80 dark:text-body-dark/80 leading-relaxed">
+            Brickwork is the fundamental building technique used in construction for thousands of
+            years. Understanding how to accurately calculate brick quantities, mortar requirements,
+            and material costs is essential for contractors, civil engineers, architects, and DIY
+            builders. This comprehensive guide covers everything from basic calculations to advanced
+            masonry techniques, ensuring your construction projects are completed efficiently with
+            minimal waste and maximum structural integrity.
+          </p>
         </div>
-        <hr className="my-4 border-slate-200 dark:border-slate-700" />
-        <div className="mb-4">
-          <h3 className="  text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-            How It Works
+
+        {/* Why Accurate Calculation Matters */}
+        <div className="rounded-2xl border border-slate-200/40 bg-surface p-8 dark:border-slate-800/30 dark:bg-surface-dark">
+          <h3 className="text-xl font-bold text-heading dark:text-heading-dark mb-4 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white text-sm">
+              1
+            </span>
+            Why Accurate Brickwork Calculation Matters
           </h3>
-          <ol className="list-decimal list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-            <li>Select the type of brickwork: wall, column, or partition.</li>
-            <li>Enter project dimensions: length, height, and thickness of the wall.</li>
-            <li>Choose the mortar mix ratio: 1:6, 1:5, 1:4, or 1:3 (cement:sand).</li>
-            <li>
-              Get instant results:
-              <ul className="list-disc list-inside ml-6">
-                <li>Number of bricks required</li>
-                <li>Cement quantity (bags)</li>
-                <li>Sand volume for mortar</li>
-              </ul>
-            </li>
-          </ol>
-        </div>
-        <hr className="my-4 border-slate-200 dark:border-slate-700" />
-        <div className="mb-4">
-          <h3 className="  text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-            Standard Brickwork Mix Ratios
-          </h3>
-          <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-            <li>1:6 – Low-strength mortar for non-load bearing walls.</li>
-            <li>1:5 – General-purpose mortar for standard walls.</li>
-            <li>1:4 – Stronger mortar for structural walls.</li>
-            <li>1:3 – High-strength mortar for heavy load-bearing walls.</li>
-          </ul>
-          <div className="mt-2 text-sm text-body/60 dark:text-body-dark/60">
-            <span className="font-semibold">Tip:</span> The first number represents cement, and the
-            second represents sand. Choose the mix ratio according to the structural requirements of
-            your project.
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-lg bg-green-50/50 p-4 dark:bg-green-900/20 border border-green-200/30 dark:border-green-700/30">
+              <h4 className="font-semibold text-green-800 dark:text-green-200 mb-2">
+                Cost Control
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                Over-ordering wastes 10-15% of material costs, while under-ordering causes project
+                delays and additional delivery charges. Accurate calculations save 8-12% on total
+                masonry budgets.
+              </p>
+            </div>
+            <div className="rounded-lg bg-blue-50/50 p-4 dark:bg-blue-900/20 border border-blue-200/30 dark:border-blue-700/30">
+              <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">
+                Project Planning
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                Knowing exact quantities helps schedule deliveries, manage storage space, and
+                coordinate labor efficiently. Proper planning reduces construction time by 15-20%.
+              </p>
+            </div>
+            <div className="rounded-lg bg-amber-50/50 p-4 dark:bg-amber-900/20 border border-amber-200/30 dark:border-amber-700/30">
+              <h4 className="font-semibold text-amber-800 dark:text-amber-200 mb-2">
+                Quality Assurance
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                Consistent mortar mix ratios and proper brick placement ensure structural strength.
+                Standardized calculations maintain quality across all wall sections.
+              </p>
+            </div>
+            <div className="rounded-lg bg-purple-50/50 p-4 dark:bg-purple-900/20 border border-purple-200/30 dark:border-purple-700/30">
+              <h4 className="font-semibold text-purple-800 dark:text-purple-200 mb-2">
+                Environmental Impact
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                Precise calculations minimize construction waste. Brick manufacturing produces
+                0.8-1.0 kg CO₂ per brick—reducing waste directly lowers environmental impact.
+              </p>
+            </div>
           </div>
         </div>
-        <hr className="my-4 border-slate-200 dark:border-slate-700" />
-        <div>
-          <h3 className="  text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-            FAQs – Brickwork Calculator
+
+        {/* Brick Types Comparison */}
+        <div className="rounded-2xl border border-slate-200/40 bg-surface p-8 dark:border-slate-800/30 dark:bg-surface-dark">
+          <h3 className="text-xl font-bold text-heading dark:text-heading-dark mb-4 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-white text-sm">
+              2
+            </span>
+            Types of Bricks and Their Applications
           </h3>
-          <div className="space-y-2 text-body/80 dark:text-body-dark/80">
-            <div>
-              <span className="font-semibold">Q1. What is a brickwork calculator?</span>
-              <br />A tool to calculate the number of bricks, cement, and sand required for masonry
-              projects.
-            </div>
-            <div>
-              <span className="font-semibold">Q2. Why is it important?</span>
-              <br />
-              Ensures accurate estimation, cost-saving, and minimal material waste for construction
-              projects.
-            </div>
-            <div>
-              <span className="font-semibold">Q3. What units does it support?</span>
-              <br />
-              Dimensions can be entered in meters or feet, and cement is calculated in bags.
-            </div>
-            <div>
-              <span className="font-semibold">Q4. How to choose the right mortar mix ratio?</span>
-              <br />
-              <ul className="list-disc list-inside ml-6">
-                <li>1:6: Low-strength, non-load bearing walls</li>
-                <li>1:5: General-purpose masonry</li>
-                <li>1:4: Structural walls</li>
-                <li>1:3: High-strength walls for heavy loads</li>
+          <div className="overflow-hidden rounded-xl border border-slate-200/30 dark:border-slate-700/30">
+            <table className="w-full text-sm">
+              <thead className="bg-slate-100 dark:bg-slate-800">
+                <tr>
+                  <th className="px-4 py-3 text-left font-semibold text-heading dark:text-heading-dark">
+                    Brick Type
+                  </th>
+                  <th className="px-4 py-3 text-left font-semibold text-heading dark:text-heading-dark">
+                    Dimensions (mm)
+                  </th>
+                  <th className="px-4 py-3 text-left font-semibold text-heading dark:text-heading-dark">
+                    Best For
+                  </th>
+                  <th className="px-4 py-3 text-left font-semibold text-heading dark:text-heading-dark">
+                    Properties
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200/30 dark:divide-slate-700/30">
+                <tr className="bg-white/50 dark:bg-slate-800/30">
+                  <td className="px-4 py-3 font-medium">Standard Modular</td>
+                  <td className="px-4 py-3">190 × 90 × 90</td>
+                  <td className="px-4 py-3">General construction</td>
+                  <td className="px-4 py-3">Uniform size, easy to handle</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 font-medium">Traditional/Non-Modular</td>
+                  <td className="px-4 py-3">230 × 110 × 75</td>
+                  <td className="px-4 py-3">Traditional buildings</td>
+                  <td className="px-4 py-3">Varied sizes, rustic appearance</td>
+                </tr>
+                <tr className="bg-white/50 dark:bg-slate-800/30">
+                  <td className="px-4 py-3 font-medium">Facing Bricks</td>
+                  <td className="px-4 py-3">215 × 102.5 × 65</td>
+                  <td className="px-4 py-3">Exterior walls</td>
+                  <td className="px-4 py-3">Aesthetic finish, weather-resistant</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 font-medium">Engineering Bricks</td>
+                  <td className="px-4 py-3">215 × 102.5 × 65</td>
+                  <td className="px-4 py-3">Structural work</td>
+                  <td className="px-4 py-3">High strength, low water absorption</td>
+                </tr>
+                <tr className="bg-white/50 dark:bg-slate-800/30">
+                  <td className="px-4 py-3 font-medium">Concrete Bricks</td>
+                  <td className="px-4 py-3">200 × 100 × 100</td>
+                  <td className="px-4 py-3">Load-bearing walls</td>
+                  <td className="px-4 py-3">High compressive strength</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 font-medium">Fly Ash Bricks</td>
+                  <td className="px-4 py-3">230 × 110 × 75</td>
+                  <td className="px-4 py-3">Eco-friendly projects</td>
+                  <td className="px-4 py-3">Lightweight, thermal insulation</td>
+                </tr>
+                <tr className="bg-white/50 dark:bg-slate-800/30">
+                  <td className="px-4 py-3 font-medium">Fire Bricks</td>
+                  <td className="px-4 py-3">230 × 115 × 75</td>
+                  <td className="px-4 py-3">Fireplaces, furnaces</td>
+                  <td className="px-4 py-3">High heat resistance</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 font-medium">Hollow Bricks</td>
+                  <td className="px-4 py-3">400 × 200 × 200</td>
+                  <td className="px-4 py-3">Non-load bearing</td>
+                  <td className="px-4 py-3">Lightweight, sound insulation</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Wall Thickness Guide */}
+        <div className="rounded-2xl border border-slate-200/40 bg-surface p-8 dark:border-slate-800/30 dark:bg-surface-dark">
+          <h3 className="text-xl font-bold text-heading dark:text-heading-dark mb-4 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-cyan-500 text-white text-sm">
+              3
+            </span>
+            Wall Thickness Guide for Different Applications
+          </h3>
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 p-5 dark:from-slate-800 dark:to-slate-700 border border-slate-200 dark:border-slate-600">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500/10">
+                <span className="text-2xl">🧱</span>
+              </div>
+              <h4 className="font-bold text-heading dark:text-heading-dark mb-2">
+                4-Inch Wall (Half Brick)
+              </h4>
+              <p className="text-xs text-body/70 dark:text-body-dark/70 mb-3">
+                102-115mm thickness
+              </p>
+              <ul className="space-y-1 text-sm text-body/80 dark:text-body-dark/80">
+                <li>• Interior partitions</li>
+                <li>• Non-load bearing walls</li>
+                <li>• Cladding over RCC</li>
+                <li>• Cost-effective option</li>
               </ul>
             </div>
-            <div>
-              <span className="font-semibold">
-                Q5. Can I calculate for irregular or partial walls?
-              </span>
-              <br />
-              Yes, calculate the total area of the wall and enter it in the calculator for precise
-              results.
+            <div className="rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 p-5 dark:from-amber-900/30 dark:to-amber-800/30 border border-amber-200 dark:border-amber-700">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-amber-500/10">
+                <span className="text-2xl">🏗️</span>
+              </div>
+              <h4 className="font-bold text-heading dark:text-heading-dark mb-2">
+                9-Inch Wall (One Brick)
+              </h4>
+              <p className="text-xs text-body/70 dark:text-body-dark/70 mb-3">
+                215-230mm thickness
+              </p>
+              <ul className="space-y-1 text-sm text-body/80 dark:text-body-dark/80">
+                <li>• Load-bearing walls</li>
+                <li>• Exterior walls</li>
+                <li>• Structural columns</li>
+                <li>• Two-story buildings</li>
+              </ul>
             </div>
+            <div className="rounded-xl bg-gradient-to-br from-rose-50 to-rose-100 p-5 dark:from-rose-900/30 dark:to-rose-800/30 border border-rose-200 dark:border-rose-700">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-rose-500/10">
+                <span className="text-2xl">🏢</span>
+              </div>
+              <h4 className="font-bold text-heading dark:text-heading-dark mb-2">
+                13.5-Inch Wall (1.5 Brick)
+              </h4>
+              <p className="text-xs text-body/70 dark:text-body-dark/70 mb-3">
+                330-345mm thickness
+              </p>
+              <ul className="space-y-1 text-sm text-body/80 dark:text-body-dark/80">
+                <li>• Heavy load-bearing</li>
+                <li>• Multi-story buildings</li>
+                <li>• Retaining walls</li>
+                <li>• Foundation walls</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Mortar Mix Ratios Detailed */}
+        <div className="rounded-2xl border border-slate-200/40 bg-surface p-8 dark:border-slate-800/30 dark:bg-surface-dark">
+          <h3 className="text-xl font-bold text-heading dark:text-heading-dark mb-4 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-rose-500 text-white text-sm">
+              4
+            </span>
+            Complete Mortar Mix Ratio Guide
+          </h3>
+          <p className="text-body/80 dark:text-body-dark/80 mb-6">
+            The mortar mix ratio determines the strength, durability, and workability of your
+            brickwork. Understanding when to use each ratio is crucial for structural integrity and
+            longevity.
+          </p>
+          <div className="space-y-4">
+            <div className="rounded-lg border-l-4 border-green-500 bg-green-50/30 p-4 dark:bg-green-900/10">
+              <h4 className="font-bold text-green-800 dark:text-green-200">
+                1:6 Mix Ratio (Low Strength)
+              </h4>
+              <p className="mt-2 text-sm text-body/80 dark:text-body-dark/80">
+                <strong>Application:</strong> Non-load bearing interior walls, garden walls,
+                boundary walls, temporary structures.
+                <br />
+                <strong>Strength:</strong> 3-4 MPa compressive strength.
+                <br />
+                <strong>Cement needed:</strong> ~190 kg per m³ of mortar.
+                <br />
+                <strong>Best for:</strong> Cost-effective projects where high strength is not
+                required.
+              </p>
+            </div>
+            <div className="rounded-lg border-l-4 border-blue-500 bg-blue-50/30 p-4 dark:bg-blue-900/10">
+              <h4 className="font-bold text-blue-800 dark:text-blue-200">
+                1:5 Mix Ratio (Standard)
+              </h4>
+              <p className="mt-2 text-sm text-body/80 dark:text-body-dark/80">
+                <strong>Application:</strong> General purpose masonry, standard exterior walls,
+                single-story residential buildings.
+                <br />
+                <strong>Strength:</strong> 5-6 MPa compressive strength.
+                <br />
+                <strong>Cement needed:</strong> ~220 kg per m³ of mortar.
+                <br />
+                <strong>Best for:</strong> Most residential construction projects.
+              </p>
+            </div>
+            <div className="rounded-lg border-l-4 border-amber-500 bg-amber-50/30 p-4 dark:bg-amber-900/10">
+              <h4 className="font-bold text-amber-800 dark:text-amber-200">
+                1:4 Mix Ratio (High Strength)
+              </h4>
+              <p className="mt-2 text-sm text-body/80 dark:text-body-dark/80">
+                <strong>Application:</strong> Load-bearing walls, structural columns, beams,
+                multi-story buildings.
+                <br />
+                <strong>Strength:</strong> 7-8 MPa compressive strength.
+                <br />
+                <strong>Cement needed:</strong> ~270 kg per m³ of mortar.
+                <br />
+                <strong>Best for:</strong> Commercial buildings and structural elements.
+              </p>
+            </div>
+            <div className="rounded-lg border-l-4 border-rose-500 bg-rose-50/30 p-4 dark:bg-rose-900/10">
+              <h4 className="font-bold text-rose-800 dark:text-rose-200">
+                1:3 Mix Ratio (Very High Strength)
+              </h4>
+              <p className="mt-2 text-sm text-body/80 dark:text-body-dark/80">
+                <strong>Application:</strong> Heavy load-bearing structures, foundation walls,
+                retaining walls, high-rise buildings.
+                <br />
+                <strong>Strength:</strong> 10-12 MPa compressive strength.
+                <br />
+                <strong>Cement needed:</strong> ~340 kg per m³ of mortar.
+                <br />
+                <strong>Best for:</strong> Critical structural applications requiring maximum
+                strength.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Calculation Methodology */}
+        <div className="rounded-2xl border border-slate-200/40 bg-surface p-8 dark:border-slate-800/30 dark:bg-surface-dark">
+          <h3 className="text-xl font-bold text-heading dark:text-heading-dark mb-4 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-500 text-white text-sm">
+              5
+            </span>
+            Understanding the Calculation Methodology
+          </h3>
+          <div className="space-y-6">
+            <div>
+              <h4 className="font-bold text-heading dark:text-heading-dark mb-2">
+                The Science Behind Brick Calculation
+              </h4>
+              <p className="text-body/80 dark:text-body-dark/80 leading-relaxed">
+                Calculating brickwork requires understanding three fundamental principles: (1){' '}
+                <strong>Gross Volume</strong> — the total space the wall occupies, (2){' '}
+                <strong>Net Volume</strong> — the space actually filled by bricks and mortar after
+                deducting openings, and (3) <strong>Unit Volume</strong> — the space each brick plus
+                its surrounding mortar occupies.
+              </p>
+            </div>
+            <div className="rounded-xl bg-slate-50 p-5 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+              <h5 className="font-semibold text-heading dark:text-heading-dark mb-3">
+                Key Formulas Explained
+              </h5>
+              <div className="grid gap-3 md:grid-cols-2">
+                <div className="font-mono text-xs bg-white dark:bg-slate-700 p-2 rounded">
+                  <strong>Wall Volume</strong> = L × H × T
+                </div>
+                <div className="text-xs text-body/70 dark:text-body-dark/70">
+                  Length × Height × Thickness in consistent units
+                </div>
+                <div className="font-mono text-xs bg-white dark:bg-slate-700 p-2 rounded">
+                  <strong>Brick + Mortar</strong> = (l+m) × (w+m) × (h+m)
+                </div>
+                <div className="text-xs text-body/70 dark:text-body-dark/70">
+                  Actual dimensions plus mortar thickness on all sides
+                </div>
+                <div className="font-mono text-xs bg-white dark:bg-slate-700 p-2 rounded">
+                  <strong>Brick Count</strong> = Net Volume ÷ Unit Volume
+                </div>
+                <div className="text-xs text-body/70 dark:text-body-dark/70">
+                  How many bricks fit in the net wall volume
+                </div>
+                <div className="font-mono text-xs bg-white dark:bg-slate-700 p-2 rounded">
+                  <strong>Mortar Volume</strong> = Net Wall - Brick Volume
+                </div>
+                <div className="text-xs text-body/70 dark:text-body-dark/70">
+                  Space between bricks filled with cement-sand mix
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-bold text-heading dark:text-heading-dark mb-2">
+                Why We Include Wastage Factor
+              </h4>
+              <p className="text-body/80 dark:text-body-dark/80 leading-relaxed">
+                Real-world construction always involves some material waste. Bricks break during
+                transport (2-3%), cutting for openings creates waste (1-2%), and some bricks are
+                rejected for quality issues (1-2%). A 5-10% wastage factor ensures you have enough
+                materials without excessive over-ordering. For complex patterns or irregular shapes,
+                consider 10-15% wastage.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Construction Best Practices */}
+        <div className="rounded-2xl border border-slate-200/40 bg-surface p-8 dark:border-slate-800/30 dark:bg-surface-dark">
+          <h3 className="text-xl font-bold text-heading dark:text-heading-dark mb-4 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white text-sm">
+              6
+            </span>
+            Professional Bricklaying Best Practices
+          </h3>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-4">
+              <div className="flex gap-3">
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold">
+                  1
+                </div>
+                <div>
+                  <h5 className="font-semibold text-heading dark:text-heading-dark">
+                    Soak Bricks Before Use
+                  </h5>
+                  <p className="text-sm text-body/70 dark:text-body-dark/70">
+                    Immerse bricks in water for 2-4 hours before laying. Dry bricks absorb water
+                    from mortar too quickly, weakening the bond strength by up to 40%.
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold">
+                  2
+                </div>
+                <div>
+                  <h5 className="font-semibold text-heading dark:text-heading-dark">
+                    Use Gauge Rods
+                  </h5>
+                  <p className="text-sm text-body/70 dark:text-body-dark/70">
+                    Set up gauge rods at corners showing course heights. Standard brick + mortar
+                    height is 75mm. This ensures level courses throughout the wall.
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold">
+                  3
+                </div>
+                <div>
+                  <h5 className="font-semibold text-heading dark:text-heading-dark">
+                    Maintain Consistent Joints
+                  </h5>
+                  <p className="text-sm text-body/70 dark:text-body-dark/70">
+                    Keep horizontal joints 10-12mm and vertical joints 10mm. Use joint spacers or a
+                    wooden batten cut to mortar thickness for consistency.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div className="flex gap-3">
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold">
+                  4
+                </div>
+                <div>
+                  <h5 className="font-semibold text-heading dark:text-heading-dark">
+                    Proper Bond Patterns
+                  </h5>
+                  <p className="text-sm text-body/70 dark:text-body-dark/70">
+                    Use English bond for maximum strength in structural walls. Stretcher bond works
+                    for half-brick walls. Flemish bond provides good aesthetics and strength.
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold">
+                  5
+                </div>
+                <div>
+                  <h5 className="font-semibold text-heading dark:text-heading-dark">
+                    Curing is Critical
+                  </h5>
+                  <p className="text-sm text-body/70 dark:text-body-dark/70">
+                    Keep masonry damp for 7 days after construction. Proper curing increases
+                    strength by 50% and prevents cracks from shrinkage.
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold">
+                  6
+                </div>
+                <div>
+                  <h5 className="font-semibold text-heading dark:text-heading-dark">
+                    Check Alignment Frequently
+                  </h5>
+                  <p className="text-sm text-body/70 dark:text-body-dark/70">
+                    Use spirit levels every 3-4 courses. Check both faces of the wall. A 1mm error
+                    per course becomes 20mm in a 3-meter wall.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Common Mistakes */}
+        <div className="rounded-2xl border border-slate-200/40 bg-surface p-8 dark:border-slate-800/30 dark:bg-surface-dark">
+          <h3 className="text-xl font-bold text-heading dark:text-heading-dark mb-4 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white text-sm">
+              7
+            </span>
+            Common Mistakes to Avoid in Brickwork
+          </h3>
+          <div className="grid gap-3 md:grid-cols-2">
+            <div className="rounded-lg bg-red-50/50 p-4 dark:bg-red-900/20 border border-red-200/30 dark:border-red-700/30">
+              <h5 className="font-semibold text-red-800 dark:text-red-200 mb-1">
+                ❌ Incorrect Mortar Consistency
+              </h5>
+              <p className="text-sm text-body/70 dark:text-body-dark/70">
+                Too wet mortar causes bricks to float and weakens bond. Too dry mortar doesn't
+                adhere properly. Aim for butter-like consistency that holds its shape.
+              </p>
+            </div>
+            <div className="rounded-lg bg-red-50/50 p-4 dark:bg-red-900/20 border border-red-200/30 dark:border-red-700/30">
+              <h5 className="font-semibold text-red-800 dark:text-red-200 mb-1">
+                ❌ Skipping DPC (Damp Proof Course)
+              </h5>
+              <p className="text-sm text-body/70 dark:text-body-dark/70">
+                A DPC at 150mm above ground level prevents rising damp. Without it, moisture damages
+                walls and interior finishes. Use 20mm cement mortar or bitumen felt.
+              </p>
+            </div>
+            <div className="rounded-lg bg-red-50/50 p-4 dark:bg-red-900/20 border border-red-200/30 dark:border-red-700/30">
+              <h5 className="font-semibold text-red-800 dark:text-red-200 mb-1">
+                ❌ Poor Bonding at Intersections
+              </h5>
+              <p className="text-sm text-body-70 dark:text-body-dark/70">
+                Intersecting walls need proper bonding with quoin bricks. Metal ties every 4-6
+                courses strengthen junctions and prevent cracking.
+              </p>
+            </div>
+            <div className="rounded-lg bg-red-50/50 p-4 dark:bg-red-900/20 border border-red-200/30 dark:border-red-700/30">
+              <h5 className="font-semibold text-red-800 dark:text-red-200 mb-1">
+                ❌ Inadequate Curing
+              </h5>
+              <p className="text-sm text-body/70 dark:text-body-dark/70">
+                Skipping the 7-day curing period reduces mortar strength by 40-50%. Keep walls
+                covered with wet sacks and sprinkle water twice daily.
+              </p>
+            </div>
+            <div className="rounded-lg bg-red-50/50 p-4 dark:bg-red-900/20 border border-red-200/30 dark:border-red-700/30">
+              <h5 className="font-semibold text-red-800 dark:text-red-200 mb-1">
+                ❌ Wrong Mortar for the Job
+              </h5>
+              <p className="text-sm text-body/70 dark:text-body-dark/70">
+                Using 1:6 mix for load-bearing walls compromises structural safety. Match mortar
+                strength to wall function and building height.
+              </p>
+            </div>
+            <div className="rounded-lg bg-red-50/50 p-4 dark:bg-red-900/20 border border-red-200/30 dark:border-red-700/30">
+              <h5 className="font-semibold text-red-800 dark:text-red-200 mb-1">
+                ❌ Ignoring Thermal Expansion
+              </h5>
+              <p className="text-sm text-body/70 dark:text-body-dark/70">
+                Walls over 12 meters need expansion joints every 8-10 meters. Without them,
+                temperature changes cause cracking and structural damage.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className="rounded-2xl border border-slate-200/40 bg-surface p-8 dark:border-slate-800/30 dark:bg-surface-dark">
+          <h3 className="text-xl font-bold text-heading dark:text-heading-dark mb-6 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-500 text-white text-sm">
+              8
+            </span>
+            Frequently Asked Questions (FAQs) About Brickwork Calculation
+          </h3>
+          <div className="space-y-4">
+            <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">
+              <h4 className="font-semibold text-heading dark:text-heading-dark mb-2">
+                Q1: How many bricks are needed per square meter of wall?
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                For a standard half-brick wall (102mm thick) using 215×102.5×65mm bricks with 10mm
+                joints, you need approximately 60 bricks per m². For a one-brick wall (215mm thick),
+                you need approximately 120 bricks per m². Always add 5-10% for wastage.
+              </p>
+            </div>
+            <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">
+              <h4 className="font-semibold text-heading dark:text-heading-dark mb-2">
+                Q2: How much cement and sand do I need for 1000 bricks?
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                For 1000 bricks using 1:5 mortar mix: you need approximately 210-230 kg of cement
+                (4-5 bags of 50kg) and 1.05-1.15 cubic meters of sand. For 1:4 mix, increase cement
+                to 260-280 kg and reduce sand to 0.9-1.0 cubic meters.
+              </p>
+            </div>
+            <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">
+              <h4 className="font-semibold text-heading dark:text-heading-dark mb-2">
+                Q3: What is the standard mortar thickness for brickwork?
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                Standard mortar joint thickness is 10mm (3/8 inch) for both horizontal (bed) joints
+                and vertical (perpend) joints. This provides adequate strength while allowing for
+                minor brick size variations. For lightweight blocks, 8-12mm is common.
+              </p>
+            </div>
+            <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">
+              <h4 className="font-semibold text-heading dark:text-heading-dark mb-2">
+                Q4: How do I calculate bricks for a wall with doors and windows?
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                Calculate the gross wall area (length × height), then subtract the area of all
+                openings (door width × height, window width × height). Multiply net area by bricks
+                per m² for your wall thickness. This calculator automates this process with precise
+                volume calculations.
+              </p>
+            </div>
+            <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">
+              <h4 className="font-semibold text-heading dark:text-heading-dark mb-2">
+                Q5: Why is 33% added to mortar volume calculations?
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                The 1.33 factor (33% increase) converts wet mortar volume to dry material volume.
+                When mixed with water, sand and cement compact and fill voids. This bulking factor
+                ensures you order enough dry materials to produce the required wet mortar volume.
+              </p>
+            </div>
+            <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">
+              <h4 className="font-semibold text-heading dark:text-heading-dark mb-2">
+                Q6: What is the difference between nominal and actual brick size?
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                Actual brick size is the physical dimension of the brick itself. Nominal size
+                includes the mortar joint (typically +10mm on each dimension). For example, a
+                190×90×90mm actual brick has a 200×100×100mm nominal size with 10mm joints.
+              </p>
+            </div>
+            <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">
+              <h4 className="font-semibold text-heading dark:text-heading-dark mb-2">
+                Q7: How many bricks are in 1 cubic meter?
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                For standard Indian modular bricks (190×90×90mm) with 10mm mortar: approximately 500
+                bricks per m³ of brickwork. For traditional bricks (230×110×75mm): approximately
+                350-400 bricks per m³. This varies based on mortar thickness and brick dimensions.
+              </p>
+            </div>
+            <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">
+              <h4 className="font-semibold text-heading dark:text-heading-dark mb-2">
+                Q8: What is the cost estimate for brick wall construction per m²?
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                In India (2024): Half-brick wall costs ₹800-1200 per m², one-brick wall costs
+                ₹1600-2200 per m² including materials and labor. In the US: $15-25 per sq ft for
+                materials only. Prices vary by location, brick type, and mortar mix ratio used.
+              </p>
+            </div>
+            <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">
+              <h4 className="font-semibold text-heading dark:text-heading-dark mb-2">
+                Q9: Can I use the same mortar mix for all types of brickwork?
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                No. Load-bearing walls need stronger mortar (1:4 or 1:3) than non-load bearing walls
+                (1:6). Below-grade work needs 1:3 or 1:4 for moisture resistance. Always match
+                mortar strength to structural requirements and exposure conditions.
+              </p>
+            </div>
+            <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">
+              <h4 className="font-semibold text-heading dark:text-heading-dark mb-2">
+                Q10: How long should I wait before loading a new brick wall?
+              </h4>
+              <p className="text-sm text-body/80 dark:text-body-dark/80">
+                Allow 14-28 days for mortar to reach sufficient strength before applying heavy
+                loads. Concrete block walls need 28 days minimum. Keep walls supported during this
+                curing period and protect from vibration and impact.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Summary CTA */}
+        <div className="rounded-2xl bg-gradient-to-r from-primary to-secondary p-8 text-white">
+          <h3 className="text-xl font-bold mb-3">Start Your Brickwork Calculation Now</h3>
+          <p className="mb-4 text-white/90">
+            Use the calculator above to get precise material estimates for your masonry project.
+            With accurate calculations, you will save money, reduce waste, and ensure your
+            construction meets the highest quality standards. Perfect for contractors, engineers,
+            architects, and DIY enthusiasts.
+          </p>
+          <div className="flex flex-wrap gap-3 text-sm">
+            <span className="rounded-full bg-white/20 px-3 py-1">✓ Instant Results</span>
+            <span className="rounded-full bg-white/20 px-3 py-1">✓ Step-by-Step Formulas</span>
+            <span className="rounded-full bg-white/20 px-3 py-1">✓ Multiple Units</span>
+            <span className="rounded-full bg-white/20 px-3 py-1">✓ Opening Deductions</span>
+            <span className="rounded-full bg-white/20 px-3 py-1">✓ Free to Use</span>
           </div>
         </div>
       </div>

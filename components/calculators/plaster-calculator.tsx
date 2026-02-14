@@ -20,8 +20,6 @@ interface PlasterFormData {
   showStepByStep: boolean
 }
 
-// Logic moved to lib/registry/calculator/plaster-calculator
-
 export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: 'm' | 'ft' }) {
   const [useArea, setUseArea] = useState(false)
   const [formData, setFormData] = useState<PlasterFormData>({
@@ -36,7 +34,6 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [hasCalculated, setHasCalculated] = useState(false)
 
-  // Calculate result
   const calculate = useCallback(() => {
     const unitSystem = formData.unit
     const useAreaLocal = useArea
@@ -57,7 +54,6 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
     setResult(res)
   }, [formData, useArea])
 
-  // Only update result after Calculate is pressed at least once
   useEffect(() => {
     if (!hasCalculated) return
     const hasRequired = useArea
@@ -93,7 +89,8 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
             </div>
           </div>
         </div>
-        {/* SVG Diagram for Plaster Calculator */}
+
+        {/* SVG Diagram */}
         <div className="flex justify-center mb-8">
           <svg
             width="320"
@@ -103,7 +100,6 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
             xmlns="http://www.w3.org/2000/svg"
             className="drop-shadow-md"
           >
-            {/* Wall outline */}
             <rect
               x="60"
               y="30"
@@ -114,7 +110,6 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
               stroke="#64748b"
               strokeWidth="2"
             />
-            {/* Plaster layer */}
             <rect
               x="60"
               y="30"
@@ -126,10 +121,8 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
               strokeWidth="1.5"
               opacity="0.7"
             />
-            {/* Dots for texture */}
             <circle cx="70" cy="50" r="2.2" fill="#b45309" opacity="0.18" />
             <circle cx="80" cy="60" r="1.8" fill="#b45309" opacity="0.18" />
-            {/* Dimension lines */}
             <line
               x1="60"
               y1="80"
@@ -191,27 +184,28 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
             </defs>
           </svg>
         </div>
+
         {/* Area/Length Toggle */}
-        <div className="flex justify-end mb-4 px-8 pt-8">
+        <div className="flex flex-wrap justify-end gap-2 mb-4 px-4 sm:px-8 pt-4 sm:pt-8">
           <button
             type="button"
             onClick={() => setUseArea(!useArea)}
-            className={`flex items-center gap-2 rounded-xl px-6 py-2 font-display font-medium shadow-soft transition-all 
+            className={`flex items-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-6 py-2 font-display font-medium shadow-soft transition-all text-sm sm:text-base whitespace-nowrap
               ${useArea ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-secondary text-white hover:bg-secondary/90'}`}
           >
             <Info className="h-4 w-4" />
             {useArea ? 'Use Length & Height' : 'Use Area'}
           </button>
         </div>
+
         {/* Form */}
-        <div className="p-8">
+        <div className="p-4 sm:p-8">
           <div className="grid gap-6 md:grid-cols-2">
             {!useArea && (
               <>
-                {/* Length */}
                 <div>
-                  <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
-                    Length
+                  <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
+                    Length ({formData.unit === 'metric' ? 'm' : 'ft'})
                   </label>
                   <input
                     type="number"
@@ -220,13 +214,12 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
                     step="0.001"
                     min="0"
                     placeholder="Enter length"
-                    className="w-full rounded-xl border px-4 py-3 font-sans border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800"
+                    className="w-full rounded-xl border px-3 sm:px-4 py-2 sm:py-3 font-sans text-sm border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800"
                   />
                 </div>
-                {/* Height */}
                 <div>
-                  <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
-                    Height
+                  <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
+                    Height ({formData.unit === 'metric' ? 'm' : 'ft'})
                   </label>
                   <input
                     type="number"
@@ -235,15 +228,15 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
                     step="0.001"
                     min="0"
                     placeholder="Enter height"
-                    className="w-full rounded-xl border px-4 py-3 font-sans border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800"
+                    className="w-full rounded-xl border px-3 sm:px-4 py-2 sm:py-3 font-sans text-sm border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800"
                   />
                 </div>
               </>
             )}
             {useArea && (
               <div>
-                <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
-                  Area
+                <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
+                  Area ({formData.unit === 'metric' ? 'm²' : 'ft²'})
                 </label>
                 <input
                   type="number"
@@ -252,13 +245,12 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
                   step="0.001"
                   min="0"
                   placeholder="Enter area"
-                  className="w-full rounded-xl border px-4 py-3 font-sans border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800"
+                  className="w-full rounded-xl border px-3 sm:px-4 py-2 sm:py-3 font-sans text-sm border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800"
                 />
               </div>
             )}
-            {/* Thickness */}
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
                 Thickness (mm)
               </label>
               <input
@@ -268,40 +260,50 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
                 step="0.1"
                 min="0"
                 placeholder="Enter thickness"
-                className="w-full rounded-xl border px-4 py-3 font-sans border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800"
+                className="w-full rounded-xl border px-3 sm:px-4 py-2 sm:py-3 font-sans text-sm border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800"
               />
             </div>
           </div>
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-between">
-            <div className="flex gap-4">
+
+          {/* Action Buttons - Responsive */}
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-2 sm:gap-4 justify-between">
+            <div className="flex flex-wrap gap-2 sm:gap-4">
               <button
                 type="button"
                 onClick={() => {
                   setFormData({
                     length: '',
                     height: '',
-                    thickness: '',
                     area: '',
+                    thickness: '12',
                     unit: formData.unit,
                     showStepByStep: false,
                   })
+                  setHasCalculated(false)
                   setResult(null)
                   setErrors({})
                 }}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-display font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
+                className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl border border-slate-300 bg-white px-3 sm:px-6 py-2 sm:py-3 font-display font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700 text-xs sm:text-sm whitespace-nowrap"
               >
-                <RotateCcw className="h-4 w-4" />
-                Reset to defaults
+                <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                Reset
               </button>
+
               <button
                 type="button"
-                onClick={() => setFormData((f) => ({ ...f, showStepByStep: !f.showStepByStep }))}
-                className={`flex items-center justify-center gap-2 rounded-xl px-4 py-3 font-display font-medium transition-colors ${formData.showStepByStep ? 'bg-primary text-white' : 'border border-slate-300 bg-white text-heading dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark'}`}
+                onClick={() =>
+                  setFormData((prev) => ({ ...prev, showStepByStep: !prev.showStepByStep }))
+                }
+                className={`flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 font-display font-medium transition-colors text-xs sm:text-sm whitespace-nowrap ${
+                  formData.showStepByStep
+                    ? 'bg-primary text-white'
+                    : 'border border-slate-300 bg-white text-heading dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark'
+                }`}
               >
                 {formData.showStepByStep ? (
-                  <EyeOff className="h-4 w-4" />
+                  <EyeOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 ) : (
-                  <Eye className="h-4 w-4" />
+                  <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 )}
                 {formData.showStepByStep ? 'Hide' : 'Show'} step-by-step
               </button>
@@ -312,14 +314,14 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
                 setHasCalculated(true)
                 calculate()
               }}
-              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 font-display font-semibold text-white shadow-soft transition-all hover:bg-primary/90 hover:shadow-hover"
+              className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-primary px-4 sm:px-8 py-2 sm:py-3 font-display font-semibold text-white shadow-soft transition-all hover:bg-primary/90 hover:shadow-hover text-xs sm:text-sm whitespace-nowrap"
             >
-              <Calculator className="h-4 w-4" />
+              <Calculator className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               Calculate
             </button>
           </div>
         </div>
-        {/* Results */}
+
         {/* Results */}
         <AnimatePresence>
           {hasCalculated && result && (
@@ -327,67 +329,76 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="border-t border-slate-200/20 bg-gradient-to-r from-primary/5 to-secondary/5 p-8 dark:border-slate-800/20 dark:from-primary/10 dark:to-secondary/10"
+              className="border-t border-slate-200/20 bg-gradient-to-r from-primary/5 to-secondary/5 p-4 sm:p-8 dark:border-slate-800/20 dark:from-primary/10 dark:to-secondary/10"
             >
               <div className="mb-6 flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-                <h2 className="font-display text-xl font-semibold text-heading dark:text-heading-dark">
+                <h2 className="font-display text-lg sm:text-xl font-semibold text-heading dark:text-heading-dark">
                   Calculation Results
                 </h2>
               </div>
               <div className="mb-8 overflow-hidden rounded-xl border border-slate-200/20 bg-white/70 dark:border-slate-700/30 dark:bg-slate-900/60">
-                <table className="w-full">
-                  <thead className="bg-slate-50 dark:bg-slate-800/50">
-                    <tr>
-                      <th className="px-6 py-4 text-left font-display font-semibold text-heading dark:text-heading-dark">
-                        Material
-                      </th>
-                      <th className="px-6 py-4 text-right font-display font-semibold text-heading dark:text-heading-dark">
-                        Quantity
-                      </th>
-                      <th className="px-6 py-4 text-left font-display font-semibold text-heading dark:text-heading-dark">
-                        Unit
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-200/20 dark:divide-slate-700/30">
-                    <tr>
-                      <td className="px-6 py-4 font-medium text-heading dark:text-heading-dark">
-                        Plaster Volume
-                      </td>
-                      <td className="px-6 py-4 text-right font-mono font-semibold">
-                        {result.plasterVolume.toFixed(3)}
-                      </td>
-                      <td className="px-6 py-4 text-body/70 dark:text-body-dark/70">m³</td>
-                    </tr>
-                    <tr>
-                      <td className="px-6 py-4 font-medium text-heading dark:text-heading-dark">
-                        Cement
-                      </td>
-                      <td className="px-6 py-4 text-right font-mono font-semibold">
-                        {result.cementBags.toFixed(2)}
-                      </td>
-                      <td className="px-6 py-4 text-body/70 dark:text-body-dark/70">bags</td>
-                    </tr>
-                    <tr>
-                      <td className="px-6 py-4 font-medium text-heading dark:text-heading-dark">
-                        Sand
-                      </td>
-                      <td className="px-6 py-4 text-right font-mono font-semibold">
-                        {result.sandWeight.toFixed(1)}
-                      </td>
-                      <td className="px-6 py-4 text-body/70 dark:text-body-dark/70">kg</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[300px]">
+                    <thead className="bg-slate-50 dark:bg-slate-800/50">
+                      <tr>
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left font-display font-semibold text-heading dark:text-heading-dark text-sm">
+                          Material
+                        </th>
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-right font-display font-semibold text-heading dark:text-heading-dark text-sm">
+                          Quantity
+                        </th>
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left font-display font-semibold text-heading dark:text-heading-dark text-sm">
+                          Unit
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-200/20 dark:divide-slate-700/30">
+                      <tr>
+                        <td className="px-4 sm:px-6 py-3 sm:py-4 font-medium text-heading dark:text-heading-dark text-sm">
+                          Plaster Volume
+                        </td>
+                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-right font-mono font-semibold text-sm">
+                          {result.plasterVolume.toFixed(3)}
+                        </td>
+                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-body/70 dark:text-body-dark/70 text-sm">
+                          m³
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 sm:px-6 py-3 sm:py-4 font-medium text-heading dark:text-heading-dark text-sm">
+                          Cement
+                        </td>
+                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-right font-mono font-semibold text-sm">
+                          {result.cementBags.toFixed(2)}
+                        </td>
+                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-body/70 dark:text-body-dark/70 text-sm">
+                          bags
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 sm:px-6 py-3 sm:py-4 font-medium text-heading dark:text-heading-dark text-sm">
+                          Sand
+                        </td>
+                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-right font-mono font-semibold text-sm">
+                          {result.sandWeight.toFixed(1)}
+                        </td>
+                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-body/70 dark:text-body-dark/70 text-sm">
+                          kg
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
+
               {/* Step-by-step Calculation */}
               {formData.showStepByStep && (
-                <div className="mb-8 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
-                  <h3 className="mb-4 font-display text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
+                <div className="mb-8 rounded-xl border border-blue-200/40 bg-blue-50 p-4 sm:p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
+                  <h3 className="mb-4 font-display text-base sm:text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
                     Step-by-Step Calculation
                   </h3>
-                  <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
+                  <ol className="list-decimal list-inside space-y-2 text-sm sm:text-base text-blue-900 dark:text-blue-100">
                     <li>
                       Area = {useArea ? formData.area : `${formData.length} × ${formData.height}`}{' '}
                       {formData.unit === 'metric' ? 'm²' : 'ft²'}
@@ -437,21 +448,22 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
           )}
         </AnimatePresence>
       </motion.div>
+
       {/* Info & FAQ Section */}
-      <div className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
-        <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark mb-2">
+      <div className="mt-8 sm:mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-4 sm:p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
+        <h2 className="font-display text-xl sm:text-2xl font-bold text-heading dark:text-heading-dark mb-2">
           Plaster Calculator & Estimator – Accurate Material Estimation Tool
         </h2>
-        <p className="text-body/80 dark:text-body-dark/80 mb-4">
+        <p className="text-body/80 dark:text-body-dark/80 mb-4 text-sm sm:text-base">
           A Plaster Calculator helps you estimate the quantity of plaster, cement, and sand required
           for wall finishing, ensuring cost-effective and high-quality results.
         </p>
         <hr className="my-4 border-slate-200 dark:border-slate-700" />
         <div className="mb-4">
-          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+          <h3 className="font-display text-base sm:text-lg font-semibold text-heading dark:text-heading-dark mb-2">
             Why Use a Plaster Calculator?
           </h3>
-          <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
+          <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80 text-sm sm:text-base">
             <li>Get precise plaster volume for your project.</li>
             <li>Estimate cement and sand needed for the mix.</li>
             <li>Reduce material waste and save money.</li>
@@ -461,20 +473,20 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
         </div>
         <hr className="my-4 border-slate-200 dark:border-slate-700" />
         <div className="mb-4">
-          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+          <h3 className="font-display text-base sm:text-lg font-semibold text-heading dark:text-heading-dark mb-2">
             How It Works
           </h3>
-          <ol className="list-decimal list-inside space-y-1 text-body/80 dark:text-body-dark/80">
+          <ol className="list-decimal list-inside space-y-1 text-body/80 dark:text-body-dark/80 text-sm sm:text-base">
             <li>Enter the wall dimensions: length, height (or area), and thickness.</li>
             <li>Get instant results: plaster volume, cement, and sand required.</li>
           </ol>
         </div>
         <hr className="my-4 border-slate-200 dark:border-slate-700" />
         <div>
-          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+          <h3 className="font-display text-base sm:text-lg font-semibold text-heading dark:text-heading-dark mb-2">
             FAQs – Plaster Calculator
           </h3>
-          <div className="space-y-2 text-body/80 dark:text-body-dark/80">
+          <div className="space-y-2 text-body/80 dark:text-body-dark/80 text-sm sm:text-base">
             <div>
               <span className="font-semibold">Q1. What is a plaster calculator?</span>
               <br />A tool to estimate the amount of plaster, cement, and sand needed for wall

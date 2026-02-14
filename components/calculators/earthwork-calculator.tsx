@@ -126,7 +126,7 @@ export default function EarthworkCalculator({ globalUnit = 'm' }: { globalUnit?:
         </div>
         {/* Form */}
         <form
-          className="px-8 py-8"
+          className="px-4 sm:px-6 md:px-8 py-6 sm:py-8"
           onSubmit={(e) => {
             e.preventDefault()
             calculateEarthwork()
@@ -208,36 +208,40 @@ export default function EarthworkCalculator({ globalUnit = 'm' }: { globalUnit?:
             </div>
           </div>
           {/* Action Buttons */}
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-between">
-            <div className="flex gap-2">
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-2 sm:gap-4 justify-between">
+            <div className="flex flex-wrap gap-2 sm:gap-4">
               <button
                 type="button"
                 onClick={resetForm}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-display font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
+                className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl border border-slate-300 bg-white px-3 sm:px-6 py-2 sm:py-3 font-display font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700 text-xs sm:text-sm whitespace-nowrap"
               >
-                <RotateCcw className="h-4 w-4" />
+                <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 Reset
               </button>
               <button
                 type="button"
                 onClick={() => setShowSteps(!showSteps)}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-display font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
+                className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl border border-slate-300 bg-white px-3 sm:px-6 py-2 sm:py-3 font-display font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700 text-xs sm:text-sm whitespace-nowrap"
                 disabled={!result}
               >
-                {showSteps ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                {showSteps ? (
+                  <EyeOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                ) : (
+                  <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                )}
                 {showSteps ? 'Hide Steps' : 'Show Steps'}
               </button>
             </div>
             <button
               type="submit"
               disabled={isCalculating}
-              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 font-display font-semibold text-white shadow-soft hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-primary px-4 sm:px-8 py-2 sm:py-3 font-display font-semibold text-white shadow-soft hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm whitespace-nowrap"
             >
               {isCalculating ? (
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                <div className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
               ) : (
                 <>
-                  <Calculator className="h-4 w-4" />
+                  <Calculator className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   Calculate
                 </>
               )}

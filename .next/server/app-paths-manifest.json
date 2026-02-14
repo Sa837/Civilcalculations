@@ -1,10 +1,4 @@
 {
   "/calculators/page": "app/calculators/page.js",
-  "/page": "app/page.js",
-  "/converters/page": "app/converters/page.js",
-  "/about/page": "app/about/page.js",
-  "/contact/page": "app/contact/page.js",
-  "/privacy/page": "app/privacy/page.js",
-  "/contact-action/route": "app/contact-action/route.js",
-  "/cookies/page": "app/cookies/page.js"
+  "/page": "app/page.js"
 }

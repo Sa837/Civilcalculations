@@ -725,13 +725,17 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
         </div>
 
         {/* Form */}
-        <div className="p-8">
-          <div className="flex justify-end gap-4 mb-6">
+        <div className="p-4 sm:p-6 md:p-8">
+          {/* Use Area Toggle Button */}
+          <div className="flex flex-wrap justify-end gap-2 sm:gap-4 mb-4 sm:mb-6">
             <button
               type="button"
               onClick={() => handleInputChange('useArea', !formData.useArea)}
-              className={`flex items-center gap-2 rounded-xl px-6 py-2 font-display font-medium shadow-soft transition-all 
-                ${formData.useArea ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-secondary text-white hover:bg-secondary/90'}`}
+              className={`flex items-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-6 py-2 font-display font-medium shadow-soft transition-all text-sm sm:text-base whitespace-nowrap ${
+                formData.useArea
+                  ? 'bg-green-600 text-white hover:bg-green-700'
+                  : 'bg-secondary text-white hover:bg-secondary/90'
+              }`}
             >
               <Info className="h-4 w-4" />
               {formData.useArea ? 'Use Length & Width' : 'Use Area'}
@@ -740,28 +744,32 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
 
           {/* Concrete Element Selection */}
           <div className="mb-6">
-            <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+            <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
               Concrete Element Type
             </label>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
               {CONCRETE_ELEMENTS.map((element) => (
                 <button
                   key={element.value}
                   type="button"
                   onClick={() => handleElementTypeChange(element.value)}
-                  className={`flex flex-col items-center justify-center p-3 rounded-lg font-display font-medium transition-colors ${
+                  className={`flex flex-col items-center justify-center p-2 sm:p-3 rounded-lg font-display font-medium transition-colors text-xs sm:text-sm ${
                     formData.elementType === element.value
                       ? 'bg-primary text-white'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300'
                   }`}
                 >
-                  {element.value === 'slab' && <Square className="h-5 w-5 mb-1" />}
-                  {element.value === 'beam' && <Box className="h-5 w-5 mb-1" />}
-                  {element.value === 'column' && <Building className="h-5 w-5 mb-1" />}
-                  {element.value === 'footing' && <Square className="h-5 w-5 mb-1" />}
-                  {element.value === 'wall' && <Square className="h-5 w-5 mb-1" />}
-                  {element.value === 'staircase' && <Square className="h-5 w-5 mb-1" />}
-                  <span className="text-xs">{element.label}</span>
+                  {element.value === 'slab' && <Square className="h-4 w-4 sm:h-5 sm:w-5 mb-1" />}
+                  {element.value === 'beam' && <Box className="h-4 w-4 sm:h-5 sm:w-5 mb-1" />}
+                  {element.value === 'column' && (
+                    <Building className="h-4 w-4 sm:h-5 sm:w-5 mb-1" />
+                  )}
+                  {element.value === 'footing' && <Square className="h-4 w-4 sm:h-5 sm:w-5 mb-1" />}
+                  {element.value === 'wall' && <Square className="h-4 w-4 sm:h-5 sm:w-5 mb-1" />}
+                  {element.value === 'staircase' && (
+                    <Square className="h-4 w-4 sm:h-5 sm:w-5 mb-1" />
+                  )}
+                  <span className="text-[10px] sm:text-xs">{element.label}</span>
                 </button>
               ))}
             </div>
@@ -1341,30 +1349,30 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
           </div>
 
           {/* Action Buttons */}
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-between">
-            <div className="flex gap-4">
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-2 sm:gap-4 justify-between">
+            <div className="flex flex-wrap gap-2 sm:gap-4">
               <button
                 type="button"
                 onClick={resetForm}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-display font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
+                className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl border border-slate-300 bg-white px-3 sm:px-6 py-2 sm:py-3 font-display font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700 text-xs sm:text-sm whitespace-nowrap"
               >
-                <RotateCcw className="h-4 w-4" />
+                <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 Reset
               </button>
 
               <button
                 type="button"
                 onClick={() => handleInputChange('showStepByStep', !formData.showStepByStep)}
-                className={`flex items-center justify-center gap-2 rounded-xl px-4 py-3 font-display font-medium transition-colors ${
+                className={`flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 font-display font-medium transition-colors text-xs sm:text-sm whitespace-nowrap ${
                   formData.showStepByStep
                     ? 'bg-primary text-white'
                     : 'border border-slate-300 bg-white text-heading dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark'
                 }`}
               >
                 {formData.showStepByStep ? (
-                  <EyeOff className="h-4 w-4" />
+                  <EyeOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 ) : (
-                  <Eye className="h-4 w-4" />
+                  <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 )}
                 {formData.showStepByStep ? 'Hide' : 'Show'} Steps
               </button>
@@ -1374,16 +1382,16 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
               type="button"
               onClick={calculateConcrete}
               disabled={isCalculating}
-              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 font-display font-semibold text-white shadow-soft transition-all hover:bg-primary/90 hover:shadow-hover disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-primary px-4 sm:px-8 py-2 sm:py-3 font-display font-semibold text-white shadow-soft transition-all hover:bg-primary/90 hover:shadow-hover disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm whitespace-nowrap"
             >
               {isCalculating ? (
                 <>
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  <div className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   Calculating...
                 </>
               ) : (
                 <>
-                  <Calculator className="h-4 w-4" />
+                  <Calculator className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   Calculate
                 </>
               )}

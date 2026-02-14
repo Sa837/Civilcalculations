@@ -31,18 +31,18 @@ declare namespace __next_route_internal_types__ {
   type StaticRoutes = 
     | `/`
     | `/about`
-    | `/contact-action`
-    | `/contact`
-    | `/converters`
     | `/calculators`
+    | `/converters`
     | `/cookies`
     | `/disclaimer`
-    | `/terms`
+    | `/contact-action`
+    | `/contact`
     | `/privacy`
     | `/resources`
+    | `/terms`
   type DynamicRoutes<T extends string = string> = 
-    | `/converters/${SafeSlug<T>}`
     | `/calculators/${SafeSlug<T>}`
+    | `/converters/${SafeSlug<T>}`
     | `/resources/${SafeSlug<T>}`
     | `/resources/${SafeSlug<T>}/${SafeSlug<T>}`
 
