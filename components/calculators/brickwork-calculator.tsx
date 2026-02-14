@@ -2532,7 +2532,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                 ❌ Incorrect Mortar Consistency
               </h5>
               <p className="text-sm text-body/70 dark:text-body-dark/70">
-                Too wet mortar causes bricks to float and weakens bond. Too dry mortar doesn't
+                Too wet mortar causes bricks to float and weakens bond. Too dry mortar doesn&apos;t
                 adhere properly. Aim for butter-like consistency that holds its shape.
               </p>
             </div>
