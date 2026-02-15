@@ -62,7 +62,7 @@ export const STONEMASONRY_INFO_SECTION = () => {
             </h4>
             <p className="text-sm text-body/80 dark:text-body-dark/80">
               Cement production generates significant CO₂ emissions. Reducing mortar waste through
-              accurate calculations directly lowers your project's carbon footprint and
+              accurate calculations directly lowers your project&apos;s carbon footprint and
               environmental impact.
             </p>
           </div>

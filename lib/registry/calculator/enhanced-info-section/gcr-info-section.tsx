@@ -380,8 +380,8 @@ export const GCR_INFO_SECTION = () => {
                   Parking Layout
                 </h5>
                 <p className="text-sm text-body/70 dark:text-body-dark/70">
-                  Surface parking areas don't count towards GCR but reduce effective open space.
-                  Underground or multi-level parking preserves ground coverage for buildings.
+                  Surface parking areas don&apos;t count towards GCR but reduce effective open
+                  space. Underground or multi-level parking preserves ground coverage for buildings.
                 </p>
               </div>
             </div>
@@ -468,8 +468,8 @@ export const GCR_INFO_SECTION = () => {
               ❌ Ignoring Parking Areas
             </h5>
             <p className="text-sm text-body/70 dark:text-body-dark/70">
-              Surface parking areas don't count towards GCR but reduce available open space. Plan
-              parking vertically to preserve ground coverage for buildings.
+              Surface parking areas don&apos;t count towards GCR but reduce available open space.
+              Plan parking vertically to preserve ground coverage for buildings.
             </p>
           </div>
           <div className="rounded-lg bg-red-50/50 p-4 dark:bg-red-900/20 border border-red-200/30 dark:border-red-700/30">
@@ -535,9 +535,10 @@ export const GCR_INFO_SECTION = () => {
               Q2. Does basement area count towards GCR?
             </h4>
             <p className="text-sm text-body/80 dark:text-body-dark/80">
-              Generally, basement areas below ground level do not count towards GCR since they don't
-              cover the ground surface. However, some jurisdictions may count basement areas that
-              extend above ground level. Always check local regulations for specific provisions.
+              Generally, basement areas below ground level do not count towards GCR since they
+              don&apos;t cover the ground surface. However, some jurisdictions may count basement
+              areas that extend above ground level. Always check local regulations for specific
+              provisions.
             </p>
           </div>
           <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">

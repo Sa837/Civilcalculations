@@ -461,8 +461,8 @@ export const SUPER_BUILT_UP_AREA_INFO_SECTION = () => {
               ❌ Confusing Area Types
             </h5>
             <p className="text-sm text-body/70 dark:text-body-dark/70">
-              Don't compare properties using different area measurements. Always clarify whether
-              pricing is based on carpet, built-up, or super built-up area before making
+              Don&apos;t compare properties using different area measurements. Always clarify
+              whether pricing is based on carpet, built-up, or super built-up area before making
               comparisons.
             </p>
           </div>

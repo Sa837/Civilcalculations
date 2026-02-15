@@ -39,7 +39,8 @@ export const EARTHWORK_INFO_SECTION = () => {
             </h4>
             <p className="text-sm text-body/80 dark:text-body-dark/80">
               Precise volume calculations enable accurate equipment sizing and crew allocation. This
-              ensures earthwork operations stay on schedule and don't become project bottlenecks.
+              ensures earthwork operations stay on schedule and don&apos;t become project
+              bottlenecks.
             </p>
           </div>
           <div className="rounded-lg bg-amber-50/50 p-4 dark:bg-amber-900/20 border border-amber-200/30 dark:border-amber-700/30">

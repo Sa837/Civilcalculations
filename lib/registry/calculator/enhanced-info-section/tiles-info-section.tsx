@@ -387,13 +387,10 @@ export const TILES_INFO_SECTION = () => {
         </h3>
         <div className="space-y-4">
           <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">
-            <h4 className="font-semibold text-heading dark:text-heading-dark mb-2">
-              Q1: How many tiles do I need for 100 sq ft area?
-            </h4>
             <p className="text-sm text-body/80 dark:text-body-dark/80">
-              For 12"×12" tiles: 100 sq ft ÷ 1 sq ft per tile = 100 tiles. Add 10% wastage = 110
-              tiles. For 24"×24" tiles: 100 ÷ 4 = 25 tiles + 10% = 28 tiles. Always round up to full
-              boxes.
+              For 12&quot;×12&quot; tiles: 100 sq ft ÷ 1 sq ft per tile = 100 tiles. Add 10% wastage
+              = 110 tiles. For 24&quot;×24&quot; tiles: 100 ÷ 4 = 25 tiles + 10% = 28 tiles. Always
+              round up to full boxes.
             </p>
           </div>
           <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">

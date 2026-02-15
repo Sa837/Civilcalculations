@@ -586,8 +586,8 @@ export const STEEL_REINFORCEMENT_INFO_SECTION = () => {
             <p className="text-sm text-body/80 dark:text-body-dark/80">
               Steel reinforcement and rebar (reinforcing bar) are essentially the same thing. Rebar
               refers to the steel bars used to reinforce concrete, providing tensile strength that
-              concrete lacks. The term "reinforcement" encompasses all steel elements including
-              bars, wires, and mesh used to strengthen concrete structures.
+              concrete lacks. The term &quot;reinforcement&quot; encompasses all steel elements
+              including bars, wires, and mesh used to strengthen concrete structures.
             </p>
           </div>
           <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">

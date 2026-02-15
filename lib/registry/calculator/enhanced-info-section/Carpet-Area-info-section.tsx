@@ -329,7 +329,7 @@ export const CARPET_AREA_INFO_SECTION = () => {
                 <h5 className="font-semibold text-heading dark:text-heading-dark">Service Areas</h5>
                 <p className="text-sm text-body/70 dark:text-body-dark/70">
                   Plan for mechanical rooms, electrical panels, and service ducts. Ensure these
-                  areas are accessible but don't reduce usable carpet area unnecessarily.
+                  areas are accessible but don&apos;t reduce usable carpet area unnecessarily.
                 </p>
               </div>
             </div>
@@ -456,7 +456,7 @@ export const CARPET_AREA_INFO_SECTION = () => {
               ❌ Confusing Area Types
             </h5>
             <p className="text-sm text-body/70 dark:text-body-dark/70">
-              Don't mix carpet area with built-up or super built-up area. Each has different
+              Don&apos;t mix carpet area with built-up or super built-up area. Each has different
               purposes and calculation methods. Use the appropriate area type for your needs.
             </p>
           </div>
