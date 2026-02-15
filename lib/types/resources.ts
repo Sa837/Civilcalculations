@@ -1,29 +1,19 @@
-export type ResourceCategory = 
-  | "Codes" 
-  | "District Rates" 
-  | "Rules and Regulations" 
-  | "Notes" 
-  | "Notices"
+export type ResourceCategory =
+  | 'Codes'
+  | 'District Rates'
+  | 'Rules and Regulations'
+  | 'Notes'
+  | 'Notices'
+  | 'Blogs'
 
-export type ResourceRegion = 
-  | "Nepal" 
-  | "India" 
-  | "US" 
-  | "Europe" 
-  | "Other Regions"
+export type ResourceRegion = 'Nepal' | 'India' | 'US' | 'Europe' | 'Other Regions'
 
-export type SortOption = 
-  | "Newest" 
-  | "Oldest" 
-  | "A-Z" 
-  | "Z-A" 
-  | "Favorite"
-  | "All"
-
+export type SortOption = 'Newest' | 'Oldest' | 'A-Z' | 'Z-A' | 'Favorite' | 'All'
 
 export interface ResourceSubItem {
   title: string
   url: string
+  description?: string
 }
 
 export interface Resource {

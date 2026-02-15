@@ -121,7 +121,7 @@ export default function SubPage({ params }: SubPageProps) {
       const content = JSON.stringify(ch).toLowerCase()
       return matchesSearch(chTitle + ' ' + content)
     })
-  }, [jsonData, q])
+  }, [jsonData, q, matchesSearch])
 
   useEffect(() => {
     setMounted(true)

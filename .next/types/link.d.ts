@@ -29,17 +29,32 @@ declare namespace __next_route_internal_types__ {
     S extends `${string}${SearchOrHash}` ? never : S
 
   type StaticRoutes = 
-    | `/converters`
-    | `/calculators`
+    | `/blog/bridge-engineering-innovative-design`
+    | `/blog/construction-technology-drones-robotics`
+    | `/blog/environmental-engineering-remediation`
+    | `/blog/project-management-lean-construction`
+    | `/blog/steel-structure-design-modern-analysis`
+    | `/blog/transportation-highway-design-standards`
+    | `/blog/sustainable-construction-green-materials`
+    | `/blog/water-resources-sustainable-management`
     | `/contact-action`
+    | `/calculators`
+    | `/converters`
     | `/`
     | `/resources`
+    | `/blog/bim-building-information-modeling`
     | `/about`
+    | `/blog/digital-twins-construction-management`
+    | `/blog/geotechnical-soil-structure-interaction`
+    | `/blog/infrastructure-resilience-climate-change`
+    | `/blog/advanced-structural-analysis-fem`
+    | `/blog/smart-cities-iot-urban-infrastructure`
+    | `/blog/concrete-technology-advanced-mix-design`
     | `/contact`
-    | `/privacy`
-    | `/cookies`
     | `/disclaimer`
-    | `/terms`
+    | `/cookie-policy`
+    | `/privacy-policy`
+    | `/terms-and-conditions`
   type DynamicRoutes<T extends string = string> = 
     | `/calculators/${SafeSlug<T>}`
     | `/converters/${SafeSlug<T>}`

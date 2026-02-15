@@ -21,13 +21,13 @@ export default function Footer() {
 
         <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           <a
-            href="/privacy"
+            href="/privacy-policy"
             className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark"
           >
             Privacy Policy
           </a>
           <a
-            href="/terms"
+            href="/terms-and-conditions"
             className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark"
           >
             Terms & Conditions
@@ -39,7 +39,7 @@ export default function Footer() {
             Disclaimer
           </a>
           <a
-            href="/cookies"
+            href="/cookie-policy"
             className="font-sans text-sm text-body/70 hover:text-body dark:text-body-dark/70 dark:hover:text-body-dark"
           >
             Cookie Policy

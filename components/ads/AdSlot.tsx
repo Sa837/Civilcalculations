@@ -67,10 +67,13 @@ export default function AdSlot({
     }
 
     // Ensure single script load across app
-    const existing = document.querySelector('script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]')
+    const existing = document.querySelector(
+      'script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]',
+    )
     if (!existing) {
       const script = document.createElement('script')
-      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922'
+      script.src =
+        'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922'
       script.async = true
       script.crossOrigin = 'anonymous'
       document.head.appendChild(script)
@@ -92,11 +95,8 @@ export default function AdSlot({
     }
   }, [slotId])
 
-  // Don't render anything during SSR or if no slotId is provided
-  if (typeof window === 'undefined' || !slotId) {
-    return null
-  }
-
+  // Always render a placeholder div for consistent SSR hydration
+  // Only initialize the ad on the client side
   return (
     <div
       ref={adRef}

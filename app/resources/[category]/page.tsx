@@ -33,6 +33,7 @@ const categoryIcons = {
   'Rules and Regulations': Scale,
   Notes: PenTool,
   Notices: FileText,
+  Blogs: PenTool,
 }
 
 const categoryColors = {
@@ -41,6 +42,7 @@ const categoryColors = {
   'Rules and Regulations': 'from-purple-500 to-violet-500',
   Notes: 'from-yellow-500 to-amber-500',
   Notices: 'from-green-500 to-emerald-500',
+  Blogs: 'from-pink-500 to-rose-500',
 }
 
 interface CategoryPageProps {

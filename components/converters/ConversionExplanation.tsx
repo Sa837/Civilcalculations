@@ -10,12 +10,12 @@ type ConversionExplanationProps = {
   toValue?: string
 }
 
-export function ConversionExplanation({ 
-  converter, 
-  fromUnit = '', 
-  toUnit = '', 
-  fromValue = '1', 
-  toValue = '1' 
+export function ConversionExplanation({
+  converter,
+  fromUnit = '',
+  toUnit = '',
+  fromValue = '1',
+  toValue = '1',
 }: ConversionExplanationProps) {
   // Get the base unit and conversion factors
   const baseUnit = (converter as any)?.baseUnit || ''
@@ -59,29 +59,38 @@ export function ConversionExplanation({
           </h2>
           <div className="prose dark:prose-invert text-blue-700 dark:text-blue-300 text-sm">
             <p className="mb-3">
-              Our {converter.title.toLowerCase()} converter uses a precise two-step process through the base unit 
-              ({baseUnit}) to ensure accurate results across all units.
+              Our {converter.title.toLowerCase()} converter uses a precise two-step process through
+              the base unit ({baseUnit}) to ensure accurate results across all units.
             </p>
-            
+
             <div className="space-y-3">
               <div>
-                <h3 className="font-medium text-blue-800 dark:text-blue-100">1. Convert to Base Unit</h3>
+                <h3 className="font-medium text-blue-800 dark:text-blue-100">
+                  1. Convert to Base Unit
+                </h3>
                 <p>
-                  The input value is first converted to the base unit using the conversion factor for the source unit.
+                  The input value is first converted to the base unit using the conversion factor
+                  for the source unit.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-medium text-blue-800 dark:text-blue-100">2. Convert to Target Unit</h3>
+                <h3 className="font-medium text-blue-800 dark:text-blue-100">
+                  2. Convert to Target Unit
+                </h3>
                 <p>
-                  The value in the base unit is then converted to the target unit by dividing by the target unit&apos;s factor.
+                  The value in the base unit is then converted to the target unit by dividing by the
+                  target unit&apos;s factor.
                 </p>
               </div>
 
               {fromUnit && toUnit && fromUnit !== toUnit && getExampleConversion()}
 
               <div className="text-xs text-blue-600/80 dark:text-blue-300/80 mt-4">
-                <p>This conversion method ensures maximum accuracy by minimizing floating-point errors.</p>
+                <p>
+                  This conversion method ensures maximum accuracy by minimizing floating-point
+                  errors.
+                </p>
               </div>
             </div>
           </div>
