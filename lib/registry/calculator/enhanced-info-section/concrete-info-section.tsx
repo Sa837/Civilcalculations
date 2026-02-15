@@ -9,9 +9,9 @@ export const CONCRETE_INFO_SECTION = () => {
           Complete Guide to Concrete Calculation & Construction
         </h2>
         <p className="text-body/80 dark:text-body-dark/80 leading-relaxed">
-          Concrete is the world's most widely used construction material, forming the backbone of
-          modern infrastructure. Understanding how to accurately calculate concrete quantities, mix
-          ratios, and material requirements is essential for contractors, civil engineers,
+          Concrete is the world&apos;s most widely used construction material, forming the backbone
+          of modern infrastructure. Understanding how to accurately calculate concrete quantities,
+          mix ratios, and material requirements is essential for contractors, civil engineers,
           architects, and construction professionals. This comprehensive guide covers everything
           from basic volume calculations to advanced concrete technology, ensuring your projects are
           completed efficiently with optimal strength and minimal waste.
@@ -63,7 +63,7 @@ export const CONCRETE_INFO_SECTION = () => {
             </h4>
             <p className="text-sm text-body/80 dark:text-body-dark/80">
               Cement production generates 8-10% of global CO₂ emissions. Reducing concrete waste
-              through accurate calculations directly lowers your project's carbon footprint and
+              through accurate calculations directly lowers your project&apos;s carbon footprint and
               environmental impact.
             </p>
           </div>

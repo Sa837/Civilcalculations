@@ -418,8 +418,8 @@ export const TILES_INFO_SECTION = () => {
             </h4>
             <p className="text-sm text-body/80 dark:text-body-dark/80">
               Adhesive: 3-5 kg per m² for standard applications. Grout: 0.5-1 kg per m² depending on
-              joint width. For large tiles (24"+), use 4-6 kg adhesive. Wet areas require waterproof
-              versions.
+              joint width. For large tiles (24&quot;+), use 4-6 kg adhesive. Wet areas require
+              waterproof versions.
             </p>
           </div>
           <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">

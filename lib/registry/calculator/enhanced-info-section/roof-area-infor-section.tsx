@@ -526,7 +526,7 @@ export const ROOF_AREA_INFO_SECTION = () => {
           </div>
           <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">
             <h4 className="font-semibold text-heading dark:text-heading-dark mb-2">
-              Q2. What's the difference between roof area and plan area?
+              Q2. What&apos;s the difference between roof area and plan area?
             </h4>
             <p className="text-sm text-body/80 dark:text-body-dark/80">
               Plan area is the horizontal projection of the building footprint. Roof area is the
@@ -564,7 +564,7 @@ export const ROOF_AREA_INFO_SECTION = () => {
             <p className="text-sm text-body/80 dark:text-body-dark/80">
               Complex roofs require calculating each roof plane separately, then summing the areas.
               For mansard roofs, calculate upper and lower slopes independently. For gambrel roofs,
-              treat as two different slopes on each side. Use the calculator's built-in formulas for
+              treat as two different slopes on each side. Use the calculator&apos;s built-in formulas for
               accurate results, or break complex roofs into simpler geometric shapes for manual
               calculations.
             </p>

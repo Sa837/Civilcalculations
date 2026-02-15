@@ -9,10 +9,10 @@ export const SUPER_BUILT_UP_AREA_INFO_SECTION = () => {
         <p className="text-body/80 dark:text-body-dark/80 leading-relaxed">
           Super built-up area is a comprehensive measurement that includes the actual usable space
           plus common areas, amenities, and shared facilities. Understanding super built-up area
-          calculations is crucial for property valuation, pricing, and understanding what you're
-          paying for in real estate transactions. This comprehensive guide covers super built-up
-          area concepts, calculation methods, pricing implications, and buyer considerations for
-          informed property decisions.
+          calculations is crucial for property valuation, pricing, and understanding what
+          you&apos;re paying for in real estate transactions. This comprehensive guide covers super
+          built-up area concepts, calculation methods, pricing implications, and buyer
+          considerations for informed property decisions.
         </p>
       </div>
 
@@ -213,7 +213,8 @@ export const SUPER_BUILT_UP_AREA_INFO_SECTION = () => {
               <strong>Clubhouse:</strong> Multipurpose halls, party rooms, and community activity
               spaces.
               <br />
-              <strong>Children's Play Area:</strong> Playgrounds, crèches, and indoor play zones.
+              <strong>Children&apos;s Play Area:</strong> Playgrounds, crèches, and indoor play
+              zones.
             </p>
           </div>
           <div className="rounded-lg border-l-4 border-amber-500 bg-amber-50/30 p-4 dark:bg-amber-900/10">
@@ -552,8 +553,8 @@ export const SUPER_BUILT_UP_AREA_INFO_SECTION = () => {
             <p className="text-sm text-body/80 dark:text-body-dark/80">
               Loading factor is calculated as Super Built-up Area ÷ Carpet Area. For example, if
               your carpet area is 1000 sq ft and super built-up area is 1250 sq ft, the loading
-              factor is 1.25. This means you're paying for 250 sq ft of common areas and amenities
-              through your apartment price.
+              factor is 1.25. This means you&apos;re paying for 250 sq ft of common areas and
+              amenities through your apartment price.
             </p>
           </div>
           <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">
@@ -597,7 +598,7 @@ export const SUPER_BUILT_UP_AREA_INFO_SECTION = () => {
               Ideal loading factors typically range from 1.2 to 1.5, depending on the quality and
               extent of amenities. Factors below 1.2 may indicate inadequate common areas, while
               factors above 1.5 might suggest excessive common areas or inefficient space
-              utilization. Consider the developer's reputation and amenity quality.
+              utilization. Consider the developer&apos;s reputation and amenity quality.
             </p>
           </div>
           <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">

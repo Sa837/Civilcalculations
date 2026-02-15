@@ -532,9 +532,9 @@ export const BBS_INFO_SECTION = () => {
               Q6. How do I handle bars that require special bending?
             </h4>
             <p className="text-sm text-body/80 dark:text-body-dark/80">
-              For special bending requirements, use the "remarks" field to specify exact bending
-              details. Common special bends include J-hooks, U-bends, helical reinforcement, and
-              custom crank shapes. Always provide detailed sketches or refer to standard bend
+              For special bending requirements, use the &quot;remarks&quot; field to specify exact
+              bending details. Common special bends include J-hooks, U-bends, helical reinforcement,
+              and custom crank shapes. Always provide detailed sketches or refer to standard bend
               shapes. Include bend allowances in your length calculations - typically 2d for 90°
               bends and 3d for 135° bends.
             </p>

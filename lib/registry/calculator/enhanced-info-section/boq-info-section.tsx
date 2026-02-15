@@ -571,9 +571,9 @@ export const BOQ_INFO_SECTION = () => {
             </h4>
             <p className="text-sm text-body/80 dark:text-body-dark/80">
               Prime cost (PC) items are for materials or services to be supplied by others but
-              installed by the contractor. They include a PC sum plus a percentage for contractor's
-              profit, overheads, and attendance costs. PC items are used when specific products are
-              not yet selected but need to be included in the contract.
+              installed by the contractor. They include a PC sum plus a percentage for
+              contractor&apos;s profit, overheads, and attendance costs. PC items are used when
+              specific products are not yet selected but need to be included in the contract.
             </p>
           </div>
           <div className="rounded-lg border border-slate-200/50 p-4 dark:border-slate-700/50">

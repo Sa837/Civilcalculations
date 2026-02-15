@@ -446,7 +446,7 @@ export const TANK_CAPACITY_INFO_SECTION = () => {
                 </h5>
                 <p className="text-sm text-body/70 dark:text-body-dark/70">
                   Apply appropriate coatings, cathodic protection, or use corrosion-resistant
-                  materials based on the stored product's characteristics.
+                  materials based on the stored product&apos;s characteristics.
                 </p>
               </div>
             </div>
