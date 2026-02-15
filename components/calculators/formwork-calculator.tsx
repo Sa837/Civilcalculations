@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator, RotateCcw, Eye, EyeOff, Info, CheckCircle } from 'lucide-react'
 import { FormworkCalculatorLib } from '@/lib/registry/calculator/formwork-calculator'
+import { FORMWORK_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/formwork-info-section'
 
 interface FormworkResult {
   area: number
@@ -82,7 +83,7 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
   }
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
+    <div className="mx-auto max-w-4xl p-6 font-display">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -95,7 +96,7 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
               <Calculator className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="font-display text-2xl font-bold text-heading dark:text-heading-dark">
+              <h1 className="  text-2xl font-bold text-heading dark:text-heading-dark">
                 Formwork Calculator
               </h1>
               <p className="text-body/70 dark:text-body-dark/70">
@@ -143,7 +144,7 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
         >
           <div className="grid gap-6 md:grid-cols-2">
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
                 Formwork Type
               </label>
               <select
@@ -160,7 +161,7 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
               </select>
             </div>
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
                 Length ({formData.unit === 'm' ? 'm' : 'ft'})
               </label>
               <input
@@ -180,7 +181,7 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
               )}
             </div>
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
                 Height ({formData.unit === 'm' ? 'm' : 'ft'})
               </label>
               <input
@@ -200,7 +201,7 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
               )}
             </div>
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
                 Unit
               </label>
               <select
@@ -219,7 +220,7 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
               <button
                 type="button"
                 onClick={resetForm}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-display font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
+                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3   font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
               >
                 <RotateCcw className="h-4 w-4" />
                 Reset
@@ -227,7 +228,7 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
               <button
                 type="button"
                 onClick={() => setShowSteps(!showSteps)}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-display font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
+                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3   font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
                 disabled={!result}
               >
                 {showSteps ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -237,7 +238,7 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
             <button
               type="submit"
               disabled={isCalculating}
-              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 font-display font-semibold text-white shadow-soft hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3   font-semibold text-white shadow-soft hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isCalculating ? (
                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
@@ -261,13 +262,13 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
             >
               <div className="mb-6 flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-                <h2 className="font-display text-xl font-semibold text-heading dark:text-heading-dark">
+                <h2 className="  text-xl font-semibold text-heading dark:text-heading-dark">
                   Calculation Results
                 </h2>
               </div>
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
-                  <h3 className="mb-4 font-display font-semibold text-heading dark:text-heading-dark capitalize">
+                  <h3 className="mb-4   font-semibold text-heading dark:text-heading-dark capitalize">
                     {formData.formworkType} Formwork Area
                   </h3>
                   <div className="space-y-3">
@@ -287,7 +288,7 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
               {/* Steps */}
               {showSteps && result && (
                 <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
-                  <h3 className="mb-4 font-display text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
+                  <h3 className="mb-4   text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
                     <Info className="h-5 w-5 text-blue-500 dark:text-blue-300" />
                     Step-by-Step Calculation
                   </h3>
@@ -313,7 +314,7 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
       </motion.div>
       {/* Info & FAQ */}
       <div className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
-        <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark mb-2">
+        <h2 className="  text-2xl font-bold text-heading dark:text-heading-dark mb-2">
           Formwork Calculator – Accurate, Fast, and Professional
         </h2>
         <p className="text-body/80 dark:text-body-dark/80 mb-4">
@@ -323,7 +324,7 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
         </p>
         <hr className="my-4 border-slate-200 dark:border-slate-700" />
         <div className="mb-4">
-          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+          <h3 className="  text-lg font-semibold text-heading dark:text-heading-dark mb-2">
             Why Use a Formwork Calculator?
           </h3>
           <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
@@ -334,46 +335,22 @@ export default function FormworkCalculator({ globalUnit = 'm' }: { globalUnit?: 
         </div>
         <hr className="my-4 border-slate-200 dark:border-slate-700" />
         <div className="mb-4">
-          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
+          <h3 className="  text-lg font-semibold text-heading dark:text-heading-dark mb-2">
             How It Works
           </h3>
-          <ol className="list-decimal list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-            <li>Select the formwork type (batten, plywood, steel, etc.).</li>
-            <li>Enter the length, height, and select the unit.</li>
-            <li>The calculator computes the area using standard formulas for the selected type.</li>
+
+          <ol className="list-decimal list-inside space-y-2 text-body/80 dark:text-body-dark/80">
+            <li>Convert all dimensions to meters if needed.</li>
+            <li>
+              Calculate <b>Area</b> for <b className="capitalize">{formData.formworkType}</b>{' '}
+              formwork: <code>Length × Height</code>
+            </li>
             <li>Results are shown instantly and can be used for ordering materials.</li>
           </ol>
         </div>
-        <hr className="my-4 border-slate-200 dark:border-slate-700" />
-        <div>
-          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-            FAQs – Formwork Calculator
-          </h3>
-          <div className="space-y-2 text-body/80 dark:text-body-dark/80">
-            <div>
-              <span className="font-semibold">Q1. What is a formwork calculator?</span>
-              <br />A tool to estimate the area of formwork required for concrete structures,
-              supporting types like batten, plywood, steel, aluminum, plastic, and timber.
-            </div>
-            <div>
-              <span className="font-semibold">Q2. Why is it important?</span>
-              <br />
-              Helps in accurate planning, cost-saving, and reducing material wastage.
-            </div>
-            <div>
-              <span className="font-semibold">Q3. What types and units does it support?</span>
-              <br />
-              Batten, plywood, steel, aluminum, plastic, timber. Metric (m) and Imperial (ft) for
-              input; results in m².
-            </div>
-            <div>
-              <span className="font-semibold">Q4. How is area calculated?</span>
-              <br />
-              Using the standard formula: Length × Height for the selected formwork type.
-            </div>
-          </div>
-        </div>
       </div>
+      {/* Formwork Information & FAQ */}
+      <FORMWORK_INFO_SECTION />
     </div>
   )
 }

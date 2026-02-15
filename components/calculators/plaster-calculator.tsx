@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Info, CheckCircle, RotateCcw, Eye, EyeOff, Calculator } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { PlasterCalculator as PlasterCalculatorLib } from '@/lib/registry/calculator/plaster-calculator'
+import { PLASTER_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/plaster-info-section'
 
 interface PlasterResult {
   plasterVolume: number
@@ -67,7 +68,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
   }, [formData, useArea, hasCalculated, calculate])
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
+    <div className="font-display mx-auto max-w-4xl p-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -80,7 +81,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
               <Calculator className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="font-display text-2xl font-bold text-heading dark:text-heading-dark">
+              <h1 className="text-2xl font-bold text-heading dark:text-heading-dark">
                 Plaster Calculator
               </h1>
               <p className="text-body/70 dark:text-body-dark/70">
@@ -190,7 +191,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
           <button
             type="button"
             onClick={() => setUseArea(!useArea)}
-            className={`flex items-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-6 py-2 font-display font-medium shadow-soft transition-all text-sm sm:text-base whitespace-nowrap
+            className={`flex items-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-6 py-2   font-medium shadow-soft transition-all text-sm sm:text-base whitespace-nowrap
               ${useArea ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-secondary text-white hover:bg-secondary/90'}`}
           >
             <Info className="h-4 w-4" />
@@ -204,7 +205,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
             {!useArea && (
               <>
                 <div>
-                  <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
+                  <label className="mb-2 block   font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
                     Length ({formData.unit === 'metric' ? 'm' : 'ft'})
                   </label>
                   <input
@@ -218,7 +219,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
                   />
                 </div>
                 <div>
-                  <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
+                  <label className="mb-2 block   font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
                     Height ({formData.unit === 'metric' ? 'm' : 'ft'})
                   </label>
                   <input
@@ -235,7 +236,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
             )}
             {useArea && (
               <div>
-                <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
+                <label className="mb-2 block   font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
                   Area ({formData.unit === 'metric' ? 'm²' : 'ft²'})
                 </label>
                 <input
@@ -250,7 +251,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
               </div>
             )}
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
+              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
                 Thickness (mm)
               </label>
               <input
@@ -283,7 +284,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
                   setResult(null)
                   setErrors({})
                 }}
-                className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl border border-slate-300 bg-white px-3 sm:px-6 py-2 sm:py-3 font-display font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700 text-xs sm:text-sm whitespace-nowrap"
+                className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl border border-slate-300 bg-white px-3 sm:px-6 py-2 sm:py-3   font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700 text-xs sm:text-sm whitespace-nowrap"
               >
                 <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 Reset
@@ -294,7 +295,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
                 onClick={() =>
                   setFormData((prev) => ({ ...prev, showStepByStep: !prev.showStepByStep }))
                 }
-                className={`flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 font-display font-medium transition-colors text-xs sm:text-sm whitespace-nowrap ${
+                className={`flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3   font-medium transition-colors text-xs sm:text-sm whitespace-nowrap ${
                   formData.showStepByStep
                     ? 'bg-primary text-white'
                     : 'border border-slate-300 bg-white text-heading dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark'
@@ -314,7 +315,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
                 setHasCalculated(true)
                 calculate()
               }}
-              className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-primary px-4 sm:px-8 py-2 sm:py-3 font-display font-semibold text-white shadow-soft transition-all hover:bg-primary/90 hover:shadow-hover text-xs sm:text-sm whitespace-nowrap"
+              className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-primary px-4 sm:px-8 py-2 sm:py-3   font-semibold text-white shadow-soft transition-all hover:bg-primary/90 hover:shadow-hover text-xs sm:text-sm whitespace-nowrap"
             >
               <Calculator className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               Calculate
@@ -333,7 +334,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
             >
               <div className="mb-6 flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-                <h2 className="font-display text-lg sm:text-xl font-semibold text-heading dark:text-heading-dark">
+                <h2 className="  text-lg sm:text-xl font-semibold text-heading dark:text-heading-dark">
                   Calculation Results
                 </h2>
               </div>
@@ -342,13 +343,13 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
                   <table className="w-full min-w-[300px]">
                     <thead className="bg-slate-50 dark:bg-slate-800/50">
                       <tr>
-                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left font-display font-semibold text-heading dark:text-heading-dark text-sm">
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left   font-semibold text-heading dark:text-heading-dark text-sm">
                           Material
                         </th>
-                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-right font-display font-semibold text-heading dark:text-heading-dark text-sm">
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-right   font-semibold text-heading dark:text-heading-dark text-sm">
                           Quantity
                         </th>
-                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left font-display font-semibold text-heading dark:text-heading-dark text-sm">
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left   font-semibold text-heading dark:text-heading-dark text-sm">
                           Unit
                         </th>
                       </tr>
@@ -395,7 +396,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
               {/* Step-by-step Calculation */}
               {formData.showStepByStep && (
                 <div className="mb-8 rounded-xl border border-blue-200/40 bg-blue-50 p-4 sm:p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
-                  <h3 className="mb-4 font-display text-base sm:text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
+                  <h3 className="mb-4   text-base sm:text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
                     Step-by-Step Calculation
                   </h3>
                   <ol className="list-decimal list-inside space-y-2 text-sm sm:text-base text-blue-900 dark:text-blue-100">
@@ -449,67 +450,7 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
         </AnimatePresence>
       </motion.div>
 
-      {/* Info & FAQ Section */}
-      <div className="mt-8 sm:mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-4 sm:p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
-        <h2 className="font-display text-xl sm:text-2xl font-bold text-heading dark:text-heading-dark mb-2">
-          Plaster Calculator & Estimator – Accurate Material Estimation Tool
-        </h2>
-        <p className="text-body/80 dark:text-body-dark/80 mb-4 text-sm sm:text-base">
-          A Plaster Calculator helps you estimate the quantity of plaster, cement, and sand required
-          for wall finishing, ensuring cost-effective and high-quality results.
-        </p>
-        <hr className="my-4 border-slate-200 dark:border-slate-700" />
-        <div className="mb-4">
-          <h3 className="font-display text-base sm:text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-            Why Use a Plaster Calculator?
-          </h3>
-          <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80 text-sm sm:text-base">
-            <li>Get precise plaster volume for your project.</li>
-            <li>Estimate cement and sand needed for the mix.</li>
-            <li>Reduce material waste and save money.</li>
-            <li>Plan wall finishing efficiently and avoid delays.</li>
-            <li>Improve construction quality and finish.</li>
-          </ul>
-        </div>
-        <hr className="my-4 border-slate-200 dark:border-slate-700" />
-        <div className="mb-4">
-          <h3 className="font-display text-base sm:text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-            How It Works
-          </h3>
-          <ol className="list-decimal list-inside space-y-1 text-body/80 dark:text-body-dark/80 text-sm sm:text-base">
-            <li>Enter the wall dimensions: length, height (or area), and thickness.</li>
-            <li>Get instant results: plaster volume, cement, and sand required.</li>
-          </ol>
-        </div>
-        <hr className="my-4 border-slate-200 dark:border-slate-700" />
-        <div>
-          <h3 className="font-display text-base sm:text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-            FAQs – Plaster Calculator
-          </h3>
-          <div className="space-y-2 text-body/80 dark:text-body-dark/80 text-sm sm:text-base">
-            <div>
-              <span className="font-semibold">Q1. What is a plaster calculator?</span>
-              <br />A tool to estimate the amount of plaster, cement, and sand needed for wall
-              finishing.
-            </div>
-            <div>
-              <span className="font-semibold">Q2. Why is it important?</span>
-              <br />
-              Helps in accurate planning, cost-saving, and reducing material wastage.
-            </div>
-            <div>
-              <span className="font-semibold">Q3. What units does it support?</span>
-              <br />
-              Dimensions can be entered in meters or feet, and cement is calculated in bags.
-            </div>
-            <div>
-              <span className="font-semibold">Q4. Can it handle irregular shapes?</span>
-              <br />
-              Yes, calculate the total area and enter it directly for accurate results.
-            </div>
-          </div>
-        </div>
-      </div>
+      <PLASTER_INFO_SECTION />
     </div>
   )
 }

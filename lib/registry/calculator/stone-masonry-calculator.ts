@@ -24,7 +24,10 @@ export class StoneMasonryCalculatorLib {
     CalculationUtils.validatePositive(height, 'Height')
     CalculationUtils.validatePositive(thickness, 'Thickness')
 
-    const dims = CalculationUtils.normalizeDimensions({ length, width: height }, unit === 'm' ? 'metric' : 'imperial')
+    const dims = CalculationUtils.normalizeDimensions(
+      { length, width: height },
+      unit === 'm' ? 'metric' : 'imperial',
+    )
     const L = dims.length!
     const H = dims.width!
     const T = unit === 'm' ? thickness : thickness * 0.3048
@@ -40,7 +43,9 @@ export class StoneMasonryCalculatorLib {
       cementBags: CalculationUtils.roundTo(cement / DENSITIES.cementBag, 2),
       sandWeight: CalculationUtils.roundTo(sand, 1),
       human_summary: `Stone masonry dry volume ≈ ${CalculationUtils.roundTo(dryVolume, 3)} m³; cement ≈ ${CalculationUtils.roundTo(cement / DENSITIES.cementBag, 2)} bags; sand ≈ ${CalculationUtils.roundTo(sand, 1)} kg`,
-      assumptions: [unit === 'ft' ? 'Converted ft to m (1 ft = 0.3048 m)' : 'Metric input used as-is'],
+      assumptions: [
+        unit === 'ft' ? 'Converted ft to m (1 ft = 0.3048 m)' : 'Metric input used as-is',
+      ],
     }
 
     return result

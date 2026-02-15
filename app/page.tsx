@@ -218,7 +218,7 @@ export default function HomePage() {
                 </div>
                 <div>
                   <h4 className="font-display text-sm font-semibold text-heading dark:text-heading-dark">
-                    Suresh Patel
+                    Suresh Bhandari
                   </h4>
                   <p className="text-xs text-body/70 dark:text-body-dark/70">Site Engineer</p>
                 </div>

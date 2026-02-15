@@ -3,6 +3,7 @@
 import { useState, useRef, useMemo, type FC } from 'react'
 import { Calculator, Download, Plus, Trash2, Upload, FileDown, Printer } from 'lucide-react'
 import { calculateBBS } from '@/lib/registry/calculator/bbs-calculator'
+import { BBS_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/bbs-info-section'
 import type {
   BBSInputItem,
   ElementType,
@@ -1230,61 +1231,7 @@ const BBSCalculatorCard: FC<BBSCalculatorCardProps> = ({ globalUnit }) => {
       )}
 
       {/* About / Info */}
-      <details className="mt-6 rounded-xl border border-slate-200/40 bg-white/70 p-4 dark:border-slate-700/30 dark:bg-slate-900/60">
-        <summary className="cursor-pointer font-display text-sm text-heading dark:text-heading-dark">
-          About this BBS Calculator
-        </summary>
-        <div className="mt-2 text-sm text-body dark:text-body-dark">
-          <p className="mb-2">
-            This calculator follows Nepal National Building Code (NBC) as primary reference (NBC
-            205, NBC 109, NBC 114). Optional checks for IS 456:2000 and ACI 318 can be selected in
-            Project & Code Settings.
-          </p>
-          <p className="mb-2">
-            All calculations are performed in metric internally. If the global unit is imperial,
-            inputs are converted to metric for computation and reporting remains metric.
-          </p>
-          <p className="mb-2">
-            Use Display Settings to control which columns appear and decimal precision. Exports
-            (CSV/XLS/Print) reflect these settings.
-          </p>
-        </div>
-      </details>
-
-      {/* FAQ */}
-      <details className="mt-3 rounded-xl border border-slate-200/40 bg-white/70 p-4 dark:border-slate-700/30 dark:bg-slate-900/60">
-        <summary className="cursor-pointer font-display text-sm text-heading dark:text-heading-dark">
-          FAQ
-        </summary>
-        <div className="mt-2 text-sm text-body dark:text-body-dark">
-          <p className="font-semibold">Q1. What is a Bar Bending Schedule (BBS)?</p>
-          <p className="mb-3">
-            A BBS is a tabular list of reinforcement bars with lengths, bends, hooks, laps, total
-            lengths, and weights used for fabrication and quantity estimation.
-          </p>
-          <p className="font-semibold">Q2. How are hook lengths calculated (NBC)?</p>
-          <p className="mb-3">
-            Default hook lengths are assumed as 90°=9d, 135°=12d, 180°=16d. You can override by
-            entering a custom hook length or editing the hook type.
-          </p>
-          <p className="font-semibold">Q3. How is development length computed?</p>
-          <p className="mb-3">
-            If not provided, a default of 40d (tension) is used. You can specify development length
-            directly per entry.
-          </p>
-          <p className="font-semibold">Q4. What if a bar exceeds 12 m?</p>
-          <p className="mb-3">
-            The calculator automatically adds lap lengths using a default of 40d per splice when the
-            base cutting length exceeds the stock length. You can also specify lap length
-            explicitly.
-          </p>
-          <p className="font-semibold">Q5. Which codes are supported?</p>
-          <p className="mb-0">
-            NBC (primary), with optional IS 456 and ACI 318 selections. Choose the design code under
-            Project & Code Settings.
-          </p>
-        </div>
-      </details>
+      <BBS_INFO_SECTION />
     </div>
   )
 }

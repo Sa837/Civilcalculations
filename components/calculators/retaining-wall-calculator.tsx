@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator, AlertCircle, CheckCircle, RotateCcw, Info } from 'lucide-react'
 import { RetainingWallQuantityCalculator } from '@/lib/registry/calculator/retaining-wall-calculator'
-
+import { RETAINING_WALL_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/retaining-wall-info-section'
 const MIX_TYPES = [
   { value: 'M5', label: 'M5 (1:5:10)', ratios: { cement: 1, sand: 5, aggregate: 10 } },
   { value: 'M7.5', label: 'M7.5 (1:4:8)', ratios: { cement: 1, sand: 4, aggregate: 8 } },
@@ -141,7 +141,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
   }
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
+    <div className="mx-auto max-w-4xl p-6 font-display">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -154,7 +154,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
               <Calculator className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="font-display text-2xl font-bold text-heading dark:text-heading-dark">
+              <h1 className=" text-2xl font-bold text-heading dark:text-heading-dark">
                 Retaining Wall Calculator
               </h1>
               <p className="text-body/70 dark:text-body-dark/70">
@@ -281,7 +281,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
             <button
               type="button"
               onClick={() => setUseArea(!useArea)}
-              className={`flex items-center gap-2 rounded-xl px-6 py-2 font-display font-medium shadow-soft transition-all 
+              className={`flex items-center gap-2 rounded-xl px-6 py-2  font-medium shadow-soft transition-all 
                 ${useArea ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-secondary text-white hover:bg-secondary/90'}`}
             >
               <Info className="h-4 w-4" />
@@ -293,7 +293,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
               <>
                 {/* Length */}
                 <div>
-                  <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                  <label className="mb-2 block  font-medium text-heading dark:text-heading-dark">
                     Length
                   </label>
                   <input
@@ -314,7 +314,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
                 </div>
                 {/* Width */}
                 <div>
-                  <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                  <label className="mb-2 block  font-medium text-heading dark:text-heading-dark">
                     Width (Thickness)
                   </label>
                   <input
@@ -337,7 +337,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
             )}
             {useArea && (
               <div>
-                <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                <label className="mb-2 block  font-medium text-heading dark:text-heading-dark">
                   Wall Area
                 </label>
                 <input
@@ -359,7 +359,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
             )}
             {/* Height */}
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block  font-medium text-heading dark:text-heading-dark">
                 Height
               </label>
               <input
@@ -380,7 +380,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
             </div>
             {/* Mix Type */}
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block  font-medium text-heading dark:text-heading-dark">
                 Concrete Mix Type
               </label>
               <select
@@ -403,7 +403,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
             </div>
             {/* Wastage */}
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block  font-medium text-heading dark:text-heading-dark">
                 Wastage Factor (%)
               </label>
               <input
@@ -431,7 +431,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
               <button
                 type="button"
                 onClick={resetForm}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-display font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
+                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3  font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
               >
                 <RotateCcw className="h-4 w-4" />
                 Reset
@@ -439,7 +439,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
               <button
                 type="button"
                 onClick={() => setShowSteps(!showSteps)}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-display font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
+                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3  font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
                 disabled={!result}
               >
                 <Info className="h-4 w-4" />
@@ -449,7 +449,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
             <button
               type="submit"
               disabled={isCalculating}
-              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 font-display font-semibold text-white shadow-soft hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3  font-semibold text-white shadow-soft hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isCalculating ? (
                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
@@ -480,7 +480,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
               transition={{ duration: 0.3 }}
               className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20"
             >
-              <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark mb-2 flex items-center gap-2">
+              <h2 className=" text-2xl font-bold text-heading dark:text-heading-dark mb-2 flex items-center gap-2">
                 <CheckCircle className="h-6 w-6 text-green-600" />
                 Retaining Wall Calculation Results
               </h2>
@@ -528,7 +528,7 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
               )}
               {showSteps && (
                 <div className="mt-12">
-                  <h3 className="font-display text-xl font-semibold text-heading dark:text-heading-dark mb-2">
+                  <h3 className=" text-xl font-semibold text-heading dark:text-heading-dark mb-2">
                     Step-by-Step Calculation
                   </h3>
                   <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
@@ -557,44 +557,8 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
             </motion.div>
           )}
         </AnimatePresence>
+        <RETAINING_WALL_INFO_SECTION />
       </motion.div>
-      <hr className="my-8 border-slate-200 dark:border-slate-700" />
-      <div>
-        <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-          Retaining Wall Calculator – FAQs & Info
-        </h3>
-        <div className="space-y-2 text-body/80 dark:text-body-dark/80">
-          <div>
-            <span className="font-semibold">Irregular Wall Shapes?</span>
-            <br />
-            For trapezoidal, stepped, L/T-shaped, or non-rectangular walls, break the wall into
-            simple shapes, calculate each volume, and sum them. Enter the total area or volume
-            above.
-          </div>
-          <div>
-            <span className="font-semibold">What is a retaining wall calculator?</span>
-            <br />A tool to estimate concrete and material requirements for retaining walls.
-          </div>
-          <div>
-            <span className="font-semibold">Why is it important?</span>
-            <br />
-            Helps in accurate planning, cost-saving, and reducing material wastage.
-          </div>
-          <div>
-            <span className="font-semibold">What units does it support?</span>
-            <br />
-            Volume is in cubic meters, cement in kg and bags.
-          </div>
-          <div>
-            <span className="font-semibold">How to choose the right mix ratio?</span>
-            <br />
-            <ul className="list-disc list-inside ml-6">
-              <li>M5–M10: Low-strength works like leveling or small foundations.</li>
-              <li>M15–M25: Structural works like retaining walls, slabs, beams, and columns.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

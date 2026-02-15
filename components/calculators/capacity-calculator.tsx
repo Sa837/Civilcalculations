@@ -25,7 +25,7 @@ import {
 } from '@/lib/registry/calculator/capacity-calculator'
 import * as XLSX from 'xlsx'
 import AdSlot from '@/components/ads/AdSlot'
-
+import { TANK_CAPACITY_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/tank-capacitt-info-section'
 // Types for local form states
 type Unit = 'm' | 'ft'
 type Tab = 'water' | 'pool' | 'soak' | 'septic' | 'rainwater' | 'sump'
@@ -97,9 +97,7 @@ function SectionHeader({ title, subtitle }: { title: string; subtitle: string })
           <Calculator className="h-6 w-6" />
         </div>
         <div>
-          <h1 className="font-display text-2xl font-bold text-heading dark:text-heading-dark">
-            {title}
-          </h1>
+          <h1 className=" text-2xl font-bold text-heading dark:text-heading-dark">{title}</h1>
           <p className="text-body/70 dark:text-body-dark/70">{subtitle}</p>
         </div>
       </div>
@@ -126,9 +124,7 @@ function Field({
 }) {
   return (
     <div>
-      <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
-        {label}
-      </label>
+      <label className="mb-2 block  font-medium text-heading dark:text-heading-dark">{label}</label>
       <div className="relative">
         <input
           type="number"
@@ -384,14 +380,14 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
   const TabButton = ({ id, title, icon: Icon }: { id: Tab; title: string; icon: any }) => (
     <button
       onClick={() => setActiveTab(id)}
-      className={`flex items-center gap-2 rounded-lg p-2 px-3 text-sm font-display transition-colors ${activeTab === id ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300'}`}
+      className={`flex items-center gap-2 rounded-lg p-2 px-3 text-sm  transition-colors ${activeTab === id ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300'}`}
     >
       <Icon className="h-4 w-4" /> {title}
     </button>
   )
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
+    <div className="mx-auto max-w-4xl p-6 font-display">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -451,7 +447,7 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
               >
                 <Row>
                   <div>
-                    <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                    <label className="mb-2 block  font-medium text-heading dark:text-heading-dark">
                       Shape
                     </label>
                     <select
@@ -465,7 +461,7 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
                     </select>
                   </div>
                   <div>
-                    <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                    <label className="mb-2 block  font-medium text-heading dark:text-heading-dark">
                       Material
                     </label>
                     <select
@@ -479,7 +475,7 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
                     </select>
                   </div>
                   <div>
-                    <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                    <label className="mb-2 block  font-medium text-heading dark:text-heading-dark">
                       Tank Type
                     </label>
                     <select
@@ -547,7 +543,7 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
               >
                 <Row>
                   <div>
-                    <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                    <label className="mb-2 block  font-medium text-heading dark:text-heading-dark">
                       Shape
                     </label>
                     <select
@@ -721,7 +717,7 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
               >
                 <Row>
                   <div>
-                    <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+                    <label className="mb-2 block  font-medium text-heading dark:text-heading-dark">
                       Shape
                     </label>
                     <select
@@ -780,7 +776,7 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
               <button
                 type="button"
                 onClick={reset}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-display font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
+                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3  font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
               >
                 <RotateCcw className="h-4 w-4" /> Reset
               </button>
@@ -790,7 +786,7 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
               type="button"
               onClick={calculate}
               disabled={isCalculating}
-              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 font-display font-semibold text-white shadow-soft hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3  font-semibold text-white shadow-soft hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isCalculating ? (
                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
@@ -814,13 +810,13 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
             >
               <div className="mb-6 flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-                <h2 className="font-display text-xl font-semibold text-heading dark:text-heading-dark">
+                <h2 className=" text-xl font-semibold text-heading dark:text-heading-dark">
                   Calculation Results
                 </h2>
               </div>
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
-                  <h3 className="mb-4 font-display font-semibold text-heading dark:text-heading-dark">
+                  <h3 className="mb-4  font-semibold text-heading dark:text-heading-dark">
                     Capacity
                   </h3>
                   <div className="space-y-3">
@@ -843,7 +839,7 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
                   </div>
                 </div>
                 <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
-                  <h3 className="mb-4 font-display font-semibold text-heading dark:text-heading-dark">
+                  <h3 className="mb-4  font-semibold text-heading dark:text-heading-dark">
                     Details
                   </h3>
                   <div className="space-y-3 text-sm">
@@ -912,19 +908,19 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
               <div className="mt-6 flex gap-2">
                 <button
                   onClick={downloadPDF}
-                  className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 font-display text-sm hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800"
+                  className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2  text-sm hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800"
                 >
                   <FileDown className="h-4 w-4" /> PDF
                 </button>
                 <button
                   onClick={downloadXLSX}
-                  className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 font-display text-sm hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800"
+                  className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2  text-sm hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800"
                 >
                   <Download className="h-4 w-4" /> Excel
                 </button>
                 <button
                   onClick={copyResults}
-                  className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 font-display text-sm hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800"
+                  className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2  text-sm hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800"
                 >
                   Copy Results
                 </button>
@@ -932,31 +928,8 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
             </motion.div>
           )}
         </AnimatePresence>
+        <TANK_CAPACITY_INFO_SECTION />
       </motion.div>
-      {/* FAQ */}
-      <div className="mt-10 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
-        <h3 className="font-display text-2xl font-bold text-heading dark:text-heading-dark mb-2">
-          FAQs & Notes
-        </h3>
-        <ul className="list-disc list-inside space-y-2 text-body/80 dark:text-body-dark/80">
-          <li>
-            <strong>Water Tanks:</strong> Capacity = plan area × effective water depth (subtract
-            freeboard). Materials RCC/Plastic/Steel are cost placeholders.
-          </li>
-          <li>
-            <strong>Swimming Pools:</strong> Turnover commonly 6–8 hours; confirm with local
-            guidelines.
-          </li>
-          <li>
-            <strong>Soak Pit:</strong> Quick check uses Q ≤ K×A (NBC/IS concept). Provide K (m/day)
-            and daily inflow.
-          </li>
-          <li>
-            <strong>Septic Tank:</strong> Indicative sizing using lpcd and retention days; verify
-            with NBC/IS provisions (baffles, freeboard, vent pipe, setback).
-          </li>
-        </ul>
-      </div>
     </div>
   )
 }

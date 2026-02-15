@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator, RotateCcw, Eye, EyeOff, Info, CheckCircle } from 'lucide-react'
 import { StoneMasonryCalculatorLib } from '@/lib/registry/calculator/stone-masonry-calculator'
+import { STONEMASONRY_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/stonemasonary-info-section'
 
 interface StoneMasonryResult {
   volume: number
@@ -86,7 +87,7 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
   }
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
+    <div className="mx-auto max-w-4xl p-6 font-display">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -99,7 +100,7 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
               <Calculator className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="font-display text-2xl font-bold text-heading dark:text-heading-dark">
+              <h1 className="  text-2xl font-bold text-heading dark:text-heading-dark">
                 Stone Masonry Calculator
               </h1>
               <p className="text-body/70 dark:text-body-dark/70">
@@ -293,7 +294,7 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
         >
           <div className="grid gap-6 md:grid-cols-2">
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
                 Length ({formData.unit === 'm' ? 'm' : 'ft'})
               </label>
               <input
@@ -313,7 +314,7 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
               )}
             </div>
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
                 Height ({formData.unit === 'm' ? 'm' : 'ft'})
               </label>
               <input
@@ -333,7 +334,7 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
               )}
             </div>
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
                 Thickness ({formData.unit === 'm' ? 'm' : 'ft'})
               </label>
               <input
@@ -353,7 +354,7 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
               )}
             </div>
             <div>
-              <label className="mb-2 block font-display font-medium text-heading dark:text-heading-dark">
+              <label className="mb-2 block   font-medium text-heading dark:text-heading-dark">
                 Unit
               </label>
               <select
@@ -372,7 +373,7 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
               <button
                 type="button"
                 onClick={resetForm}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-display font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
+                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3   font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
               >
                 <RotateCcw className="h-4 w-4" />
                 Reset
@@ -380,7 +381,7 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
               <button
                 type="button"
                 onClick={() => setShowSteps(!showSteps)}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-display font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
+                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3   font-medium text-heading hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark dark:hover:bg-slate-700"
                 disabled={!result}
               >
                 {showSteps ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -390,7 +391,7 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
             <button
               type="submit"
               disabled={isCalculating}
-              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 font-display font-semibold text-white shadow-soft hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3   font-semibold text-white shadow-soft hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isCalculating ? (
                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
@@ -414,13 +415,13 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
             >
               <div className="mb-6 flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-                <h2 className="font-display text-xl font-semibold text-heading dark:text-heading-dark">
+                <h2 className="  text-xl font-semibold text-heading dark:text-heading-dark">
                   Calculation Results
                 </h2>
               </div>
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
-                  <h3 className="mb-4 font-display font-semibold text-heading dark:text-heading-dark">
+                  <h3 className="mb-4   font-semibold text-heading dark:text-heading-dark">
                     Stone Masonry Dry Volume
                   </h3>
                   <div className="space-y-3">
@@ -452,7 +453,7 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
               {/* Steps */}
               {showSteps && result && (
                 <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
-                  <h3 className="mb-4 font-display text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
+                  <h3 className="mb-4   text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
                     <Info className="h-5 w-5 text-blue-500 dark:text-blue-300" />
                     Step-by-Step Calculation
                   </h3>
@@ -483,71 +484,7 @@ export default function StoneMasonryCalculator({ globalUnit = 'm' }: { globalUni
           )}
         </AnimatePresence>
       </motion.div>
-      {/* Info & FAQ */}
-      <div className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20">
-        <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark mb-2">
-          Stone Masonry Calculator – Accurate, Fast, and Professional
-        </h2>
-        <p className="text-body/80 dark:text-body-dark/80 mb-4">
-          This calculator helps you estimate the dry volume, cement, and sand required for stone
-          masonry. Enter your wall dimensions and unit for a precise result.
-        </p>
-        <hr className="my-4 border-slate-200 dark:border-slate-700" />
-        <div className="mb-4">
-          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-            Why Use a Stone Masonry Calculator?
-          </h3>
-          <ul className="list-disc list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-            <li>
-              Get the exact dry volume and material requirements for your stone masonry project.
-            </li>
-            <li>Plan your construction efficiently and professionally.</li>
-            <li>Save money by ordering the right amount of cement and sand.</li>
-          </ul>
-        </div>
-        <hr className="my-4 border-slate-200 dark:border-slate-700" />
-        <div className="mb-4">
-          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-            How It Works
-          </h3>
-          <ol className="list-decimal list-inside space-y-1 text-body/80 dark:text-body-dark/80">
-            <li>Enter the wall length, height, thickness, and select the unit.</li>
-            <li>
-              The calculator computes the dry volume, cement, and sand using standard mix ratios and
-              densities.
-            </li>
-            <li>Results are shown instantly and can be used for ordering materials.</li>
-          </ol>
-        </div>
-        <hr className="my-4 border-slate-200 dark:border-slate-700" />
-        <div>
-          <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-2">
-            FAQs – Stone Masonry Calculator
-          </h3>
-          <div className="space-y-2 text-body/80 dark:text-body-dark/80">
-            <div>
-              <span className="font-semibold">Q1. What is a stone masonry calculator?</span>
-              <br />A tool to estimate the dry volume, cement, and sand required for stone masonry
-              construction.
-            </div>
-            <div>
-              <span className="font-semibold">Q2. Why is it important?</span>
-              <br />
-              Helps in accurate planning, cost-saving, and reducing material wastage.
-            </div>
-            <div>
-              <span className="font-semibold">Q3. What units does it support?</span>
-              <br />
-              Metric (m) and Imperial (ft) for input; results in m³, bags, and kg.
-            </div>
-            <div>
-              <span className="font-semibold">Q4. How are quantities calculated?</span>
-              <br />
-              Using standard mix ratios and density values for cement and sand.
-            </div>
-          </div>
-        </div>
-      </div>
+      <STONEMASONRY_INFO_SECTION />
     </div>
   )
 }
