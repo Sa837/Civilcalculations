@@ -422,7 +422,6 @@ export default function CalculatorsIndex() {
                 </div>
                 {/* Non-intrusive ad above calculator content */}
                 <div className="mb-4">
-                  <AdSlot position="top" slotId={`calc-${selectedCalculator}-top`} />
                   <AdSlot position="top" slotId="9285440299" />
                 </div>
                 <motion.div
@@ -436,7 +435,6 @@ export default function CalculatorsIndex() {
                 {/* Non-intrusive ad below calculator content */}
                 <div className="mt-6">
                   <AdSlot position="bottom" slotId={`calc-${selectedCalculator}-bottom`} />
-                  <AdSlot position="bottom" slotId="9285440299" />
                 </div>
               </>
             ) : (

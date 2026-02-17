@@ -18,6 +18,19 @@ export const AdSenseAd = ({
   const adRef = useRef<HTMLModElement>(null)
 
   useEffect(() => {
+    // Ensure AdSense script is loaded
+    if (
+      typeof window !== 'undefined' &&
+      !document.querySelector('script[src*="pagead2.googlesyndication.com"]')
+    ) {
+      const script = document.createElement('script')
+      script.src =
+        'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922'
+      script.async = true
+      script.crossOrigin = 'anonymous'
+      document.head.appendChild(script)
+    }
+
     const el = adRef.current
     if (!el) return
     const alreadyDone = el.getAttribute('data-adsbygoogle-status') === 'done'

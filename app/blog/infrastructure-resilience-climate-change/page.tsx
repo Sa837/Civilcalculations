@@ -140,8 +140,8 @@ export default function InfrastructureResilienceBlog() {
           <div className="my-12 py-8 border-t border-b border-slate-200/20 dark:border-slate-800/20">
             <div className="min-h-[250px] flex items-center justify-center rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800/50">
               <AdSenseAd
-                slot="0987654321"
-                format="rectangle"
+                slot="9285440299"
+                format="auto"
                 style={{ minHeight: '250px', width: '100%' }}
               />
             </div>
@@ -319,8 +319,8 @@ export default function InfrastructureResilienceBlog() {
               <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
               <div>
                 <strong>Elastomeric Bearings:</strong> Rubber isolators that elongate the
-                structure&apos;s natural period, reducing seismic forces by up to 80% while maintaining
-                vertical load-carrying capacity.
+                structure&apos;s natural period, reducing seismic forces by up to 80% while
+                maintaining vertical load-carrying capacity.
               </div>
             </li>
             <li className="flex items-start gap-3">
@@ -404,8 +404,8 @@ export default function InfrastructureResilienceBlog() {
           <div className="my-12 py-8 border-t border-b border-slate-200/20 dark:border-slate-800/20">
             <div className="min-h-[280px] flex items-center justify-center rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800/50">
               <AdSenseAd
-                slot="1122334455"
-                format="vertical"
+                slot="9285440299"
+                format="auto"
                 style={{ minHeight: '280px', width: '100%' }}
               />
             </div>

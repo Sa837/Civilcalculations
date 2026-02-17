@@ -692,7 +692,6 @@ export default function ConverterDetail({ params }: Params) {
         {/* Information Sidebar */}
         <div className="space-y-6">
           {/* Top Ad Slot - After Hero */}
-          <AdSlot slotId="converter-sidebar-top" className="h-[250px] w-full" position="sidebar" />
           <AdSlot slotId="9285440299" className="h-[250px] w-full" position="sidebar" />
 
           {/* Why It Matters */}
@@ -732,7 +731,6 @@ export default function ConverterDetail({ params }: Params) {
             className="h-[200px] w-full"
             position="sidebar"
           />
-          <AdSlot slotId="9285440299" className="h-[200px] w-full" position="sidebar" />
 
           {/* Conversion Details */}
           {!isDateConverter && (
@@ -785,7 +783,6 @@ export default function ConverterDetail({ params }: Params) {
             className="h-[200px] w-full"
             position="sidebar"
           />
-          <AdSlot slotId="9285440299" className="h-[200px] w-full" position="sidebar" />
 
           {/* Common Mistakes */}
           {converterInfo && (
@@ -931,7 +928,6 @@ export default function ConverterDetail({ params }: Params) {
           className="h-[90px] w-full md:h-[90px]"
           position="inline"
         />
-        <AdSlot slotId="9285440299" className="h-[90px] w-full md:h-[90px]" position="inline" />
       </div>
 
       {/* High-Value Content Section */}

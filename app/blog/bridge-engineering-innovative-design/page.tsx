@@ -146,8 +146,8 @@ export default function BridgeEngineeringBlog() {
           <div className="my-12 py-8 border-t border-b border-slate-200/20 dark:border-slate-800/20">
             <div className="min-h-[250px] flex items-center justify-center rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800/50">
               <AdSenseAd
-                slot="0987654321"
-                format="rectangle"
+                slot="9285440299"
+                format="auto"
                 style={{ minHeight: '250px', width: '100%' }}
               />
             </div>
@@ -360,8 +360,8 @@ export default function BridgeEngineeringBlog() {
           <div className="my-12 py-8 border-t border-b border-slate-200/20 dark:border-slate-800/20">
             <div className="min-h-[280px] flex items-center justify-center rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800/50">
               <AdSenseAd
-                slot="1122334455"
-                format="vertical"
+                slot="9285440299"
+                format="auto"
                 style={{ minHeight: '280px', width: '100%' }}
               />
             </div>

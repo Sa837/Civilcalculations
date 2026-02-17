@@ -64,8 +64,8 @@ export default function StructuralAnalysisBlog() {
         <div className="mx-auto max-w-4xl px-6">
           <div className="min-h-[90px] flex items-center justify-center rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800/50">
             <AdSenseAd
-              slot="1234567890"
-              format="horizontal"
+              slot="9285440299"
+              format="auto"
               style={{ minHeight: '90px', width: '100%' }}
             />
           </div>
