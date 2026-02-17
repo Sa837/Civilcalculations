@@ -396,6 +396,7 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
         {/* Non-intrusive ad (top) */}
         <div className="px-8 pt-4">
           <AdSlot position="top" slotId="capacity-top" />
+          <AdSlot position="top" slotId="9285440299" />
         </div>
         <SectionHeader
           title="Tank & Capacity Calculator"

@@ -442,6 +442,7 @@ export default function SubPage({ params }: SubPageProps) {
           </div>
 
           {mounted && <AdSlot position="inline" slotId="pu-sub-top" className="my-4" />}
+          {mounted && <AdSlot position="inline" slotId="9285440299" className="my-4" />}
 
           <div className="grid gap-6 lg:grid-cols-[200px_1fr]">
             <aside className="hidden lg:block">
@@ -535,6 +536,7 @@ export default function SubPage({ params }: SubPageProps) {
           </div>
 
           {mounted && <AdSlot position="inline" slotId="pu-sub-bottom" className="my-6" />}
+          {mounted && <AdSlot position="inline" slotId="9285440299" className="my-6" />}
 
           <style jsx>{`
             :global(.card) {

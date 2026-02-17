@@ -44,7 +44,13 @@ import SuperBuiltUpCalculatorCard from '../../components/calculators/superbuiltu
 import CapacityCalculator from '../../components/calculators/capacity-calculator'
 import AdSlot from '../../components/ads/AdSlot'
 
-type CalculatorCategory = 'All' | 'Concrete & Masonry' | 'Finishing' | 'Structural' | 'Civil Works' | 'Area & Planning'
+type CalculatorCategory =
+  | 'All'
+  | 'Concrete & Masonry'
+  | 'Finishing'
+  | 'Structural'
+  | 'Civil Works'
+  | 'Area & Planning'
 type SortOption = 'Newest' | 'Oldest' | 'A-Z' | 'Z-A' | 'Favorite'
 
 export default function CalculatorsIndex() {
@@ -89,7 +95,18 @@ export default function CalculatorsIndex() {
       color: 'from-blue-500 to-cyan-500',
       category: 'Concrete & Masonry' as const,
       createdAt: '2024-01-01',
-      keywords: ['slab','beam','column','footing','mix','M20','M25','cement','sand','aggregate'],
+      keywords: [
+        'slab',
+        'beam',
+        'column',
+        'footing',
+        'mix',
+        'M20',
+        'M25',
+        'cement',
+        'sand',
+        'aggregate',
+      ],
     },
     {
       id: 'brickwork',
@@ -144,7 +161,7 @@ export default function CalculatorsIndex() {
       color: 'from-gray-700 to-gray-400',
       category: 'Structural' as const,
       createdAt: '2024-01-07',
-      keywords: ['rebar','bar weight','dia','unit weight','kg/m','steel'],
+      keywords: ['rebar', 'bar weight', 'dia', 'unit weight', 'kg/m', 'steel'],
     },
     {
       id: 'bbs',
@@ -208,7 +225,7 @@ export default function CalculatorsIndex() {
       color: 'from-fuchsia-600 to-purple-500',
       category: 'Civil Works' as const,
       createdAt: '2024-09-26',
-      keywords: ['boq','rate','quantity','estimate','cost'],
+      keywords: ['boq', 'rate', 'quantity', 'estimate', 'cost'],
     },
     {
       id: 'capacity',
@@ -218,14 +235,23 @@ export default function CalculatorsIndex() {
       color: 'from-sky-600 to-cyan-500',
       category: 'Civil Works' as const,
       createdAt: '2025-09-26',
-      keywords: ['tank','capacity','water','pool','swimming','soak','septic','rainwater','sump'],
+      keywords: [
+        'tank',
+        'capacity',
+        'water',
+        'pool',
+        'swimming',
+        'soak',
+        'septic',
+        'rainwater',
+        'sump',
+      ],
     },
     // Area & Planning
     {
       id: 'far',
       title: 'FAR Calculator',
-      description:
-        'Compute Floor Area Ratio and maximum permissible built-up per NBC/bylaws',
+      description: 'Compute Floor Area Ratio and maximum permissible built-up per NBC/bylaws',
       icon: LayoutGrid,
       color: 'from-indigo-500 to-sky-500',
       category: 'Area & Planning' as const,
@@ -271,13 +297,7 @@ export default function CalculatorsIndex() {
   const filteredCalculators = calculators
     .filter((c) => {
       if (selectedCategory !== 'All' && c.category !== selectedCategory) return false
-      const haystack = [
-        c.id,
-        c.title,
-        c.description,
-        c.category,
-        ...(c as any).keywords ?? [],
-      ]
+      const haystack = [c.id, c.title, c.description, c.category, ...((c as any).keywords ?? [])]
         .join(' ')
         .toLowerCase()
       const q = searchQuery.trim().toLowerCase()
@@ -403,6 +423,7 @@ export default function CalculatorsIndex() {
                 {/* Non-intrusive ad above calculator content */}
                 <div className="mb-4">
                   <AdSlot position="top" slotId={`calc-${selectedCalculator}-top`} />
+                  <AdSlot position="top" slotId="9285440299" />
                 </div>
                 <motion.div
                   key={selectedCalculator}
@@ -415,6 +436,7 @@ export default function CalculatorsIndex() {
                 {/* Non-intrusive ad below calculator content */}
                 <div className="mt-6">
                   <AdSlot position="bottom" slotId={`calc-${selectedCalculator}-bottom`} />
+                  <AdSlot position="bottom" slotId="9285440299" />
                 </div>
               </>
             ) : (
@@ -503,87 +525,91 @@ export default function CalculatorsIndex() {
                     exit={{ opacity: 0 }}
                     className="space-y-12"
                   >
-                    {['Concrete & Masonry', 'Finishing', 'Structural', 'Civil Works', 'Area & Planning'].map(
-                      (category) => {
-                        const categoryCalcs = filteredCalculators.filter(
-                          (c) => c.category === category,
-                        )
-                        if (!categoryCalcs.length) return null
-                        return (
-                          <motion.div
-                            key={category}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="space-y-6"
-                          >
-                            <div className="flex items-center gap-4">
-                              <div
-                                className={`h-8 w-8 rounded-full bg-gradient-to-r flex items-center justify-center`}
-                              >
-                                <Calculator className="h-4 w-4 text-white" />
-                              </div>
-                              <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark">
-                                {category}
-                              </h2>
-                              <span className="rounded-full bg-slate-200/60 px-3 py-1 text-sm font-medium text-body/60 dark:bg-slate-700/60 dark:text-body-dark/60">
-                                {categoryCalcs.length} calculator
-                                {categoryCalcs.length !== 1 ? 's' : ''}
-                              </span>
+                    {[
+                      'Concrete & Masonry',
+                      'Finishing',
+                      'Structural',
+                      'Civil Works',
+                      'Area & Planning',
+                    ].map((category) => {
+                      const categoryCalcs = filteredCalculators.filter(
+                        (c) => c.category === category,
+                      )
+                      if (!categoryCalcs.length) return null
+                      return (
+                        <motion.div
+                          key={category}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="space-y-6"
+                        >
+                          <div className="flex items-center gap-4">
+                            <div
+                              className={`h-8 w-8 rounded-full bg-gradient-to-r flex items-center justify-center`}
+                            >
+                              <Calculator className="h-4 w-4 text-white" />
                             </div>
-                            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
-                              {categoryCalcs.map((calc) => {
-                                const IconComponent = calc.icon
-                                const isFavorite = favorites.has(calc.id)
-                                return (
-                                  <motion.div
-                                    key={calc.id}
-                                    onClick={() => setSelectedCalculator(calc.id)}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -20 }}
-                                    transition={{ duration: 0.3 }}
-                                    className="group relative rounded-2xl border border-slate-200/20 bg-surface p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-hover dark:border-slate-800/20 dark:bg-surface-dark text-left cursor-pointer"
+                            <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark">
+                              {category}
+                            </h2>
+                            <span className="rounded-full bg-slate-200/60 px-3 py-1 text-sm font-medium text-body/60 dark:bg-slate-700/60 dark:text-body-dark/60">
+                              {categoryCalcs.length} calculator
+                              {categoryCalcs.length !== 1 ? 's' : ''}
+                            </span>
+                          </div>
+                          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+                            {categoryCalcs.map((calc) => {
+                              const IconComponent = calc.icon
+                              const isFavorite = favorites.has(calc.id)
+                              return (
+                                <motion.div
+                                  key={calc.id}
+                                  onClick={() => setSelectedCalculator(calc.id)}
+                                  initial={{ opacity: 0, y: 20 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -20 }}
+                                  transition={{ duration: 0.3 }}
+                                  className="group relative rounded-2xl border border-slate-200/20 bg-surface p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-hover dark:border-slate-800/20 dark:bg-surface-dark text-left cursor-pointer"
+                                >
+                                  {/* Favorite Button */}
+                                  <div
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      toggleFavorite(calc.id)
+                                    }}
+                                    className={`absolute right-4 top-4 rounded-full p-2 transition-all hover:scale-110 ${isFavorite ? 'text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20' : 'text-body/40 hover:bg-slate-100/80 dark:text-body-dark/40 dark:hover:bg-slate-800/80'}`}
+                                    aria-label={
+                                      isFavorite ? 'Remove from favorites' : 'Add to favorites'
+                                    }
                                   >
-                                    {/* Favorite Button */}
-                                    <div
-                                      onClick={(e) => {
-                                        e.stopPropagation()
-                                        toggleFavorite(calc.id)
-                                      }}
-                                      className={`absolute right-4 top-4 rounded-full p-2 transition-all hover:scale-110 ${isFavorite ? 'text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20' : 'text-body/40 hover:bg-slate-100/80 dark:text-body-dark/40 dark:hover:bg-slate-800/80'}`}
-                                      aria-label={
-                                        isFavorite ? 'Remove from favorites' : 'Add to favorites'
-                                      }
-                                    >
-                                      {isFavorite ? (
-                                        <Star className="h-5 w-5 fill-current" />
-                                      ) : (
-                                        <StarOff className="h-5 w-5" />
-                                      )}
-                                    </div>
-                                    {/* Icon & Content */}
-                                    <div
-                                      className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-r ${calc.color} text-white`}
-                                    >
-                                      <IconComponent className="h-6 w-6" />
-                                    </div>
-                                    <div className="mb-4 pr-10">
-                                      <h3 className="mb-2 font-display text-xl font-semibold text-heading group-hover:text-primary transition-colors dark:text-heading-dark">
-                                        {calc.title}
-                                      </h3>
-                                      <p className="font-sans text-body/80 dark:text-body-dark/80 line-clamp-3">
-                                        {calc.description}
-                                      </p>
-                                    </div>
-                                  </motion.div>
-                                )
-                              })}
-                            </div>
-                          </motion.div>
-                        )
-                      },
-                    )}
+                                    {isFavorite ? (
+                                      <Star className="h-5 w-5 fill-current" />
+                                    ) : (
+                                      <StarOff className="h-5 w-5" />
+                                    )}
+                                  </div>
+                                  {/* Icon & Content */}
+                                  <div
+                                    className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-r ${calc.color} text-white`}
+                                  >
+                                    <IconComponent className="h-6 w-6" />
+                                  </div>
+                                  <div className="mb-4 pr-10">
+                                    <h3 className="mb-2 font-display text-xl font-semibold text-heading group-hover:text-primary transition-colors dark:text-heading-dark">
+                                      {calc.title}
+                                    </h3>
+                                    <p className="font-sans text-body/80 dark:text-body-dark/80 line-clamp-3">
+                                      {calc.description}
+                                    </p>
+                                  </div>
+                                </motion.div>
+                              )
+                            })}
+                          </div>
+                        </motion.div>
+                      )
+                    })}
                   </motion.div>
                 </AnimatePresence>
               </>

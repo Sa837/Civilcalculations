@@ -54,6 +54,7 @@ export default function ConstructionTechnologyBlog() {
               format="horizontal"
               style={{ minHeight: '90px', width: '100%' }}
             />
+            <AdSenseAd slot="9285440299" format="auto" style={{ display: 'block' }} />
           </div>
         </div>
       </div>
@@ -123,6 +124,7 @@ export default function ConstructionTechnologyBlog() {
                 format="rectangle"
                 style={{ minHeight: '250px', width: '100%' }}
               />
+              <AdSenseAd slot="9285440299" format="auto" style={{ display: 'block' }} />
             </div>
           </div>
 
@@ -402,6 +404,7 @@ export default function ConstructionTechnologyBlog() {
                 format="vertical"
                 style={{ minHeight: '280px', width: '100%' }}
               />
+              <AdSenseAd slot="9285440299" format="auto" style={{ display: 'block' }} />
             </div>
           </div>
 
@@ -410,10 +413,10 @@ export default function ConstructionTechnologyBlog() {
               The Digital Construction Revolution
             </h3>
             <p className="text-emerald-700 dark:text-emerald-300 leading-relaxed mb-4">
-              Construction technology is not just about adopting new tools—it&apos;s about fundamentally
-              transforming how we design, build, and maintain infrastructure. The integration of
-              drones, robotics, automation, and AI will create safer, more efficient, and
-              sustainable construction processes that meet the demands of the 21st century.
+              Construction technology is not just about adopting new tools—it&apos;s about
+              fundamentally transforming how we design, build, and maintain infrastructure. The
+              integration of drones, robotics, automation, and AI will create safer, more efficient,
+              and sustainable construction processes that meet the demands of the 21st century.
             </p>
             <p className="text-emerald-700 dark:text-emerald-300 leading-relaxed mb-4">
               As construction becomes increasingly automated and data-driven, civil engineers must
