@@ -692,7 +692,7 @@ export default function ConverterDetail({ params }: Params) {
         {/* Information Sidebar */}
         <div className="space-y-6">
           {/* Top Ad Slot - After Hero */}
-          <AdSlot slotId="9285440299" className="h-[250px] w-full" position="sidebar" />
+          <AdSlot slotId="9285440299" className="w-full" position="sidebar" />
 
           {/* Why It Matters */}
           {converterInfo && (
@@ -726,11 +726,7 @@ export default function ConverterDetail({ params }: Params) {
           )}
 
           {/* Middle Ad Slot - Between Content */}
-          <AdSlot
-            slotId="converter-sidebar-middle"
-            className="h-[200px] w-full"
-            position="sidebar"
-          />
+          <AdSlot slotId="converter-sidebar-middle" className=" w-full" position="sidebar" />
 
           {/* Conversion Details */}
           {!isDateConverter && (
@@ -778,11 +774,7 @@ export default function ConverterDetail({ params }: Params) {
           )}
 
           {/* Bottom Ad Slot - Before Common Mistakes */}
-          <AdSlot
-            slotId="converter-sidebar-bottom"
-            className="h-[200px] w-full"
-            position="sidebar"
-          />
+          <AdSlot slotId="converter-sidebar-bottom" className="w-full" position="sidebar" />
 
           {/* Common Mistakes */}
           {converterInfo && (
@@ -923,11 +915,7 @@ export default function ConverterDetail({ params }: Params) {
 
       {/* Ad Slot - After Calculator */}
       <div className="mb-8">
-        <AdSlot
-          slotId="converter-after-calculator"
-          className="h-[90px] w-full md:h-[90px]"
-          position="inline"
-        />
+        <AdSlot slotId="converter-after-calculator" className="w-full" position="inline" />
       </div>
 
       {/* High-Value Content Section */}
@@ -967,11 +955,7 @@ export default function ConverterDetail({ params }: Params) {
 
       {/* Ad Slot - Before Conversion Explanation */}
       <div className="mb-8">
-        <AdSlot
-          slotId="converter-before-explanation"
-          className="h-[90px] w-full md:h-[90px]"
-          position="inline"
-        />
+        <AdSlot slotId="converter-before-explanation" className="w-full" position="inline" />
       </div>
 
       {/* Conversion Explanation */}
