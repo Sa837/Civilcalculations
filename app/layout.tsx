@@ -57,18 +57,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* Google AdSense Verification Meta Tag */}
         <meta name="google-adsense-account" content="ca-pub-2472384896413922" />
+        {/* Google AdSense Script */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922"
+          crossOrigin="anonymous"
+        />
       </head>
       <body
         className={`${inter.variable} ${poppins.variable} min-h-screen bg-background text-body antialiased dark:bg-background-dark dark:text-body-dark`}
       >
-        {/* Google AdSense Script */}
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex min-h-screen flex-col">
             <Nav />
