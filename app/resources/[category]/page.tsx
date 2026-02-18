@@ -23,6 +23,7 @@ import {
   AlertCircle,
 } from 'lucide-react'
 import Link from 'next/link'
+import Script from 'next/script'
 import Fuse from 'fuse.js'
 import { resources } from '../../../lib/data/resources'
 import { Resource, ResourceCategory, SortOption } from '../../../lib/types/resources'
@@ -49,50 +50,6 @@ interface CategoryPageProps {
   params: {
     category: string
   }
-}
-
-// AdSense Component
-const AdSenseAd = ({
-  slot,
-  format = 'auto',
-  style = {},
-  className = '',
-}: {
-  slot: string
-  format?: string
-  style?: React.CSSProperties
-  className?: string
-}) => {
-  const adRef = useRef<HTMLModElement>(null)
-
-  useEffect(() => {
-    const el = adRef.current
-    if (!el) return
-    const alreadyDone = el.getAttribute('data-adsbygoogle-status') === 'done'
-    const alreadyInitialized = el.dataset.adInit === 'true'
-    if (alreadyDone || alreadyInitialized) return
-
-    try {
-      if (typeof window !== 'undefined') {
-        ;((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({})
-        el.dataset.adInit = 'true'
-      }
-    } catch (err) {
-      console.error('AdSense error:', err)
-    }
-  }, [])
-
-  return (
-    <ins
-      ref={adRef}
-      className={`adsbygoogle ${className}`}
-      style={{ display: 'block', ...style }}
-      data-ad-client="ca-pub-2472384896413922"
-      data-ad-slot={slot}
-      data-ad-format={format}
-      data-full-width-responsive="true"
-    />
-  )
 }
 
 export default function CategoryPage({ params }: CategoryPageProps) {
@@ -402,12 +359,23 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       {/* Top Ad Banner */}
       <div className="w-full py-3">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="min-h-[80px] flex items-center justify-center rounded-lg overflow-hidden">
-            <AdSenseAd
-              slot="1234567890"
-              format="horizontal"
-              style={{ minHeight: '80px', width: '100%' }}
+          <div className="min-h-[80px] flex items-center justify-center rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800/50">
+            <Script
+              async
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922"
+              crossOrigin="anonymous"
             />
+            <ins
+              className="adsbygoogle"
+              style={{ display: 'block' }}
+              data-ad-client="ca-pub-2472384896413922"
+              data-ad-slot="4121346160"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            />
+            <Script id="adsbygoogle-init-top" strategy="afterInteractive">
+              {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+            </Script>
           </div>
         </div>
       </div>
@@ -416,12 +384,23 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Right Sidebar Ad */}
           <div className="lg:w-72 flex-shrink-0 hidden lg:block">
-            <div className="sticky top-24 rounded-xl overflow-hidden min-h-[600px] flex items-center justify-center">
-              <AdSenseAd
-                slot="0987654321"
-                format="vertical"
-                style={{ minHeight: '600px', width: '100%' }}
+            <div className="sticky top-24 rounded-xl overflow-hidden min-h-[600px] flex items-center justify-center bg-slate-50 dark:bg-slate-800/50">
+              <Script
+                async
+                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922"
+                crossOrigin="anonymous"
               />
+              <ins
+                className="adsbygoogle"
+                style={{ display: 'block' }}
+                data-ad-client="ca-pub-2472384896413922"
+                data-ad-slot="4121346160"
+                data-ad-format="auto"
+                data-full-width-responsive="true"
+              />
+              <Script id="adsbygoogle-init-sidebar" strategy="afterInteractive">
+                {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+              </Script>
             </div>
           </div>
 
@@ -659,16 +638,25 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         </div>
       </div>
 
-      {/* Bottom Ad Banner */}
-      <div className="w-full py-6 mt-12">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="min-h-[100px] flex items-center justify-center rounded-lg overflow-hidden">
-            <AdSenseAd
-              slot="1122334455"
-              format="horizontal"
-              style={{ minHeight: '100px', width: '100%' }}
-            />
-          </div>
+      {/* Bottom Horizontal Ad */}
+      <div className="mt-12 py-8 border-t border-b border-slate-200/20 dark:border-slate-800/20">
+        <div className="min-h-[280px] flex items-center justify-center rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800/50">
+          <Script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922"
+            crossOrigin="anonymous"
+          />
+          <ins
+            className="adsbygoogle"
+            style={{ display: 'block' }}
+            data-ad-client="ca-pub-2472384896413922"
+            data-ad-slot="4121346160"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          />
+          <Script id="adsbygoogle-init-bottom" strategy="afterInteractive">
+            {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+          </Script>
         </div>
       </div>
     </div>

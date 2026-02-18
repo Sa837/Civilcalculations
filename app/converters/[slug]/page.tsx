@@ -913,11 +913,25 @@ export default function ConverterDetail({ params }: Params) {
         </div>
       </div>
 
-      {/* Ad Slot - After Calculator */}
-      <div className="mb-8">
-        <AdSlot slotId="converter-after-calculator" className="w-full" position="inline" />
+     {/* Bottom Horizontal Ad */}
+      <div className="mt-12 py-8 border-t border-b border-slate-200/20 dark:border-slate-800/20">
+        <div className="min-h-[280px] flex items-center justify-center rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800/50">
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922"
+            crossOrigin="anonymous"
+          ></script>
+          <ins
+            className="adsbygoogle"
+            style={{ display: 'block' }}
+            data-ad-client="ca-pub-2472384896413922"
+            data-ad-slot="4121346160"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          ></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
       </div>
-
       {/* High-Value Content Section */}
       <div className="mb-8 rounded-xl border border-slate-200/40 bg-gradient-to-br from-green-50/50 to-emerald-50/50 p-6 dark:border-slate-700/30 dark:from-green-900/20 dark:to-emerald-900/20">
         <div className="flex items-center gap-3 mb-4">

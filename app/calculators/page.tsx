@@ -630,6 +630,26 @@ export default function CalculatorsIndex() {
           </motion.button>
         )}
       </AnimatePresence>
+
+      {/* Bottom Horizontal Ad */}
+      <div className="mt-12 py-8 border-t border-b border-slate-200/20 dark:border-slate-800/20">
+        <div className="min-h-[280px] flex items-center justify-center rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800/50">
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922"
+            crossOrigin="anonymous"
+          ></script>
+          <ins
+            className="adsbygoogle"
+            style={{ display: 'block' }}
+            data-ad-client="ca-pub-2472384896413922"
+            data-ad-slot="4121346160"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          ></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+      </div>
     </div>
   )
 }
