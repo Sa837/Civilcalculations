@@ -1,0 +1,878 @@
+{
+  "title": "AutoCAD Complete Shortcut Commands Reference",
+  "description": "A comprehensive reference of all important AutoCAD keyboard shortcuts, function keys, and command aliases. Includes what each shortcut does, how to use it, and practical tips for beginners.",
+  "categories": [
+    {
+      "id": "function_keys",
+      "category": "Function Keys",
+      "description": "Function keys are single-key toggles that turn important drafting tools on and off instantly.",
+      "shortcuts": [
+        {
+          "key": "F1",
+          "name": "Help",
+          "description": "Opens the AutoCAD Help documentation.",
+          "howToUse": "Press F1 at any time to open the Help window. Search for any command or topic you do not understand.",
+          "tip": "Very useful for beginners. If you are unsure what a command does, press F1 and search for it."
+        },
+        {
+          "key": "F2",
+          "name": "Text Window / Command History",
+          "description": "Opens the full command history window showing all previously typed commands.",
+          "howToUse": "Press F2 to open the expanded text window. Scroll up to see every command you have used in the current session.",
+          "tip": "Useful for reviewing what went wrong if your drawing behaves unexpectedly."
+        },
+        {
+          "key": "F3",
+          "name": "Object Snap (OSNAP) Toggle",
+          "description": "Turns Object Snap on or off. Object Snap snaps the cursor to exact points like endpoints, midpoints, and centers.",
+          "howToUse": "Press F3 to toggle OSNAP on or off while drawing. Right-click the OSNAP button in the status bar to open settings and choose which snap points to enable.",
+          "tip": "Keep OSNAP ON at all times during drawing. Walls, lines, and objects only connect correctly when OSNAP is active."
+        },
+        {
+          "key": "F4",
+          "name": "3D Object Snap Toggle",
+          "description": "Turns 3D Object Snap on or off. Only relevant when working in 3D.",
+          "howToUse": "Press F4 to toggle. Not commonly needed for standard 2D municipal drawings.",
+          "tip": "For 2D municipal drawings, you can leave this off."
+        },
+        {
+          "key": "F5",
+          "name": "Isoplane Toggle",
+          "description": "Switches between isometric drawing planes — Top, Left, and Right.",
+          "howToUse": "Press F5 to cycle through isometric planes when drawing isometric views.",
+          "tip": "Only needed when preparing isometric plumbing or piping diagrams. Not used in standard floor plans."
+        },
+        {
+          "key": "F6",
+          "name": "Dynamic UCS Toggle",
+          "description": "Turns Dynamic User Coordinate System on or off. Useful in 3D work.",
+          "howToUse": "Press F6 to toggle. Mostly used in 3D modeling.",
+          "tip": "Not needed for standard 2D municipal drawings. Leave it off."
+        },
+        {
+          "key": "F7",
+          "name": "Grid Display Toggle",
+          "description": "Turns the visual grid dots or lines on or off in the drawing area.",
+          "howToUse": "Press F7 to show or hide the grid. The grid does not print — it is a visual reference only.",
+          "tip": "Some draftsmen turn the grid off for a cleaner drawing environment. It is a personal preference."
+        },
+        {
+          "key": "F8",
+          "name": "Ortho Mode Toggle",
+          "description": "Forces the cursor to move only horizontally or vertically. Prevents diagonal lines when drawing straight walls.",
+          "howToUse": "Press F8 to turn Ortho on or off. When ON, you can only draw perfectly straight horizontal and vertical lines.",
+          "tip": "Keep Ortho ON when drawing walls, columns, and grids. Turn it OFF only when you need to draw a diagonal element like a ramp or angled wall."
+        },
+        {
+          "key": "F9",
+          "name": "Snap Mode Toggle",
+          "description": "Turns cursor Snap to grid on or off. Forces the cursor to jump to fixed grid intervals.",
+          "howToUse": "Press F9 to toggle. Right-click the Snap button in the status bar to set the snap interval distance.",
+          "tip": "Object Snap (F3) is more useful than Grid Snap (F9) for most municipal drawing work. Most professionals leave F9 off."
+        },
+        {
+          "key": "F10",
+          "name": "Polar Tracking Toggle",
+          "description": "Guides the cursor along specific angles — typically 45° and 90° increments — with a visual tracking line.",
+          "howToUse": "Press F10 to toggle. Right-click the Polar button in the status bar to set additional tracking angles like 30° or 60°.",
+          "tip": "Polar Tracking and Ortho Mode cannot both be active at the same time. Use Polar when drawing angled elements, and Ortho when drawing straight walls."
+        },
+        {
+          "key": "F11",
+          "name": "Object Snap Tracking Toggle",
+          "description": "Tracks alignment paths from multiple object snap points at the same time.",
+          "howToUse": "Press F11 to toggle. Hover over snap points to set tracking paths, then move the cursor to find intersections.",
+          "tip": "Useful for aligning objects with each other without drawing construction lines. Works together with F3 Object Snap."
+        },
+        {
+          "key": "F12",
+          "name": "Dynamic Input Toggle",
+          "description": "Shows dimension and angle input fields directly near the cursor while drawing.",
+          "howToUse": "Press F12 to toggle. When ON, type a length value while drawing a line and press Tab to switch to the angle field. Press Enter to confirm.",
+          "tip": "Dynamic Input makes it easy to draw exact lengths and angles without looking at the command line. Keep it ON for faster and more accurate drawing."
+        }
+      ]
+    },
+    {
+      "id": "general_controls",
+      "category": "General Controls",
+      "description": "Essential keyboard shortcuts for file management, editing, and general AutoCAD control.",
+      "shortcuts": [
+        {
+          "key": "Ctrl+N",
+          "name": "New Drawing",
+          "description": "Opens the new drawing dialog to create a new drawing file.",
+          "howToUse": "Press Ctrl+N. Select a template from the dialog — always use acadiso.dwt for metric municipal drawings.",
+          "tip": "Always choose acadiso.dwt when creating new drawings for municipal work in Nepal."
+        },
+        {
+          "key": "Ctrl+O",
+          "name": "Open Drawing",
+          "description": "Opens an existing drawing file from your computer.",
+          "howToUse": "Press Ctrl+O. Browse to your project folder and select the .dwg file to open.",
+          "tip": "You can have multiple drawings open at the same time in AutoCAD."
+        },
+        {
+          "key": "Ctrl+S",
+          "name": "Save Drawing",
+          "description": "Saves the current drawing file.",
+          "howToUse": "Press Ctrl+S at any time to save. The first time you save a new file, it will ask you to choose a location and file name.",
+          "tip": "Save every 10 to 15 minutes while working. This is the most important habit in AutoCAD."
+        },
+        {
+          "key": "Ctrl+Shift+S",
+          "name": "Save As",
+          "description": "Saves the current drawing with a new name or in a new location.",
+          "howToUse": "Press Ctrl+Shift+S. Choose a new file name, location, or file format (DWG or DWT template).",
+          "tip": "Use Save As to create a new version of a drawing, for example: FloorPlan_v1.dwg, FloorPlan_v2.dwg."
+        },
+        {
+          "key": "Ctrl+Z",
+          "name": "Undo",
+          "description": "Undoes the last action. Can be pressed multiple times to undo several steps.",
+          "howToUse": "Press Ctrl+Z once to undo the last action. Press it repeatedly to undo multiple steps going back.",
+          "tip": "AutoCAD keeps a long undo history. You can undo many steps back. However, undo history is lost when you close the file."
+        },
+        {
+          "key": "Ctrl+Y",
+          "name": "Redo",
+          "description": "Redoes an action that was previously undone.",
+          "howToUse": "Press Ctrl+Y after using Ctrl+Z to redo what you undid.",
+          "tip": "Redo only works immediately after an undo. Once you draw something new, the redo history is cleared."
+        },
+        {
+          "key": "Ctrl+C",
+          "name": "Copy to Clipboard",
+          "description": "Copies selected objects to the Windows clipboard for pasting into other drawings or applications.",
+          "howToUse": "Select objects first, then press Ctrl+C. A base point will be requested to define the copy origin.",
+          "tip": "Use Ctrl+C and Ctrl+V to copy objects between two open AutoCAD drawings."
+        },
+        {
+          "key": "Ctrl+V",
+          "name": "Paste from Clipboard",
+          "description": "Pastes objects from the Windows clipboard into the current drawing.",
+          "howToUse": "Press Ctrl+V after copying. Click to place the pasted objects at the desired location in the drawing.",
+          "tip": "Use Ctrl+Shift+V to paste as a block — this groups all pasted objects into one reusable block automatically."
+        },
+        {
+          "key": "Ctrl+X",
+          "name": "Cut to Clipboard",
+          "description": "Removes selected objects from the current drawing and places them on the clipboard.",
+          "howToUse": "Select objects, then press Ctrl+X. The objects disappear from the drawing and can be pasted elsewhere.",
+          "tip": "Cut is useful when you want to move objects from one drawing file to another."
+        },
+        {
+          "key": "Ctrl+A",
+          "name": "Select All",
+          "description": "Selects every object in the current drawing at once.",
+          "howToUse": "Press Ctrl+A to select all visible and unlocked objects in the drawing.",
+          "tip": "Frozen and locked layer objects are not selected by Ctrl+A. Use this to quickly move or copy the entire drawing."
+        },
+        {
+          "key": "Ctrl+P",
+          "name": "Plot / Print",
+          "description": "Opens the Plot dialog to print or export the drawing.",
+          "howToUse": "Press Ctrl+P. Set the printer, paper size, plot scale, and plot area, then click OK to print.",
+          "tip": "Always preview the plot before printing by clicking Preview in the Plot dialog to check the output looks correct."
+        },
+        {
+          "key": "Escape",
+          "name": "Cancel / Exit Command",
+          "description": "Cancels the current active command and returns to a neutral state.",
+          "howToUse": "Press Escape once or twice to exit any active command. Also deselects currently selected objects.",
+          "tip": "If AutoCAD seems stuck or unresponsive, press Escape two or three times to cancel whatever command is running."
+        },
+        {
+          "key": "Enter",
+          "name": "Confirm / Repeat Last Command",
+          "description": "Confirms the current command input. Pressing Enter on a blank command line repeats the last command used.",
+          "howToUse": "Press Enter after typing any command or value to execute it. Press Enter when no command is active to quickly repeat the previous command.",
+          "tip": "Pressing the Space Bar also works exactly like Enter in AutoCAD for confirming commands — many professionals prefer the spacebar because it is easier to reach."
+        },
+        {
+          "key": "Space Bar",
+          "name": "Confirm (Same as Enter)",
+          "description": "Works exactly like the Enter key in AutoCAD for confirming commands.",
+          "howToUse": "Press Space Bar instead of Enter to confirm any command input. It also repeats the last command.",
+          "tip": "Most experienced AutoCAD users use the Space Bar instead of Enter because it is faster and easier to press while drawing."
+        },
+        {
+          "key": "Delete",
+          "name": "Erase Selected Objects",
+          "description": "Deletes all currently selected objects from the drawing.",
+          "howToUse": "Select one or more objects, then press Delete to remove them.",
+          "tip": "This is the same as typing the ERASE command. It is faster to use the Delete key directly."
+        },
+        {
+          "key": "Ctrl+1",
+          "name": "Properties Panel",
+          "description": "Opens or closes the Properties panel showing all properties of selected objects.",
+          "howToUse": "Select an object and press Ctrl+1. The Properties panel shows layer, color, linetype, dimensions, and all other properties of that object.",
+          "tip": "You can change an object's layer, color, or linetype directly in the Properties panel without re-drawing it."
+        },
+        {
+          "key": "Ctrl+2",
+          "name": "DesignCenter",
+          "description": "Opens AutoCAD DesignCenter for importing blocks, layers, and styles from other drawing files.",
+          "howToUse": "Press Ctrl+2. Navigate to another drawing file and drag its blocks, layers, or dimension styles into your current drawing.",
+          "tip": "DesignCenter is very useful for importing standard door, window, and furniture blocks from your library into new drawings."
+        },
+        {
+          "key": "Ctrl+4",
+          "name": "Sheet Set Manager",
+          "description": "Opens the Sheet Set Manager for managing multiple drawing sheets in a project.",
+          "howToUse": "Press Ctrl+4 to open. Used when managing a full set of municipal drawings across multiple sheets.",
+          "tip": "Useful for large projects where you have site plan, floor plans, elevations, and sections all as separate sheets."
+        },
+        {
+          "key": "Ctrl+9",
+          "name": "Command Line Toggle",
+          "description": "Shows or hides the command line at the bottom of the screen.",
+          "howToUse": "Press Ctrl+9 to toggle the command line on or off.",
+          "tip": "Never hide the command line while learning AutoCAD. The command line shows you exactly what is happening and what input AutoCAD needs from you."
+        },
+        {
+          "key": "Ctrl+0",
+          "name": "Clean Screen Toggle",
+          "description": "Hides all toolbars and panels to maximize the drawing area.",
+          "howToUse": "Press Ctrl+0 to toggle clean screen mode. Press again to restore all panels.",
+          "tip": "Useful on small monitor screens when you need more drawing space. Press Ctrl+0 again to restore everything."
+        }
+      ]
+    },
+    {
+      "id": "drawing_commands",
+      "category": "Drawing Command Shortcuts",
+      "description": "Short command aliases for all major drawing tools. Type these in the command line and press Enter.",
+      "shortcuts": [
+        {
+          "key": "L",
+          "name": "Line",
+          "fullCommand": "LINE",
+          "description": "Draws straight lines between two or more clicked points.",
+          "howToUse": "Type L and press Enter. Click the start point, then click the end point. Continue clicking to draw connected lines. Press Escape or Enter to finish.",
+          "tip": "Press C while in the Line command to close a polygon back to the starting point automatically."
+        },
+        {
+          "key": "PL",
+          "name": "Polyline",
+          "fullCommand": "PLINE",
+          "description": "Draws a connected series of lines and arcs as a single object.",
+          "howToUse": "Type PL and press Enter. Click to place points just like the Line command. All segments are one connected object.",
+          "tip": "Use Polyline instead of Line for wall outlines and boundary lines. Because it is one object, you can offset, fillet, and edit it as a whole."
+        },
+        {
+          "key": "REC",
+          "name": "Rectangle",
+          "fullCommand": "RECTANG",
+          "description": "Draws a rectangle by specifying two opposite corner points.",
+          "howToUse": "Type REC and press Enter. Click the first corner, then click the opposite corner. You can also type the dimensions: after the first click, type @width,height and press Enter.",
+          "tip": "To draw an exact 3000x4500 mm room, type REC, click the first corner, then type @3000,4500 and press Enter."
+        },
+        {
+          "key": "C",
+          "name": "Circle",
+          "fullCommand": "CIRCLE",
+          "description": "Draws a circle by specifying a center point and radius.",
+          "howToUse": "Type C and press Enter. Click the center point, then type the radius value and press Enter. Or click a second point to set the radius graphically.",
+          "tip": "For a circular column of 300mm diameter, type C, click the center, then type 150 (radius = half of diameter) and press Enter."
+        },
+        {
+          "key": "A",
+          "name": "Arc",
+          "fullCommand": "ARC",
+          "description": "Draws an arc (curved line) using three points by default.",
+          "howToUse": "Type A and press Enter. Click the start point, click a point on the arc, then click the end point.",
+          "tip": "Arcs are commonly used for door swing symbols in floor plans. Draw the door opening width as a line, then add the arc to show which way the door opens."
+        },
+        {
+          "key": "EL",
+          "name": "Ellipse",
+          "fullCommand": "ELLIPSE",
+          "description": "Draws an ellipse by defining its axis lengths.",
+          "howToUse": "Type EL and press Enter. Click one end of the first axis, click the other end, then click or type the distance for the second axis.",
+          "tip": "Used for round columns in plan view, decorative features, and curved architectural elements."
+        },
+        {
+          "key": "SPL",
+          "name": "Spline",
+          "fullCommand": "SPLINE",
+          "description": "Draws a smooth curved line through or near a series of points.",
+          "howToUse": "Type SPL and press Enter. Click a series of points to define the curve shape. Press Enter when done.",
+          "tip": "Used for contour lines in site plans and irregular boundary shapes. Not commonly used in standard floor plans."
+        },
+        {
+          "key": "XL",
+          "name": "Construction Line (Xline)",
+          "fullCommand": "XLINE",
+          "description": "Draws an infinite line extending in both directions, used as a reference or construction guide.",
+          "howToUse": "Type XL and press Enter. Click to place the construction line. Options include Horizontal (H), Vertical (V), and Angle (A).",
+          "tip": "Place all construction lines on a dedicated CONSTRUCTION layer and delete or freeze that layer before printing."
+        },
+        {
+          "key": "RAY",
+          "name": "Ray",
+          "fullCommand": "RAY",
+          "description": "Draws a semi-infinite line starting at a point and extending in one direction.",
+          "howToUse": "Type RAY and press Enter. Click the start point, then click a direction point.",
+          "tip": "Less commonly used than Xline. Useful when you need a reference line extending in only one direction."
+        },
+        {
+          "key": "POL",
+          "name": "Polygon",
+          "fullCommand": "POLYGON",
+          "description": "Draws a regular polygon with any number of equal sides.",
+          "howToUse": "Type POL and press Enter. Enter the number of sides, click the center point, choose Inscribed or Circumscribed, then type the radius.",
+          "tip": "Used for hexagonal columns, octagonal features, or any regular polygon shape in architectural drawings."
+        },
+        {
+          "key": "H",
+          "name": "Hatch",
+          "fullCommand": "HATCH",
+          "description": "Fills a closed boundary area with a pattern to represent materials like concrete, brick, earth, or tiles.",
+          "howToUse": "Type H and press Enter. The Hatch tab appears in the ribbon. Select a pattern (like ANSI31 for section lines), set the scale and angle, then click inside the area to fill. Press Enter to apply.",
+          "tip": "Always set hatches on the HATCH layer. Common patterns: ANSI31 = general section, AR-CONC = concrete, AR-BRIC = brickwork, EARTH = soil/earth."
+        },
+        {
+          "key": "B",
+          "name": "Block Definition",
+          "fullCommand": "BLOCK",
+          "description": "Creates a reusable block from selected drawing objects.",
+          "howToUse": "Type B and press Enter. Give the block a name, click Pick Point to set the insertion base point, click Select Objects to choose what is in the block, then click OK.",
+          "tip": "Create blocks for doors, windows, columns, north symbols, and sanitary fixtures. Blocks save time and keep drawing sizes small."
+        },
+        {
+          "key": "I",
+          "name": "Insert Block",
+          "fullCommand": "INSERT",
+          "description": "Inserts a previously created block or external drawing file into the current drawing.",
+          "howToUse": "Type I and press Enter. Select the block name from the list, set the insertion point, scale, and rotation, then click OK.",
+          "tip": "You can insert the same block many times. If you edit the original block definition, all inserted copies update automatically."
+        },
+        {
+          "key": "T",
+          "name": "Multiline Text",
+          "fullCommand": "MTEXT",
+          "description": "Places a paragraph-style text box that can contain multiple lines and paragraphs.",
+          "howToUse": "Type T and press Enter. Click and drag to define the text box width, then type your text. Format using the Text Editor ribbon that appears. Click outside the box to finish.",
+          "tip": "Use Multiline Text for room names, drawing notes, specifications, and any text that needs formatting or multiple lines."
+        },
+        {
+          "key": "DT",
+          "name": "Single Line Text",
+          "fullCommand": "TEXT",
+          "description": "Places single lines of text one at a time.",
+          "howToUse": "Type DT and press Enter. Set the text height, rotation angle, and click a start point. Type the text and press Enter for each new line. Press Escape to exit.",
+          "tip": "Use Single Line Text for simple labels like room numbers, level marks, and short annotations. Use Multiline Text (T) for longer notes."
+        },
+        {
+          "key": "MT",
+          "name": "Multiline Text (Alternative)",
+          "fullCommand": "MTEXT",
+          "description": "Alternative shortcut for placing Multiline Text. Same as T command.",
+          "howToUse": "Type MT and press Enter. Functions identically to the T command.",
+          "tip": "Both T and MT open the same Multiline Text command. Use whichever you remember more easily."
+        },
+        {
+          "key": "GR",
+          "name": "Gradient Fill",
+          "fullCommand": "GRADIENT",
+          "description": "Fills a closed area with a color gradient. Used for presentation drawings.",
+          "howToUse": "Type GR and press Enter. Select gradient type, colors, and click inside the area to fill.",
+          "tip": "Not used in standard municipal submission drawings. More commonly used in presentation or rendered drawings."
+        }
+      ]
+    },
+    {
+      "id": "modify_commands",
+      "category": "Modify Command Shortcuts",
+      "description": "Shortcuts for editing and modifying existing drawing objects. These are among the most used commands in daily drafting work.",
+      "shortcuts": [
+        {
+          "key": "E",
+          "name": "Erase",
+          "fullCommand": "ERASE",
+          "description": "Deletes selected objects from the drawing.",
+          "howToUse": "Type E and press Enter. Select the objects to delete and press Enter again to confirm deletion. Or select objects first, then press the Delete key.",
+          "tip": "You can also select objects first and then press the Delete key directly — this is faster than typing E."
+        },
+        {
+          "key": "M",
+          "name": "Move",
+          "fullCommand": "MOVE",
+          "description": "Moves selected objects from one location to another.",
+          "howToUse": "Type M and press Enter. Select objects and press Enter. Click the base point (where you are picking from), then click the destination point (where you want to place it).",
+          "tip": "For precise movement, type the displacement after clicking the base point. For example, to move 500mm to the right, type @500,0 and press Enter."
+        },
+        {
+          "key": "CO",
+          "name": "Copy",
+          "fullCommand": "COPY",
+          "description": "Creates one or more copies of selected objects.",
+          "howToUse": "Type CO and press Enter. Select objects and press Enter. Click the base point, then click the destination. Keep clicking to place multiple copies. Press Escape when done.",
+          "tip": "Unlike the Move command, Copy leaves the original in place. Use it to quickly duplicate doors, windows, columns, and repeated elements."
+        },
+        {
+          "key": "O",
+          "name": "Offset",
+          "fullCommand": "OFFSET",
+          "description": "Creates a parallel copy of a line, arc, circle, or polyline at a specified distance.",
+          "howToUse": "Type O and press Enter. Type the offset distance and press Enter. Click the object to offset, then click on the side where you want the offset copy to appear.",
+          "tip": "Offset is essential for creating wall thickness. Draw one wall line, then offset it by 230mm or 115mm to create the other wall face."
+        },
+        {
+          "key": "MI",
+          "name": "Mirror",
+          "fullCommand": "MIRROR",
+          "description": "Creates a mirrored copy of selected objects across a defined mirror line.",
+          "howToUse": "Type MI and press Enter. Select objects and press Enter. Click two points to define the mirror line. Choose whether to delete the original (Yes or No).",
+          "tip": "Use Mirror for symmetric floor plans. Draw half the floor plan, then mirror it across the centerline to complete the other half in seconds."
+        },
+        {
+          "key": "AR",
+          "name": "Array",
+          "fullCommand": "ARRAY",
+          "description": "Creates multiple copies of objects in a rectangular grid pattern or polar (circular) pattern.",
+          "howToUse": "Type AR and press Enter. Select objects and press Enter. Choose Rectangular, Polar, or Path array type. Set the number of rows, columns, and spacing.",
+          "tip": "Use Rectangular Array to create a column grid (evenly spaced columns in rows and columns). Use Polar Array for circular staircase arrangements."
+        },
+        {
+          "key": "RO",
+          "name": "Rotate",
+          "fullCommand": "ROTATE",
+          "description": "Rotates selected objects around a specified base point by a given angle.",
+          "howToUse": "Type RO and press Enter. Select objects and press Enter. Click the base point (pivot point). Type the rotation angle and press Enter. Positive angles rotate counter-clockwise.",
+          "tip": "To rotate a door from 90° to 0°, type RO, select the door, set base point at the hinge corner, type -90 and press Enter."
+        },
+        {
+          "key": "SC",
+          "name": "Scale",
+          "fullCommand": "SCALE",
+          "description": "Enlarges or reduces selected objects proportionally.",
+          "howToUse": "Type SC and press Enter. Select objects and press Enter. Click the base point. Type the scale factor and press Enter. 2 = double size, 0.5 = half size.",
+          "tip": "Use the Reference option (R) when you know the current size and the desired size but not the scale factor. AutoCAD calculates the factor for you."
+        },
+        {
+          "key": "S",
+          "name": "Stretch",
+          "fullCommand": "STRETCH",
+          "description": "Stretches or compresses part of a drawing by moving selected endpoints while keeping other endpoints fixed.",
+          "howToUse": "Type S and press Enter. You must use a crossing window selection (right-to-left drag) to select objects. Press Enter, click the base point, then click the destination.",
+          "tip": "Stretch is perfect for changing room dimensions. Select part of a wall crossing its endpoint, then stretch it to resize the room without redrawing."
+        },
+        {
+          "key": "TR",
+          "name": "Trim",
+          "fullCommand": "TRIM",
+          "description": "Removes the portion of a line or object that extends past a cutting edge.",
+          "howToUse": "Type TR and press Enter. Press Enter again to select all objects as cutting edges. Click the part of each line you want to remove.",
+          "tip": "In newer AutoCAD versions, pressing Enter twice selects all objects as cutting edges automatically. This means you can click any line segment to trim it immediately."
+        },
+        {
+          "key": "EX",
+          "name": "Extend",
+          "fullCommand": "EXTEND",
+          "description": "Extends a line or object until it meets a boundary edge.",
+          "howToUse": "Type EX and press Enter. Press Enter again to select all as boundary edges. Click the end of the line you want to extend toward the boundary.",
+          "tip": "Extend and Trim work in a very similar way. In newer AutoCAD, you can switch between Trim and Extend modes by holding the Shift key while clicking."
+        },
+        {
+          "key": "F",
+          "name": "Fillet",
+          "fullCommand": "FILLET",
+          "description": "Rounds two lines meeting at a corner with a smooth arc of a specified radius.",
+          "howToUse": "Type F and press Enter. Type R and press Enter to set the radius, then type the radius value. Click the first line, then click the second line to create the fillet.",
+          "tip": "Set radius to 0 to use Fillet as a clean corner tool — it joins two non-touching lines at a sharp right-angle corner. Extremely useful for cleaning up wall junctions."
+        },
+        {
+          "key": "CHA",
+          "name": "Chamfer",
+          "fullCommand": "CHAMFER",
+          "description": "Creates a straight angled cut at the corner where two lines meet.",
+          "howToUse": "Type CHA and press Enter. Set the distances (D option), then click the two lines to chamfer.",
+          "tip": "Used for angled wall corners and architectural chamfer details. Less commonly used than Fillet in residential drawings."
+        },
+        {
+          "key": "BR",
+          "name": "Break",
+          "fullCommand": "BREAK",
+          "description": "Breaks a line or object into two parts by removing a section of it.",
+          "howToUse": "Type BR and press Enter. Select the object, click the first break point, then click the second break point. The section between the two points is removed.",
+          "tip": "Use Break to create wall openings for doors and windows. Break the wall line at the opening start and end points."
+        },
+        {
+          "key": "J",
+          "name": "Join",
+          "fullCommand": "JOIN",
+          "description": "Joins separate but collinear or connected lines, polylines, and arcs into a single object.",
+          "howToUse": "Type J and press Enter. Select the objects to join and press Enter. They must be touching or overlapping on the same path.",
+          "tip": "Useful for joining wall lines that were accidentally broken or drawn as separate segments. A single joined polyline is easier to offset and edit."
+        },
+        {
+          "key": "X",
+          "name": "Explode",
+          "fullCommand": "EXPLODE",
+          "description": "Breaks a block, polyline, or grouped object into its individual component lines and arcs.",
+          "howToUse": "Type X and press Enter. Select the block or polyline to explode and press Enter.",
+          "tip": "Explode a door or window block only if you need to edit its internal components. After exploding, the block loses its block properties and cannot update if the original is changed."
+        },
+        {
+          "key": "PE",
+          "name": "Polyline Edit",
+          "fullCommand": "PEDIT",
+          "description": "Edits polylines — joins separate lines into a polyline, adjusts width, and more.",
+          "howToUse": "Type PE and press Enter. Select a line or polyline. Choose options: J to Join other lines, W to set Width, F to Fit a smooth curve.",
+          "tip": "Use PE with the Join option to convert a series of separate wall lines into a single continuous polyline. This makes offset and editing much easier."
+        },
+        {
+          "key": "G",
+          "name": "Group",
+          "fullCommand": "GROUP",
+          "description": "Groups multiple objects together so they can be selected and moved as one unit.",
+          "howToUse": "Type G and press Enter. The Object Grouping dialog opens. Enter a group name, click New, select the objects, and press Enter.",
+          "tip": "Groups are useful for grouping furniture, sanitary fixtures, or annotations that belong together but should remain individually editable."
+        },
+        {
+          "key": "UG",
+          "name": "Ungroup",
+          "fullCommand": "UNGROUP",
+          "description": "Removes the grouping from grouped objects.",
+          "howToUse": "Select the group, type UG and press Enter to ungroup.",
+          "tip": "After ungrouping, all objects return to individual status. This cannot be undone with a simple undo in all cases."
+        }
+      ]
+    },
+    {
+      "id": "dimension_annotation",
+      "category": "Dimension and Annotation Shortcuts",
+      "description": "Shortcuts for placing all types of dimensions and annotations in drawings.",
+      "shortcuts": [
+        {
+          "key": "DLI",
+          "name": "Dimension — Linear",
+          "fullCommand": "DIMLINEAR",
+          "description": "Places a horizontal or vertical dimension line measuring a straight distance.",
+          "howToUse": "Type DLI and press Enter. Click the first point, click the second point, then click to place the dimension line. AutoCAD auto-selects horizontal or vertical based on your cursor position.",
+          "tip": "For municipal drawings, always use Linear Dimension for room widths, wall lengths, and overall building dimensions."
+        },
+        {
+          "key": "DAL",
+          "name": "Dimension — Aligned",
+          "fullCommand": "DIMALIGNED",
+          "description": "Places a dimension line parallel to the line being dimensioned, including diagonal dimensions.",
+          "howToUse": "Type DAL and press Enter. Click the two points to dimension, then click to place the dimension line.",
+          "tip": "Use Aligned Dimension for diagonal walls and angled elements where the standard horizontal/vertical linear dimension would not be correct."
+        },
+        {
+          "key": "DRA",
+          "name": "Dimension — Radius",
+          "fullCommand": "DIMRADIUS",
+          "description": "Places a radius dimension on a circle or arc.",
+          "howToUse": "Type DRA and press Enter. Click the circle or arc, then click to position the dimension text.",
+          "tip": "Use radius dimensions for circular columns, arcs, and curved walls."
+        },
+        {
+          "key": "DDI",
+          "name": "Dimension — Diameter",
+          "fullCommand": "DIMDIAMETER",
+          "description": "Places a diameter dimension on a circle.",
+          "howToUse": "Type DDI and press Enter. Click the circle, then click to position the dimension text.",
+          "tip": "Use diameter dimensions for round objects like columns, manholes, and septic tanks in plan view."
+        },
+        {
+          "key": "DAN",
+          "name": "Dimension — Angular",
+          "fullCommand": "DIMANGULAR",
+          "description": "Places an angular dimension measuring the angle between two lines.",
+          "howToUse": "Type DAN and press Enter. Click the first line, click the second line, then click to position the dimension.",
+          "tip": "Used for angled walls, ramps, and sloped surfaces in section drawings."
+        },
+        {
+          "key": "DCO",
+          "name": "Dimension — Continue",
+          "fullCommand": "DIMCONTINUE",
+          "description": "Adds a chain of continuous dimensions one after another from the last dimension endpoint.",
+          "howToUse": "After placing a linear dimension, type DCO and press Enter. Click additional points to continue the dimension chain.",
+          "tip": "Use Continue Dimension for chain dimensioning along walls — click each room division point to build up a complete dimension string quickly."
+        },
+        {
+          "key": "DBA",
+          "name": "Dimension — Baseline",
+          "fullCommand": "DIMBASELINE",
+          "description": "Places multiple dimensions all measured from the same baseline (origin point).",
+          "howToUse": "After placing a linear dimension, type DBA and press Enter. Click additional points — all dimensions are measured from the same first point.",
+          "tip": "Baseline dimensions are used in structural drawings and site plans where all measurements are referenced from a common datum point."
+        },
+        {
+          "key": "LE",
+          "name": "Leader Line",
+          "fullCommand": "LEADER",
+          "description": "Draws a leader line with an arrowhead pointing to an object, with a text annotation attached.",
+          "howToUse": "Type LE and press Enter. Click the arrowhead start point, click intermediate points for the leader line, then press Enter and type the annotation text.",
+          "tip": "Use leader lines for noting materials, finishes, structural member sizes, and special conditions in section and detail drawings."
+        },
+        {
+          "key": "MLD",
+          "name": "Multileader",
+          "fullCommand": "MLEADER",
+          "description": "Places a professional leader line with multiline annotation text. More powerful than the basic LE command.",
+          "howToUse": "Type MLD and press Enter. Click the arrowhead point, then click the landing point. Type the annotation text and click outside to finish.",
+          "tip": "Multileader is the professional standard for annotations in modern AutoCAD. It produces cleaner and more controllable leaders than the older LE command."
+        },
+        {
+          "key": "TOL",
+          "name": "Tolerance",
+          "fullCommand": "TOLERANCE",
+          "description": "Places a geometric tolerance symbol box (used mainly in mechanical engineering drawings).",
+          "howToUse": "Type TOL and press Enter. Fill in the tolerance values in the dialog and click OK to place.",
+          "tip": "Not commonly used in municipal building drawings. More relevant for mechanical engineering and structural steel fabrication drawings."
+        },
+        {
+          "key": "D",
+          "name": "Dimension Style Manager",
+          "fullCommand": "DIMSTYLE",
+          "description": "Opens the Dimension Style Manager where you create and modify dimension styles.",
+          "howToUse": "Type D and press Enter. Create new styles, modify existing ones, and set the current active dimension style.",
+          "tip": "Always create a dimension style matching your print scale before starting drawing. For 1:100 scale drawings, name it DIM_100."
+        },
+        {
+          "key": "ED",
+          "name": "Edit Text",
+          "fullCommand": "DDEDIT",
+          "description": "Opens a text object for editing its content.",
+          "howToUse": "Type ED and press Enter, then click the text to edit. Or simply double-click any text object directly.",
+          "tip": "Double-clicking directly on any text is faster than typing ED. It immediately opens the text for editing."
+        }
+      ]
+    },
+    {
+      "id": "view_navigation",
+      "category": "View and Navigation Shortcuts",
+      "description": "Shortcuts for navigating, zooming, and controlling the drawing view.",
+      "shortcuts": [
+        {
+          "key": "Z + Enter + A",
+          "name": "Zoom All",
+          "fullCommand": "ZOOM ALL",
+          "description": "Fits the entire drawing limits into the screen view.",
+          "howToUse": "Type Z and press Enter, then type A and press Enter.",
+          "tip": "Use Zoom All at the start of a session to see the complete working area, and after making large changes to get the full picture."
+        },
+        {
+          "key": "Z + Enter + E",
+          "name": "Zoom Extents",
+          "fullCommand": "ZOOM EXTENTS",
+          "description": "Zooms to fit all drawn objects on screen, regardless of the drawing limits.",
+          "howToUse": "Type Z and press Enter, then type E and press Enter.",
+          "tip": "Use Zoom Extents to find objects that have been accidentally placed far from your drawing. If your drawing looks blank, type Z, E and it will jump to where the objects actually are."
+        },
+        {
+          "key": "Z + Enter + W",
+          "name": "Zoom Window",
+          "fullCommand": "ZOOM WINDOW",
+          "description": "Zooms into a specific area you define by drawing a rectangle.",
+          "howToUse": "Type Z and press Enter, then type W and press Enter. Click two corners of a rectangle to define the zoom area.",
+          "tip": "The scroll wheel on your mouse is faster for zooming in and out on specific areas."
+        },
+        {
+          "key": "Scroll Wheel Up/Down",
+          "name": "Zoom In / Zoom Out",
+          "description": "Zooms in or out centered on the cursor position using the mouse scroll wheel.",
+          "howToUse": "Roll the scroll wheel forward to zoom in. Roll backward to zoom out. The zoom centers on wherever your cursor is pointing.",
+          "tip": "This is the fastest and most natural way to zoom in AutoCAD. Use it constantly while working."
+        },
+        {
+          "key": "Middle Mouse Button (Hold and Drag)",
+          "name": "Pan",
+          "description": "Moves the view by panning without changing the zoom level.",
+          "howToUse": "Hold down the middle mouse button (scroll wheel) and drag the mouse to pan the view in any direction.",
+          "tip": "This is the fastest way to pan. You never need to use the Pan command (P) when you have a scroll wheel mouse."
+        },
+        {
+          "key": "P",
+          "name": "Pan (Command)",
+          "fullCommand": "PAN",
+          "description": "Activates Pan mode so you can click and drag to move the view.",
+          "howToUse": "Type P and press Enter. Click and drag to pan. Press Escape to exit Pan mode.",
+          "tip": "The middle mouse button drag is faster than typing P. Only use the command if your mouse has no scroll wheel."
+        },
+        {
+          "key": "RE",
+          "name": "Regen",
+          "fullCommand": "REGEN",
+          "description": "Regenerates and redraws the entire drawing to fix display issues.",
+          "howToUse": "Type RE and press Enter. AutoCAD redraws all objects. Circles may appear jagged — Regen fixes this.",
+          "tip": "If circles look like polygons or lines look broken on screen, type RE to regenerate the display. This is a display issue only — the actual geometry is correct."
+        },
+        {
+          "key": "Ctrl+Shift+H",
+          "name": "Hide / Show Palettes",
+          "description": "Hides or shows all open palette panels (Properties, Layer Manager, etc.)",
+          "howToUse": "Press Ctrl+Shift+H to toggle all open palettes on or off.",
+          "tip": "Useful when you need to temporarily maximize the drawing area without permanently closing panels."
+        }
+      ]
+    },
+    {
+      "id": "layer_object_properties",
+      "category": "Layer and Object Property Shortcuts",
+      "description": "Shortcuts for managing layers and object properties.",
+      "shortcuts": [
+        {
+          "key": "LA",
+          "name": "Layer Properties Manager",
+          "fullCommand": "LAYER",
+          "description": "Opens the Layer Properties Manager panel to create, edit, and manage layers.",
+          "howToUse": "Type LA and press Enter. Create new layers, assign colors and linetypes, and set the current layer.",
+          "tip": "Keep the Layer Properties Manager docked as a panel on the side while drawing so you can switch layers quickly."
+        },
+        {
+          "key": "Ctrl+1",
+          "name": "Properties Panel",
+          "fullCommand": "PROPERTIES",
+          "description": "Opens the Properties panel for the selected object, showing and allowing editing of all its properties.",
+          "howToUse": "Select an object, then press Ctrl+1. Edit layer, color, linetype, and dimensions directly in the panel.",
+          "tip": "If an object is on the wrong layer, select it, press Ctrl+1, and change the layer in the Properties panel. Faster than erasing and redrawing."
+        },
+        {
+          "key": "MA",
+          "name": "Match Properties",
+          "fullCommand": "MATCHPROP",
+          "description": "Copies the properties (layer, color, linetype, lineweight) of one object and applies them to other objects.",
+          "howToUse": "Type MA and press Enter. Click the source object (the one whose properties you want to copy), then click all the destination objects you want to update.",
+          "tip": "Use Match Properties to quickly fix objects on wrong layers. Click a correctly placed wall line as the source, then click incorrectly placed objects to transfer the WALL layer properties."
+        },
+        {
+          "key": "LW",
+          "name": "Lineweight Display Toggle",
+          "fullCommand": "LWDISPLAY",
+          "description": "Turns the display of lineweights on or off in the drawing area.",
+          "howToUse": "Type LW and press Enter. Or click the LWT button in the status bar at the bottom.",
+          "tip": "Turn lineweight display ON to see how thick lines will print. Turn it OFF for a cleaner drawing view while working. It does not affect actual print output."
+        },
+        {
+          "key": "UN",
+          "name": "Drawing Units",
+          "fullCommand": "UNITS",
+          "description": "Opens the Drawing Units dialog to set the measurement units and precision.",
+          "howToUse": "Type UN and press Enter. Set Length Type to Decimal and Insertion Scale to Millimeters for all municipal work.",
+          "tip": "Check units at the start of every new drawing session. Wrong units cause all dimensions and blocks to be incorrect."
+        },
+        {
+          "key": "OP",
+          "name": "Options",
+          "fullCommand": "OPTIONS",
+          "description": "Opens the AutoCAD Options dialog for configuring program settings, display, file paths, and behavior.",
+          "howToUse": "Type OP and press Enter. Navigate between tabs: Files, Display, Open and Save, Drafting, Selection.",
+          "tip": "Important settings in Options: Display tab for background color and crosshair size, Drafting tab for AutoSnap and AutoTrack settings."
+        },
+        {
+          "key": "PU",
+          "name": "Purge",
+          "fullCommand": "PURGE",
+          "description": "Removes unused layers, blocks, text styles, dimension styles, and linetypes from the drawing to reduce file size.",
+          "howToUse": "Type PU and press Enter. The Purge dialog shows all unused items. Click Purge All to remove everything unused.",
+          "tip": "Run Purge before saving the final version of any drawing. It significantly reduces file size and removes clutter from unused elements."
+        },
+        {
+          "key": "AU",
+          "name": "AutoCAD Audit",
+          "fullCommand": "AUDIT",
+          "description": "Checks the drawing file for errors and repairs any found.",
+          "howToUse": "Type AUDIT and press Enter. Choose Yes to fix any errors found automatically.",
+          "tip": "Run Audit if a drawing is behaving strangely or took a long time to open. It finds and fixes corruption in the drawing file."
+        }
+      ]
+    },
+    {
+      "id": "selection_methods",
+      "category": "Selection Methods",
+      "description": "Methods for selecting objects in AutoCAD. Understanding selection is essential for efficient editing.",
+      "shortcuts": [
+        {
+          "key": "Left-to-Right Drag",
+          "name": "Window Selection",
+          "description": "Selects only objects that are completely inside the selection rectangle. Shows as a solid blue rectangle.",
+          "howToUse": "Click and drag from left to right to draw the selection window. Only fully enclosed objects are selected.",
+          "tip": "Use Window Selection when you want to select only specific objects without accidentally grabbing neighboring objects."
+        },
+        {
+          "key": "Right-to-Left Drag",
+          "name": "Crossing Selection",
+          "description": "Selects all objects that are inside or touching the selection rectangle. Shows as a dashed green rectangle.",
+          "howToUse": "Click and drag from right to left to draw the crossing window. All objects inside and touching the boundary are selected.",
+          "tip": "Use Crossing Selection when you want to grab everything in an area, including objects only partially inside the selection box."
+        },
+        {
+          "key": "Ctrl+Click",
+          "name": "Add to / Remove from Selection",
+          "description": "Adds individual objects to an existing selection, or removes them if already selected.",
+          "howToUse": "Hold Ctrl and click objects to add them to the current selection. Hold Shift and click to remove an object from the current selection.",
+          "tip": "Use Ctrl+Click to build up a selection of scattered objects across the drawing without having to use a selection window."
+        },
+        {
+          "key": "QSE",
+          "name": "Quick Select",
+          "fullCommand": "QSELECT",
+          "description": "Creates a selection set based on specific properties — such as all objects on a certain layer or all objects of a certain color.",
+          "howToUse": "Type QSE and press Enter (or right-click in the drawing area and choose Quick Select). Set the property filter criteria and click OK.",
+          "tip": "Use Quick Select to select all objects on a specific layer at once. For example, select all objects on the HATCH layer to change their scale simultaneously."
+        },
+        {
+          "key": "F + Click (during command)",
+          "name": "Fence Selection",
+          "description": "Selects all objects that a drawn line (fence) crosses through.",
+          "howToUse": "During a command that asks for object selection, type F and press Enter. Draw a line through all objects you want to select. Press Enter to confirm.",
+          "tip": "Fence Selection is useful for selecting a row of columns, a line of dimensions, or any objects arranged in a straight path."
+        }
+      ]
+    },
+    {
+      "id": "plot_publish",
+      "category": "Plot and Publishing Shortcuts",
+      "description": "Shortcuts for printing, plotting, and exporting drawings.",
+      "shortcuts": [
+        {
+          "key": "Ctrl+P",
+          "name": "Plot",
+          "fullCommand": "PLOT",
+          "description": "Opens the Plot dialog to print the current drawing to a printer or PDF file.",
+          "howToUse": "Press Ctrl+P. Set the printer or plotter, paper size, plot area (Extents, Window, or Layout), plot scale, and plot style table. Click Preview before printing.",
+          "tip": "Always click Preview in the Plot dialog before printing. This lets you check the scale, line weights, and sheet layout before wasting paper."
+        },
+        {
+          "key": "EXPORTPDF",
+          "name": "Export to PDF",
+          "fullCommand": "EXPORTPDF",
+          "description": "Exports the drawing directly to a PDF file for sharing and municipality submission.",
+          "howToUse": "Type EXPORTPDF and press Enter. Choose the output location and file name. Set options for sheet size and layer information.",
+          "tip": "PDF export is the most common format for municipality submission. Export from the Layout (paper space) tab for the correctly sized sheet output."
+        },
+        {
+          "key": "PS",
+          "name": "Switch to Paper Space",
+          "fullCommand": "PSPACE",
+          "description": "Switches from Model Space to Paper Space (Layout) view.",
+          "howToUse": "Type PS and press Enter, or click the Layout tab at the bottom of the screen.",
+          "tip": "Use Paper Space to arrange your drawing on a standard sheet size with a title block before printing."
+        },
+        {
+          "key": "MS",
+          "name": "Switch to Model Space",
+          "fullCommand": "MSPACE",
+          "description": "Switches from Paper Space back to Model Space for drawing.",
+          "howToUse": "Type MS and press Enter, or click the Model tab at the bottom of the screen.",
+          "tip": "Always do your actual drawing work in Model Space. Use Paper Space only for arranging and printing layouts."
+        },
+        {
+          "key": "MV",
+          "name": "Make Viewport",
+          "fullCommand": "MVIEW",
+          "description": "Creates a viewport window in Paper Space that displays Model Space drawing content.",
+          "howToUse": "Switch to a Layout tab, type MV and press Enter. Click and drag to draw the viewport rectangle. The model drawing appears inside it.",
+          "tip": "Set the viewport scale precisely by selecting the viewport, then choosing the scale from the Viewport Scale dropdown in the status bar."
+        }
+      ]
+    }
+  ]
+}

@@ -239,6 +239,42 @@ export const resources: Resource[] = [
     updatedAt: new Date('2025-01-01'),
   },
   {
+    slug: 'autocad-tutorials',
+    title: 'AutoCAD Tutorials',
+    description:
+      'Comprehensive AutoCAD tutorials for civil engineering design and drafting.',
+    category: 'Notes',
+    region: 'Other Regions',
+    subItems: [
+      {
+        title: 'Section A: Introduction to AutoCAD',
+        url: '/resources/autocad-tutorials/autocad-introduction',
+      },
+      {
+        title: 'Section B: Drawing Tools and Commands',
+        url: '/resources/autocad-tutorials/autocad-shortcuts-commands',
+      },
+      {
+        title: 'Section C: Layers and Object Properties',
+        url: '/resources/autocad-tutorials/layers-and-object-properties',
+      },
+      {
+        title: 'Section D: Annotations and Dimensions',
+        url: '/resources/autocad-tutorials/annotations-and-dimensions',
+      },
+      {
+        title: 'Section E: Blocks and Attributes',
+        url: '/resources/autocad-tutorials/blocks-and-attributes',
+      },
+      {
+        title: 'Section F: 3D Modeling Basics',
+        url: '/resources/autocad-tutorials/3d-modeling-basics',
+      },
+    ],
+    createdAt: new Date('2025-01-01'),
+    updatedAt: new Date('2025-01-01'),
+  },
+  {
     slug: 'engineering-blogs-articles',
     title: 'Engineering Blogs & Articles',
     description:

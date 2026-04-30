@@ -2,8 +2,13 @@
 
 import Link from 'next/link'
 import { useMemo, useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import { resources } from '../../../../lib/data/resources'
-import AdSlot from '../../../../components/ads/AdSlot'
+
+const AdSlot = dynamic(() => import('../../../../components/ads/AdSlot'), {
+  ssr: false,
+  loading: () => <div className="h-24 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" />
+})
 
 interface SubPageProps {
   params: {
@@ -139,7 +144,152 @@ export default function SubPage({ params }: SubPageProps) {
         if (!res.ok) throw new Error('Not found')
         const data = await res.json()
         if (cancelled) return
-        setJsonData(data)
+
+        let normalizedData = data
+        if ((!data.sections || data.sections.length === 0) && Array.isArray(data.modules)) {
+          const overviewSections = []
+          if (typeof data.courseDescription === 'string' && data.courseDescription.trim()) {
+            overviewSections.push({
+              type: 'notes',
+              level: 3,
+              title: 'Course Overview',
+              content: data.courseDescription,
+            })
+          }
+
+          normalizedData = {
+            ...data,
+            sections: [
+              ...(overviewSections.length
+                ? [
+                    {
+                      type: 'chapter',
+                      level: 2,
+                      title: data.courseTitle || 'Overview',
+                      sections: overviewSections,
+                    },
+                  ]
+                : []),
+              ...data.modules.map((module: any) => ({
+                type: 'chapter',
+                level: 2,
+                title: module.moduleTitle || `Module ${module.moduleNumber}`,
+                sections: Array.isArray(module.topics)
+                  ? module.topics.map((topic: any) => ({
+                      type: 'notes',
+                      level: 3,
+                      title: topic.title,
+                      content: topic.content,
+                    }))
+                  : [],
+              })),
+            ],
+          }
+        } else if ((!data.sections || data.sections.length === 0) && Array.isArray(data.phases)) {
+          const overviewSections = []
+          if (typeof data.courseDescription === 'string' && data.courseDescription.trim()) {
+            overviewSections.push({
+              type: 'notes',
+              level: 3,
+              title: 'Course Overview',
+              content: data.courseDescription,
+            })
+          }
+
+          normalizedData = {
+            ...data,
+            sections: [
+              ...(overviewSections.length
+                ? [
+                    {
+                      type: 'chapter',
+                      level: 2,
+                      title: data.courseTitle || 'Overview',
+                      sections: overviewSections,
+                    },
+                  ]
+                : []),
+              ...data.phases.map((phase: any) => ({
+                type: 'chapter',
+                level: 2,
+                title: phase.phaseTitle || `Phase ${phase.phaseNumber}`,
+                sections: Array.isArray(phase.steps)
+                  ? phase.steps.map((step: any) => ({
+                      type: 'notes',
+                      level: 3,
+                      title: step.title || step.subtitle || `Step ${step.stepNumber}`,
+                      content: [
+                        step.subtitle ? `**${step.subtitle}**\n\n` : '',
+                        step.why ? `**Why:** ${step.why}\n\n` : '',
+                        Array.isArray(step.instructions)
+                          ? step.instructions.map((ins: string) => `- ${ins}`).join('\n') + '\n\n'
+                          : '',
+                        Array.isArray(step.commands) && step.commands.length
+                          ? `**Commands:** ${step.commands.join(', ')}\n\n`
+                          : '',
+                        step.note ? `**${step.note.label}:** ${step.note.text}` : '',
+                      ]
+                        .filter(Boolean)
+                        .join(''),
+                    }))
+                  : [],
+              })),
+            ],
+          }
+        } else if ((!data.sections || data.sections.length === 0) && Array.isArray(data.categories)) {
+          const overviewSections = []
+          if (typeof data.description === 'string' && data.description.trim()) {
+            overviewSections.push({
+              type: 'notes',
+              level: 3,
+              title: 'Overview',
+              content: data.description,
+            })
+          }
+
+          normalizedData = {
+            ...data,
+            sections: [
+              ...(overviewSections.length
+                ? [
+                    {
+                      type: 'chapter',
+                      level: 2,
+                      title: data.title || 'Overview',
+                      sections: overviewSections,
+                    },
+                  ]
+                : []),
+              ...data.categories.map((cat: any) => ({
+                type: 'chapter',
+                level: 2,
+                title: cat.category || cat.id,
+                sections: [
+                  ...(cat.description ? [{
+                    type: 'notes',
+                    level: 3,
+                    title: 'Description',
+                    content: cat.description,
+                  }] : []),
+                  ...(Array.isArray(cat.shortcuts)
+                    ? cat.shortcuts.map((shortcut: any) => ({
+                        type: 'notes',
+                        level: 3,
+                        title: `${shortcut.key}: ${shortcut.name}`,
+                        content: [
+                          shortcut.description ? `${shortcut.description}\n\n` : '',
+                          shortcut.howToUse ? `**How to use:** ${shortcut.howToUse}\n\n` : '',
+                          shortcut.tip ? `**Tip:** ${shortcut.tip}` : '',
+                        ].filter(Boolean).join(''),
+                      }))
+                    : []),
+                ],
+              })),
+            ],
+          }
+        }
+
+        setJsonData(normalizedData)
       } catch (e) {
         if (!cancelled) setError('No JSON content found for this topic.')
       } finally {
@@ -249,8 +399,22 @@ export default function SubPage({ params }: SubPageProps) {
     printWindow.document.close()
   }
 
+  const scrollToChapter = (idx: number) => {
+    const element = document.getElementById(`chapter-${idx}`)
+    element?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  const openChapter = (idx: number) => {
+    setActiveChapter(idx)
+    scrollToChapter(idx)
+  }
+
   const toggleChapter = (idx: number) => {
-    setActiveChapter(activeChapter === idx ? -1 : idx)
+    const nextIndex = activeChapter === idx ? -1 : idx
+    setActiveChapter(nextIndex)
+    if (nextIndex === idx) {
+      scrollToChapter(idx)
+    }
   }
 
   const handleMCQSelect = (chIdx: number, qIdx: number, optIdx: number) => {
@@ -394,18 +558,18 @@ export default function SubPage({ params }: SubPageProps) {
   }
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-8">
+    <main className="mx-auto max-w-5xl px-4 py-8 font-sans">
       {!resource || !subItem ? (
         <div className="text-center py-10">
-          <h1 className="mb-4 font-display text-3xl font-bold text-heading dark:text-heading-dark">
+          <h1 className="mb-4 text-3xl font-bold text-heading dark:text-heading-dark">
             Content Not Found
           </h1>
-          <p className="mb-6 font-sans text-body/70 dark:text-body-dark/70">
+          <p className="mb-6 text-body/70 dark:text-body-dark/70">
             The requested section could not be found.
           </p>
           <Link
             href={`/resources/${category}` as any}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-display font-medium text-white transition-colors hover:bg-primary/90"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-primary/90"
           >
             Back to {category}
           </Link>
@@ -415,26 +579,26 @@ export default function SubPage({ params }: SubPageProps) {
           <div className="mb-6">
             <Link
               href={`/resources/${category}` as any}
-              className="mb-4 inline-block rounded-xl border border-slate-200/20 bg-surface px-4 py-2 font-display font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-surface-dark dark:text-heading-dark dark:hover:bg-slate-700"
+              className="mb-4 inline-block rounded-xl border border-slate-200/20 bg-surface px-4 py-2 font-medium text-heading transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-surface-dark dark:text-heading-dark dark:hover:bg-slate-700"
             >
               ← Back
             </Link>
 
-            <h1 className="font-display text-3xl font-bold text-heading dark:text-heading-dark mb-2">
+            <h1 className="text-3xl font-bold text-heading dark:text-heading-dark mb-2">
               {subItem.title}
             </h1>
-            <p className="font-sans text-body/80 dark:text-body-dark/80 mb-4">{resource.title}</p>
+            <p className="text-body/80 dark:text-body-dark/80 mb-4">{resource.title}</p>
 
             <div className="flex flex-wrap items-center gap-3 mb-4">
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder="Search chapters, formulas, MCQs..."
-                className="flex-1 min-w-[250px] rounded-xl border-2 border-slate-300 bg-surface px-4 py-3 font-sans text-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-surface-dark dark:focus:border-primary"
+                className="flex-1 min-w-[250px] rounded-xl border-2 border-slate-300 bg-surface px-4 py-3 text-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-surface-dark dark:focus:border-primary"
               />
               <button
                 onClick={handleDownloadPdf}
-                className="no-print inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-3 font-display text-sm font-medium text-white transition-colors hover:bg-primary/90"
+                className="no-print inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-primary/90"
               >
                 📄 Download PDF
               </button>
@@ -446,7 +610,7 @@ export default function SubPage({ params }: SubPageProps) {
           <div className="grid gap-6 lg:grid-cols-[200px_1fr]">
             <aside className="hidden lg:block">
               <div className="card toc-card sticky top-24">
-                <div className="font-display text-sm font-semibold text-heading dark:text-heading-dark mb-3">
+                <div className="text-sm font-semibold text-heading dark:text-heading-dark mb-3">
                   Chapters
                 </div>
                 <nav>
@@ -454,7 +618,7 @@ export default function SubPage({ params }: SubPageProps) {
                     {filteredChapters.map((ch: any, i: number) => (
                       <li key={i}>
                         <button
-                          onClick={() => toggleChapter(i)}
+                          onClick={() => openChapter(i)}
                           className={`w-full text-left text-sm px-2 py-1.5 rounded transition-colors ${
                             activeChapter === i
                               ? 'bg-primary/10 text-primary font-medium'
@@ -481,25 +645,27 @@ export default function SubPage({ params }: SubPageProps) {
                 </div>
               ) : (
                 filteredChapters.map((chapter: any, chIdx: number) => (
-                  <div key={chIdx} className="chapter-section">
+                  <div id={`chapter-${chIdx}`} key={chIdx} className="chapter-section">
                     <button
-                      onClick={() => toggleChapter(chIdx)}
-                      className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-primary/5 to-transparent rounded-xl border border-slate-200 dark:border-slate-700 hover:border-primary/30 transition-all"
+                      onClick={() => chIdx > 0 && toggleChapter(chIdx)}
+                      className={`w-full flex items-center justify-between p-4 bg-gradient-to-r from-primary/5 to-transparent rounded-xl border border-slate-200 dark:border-slate-700 hover:border-primary/30 transition-all ${chIdx === 0 ? 'cursor-default' : 'cursor-pointer'}`}
                     >
-                      <h2 className="font-display text-2xl font-bold text-heading dark:text-heading-dark">
+                      <h2 className="text-2xl font-bold text-heading dark:text-heading-dark">
                         {chapter.title}
                       </h2>
-                      <span className="text-2xl text-primary">
-                        {activeChapter === chIdx ? '▼' : '▶'}
-                      </span>
+                      {chIdx > 0 && (
+                        <span className="text-2xl text-primary">
+                          {activeChapter === chIdx ? '▼' : '▶'}
+                        </span>
+                      )}
                     </button>
 
-                    {activeChapter === chIdx && (
+                    {(chIdx === 0 || activeChapter === chIdx) && (
                       <div className="mt-4 space-y-4">
                         {chapter.sections?.map((sec: any, secIdx: number) => (
                           <div key={secIdx}>
                             {sec.title && sec.type !== 'mcqs' && (
-                              <h3 className="font-display text-lg font-semibold text-heading dark:text-heading-dark mb-3">
+                              <h3 className="text-lg font-semibold text-heading dark:text-heading-dark mb-3">
                                 {sec.title}
                               </h3>
                             )}
@@ -516,7 +682,7 @@ export default function SubPage({ params }: SubPageProps) {
                         ))}
 
                         <div className="card notes-card">
-                          <label className="block font-display text-sm font-semibold text-heading dark:text-heading-dark mb-2">
+                          <label className="block text-sm font-semibold text-heading dark:text-heading-dark mb-2">
                             📝 Your Notes
                           </label>
                           <textarea

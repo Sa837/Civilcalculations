@@ -1,263 +1,30 @@
 {
   "pages": {
-    "/_not-found/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/app/_not-found/page-dd7eba65e09fb745.js"
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
     ],
     "/layout": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/css/2308929d7364d20d.css",
-      "static/css/bfe55741b0c3bd04.css",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/layout-ad82f73412a61384.js"
-    ],
-    "/blog/bridge-engineering-innovative-design/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/bridge-engineering-innovative-design/page-0a1f16c1512af842.js"
-    ],
-    "/blog/construction-technology-drones-robotics/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/construction-technology-drones-robotics/page-5ca756e067c03d02.js"
-    ],
-    "/blog/environmental-engineering-remediation/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/environmental-engineering-remediation/page-7b4a9fe32e2f9ede.js"
-    ],
-    "/blog/project-management-lean-construction/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/project-management-lean-construction/page-1fde2bd4ee8129d3.js"
-    ],
-    "/blog/steel-structure-design-modern-analysis/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/steel-structure-design-modern-analysis/page-f6646323ca884331.js"
-    ],
-    "/blog/sustainable-construction-green-materials/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/sustainable-construction-green-materials/page-762c3eb22cb141cb.js"
-    ],
-    "/blog/transportation-highway-design-standards/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/transportation-highway-design-standards/page-bd5cf47bdc75075b.js"
-    ],
-    "/calculators/[slug]/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/3571-45882e90a8991dcf.js",
-      "static/chunks/6293-bdd24c01cbc41ddd.js",
-      "static/chunks/app/calculators/[slug]/page-c919dfef66c05657.js"
-    ],
-    "/blog/water-resources-sustainable-management/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/water-resources-sustainable-management/page-26ce5138f2d8350c.js"
-    ],
-    "/calculators/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2170a4aa-2f810e26c80d05d8.js",
-      "static/chunks/3571-45882e90a8991dcf.js",
-      "static/chunks/465-a8236d5c8a6866b6.js",
-      "static/chunks/6293-bdd24c01cbc41ddd.js",
-      "static/chunks/app/calculators/page-172799d521413ad0.js"
-    ],
-    "/converters/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/3916-f0d8ae3beab50d35.js",
-      "static/chunks/app/converters/page-2e4c269a449a6c45.js"
-    ],
-    "/converters/[slug]/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/5779-8861534049ae5a0e.js",
-      "static/chunks/app/converters/[slug]/page-1f7df5647e5f7dde.js"
-    ],
-    "/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/page-1017d16875f0d04e.js"
-    ],
-    "/resources/[category]/[sub]/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/5861-b589dba7c3001230.js",
-      "static/chunks/980-54a29319d17b93be.js",
-      "static/chunks/app/resources/[category]/[sub]/page-7fa52ae490fad5b3.js"
-    ],
-    "/resources/[category]/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/3571-45882e90a8991dcf.js",
-      "static/chunks/3916-f0d8ae3beab50d35.js",
-      "static/chunks/7095-f11975419b516260.js",
-      "static/chunks/980-54a29319d17b93be.js",
-      "static/chunks/app/resources/[category]/page-f2c6e9bbdebf9d18.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
     ],
     "/resources/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/3571-45882e90a8991dcf.js",
-      "static/chunks/3916-f0d8ae3beab50d35.js",
-      "static/chunks/980-54a29319d17b93be.js",
-      "static/chunks/app/resources/page-cf098d8c2de1ffb8.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/resources/page.js"
     ],
-    "/blog/concrete-technology-advanced-mix-design/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/concrete-technology-advanced-mix-design/page-257e54131902a200.js"
+    "/resources/[category]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/resources/[category]/page.js"
     ],
-    "/about/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/app/about/page-08e97f68309d32be.js"
-    ],
-    "/blog/geotechnical-soil-structure-interaction/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/geotechnical-soil-structure-interaction/page-701f433f3b653890.js"
-    ],
-    "/blog/bim-building-information-modeling/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/bim-building-information-modeling/page-d671de019ba2e2a5.js"
-    ],
-    "/blog/digital-twins-construction-management/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/digital-twins-construction-management/page-4693f4b348e72f6a.js"
-    ],
-    "/blog/advanced-structural-analysis-fem/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/advanced-structural-analysis-fem/page-b8b379af9db0f688.js"
-    ],
-    "/blog/smart-cities-iot-urban-infrastructure/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/smart-cities-iot-urban-infrastructure/page-d22799d619521c1e.js"
-    ],
-    "/blog/infrastructure-resilience-climate-change/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/2972-270c0a2100736c43.js",
-      "static/chunks/app/blog/infrastructure-resilience-climate-change/page-e2b0f86640caaa53.js"
-    ],
-    "/contact/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/7626-e59ce0384d6aaa89.js",
-      "static/chunks/app/contact/page-cac0d6703f483834.js"
-    ],
-    "/disclaimer/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/app/disclaimer/page-92f2ee14182de1f4.js"
-    ],
-    "/cookie-policy/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/app/cookie-policy/page-07c84a47e1ddf9e7.js"
-    ],
-    "/privacy-policy/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/app/privacy-policy/page-11829cfdbea398e5.js"
-    ],
-    "/terms-and-conditions/page": [
-      "static/chunks/webpack-b292d6c550f3befe.js",
-      "static/chunks/fd9d1056-c9e6f969021aa03b.js",
-      "static/chunks/2117-c09d9fd5f62f1fa6.js",
-      "static/chunks/main-app-c904ffcd5adcbad5.js",
-      "static/chunks/app/terms-and-conditions/page-e5be47de29b26c6a.js"
+    "/resources/[category]/[sub]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/resources/[category]/[sub]/page.js"
     ]
   }
 }

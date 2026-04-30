@@ -1,0 +1,430 @@
+{
+  "courseTitle": "AutoCAD Setup Guide for Municipal Residential Drawing",
+  "courseDescription": "A complete beginner-friendly guide covering all essential AutoCAD setup steps required before starting any municipal or residential drawing. Written in simple, professional English for students and beginner engineers.",
+  "targetAudience": [
+    "Civil Engineering Students",
+    "Beginner AutoCAD Users",
+    "Municipality Drawing Trainees",
+    "Site Engineers",
+    "Draftsmen"
+  ],
+  "courseObjectives": [
+    "Learn how to properly set up AutoCAD before starting any drawing",
+    "Understand units, layers, text styles, and dimension styles",
+    "Create professional and organized drawings ready for municipal submission",
+    "Save a reusable template to speed up all future projects"
+  ],
+  "phases": [
+    {
+      "phaseNumber": 1,
+      "phaseTitle": "Open AutoCAD and Create Your File",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "title": "Open AutoCAD and Select the Correct Workspace",
+          "subtitle": "Drafting & Annotation workspace",
+          "why": "AutoCAD has several workspaces. For all municipal and residential drawing work, the Drafting & Annotation workspace gives you the right tools in the right places.",
+          "commands": [],
+          "instructions": [
+            "Open AutoCAD from your desktop or Start Menu",
+            "Wait for the software to fully load before doing anything",
+            "Find the Workspace Switcher dropdown at the top of the screen",
+            "Select: Drafting & Annotation",
+            "The ribbon will now show all drawing and annotation tools correctly"
+          ],
+          "note": {
+            "type": "info",
+            "label": "Why this workspace?",
+            "text": "Drafting & Annotation workspace shows the Annotate tab, dimension tools, and text tools which are all essential for professional municipal drawings."
+          }
+        },
+        {
+          "stepNumber": 2,
+          "title": "Create a New Drawing Using the Metric Template",
+          "subtitle": "Use acadiso.dwt — not acad.dwt",
+          "why": "The template you choose at the start sets your unit system. The wrong template means wrong units, wrong dimensions, and completely wasted work.",
+          "commands": ["Ctrl+N", "QNEW"],
+          "instructions": [
+            "Press Ctrl+N — the Select Template dialog opens",
+            "Find acadiso.dwt in the list and select it",
+            "Click Open — your new blank metric drawing is ready",
+            "acadiso.dwt is the ISO Metric template — it uses millimeters by default",
+            "Never use acad.dwt — that template uses inches and will cause wrong dimensions"
+          ],
+          "note": {
+            "type": "warning",
+            "label": "Common beginner mistake",
+            "text": "Many beginners accidentally use acad.dwt which uses inches. Always confirm you selected acadiso.dwt before starting any work."
+          }
+        },
+        {
+          "stepNumber": 3,
+          "title": "Save the File Immediately With a Proper Name",
+          "subtitle": "Save before drawing a single line",
+          "why": "If AutoCAD crashes before you save, all your work is permanently lost. Always save first, then start drawing.",
+          "commands": ["Ctrl+S", "Ctrl+Shift+S"],
+          "instructions": [
+            "Press Ctrl+S — the Save As dialog opens",
+            "Create a dedicated project folder (example: Project_ResidentialBuilding_2081)",
+            "Name the file clearly, for example: FloorPlan_GroundFloor_v1.dwg",
+            "Click Save to confirm",
+            "Press Ctrl+S every 10 minutes while working to prevent data loss"
+          ],
+          "note": {
+            "type": "info",
+            "label": "Good file naming habit",
+            "text": "Use descriptive names like SitePlan_v1.dwg or Elevation_North_v2.dwg. Avoid generic names like Drawing1.dwg or Untitled.dwg — they become confusing very quickly."
+          }
+        }
+      ]
+    },
+    {
+      "phaseNumber": 2,
+      "phaseTitle": "Set Units",
+      "steps": [
+        {
+          "stepNumber": 4,
+          "title": "Set Drawing Units to Millimeters",
+          "subtitle": "The single most important setup step",
+          "why": "If units are set incorrectly, every dimension, block, and hatch will be wrong. This must be correctly configured before drawing anything at all.",
+          "commands": ["UN", "UNITS"],
+          "instructions": [
+            "Type UN and press Enter — the Drawing Units dialog opens",
+            "Length Type: select Decimal",
+            "Precision: select 0 for whole numbers, or 0.00 if decimal precision is needed",
+            "Insertion Scale: select Millimeters — this is the critical setting",
+            "Angle Type: Decimal Degrees is correct for standard drawings",
+            "Click OK to confirm all settings"
+          ],
+          "note": {
+            "type": "warning",
+            "label": "Do not skip this step",
+            "text": "Insertion Scale set to Millimeters ensures that when you insert doors, windows, or furniture blocks, they appear at the correct real-world size. Skipping this causes all blocks to insert at the wrong scale."
+          }
+        }
+      ]
+    },
+    {
+      "phaseNumber": 3,
+      "phaseTitle": "Drafting Tools and Display Settings",
+      "steps": [
+        {
+          "stepNumber": 5,
+          "title": "Enable Essential Drafting Tools from the Status Bar",
+          "subtitle": "Ortho, Object Snap, Polar Tracking, Dynamic Input",
+          "why": "These four tools are the foundation of accurate drafting. Without them, lines will be crooked, walls will not connect properly, and placing objects accurately becomes very difficult.",
+          "commands": ["F8", "F3", "F10", "F12"],
+          "instructions": [
+            "F8 — Turn ON Ortho Mode: locks the cursor to perfectly straight horizontal and vertical lines only",
+            "F3 — Turn ON Object Snap: snaps the cursor exactly to endpoints, midpoints, and centers of existing objects",
+            "F10 — Turn ON Polar Tracking: automatically guides the cursor at 45° and 90° angles",
+            "F12 — Turn ON Dynamic Input: lets you type exact dimensions directly at the cursor position",
+            "Check the status bar at the bottom — all four icons should appear active and highlighted"
+          ],
+          "note": {
+            "type": "info",
+            "label": "Quick visual check",
+            "text": "Look at the status bar at the very bottom of AutoCAD. The Ortho, Osnap, Polar, and DYN icons should all appear active (colored), not grayed out."
+          }
+        },
+        {
+          "stepNumber": 6,
+          "title": "Configure Object Snap Settings",
+          "subtitle": "Choose which snap points AutoCAD will use",
+          "why": "Object Snap tells AutoCAD which exact points to snap to. Too few snaps cause walls to miss connections. Too many snaps cause the cursor to jump to unwanted points.",
+          "commands": ["OS", "OSNAP"],
+          "instructions": [
+            "Type OS and press Enter — the Drafting Settings dialog opens",
+            "Go to the Object Snap tab",
+            "Enable only these six snaps: Endpoint, Midpoint, Center, Intersection, Perpendicular, Nearest",
+            "Disable all other snaps to keep snapping clean and predictable",
+            "Click OK to confirm"
+          ],
+          "note": {
+            "type": "warning",
+            "label": "Do not enable all snaps",
+            "text": "Enabling every snap option makes the cursor jump unpredictably to random points. Use only the six listed above for reliable, accurate snapping."
+          }
+        },
+        {
+          "stepNumber": 7,
+          "title": "Set Display Background and Crosshair Size",
+          "subtitle": "Comfortable and clear drawing environment",
+          "why": "A dark background reduces eye strain during long drawing sessions. A larger crosshair helps you stay oriented inside large municipal drawings.",
+          "commands": ["OP", "OPTIONS"],
+          "instructions": [
+            "Type OP and press Enter — the Options dialog opens",
+            "Go to the Display tab",
+            "Click the Colors button → Drawing Window Background → select Black or Dark Gray",
+            "Click Apply & Close",
+            "Back in Display tab, find Crosshair Size — change from 5 to 15 or 20",
+            "Click Apply then OK to save all display changes"
+          ],
+          "note": {
+            "type": "info",
+            "label": "Does background color affect printing?",
+            "text": "No. The background color is only for your screen comfort. It has absolutely no effect on how the drawing prints or plots on paper."
+          }
+        }
+      ]
+    },
+    {
+      "phaseNumber": 4,
+      "phaseTitle": "Layer Setup",
+      "steps": [
+        {
+          "stepNumber": 8,
+          "title": "Open Layer Properties Manager",
+          "subtitle": "Your drawing's organization system",
+          "why": "Layers separate different parts of your drawing — walls, dimensions, text, doors — into organized groups. This makes editing, printing, and reviewing drawings much easier and more professional.",
+          "commands": ["LA", "LAYER"],
+          "instructions": [
+            "Type LA and press Enter — the Layer Properties Manager panel opens",
+            "This panel shows all layers currently in your drawing",
+            "The default layer is called 0 — never draw your actual work on layer 0",
+            "You will create new dedicated layers for each type of drawing element",
+            "Keep this panel open while creating all your layers"
+          ],
+          "note": {
+            "type": "info",
+            "label": "Think of layers like folders",
+            "text": "Just like you organize different files into different folders on your computer, you organize different drawing elements onto different layers in AutoCAD."
+          }
+        },
+        {
+          "stepNumber": 9,
+          "title": "Create Standard Layers for Municipal Drawings",
+          "subtitle": "One layer per drawing element type",
+          "why": "Professional municipal drawings require properly organized layers. This makes it easy to control visibility, print line weights, and edit specific elements without affecting others.",
+          "commands": [],
+          "instructions": [
+            "Click the New Layer button (page icon at top of Layer panel) to create each layer",
+            "Create all layers from the standard layer table below",
+            "Assign the correct color, linetype, and lineweight to each layer as listed",
+            "For CENTER2 linetype: if it is missing, click the linetype cell and click Load to find it",
+            "Do not rename or skip any layer — all are needed for complete municipal drawings"
+          ],
+          "standardLayers": [
+            {
+              "name": "WALL",
+              "color": "Red",
+              "colorNumber": 1,
+              "linetype": "Continuous",
+              "lineweight": "0.40 mm",
+              "use": "All external and internal walls"
+            },
+            {
+              "name": "COLUMN",
+              "color": "Cyan",
+              "colorNumber": 4,
+              "linetype": "Continuous",
+              "lineweight": "0.50 mm",
+              "use": "Structural columns and pillars"
+            },
+            {
+              "name": "DIMENSION",
+              "color": "Yellow",
+              "colorNumber": 2,
+              "linetype": "Continuous",
+              "lineweight": "0.18 mm",
+              "use": "All dimension lines and annotations"
+            },
+            {
+              "name": "TEXT",
+              "color": "White",
+              "colorNumber": 7,
+              "linetype": "Continuous",
+              "lineweight": "0.18 mm",
+              "use": "Room names, notes, and all text labels"
+            },
+            {
+              "name": "CENTERLINE",
+              "color": "Green",
+              "colorNumber": 3,
+              "linetype": "CENTER2",
+              "lineweight": "0.13 mm",
+              "use": "Column grid lines and center references"
+            },
+            {
+              "name": "DOOR",
+              "color": "Magenta",
+              "colorNumber": 6,
+              "linetype": "Continuous",
+              "lineweight": "0.25 mm",
+              "use": "Door openings and door swing arcs"
+            },
+            {
+              "name": "WINDOW",
+              "color": "Blue",
+              "colorNumber": 5,
+              "linetype": "Continuous",
+              "lineweight": "0.25 mm",
+              "use": "Window openings in walls"
+            },
+            {
+              "name": "HATCH",
+              "color": "Dark Gray",
+              "colorNumber": 8,
+              "linetype": "Continuous",
+              "lineweight": "0.13 mm",
+              "use": "Material hatches — concrete, brick, earth"
+            },
+            {
+              "name": "GRID",
+              "color": "Gray",
+              "colorNumber": 9,
+              "linetype": "Continuous",
+              "lineweight": "0.09 mm",
+              "use": "Structural column grid layout"
+            }
+          ],
+          "note": {
+            "type": "info",
+            "label": "Linetype note",
+            "text": "If CENTER2 linetype is not available, click the linetype cell for the CENTERLINE layer, click Load, find CENTER2 in the list, and click OK to load it."
+          }
+        },
+        {
+          "stepNumber": 10,
+          "title": "Always Set the Correct Current Layer Before Drawing",
+          "subtitle": "Check this before placing any object",
+          "why": "Whatever layer is set as current is where all new objects will be placed. Drawing walls on the TEXT layer or dimensions on the WALL layer creates a disorganized drawing that is very difficult to fix later.",
+          "commands": [],
+          "instructions": [
+            "Look at the Layer dropdown in the ribbon at the top left of the screen",
+            "It shows which layer is currently active",
+            "Before drawing walls — set current layer to WALL",
+            "Before adding dimensions — set current layer to DIMENSION",
+            "Before typing notes — set current layer to TEXT",
+            "Make checking the current layer a habit before starting any new task"
+          ],
+          "note": {
+            "type": "warning",
+            "label": "Most common beginner mistake",
+            "text": "Drawing everything on a single layer (usually Layer 0) makes it impossible to control visibility, printing, and editing later. Always place objects on the correct layer."
+          }
+        }
+      ]
+    },
+    {
+      "phaseNumber": 5,
+      "phaseTitle": "Text Style and Dimension Style Setup",
+      "steps": [
+        {
+          "stepNumber": 11,
+          "title": "Create a Professional Text Style",
+          "subtitle": "STYLE command — set font and width factor",
+          "why": "AutoCAD's default font looks unprofessional on printed municipal drawings. Setting up a proper text style makes all your text clean, readable, and consistent.",
+          "commands": ["ST", "STYLE"],
+          "instructions": [
+            "Type ST and press Enter — the Text Style dialog opens",
+            "Click New and name it: MUNICIPAL_TEXT",
+            "Font Name: select romans.shx — a clean, professional, standard engineering font",
+            "Height: leave it at 0 so you can set the height manually each time you place text",
+            "Width Factor: type 0.85 — slightly condensed text saves space on drawings",
+            "Click Apply then Close"
+          ],
+          "note": {
+            "type": "info",
+            "label": "Why leave height at 0?",
+            "text": "If you set a fixed height in the text style, you cannot change the size when placing individual text objects. Leaving height at 0 gives you full flexibility to choose the right size each time."
+          }
+        },
+        {
+          "stepNumber": 12,
+          "title": "Create a Dimension Style for Your Drawing Scale",
+          "subtitle": "DIMSTYLE — control arrows, text, and dimension lines",
+          "why": "Without a proper dimension style, arrows may be too large, text too small, or dimension lines too close together. The style must match your intended print scale to look correct on paper.",
+          "commands": ["D", "DIMSTYLE"],
+          "instructions": [
+            "Type D and press Enter — the Dimension Style Manager opens",
+            "Click New and name it: DIM_100 (for 1:100 scale drawings)",
+            "Lines tab: Extension line offset from origin = 2, Baseline spacing = 8",
+            "Symbols and Arrows tab: Arrowhead = Architectural Tick, Arrow size = 2.5",
+            "Text tab: Text style = MUNICIPAL_TEXT, Text height = 2.5",
+            "Primary Units tab: Unit format = Decimal, Precision = 0",
+            "Click OK, then click Set Current, then click Close"
+          ],
+          "note": {
+            "type": "info",
+            "label": "Different scale needs a different style",
+            "text": "For 1:50 scale drawings, create a separate style called DIM_50 with smaller values (arrow size 1.5, text height 2.0). Each different print scale requires its own properly configured dimension style."
+          }
+        },
+        {
+          "stepNumber": 13,
+          "title": "Set the Annotation Scale",
+          "subtitle": "Links text and dimension sizes to the print scale",
+          "why": "Annotation scale connects your text and dimension sizes to the drawing's print scale. If set incorrectly, text and arrows will appear too large or too small when the drawing is printed.",
+          "commands": [],
+          "instructions": [
+            "Look at the status bar at the bottom-right of the screen",
+            "Find the Annotation Scale dropdown — it shows 1:1 by default",
+            "Click it and select your drawing's intended print scale",
+            "Floor plans: use 1:100",
+            "Site plans: use 1:200 or 1:500",
+            "Detail drawings: use 1:20 or 1:50"
+          ],
+          "note": {
+            "type": "info",
+            "label": "What this controls",
+            "text": "At annotation scale 1:100, text set to 2.5 mm height will print exactly 2.5 mm on paper. This keeps all text and dimensions at a readable and professional size regardless of drawing scale."
+          }
+        }
+      ]
+    },
+    {
+      "phaseNumber": 6,
+      "phaseTitle": "Final Check and Save as Template",
+      "steps": [
+        {
+          "stepNumber": 14,
+          "title": "Run a Final Setup Checklist Before Drawing",
+          "subtitle": "Two minutes now saves hours of rework later",
+          "why": "A quick verification before starting drawing prevents the most common setup errors — especially wrong units and missing layers — which are very difficult and time-consuming to fix later.",
+          "commands": ["UN", "LA", "D", "ST"],
+          "instructions": [
+            "Type UN — confirm: Length = Decimal, Insertion Scale = Millimeters",
+            "Type LA — confirm: all required layers exist with correct colors and linetypes",
+            "Type D — confirm: dimension style DIM_100 is created and set as current",
+            "Type ST — confirm: MUNICIPAL_TEXT style is created",
+            "Check status bar: Ortho (F8), Osnap (F3), Polar (F10), Dynamic Input (F12) are all ON",
+            "Check the Layer dropdown: correct current layer is selected before starting"
+          ],
+          "finalChecklist": [
+            "Units set to Decimal, Millimeters",
+            "All standard layers created with correct colors and linetypes",
+            "Dimension style DIM_100 created and set as current",
+            "Text style MUNICIPAL_TEXT created",
+            "Ortho, Object Snap, Polar Tracking, Dynamic Input are all active",
+            "Correct current layer is selected"
+          ],
+          "note": {
+            "type": "success",
+            "label": "Ready to draw",
+            "text": "If all checklist items are confirmed, your AutoCAD environment is fully prepared and professional. You can now begin drawing walls, grids, or the site boundary with confidence."
+          }
+        },
+        {
+          "stepNumber": 15,
+          "title": "Save Your Setup as a Reusable Drawing Template",
+          "subtitle": "Do this once — use it for every future project",
+          "why": "A template saves all your layers, text styles, dimension styles, and settings permanently. Every future project starts fully prepared without repeating any of these setup steps.",
+          "commands": ["File > Save As"],
+          "instructions": [
+            "Go to File menu and click Save As",
+            "Change the file type from .dwg to AutoCAD Drawing Template (*.dwt)",
+            "Name the file: Municipal_Residential_Template.dwt",
+            "Save it in AutoCAD's default Templates folder so it appears in the new drawing dialog",
+            "From now on: File > New > select Municipal_Residential_Template.dwt and all setup is instantly ready"
+          ],
+          "note": {
+            "type": "success",
+            "label": "Professional time-saving habit",
+            "text": "Every professional engineer and draftsman works from a standard template. This single step saves 20 to 30 minutes at the start of every new project."
+          }
+        }
+      ]
+    }
+  ]
+}
