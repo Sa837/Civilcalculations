@@ -29,37 +29,37 @@ declare namespace __next_route_internal_types__ {
     S extends `${string}${SearchOrHash}` ? never : S
 
   type StaticRoutes = 
+    | `/blog/bridge-engineering-innovative-design`
     | `/blog/construction-technology-drones-robotics`
     | `/blog/environmental-engineering-remediation`
-    | `/blog/steel-structure-design-modern-analysis`
-    | `/blog/transportation-highway-design-standards`
     | `/blog/project-management-lean-construction`
+    | `/blog/transportation-highway-design-standards`
     | `/blog/sustainable-construction-green-materials`
     | `/blog/water-resources-sustainable-management`
+    | `/blog/steel-structure-design-modern-analysis`
     | `/calculators`
-    | `/blog/bridge-engineering-innovative-design`
-    | `/contact-action`
     | `/converters`
-    | `/resources`
-    | `/about`
-    | `/blog/concrete-technology-advanced-mix-design`
+    | `/contact-action`
     | `/`
-    | `/blog/advanced-structural-analysis-fem`
+    | `/resources`
     | `/blog/bim-building-information-modeling`
+    | `/blog/advanced-structural-analysis-fem`
+    | `/about`
     | `/blog/digital-twins-construction-management`
     | `/blog/smart-cities-iot-urban-infrastructure`
-    | `/privacy-policy`
-    | `/contact`
+    | `/blog/concrete-technology-advanced-mix-design`
     | `/blog/infrastructure-resilience-climate-change`
-    | `/cookie-policy`
-    | `/blog/geotechnical-soil-structure-interaction`
-    | `/terms-and-conditions`
+    | `/contact`
     | `/disclaimer`
+    | `/blog/geotechnical-soil-structure-interaction`
+    | `/cookie-policy`
+    | `/privacy-policy`
+    | `/terms-and-conditions`
   type DynamicRoutes<T extends string = string> = 
     | `/calculators/${SafeSlug<T>}`
     | `/converters/${SafeSlug<T>}`
-    | `/resources/${SafeSlug<T>}/${SafeSlug<T>}`
     | `/resources/${SafeSlug<T>}`
+    | `/resources/${SafeSlug<T>}/${SafeSlug<T>}`
 
   type RouteImpl<T> = 
     | StaticRoutes
