@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{\"app/resources/[category]/[sub]/page.tsx -> ../../../../components/ads/AdSlot\":{\"id\":\"app/resources/[category]/[sub]/page.tsx -> ../../../../components/ads/AdSlot\",\"files\":[\"static/chunks/_app-pages-browser_components_ads_AdSlot_tsx.js\"]}}"
+self.__REACT_LOADABLE_MANIFEST='{"app/resources/[category]/[sub]/page.tsx -> ../../../../components/ads/AdSlot":{"id":5482,"files":["static/chunks/5482.4c689958a3ae2a1c.js"]}}';

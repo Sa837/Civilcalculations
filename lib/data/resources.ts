@@ -254,9 +254,29 @@ export const resources: Resource[] = [
         title: 'Section F: Tracing Blueprints — Site Plan & Municipal Requirements',
         url: '/resources/autocad-tutorials/trace-blueprint-siteplan',
       },
+      {
+        title: 'Section G: Location Map Drawing — Municipal Submission Standards',
+        url: '/resources/autocad-tutorials/location-map',
+      },
+      {
+        title: 'Section H: Site Plan Drawing — Municipal Development Standards',
+        url: '/resources/autocad-tutorials/site-plan',
+      },
+      {
+        title: 'Section I: Floor Plan Drawing — Municipal Building Standards',
+        url: '/resources/autocad-tutorials/floor-plan',
+      },
+      {
+        title: 'Section J: Elevation Plan Drawing — Municipal Building Standards',
+        url: '/resources/autocad-tutorials/elevation-plan',
+      },
+      {
+        title: 'Section K: Cross-Section Plan Drawing — Municipal Building Standards',
+        url: '/resources/autocad-tutorials/crosssection-plan',
+      },
     ],
-    createdAt: new Date('2025-01-01'),
-    updatedAt: new Date('2025-01-01'),
+    createdAt: new Date('2026-01-01'),
+    updatedAt: new Date('2026-04-15'),
   },
   {
     slug: 'engineering-blogs-articles',

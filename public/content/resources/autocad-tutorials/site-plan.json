@@ -1,0 +1,472 @@
+{
+  "courseTitle": "Site Plan Drawing — Municipal Development Standards",
+  "courseDescription": "Comprehensive guide to creating professional site plans for municipal submission. Covers property boundaries, building footprints, parking, landscaping, utilities, drainage, GPS integration, and all municipal requirements for building permits and site development approval.",
+  "practicalExamples": [
+    {
+      "title": "Residential Complex Site Planning",
+      "description": "Multi-family residential project with parking and landscaping",
+      "steps": [
+        "Start with GPS coordinates for property corners",
+        "Use drone survey for accurate topography",
+        "Design parking layout per municipal code (1 space per 100 sq ft)",
+        "Include landscape areas meeting 30% green space requirement",
+        "Show utility connections with proper clearances"
+      ],
+      "municipalRequirements": {
+        "parkingRatio": "1:100 sq ft per unit",
+        "landscapePercentage": "Minimum 30% of site area",
+        "setbackFront": "6m from road",
+        "setbackSide": "3m from property line",
+        "setbackRear": "4.5m from rear property line"
+      }
+    },
+    {
+      "title": "Commercial Building Site Development",
+      "description": "Shopping complex with customer parking and service access",
+      "steps": [
+        "Survey site using total station for accuracy",
+        "Design customer parking (5 spaces per 100 sq ft)",
+        "Include delivery truck access and loading zones",
+        "Show pedestrian circulation and ADA compliance",
+        "Design stormwater management per municipal standards"
+      ],
+      "municipalRequirements": {
+        "parkingRatio": "5:100 sq ft commercial",
+        "loadingSpaces": "1 per 500 sq ft",
+        "accessibleParking": "5% of total spaces",
+        "sidewalkWidth": "Minimum 1.5m",
+        "fireAccess": "15m clear access around building"
+      }
+    },
+    {
+      "title": "Industrial Facility Site Layout",
+      "description": "Manufacturing plant with heavy vehicle access",
+      "steps": [
+        "Use GPS/GIS for large site mapping",
+        "Design truck circulation and parking areas",
+        "Show utility corridors and service areas",
+        "Include environmental protection zones",
+        "Design worker parking and pedestrian safety"
+      ],
+      "municipalRequirements": {
+        "truckParking": "Oversized spaces for heavy vehicles",
+        "utilityEasements": "3m minimum width",
+        "environmentalSetback": "30m from water bodies",
+        "workerParking": "1 per 3 employees",
+        "safetyZone": "10m around hazardous areas"
+      }
+    }
+  ],
+  "realWorldExamples": [
+    {
+      "location": "Maharajgunj, Kathmandu",
+      "projectType": "Mixed-Use Development",
+      "siteArea": "2500 sq m",
+      "challenges": ["Steep terrain", "Limited road access", "High-density area"],
+      "solutions": ["Terraced parking", "Retaining walls", "Shared access agreement"]
+    },
+    {
+      "location": "Bharatpur, Chitwan",
+      "projectType": "Educational Institution",
+      "siteArea": "15000 sq m",
+      "challenges": ["Large site area", "Seasonal flooding", "Remote utilities"],
+      "solutions": ["Comprehensive drainage", "On-site water treatment", "Solar power integration"]
+    },
+    {
+      "location": "Biratnagar, Morang",
+      "projectType": "Industrial Park",
+      "siteArea": "50000 sq m",
+      "challenges": ["Poor soil conditions", "Limited infrastructure", "Environmental concerns"],
+      "solutions": ["Deep foundations", "Infrastructure development", "Environmental impact assessment"]
+    }
+  ],
+  "targetAudience": ["Civil Engineering Students","Site Engineers","Municipality Draft Review Trainees","Land Development Professionals","Urban Planners","Architects"],
+  "courseObjectives": [
+    "Create complete site plans showing building placement and site development",
+    "Include parking layouts, landscaping, and utility connections",
+    "Show drainage patterns and stormwater management features",
+    "Produce municipal-compliant site plans with all required elements"
+  ],
+  "phases": [
+    {
+      "phaseNumber": 1,
+      "phaseTitle": "Setup — Site Plan Standards and Layers",
+      "phaseDescription": "Prepare drawing environment with proper units, layers, and municipal standards.",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "title": "Configure Drawing Units and Scale",
+          "subtitle": "Set up for site plan requirements",
+          "why": "Site plans typically use 1:200 or 1:500 scale and require precise unit setup for accurate dimensions.",
+          "commands": ["UNITS","LIMITS"],
+          "instructions": [
+            "Type UNITS and set Type to Decimal, Insertion Scale to Meters",
+            "Set Precision to 0.00 for centimeter accuracy",
+            "Set LIMITS to accommodate entire site (e.g., 0,0 to 200,200 for 200m x 200m site)",
+            "Set annotation scale to 1:200 or 1:500 as required",
+            "Save as Site_Plan_Template.dwt for future projects"
+          ]
+        },
+        {
+          "stepNumber": 2,
+          "title": "Create Site Plan Layer System",
+          "subtitle": "Organize all site elements",
+          "why": "Proper layer organization is essential for controlling visibility, printing, and municipal review.",
+          "commands": ["LAYER"],
+          "instructions": [
+            "Create property layers: PROPERTY_LINE (Red, 0.50mm), EASEMENT (Yellow, 0.30mm)",
+            "Create building layers: BUILDING_FOOTPRINT (White, 0.40mm), BUILDING_OUTLINE (Cyan, 0.25mm)",
+            "Create parking layers: PARKING_STALLS (Blue, 0.25mm), PARKING_MARKING (White, 0.18mm)",
+            "Create landscape layers: LANDSCAPING (Green, 0.20mm), TREES (Dark Green, 0.25mm)",
+            "Create utility layers: WATER_LINE (Blue, 0.30mm), SEWER_LINE (Brown, 0.30mm), ELECTRIC (Red, 0.25mm)",
+            "Create drainage layers: DRAINAGE (Cyan, 0.35mm), CONTOURS (Gray, 0.13mm)",
+            "Create annotation layers: TEXT (White, 0.18mm), DIMENSIONS (Yellow, 0.18mm), HATCH (Dark Gray, 0.13mm)"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 2,
+      "phaseTitle": "Property Boundaries and Survey Data",
+      "phaseDescription": "Draw property lines and incorporate survey information.",
+      "steps": [
+        {
+          "stepNumber": 3,
+          "title": "Draw Property Boundaries with GPS Integration",
+          "subtitle": "Define legal property limits using modern survey methods",
+          "why": "Property boundaries must be accurate as they define the legal limits of development and must match land registry records.",
+          "commands": ["PLINE","LINE","DIMENSION","GEOGRAPHICLOCATION","POINT"],
+          "instructions": [
+            "Set current layer to PROPERTY_LINE",
+            "Method 1: GPS Survey - Mark corners with GPS device, import coordinates using POINT command",
+            "Method 2: Total Station - Import survey data from professional surveyor",
+            "Method 3: Land Registry - Use coordinates from official land registration documents",
+            "Draw boundary using PLINE connecting coordinate points",
+            "Add bearing and distance annotations (e.g., 'N 45°30'15\" E 25.50m')",
+            "Include GPS coordinates at each corner (e.g., '27.7172°N, 85.3240°E')",
+            "Calculate total area using AREA command and annotate"
+          ],
+          "practicalTip": {
+            "title": "Coordinate System for Nepal",
+            "text": "Use UTM Zone 45N with WGS84 datum for all municipal submissions in Nepal. Convert local coordinates to UTM using online tools or GIS software."
+          }
+        },
+        {
+          "stepNumber": 4,
+          "title": "Add Easements and Setbacks",
+          "subtitle": "Show legal restrictions and building limits",
+          "why": "Easements and setbacks are legal requirements that restrict where buildings can be placed.",
+          "commands": ["OFFSET","PLINE","HATCH"],
+          "instructions": [
+            "Set current layer to EASEMENT",
+            "Use OFFSET to create setback lines from property boundaries (typically 3-6m)",
+            "Draw utility easements using different linetypes if required",
+            "Hatch setback areas with light pattern to show building restriction zones",
+            "Add setback dimension annotations",
+            "Label different easement types (utility, drainage, access)"
+          ]
+        },
+        {
+          "stepNumber": 5,
+          "title": "Import or Draw Topography",
+          "subtitle": "Show site elevation and contours",
+          "why": "Topography affects building placement, drainage, and site design decisions.",
+          "commands": ["CONTOUR","SPLINE","TEXT"],
+          "instructions": [
+            "Set current layer to CONTOURS",
+            "Import survey contours if available, or draw manually using SPLINE",
+            "Set contour interval (typically 0.5m or 1m depending on site slope)",
+            "Add elevation labels at regular intervals along contours",
+            "Show high and low points clearly",
+            "Add spot elevations at key locations (building corners, access points)"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 3,
+      "phaseTitle": "Building Placement and Footprints",
+      "phaseDescription": "Position buildings and show their relationship to the site.",
+      "steps": [
+        {
+          "stepNumber": 6,
+          "title": "Draw Building Footprints",
+          "subtitle": "Show building outline and floor area",
+          "why": "Building footprints show the exact location and size of structures on the site.",
+          "commands": ["RECTANG","PLINE","OFFSET"],
+          "instructions": [
+            "Set current layer to BUILDING_FOOTPRINT",
+            "Draw building outline using RECTANG or PLINE based on architectural plans",
+            "Ensure building is within all setback requirements",
+            "Add building dimensions (length, width)",
+            "Calculate and annotate building footprint area",
+            "Show building entrance locations and main access points"
+          ]
+        },
+        {
+          "stepNumber": 7,
+          "title": "Add Building Details and Overhangs",
+          "subtitle": "Show architectural features affecting site",
+          "why": "Overhangs, balconies, and projections affect setback calculations and neighbor relationships.",
+          "commands": ["OFFSET","PLINE","HATCH"],
+          "instructions": [
+            "Use BUILDING_OUTLINE layer for architectural projections",
+            "Draw roof overhangs, balconies, and bay windows using OFFSET",
+            "Show different building levels if multiple floors",
+            "Hatch different floor areas with distinct patterns if required",
+            "Add building height annotation and floor count"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 4,
+      "phaseTitle": "Parking and Circulation",
+      "phaseDescription": "Design parking areas and vehicle circulation patterns.",
+      "steps": [
+        {
+          "stepNumber": 8,
+          "title": "Layout Parking Areas per Municipal Code",
+          "subtitle": "Design parking stalls meeting accessibility and efficiency requirements",
+          "why": "Adequate parking is a municipal requirement and must comply with accessibility laws and efficiency standards.",
+          "commands": ["RECTANG","ARRAY","OFFSET","HATCH"],
+          "instructions": [
+            "Set current layer to PARKING_STALLS",
+            "Calculate required spaces: Residential (1:100 sq ft), Commercial (5:100 sq ft), Industrial (3:100 sq ft)",
+            "Draw standard spaces (2.4m x 4.8m) and compact spaces (2.3m x 4.2m)",
+            "Design accessible spaces (3.6m x 4.8m) - 5% of total spaces minimum",
+            "Use ARRAY for efficient layout of multiple rows",
+            "Add access aisles (6m for two-way, 4.5m for one-way)",
+            "Hatch accessible spaces with distinctive pattern",
+            "Add directional arrows and parking space numbers"
+          ],
+          "parkingStandards": {
+            "standardSpace": "2.4m wide x 4.8m long",
+            "compactSpace": "2.3m wide x 4.2m long",
+            "accessibleSpace": "3.6m wide x 4.8m long",
+            "twoWayAisle": "6m minimum width",
+            "oneWayAisle": "4.5m minimum width",
+            "accessibleRatio": "5% of total spaces minimum"
+          }
+        },
+        {
+          "stepNumber": 9,
+          "title": "Add Parking Markings and Symbols",
+          "subtitle": "Complete parking layout details",
+          "why": "Clear markings and symbols help reviewers understand parking layout and traffic flow.",
+          "commands": ["LINE","TEXT","CIRCLE"],
+          "instructions": [
+            "Set current layer to PARKING_MARKING",
+            "Draw stall lines using LINE with appropriate spacing",
+            "Add parking space numbers if required",
+            "Show directional arrows for traffic flow",
+            "Mark disabled spaces with appropriate symbols",
+            "Add parking area labels and capacity information"
+          ]
+        },
+        {
+          "stepNumber": 10,
+          "title": "Design Vehicle Circulation",
+          "subtitle": "Show access routes and driveways",
+          "why": "Proper vehicle circulation ensures safe access and meets municipal traffic requirements.",
+          "commands": ["PLINE","FILLET","OFFSET"],
+          "instructions": [
+            "Draw driveway access from public road to site",
+            "Design internal circulation roads with appropriate radii",
+            "Show turning radii for vehicles (typically 6m minimum)",
+            "Add pedestrian walkways separate from vehicle traffic",
+            "Ensure emergency access routes are clearly shown"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 5,
+      "phaseTitle": "Landscaping and Site Amenities",
+      "phaseDescription": "Add landscaping elements and site amenities.",
+      "steps": [
+        {
+          "stepNumber": 11,
+          "title": "Add Landscaping Areas",
+          "subtitle": "Show green spaces and planting areas",
+          "why": "Landscaping is often required by municipalities and improves site aesthetics.",
+          "commands": ["PLINE","HATCH","CIRCLE"],
+          "instructions": [
+            "Set current layer to LANDSCAPING",
+            "Draw lawn areas, garden beds, and green spaces",
+            "Use HATCH with grass pattern for lawn areas",
+            "Show planting beds with different hatching patterns",
+            "Add landscape area calculations and percentages",
+            "Ensure landscaping meets municipal minimum requirements"
+          ]
+        },
+        {
+          "stepNumber": 12,
+          "title": "Place Trees and Planting",
+          "subtitle": "Show individual trees and major plantings",
+          "why": "Trees provide shade, improve aesthetics, and may be required by municipal landscaping standards.",
+          "commands": ["CIRCLE","INSERT","ARRAY"],
+          "instructions": [
+            "Set current layer to TREES",
+            "Draw tree circles (canopy spread) using CIRCLE",
+            "Use different sizes for mature vs. new trees",
+            "Show existing trees to remain vs. new trees to be planted",
+            "Add tree species labels if required",
+            "Ensure tree placement doesn't conflict with utilities or structures"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 6,
+      "phaseTitle": "Utilities and Services",
+      "phaseDescription": "Show utility connections and service infrastructure.",
+      "steps": [
+        {
+          "stepNumber": 13,
+          "title": "Draw Water and Sewer Connections",
+          "subtitle": "Show utility service lines",
+          "why": "Utility connections are essential for building occupancy and must be properly shown.",
+          "commands": ["PLINE","LINE","TEXT"],
+          "instructions": [
+            "Set current layer to WATER_LINE",
+            "Draw water main connection from street to building",
+            "Show water meter location and shutoff valves",
+            "Switch to SEWER_LINE layer and draw sewer connection",
+            "Show cleanout locations and sewer line slope",
+            "Add pipe size annotations and connection points"
+          ]
+        },
+        {
+          "stepNumber": 14,
+          "title": "Add Electrical and Other Utilities",
+          "subtitle": "Complete utility infrastructure",
+          "why": "All utility services must be shown for complete site plan approval.",
+          "commands": ["PLINE","TEXT","CIRCLE"],
+          "instructions": [
+            "Set current layer to ELECTRIC",
+            "Draw electrical service connection from pole/transformer to building",
+            "Show meter location and service entrance",
+            "Add other utilities like gas, telephone, or cable if applicable",
+            "Show utility easements and clearance requirements",
+            "Label all utility lines clearly"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 7,
+      "phaseTitle": "Drainage and Stormwater Management",
+      "phaseDescription": "Design drainage patterns and stormwater management features.",
+      "steps": [
+        {
+          "stepNumber": 15,
+          "title": "Design Surface Drainage",
+          "subtitle": "Show water flow patterns",
+          "why": "Proper drainage prevents flooding and is a critical municipal requirement.",
+          "commands": ["PLINE","SPLINE","ARROW"],
+          "instructions": [
+            "Set current layer to DRAINAGE",
+            "Draw surface drainage flow arrows using PLINE",
+            "Show direction of water flow across the site",
+            "Indicate low points and collection areas",
+            "Show how water flows to storm drains or swales",
+            "Ensure drainage doesn't cause problems for neighboring properties"
+          ]
+        },
+        {
+          "stepNumber": 16,
+          "title": "Add Stormwater Management Features",
+          "subtitle": "Show drainage infrastructure",
+          "why": "Stormwater management features are often required for site development approval.",
+          "commands": ["RECTANG","PLINE","HATCH"],
+          "instructions": [
+            "Draw stormwater collection pits or catch basins",
+            "Show swales or drainage channels if required",
+            "Add detention ponds or rain gardens if part of design",
+            "Show infiltration areas or permeable surfaces",
+            "Add drainage calculations and capacity information"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 8,
+      "phaseTitle": "Final Details and Municipal Requirements",
+      "phaseDescription": "Complete the site plan with annotations, dimensions, and required elements.",
+      "steps": [
+        {
+          "stepNumber": 17,
+          "title": "Add Dimensions and Annotations",
+          "subtitle": "Complete technical documentation",
+          "why": "Clear dimensions and annotations are essential for municipal review and construction.",
+          "commands": ["DIMENSION","TEXT","QLEADER"],
+          "instructions": [
+            "Set current layer to DIMENSIONS",
+            "Add overall site dimensions",
+            "Dimension building setbacks from property lines",
+            "Add parking space dimensions and aisle widths",
+            "Annotate landscape areas and tree locations",
+            "Add utility line sizes and slopes",
+            "Include all required municipal annotations"
+          ]
+        },
+        {
+          "stepNumber": 18,
+          "title": "Add North Arrow and Scale",
+          "subtitle": "Essential map elements",
+          "why": "North arrow and scale are mandatory for all site plan submissions.",
+          "commands": ["INSERT","TEXT"],
+          "instructions": [
+            "Insert professional north arrow pointing to true north",
+            "Add scale bar appropriate to drawing scale (1:200 or 1:500)",
+            "Include written scale notation (e.g., 'Scale 1:200')",
+            "Place both elements in non-obtrusive locations"
+          ]
+        },
+        {
+          "stepNumber": 19,
+          "title": "Create Title Block and Legend",
+          "subtitle": "Complete submission documentation",
+          "why": "Title block and legend provide essential project information and symbol explanations.",
+          "commands": ["RECTANG","TEXT"],
+          "instructions": [
+            "Create title block with project name, site plan title, scale, date",
+            "Include drawing number, prepared by, checked by information",
+            "Add legend explaining all symbols, hatching patterns, and line types",
+            "Include municipal reference numbers and application details",
+            "Add contact information for project team"
+          ]
+        },
+        {
+          "stepNumber": 20,
+          "title": "Final Municipal Compliance Check",
+          "subtitle": "Verify all requirements with GPS verification",
+          "why": "Municipalities reject incomplete or non-compliant site plans and require coordinate verification.",
+          "commands": ["LAYER","PLOT","-DWGPREFIX","AREA"],
+          "instructions": [
+            "Verify all setback requirements are met with precise measurements",
+            "Check parking count meets municipal code requirements",
+            "Ensure landscaping percentage meets minimum standards (30% for residential)",
+            "Confirm all utilities are properly shown with clearances",
+            "Check that drainage design handles 100-year storm events",
+            "Verify GPS coordinates match land registry records",
+            "Prepare coordinate verification sheet with corner points",
+            "Create PDF submission with layers optimized for municipal review"
+          ],
+          "submissionChecklist": [
+            "GPS coordinates at all property corners",
+            "Setback dimensions clearly shown",
+            "Parking count and accessibility compliance",
+            "Landscape area calculation (30% minimum)",
+            "Utility clearances and connection points",
+            "Drainage calculations and capacity",
+            "Coordinate system: UTM Zone 45N WGS84",
+            "Survey license number and date",
+            "File naming: ProjectName_SitePlan_Date.pdf"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,490 @@
+{
+  "courseTitle": "Floor Plan Drawing — Municipal Building Standards",
+  "courseDescription": "Complete guide to creating professional floor plans for municipal submission. Covers walls, doors, windows, rooms, dimensions, annotations, building code compliance, and practical field measurements for residential and commercial building permits.",
+  "practicalExamples": [
+    {
+      "title": "Residential Apartment Floor Plan",
+      "description": "2-BHK apartment layout with modern amenities",
+      "steps": [
+        "Start with field measurements using laser distance meter",
+        "Verify room dimensions at multiple points for accuracy",
+        "Design layout per NBC (National Building Code) requirements",
+        "Include minimum room sizes: Living (12 sq m), Bedroom (10 sq m), Kitchen (6 sq m)",
+        "Ensure proper ventilation and natural light requirements"
+      ],
+      "buildingCodeRequirements": {
+        "minimumRoomSizes": {
+          "livingRoom": "12 sq m",
+          "bedroom": "10 sq m",
+          "kitchen": "6 sq m",
+          "bathroom": "4 sq m"
+        },
+        "minimumCeilingHeight": "2.75m",
+        "minimumDoorWidth": "0.8m (main), 0.7m (internal)",
+        "minimumWindowArea": "10% of floor area for natural light"
+      }
+    },
+    {
+      "title": "Commercial Office Floor Plan",
+      "description": "Open office layout with meeting rooms and facilities",
+      "steps": [
+        "Measure existing space with total station or laser scanner",
+        "Design flexible workspace layout",
+        "Include fire separation walls as per fire code",
+        "Design accessible routes and facilities",
+        "Plan HVAC and electrical distribution"
+      ],
+      "buildingCodeRequirements": {
+        "occupancyLoad": "1 person per 10 sq m",
+        "exitWidth": "6mm per person minimum",
+        "fireRating": "2-hour for separation walls",
+        "accessibleRoutes": "Minimum 1.5m width",
+        "emergencyExits": "Maximum 45m travel distance"
+      }
+    },
+    {
+      "title": "Educational Institution Floor Plan",
+      "description": "School classroom layout with corridors and facilities",
+      "steps": [
+        "Measure building footprint with GPS-enabled devices",
+        "Design classroom sizes per student capacity",
+        "Include proper egress corridors and stairs",
+        "Plan specialized facilities (labs, library, etc.)",
+        "Ensure accessibility compliance throughout"
+      ],
+      "buildingCodeRequirements": {
+        "classroomSize": "1.5 sq m per student",
+        "corridorWidth": "1.8m minimum",
+        "stairWidth": "1.2m per 100 occupants",
+        "fireSeparation": "1-hour between classrooms",
+        "accessibleFacilities": "Full compliance required"
+      }
+    }
+  ],
+  "realWorldExamples": [
+    {
+      "location": "Baneshwor, Kathmandu",
+      "projectType": "Residential Apartment",
+      "totalArea": "120 sq m per unit",
+      "challenges": ["Irregular building shape", "Limited natural light", "Structural constraints"],
+      "solutions": ["Strategic room placement", "Light wells", "Optimized layout"]
+    },
+    {
+      "location": "Pulchowk, Lalitpur",
+      "projectType": "Educational Building",
+      "totalArea": "2000 sq m per floor",
+      "challenges": ["Large floor area", "Multiple room types", "Strict fire codes"],
+      "solutions": ["Fire-rated corridors", "Compartmentalization", "Multiple egress routes"]
+    },
+    {
+      "location": "New Baneshwor, Kathmandu",
+      "projectType": "Commercial Office",
+      "totalArea": "500 sq m per floor",
+      "challenges": ["Open office requirements", "Flexible spaces", "Modern amenities"],
+      "solutions": ["Modular partitions", "Raised flooring", "Advanced HVAC integration"]
+    }
+  ],
+  "targetAudience": ["Civil Engineering Students","Architects","Site Engineers","Municipality Draft Review Trainees","Building Designers","Construction Professionals"],
+  "courseObjectives": [
+    "Create accurate floor plans showing room layouts and circulation",
+    "Include all building elements: walls, doors, windows, stairs, and fixtures",
+    "Add proper dimensions, room names, and building code annotations",
+    "Produce municipal-compliant floor plans ready for building permit submission"
+  ],
+  "phases": [
+    {
+      "phaseNumber": 1,
+      "phaseTitle": "Setup — Floor Plan Standards and Layers",
+      "phaseDescription": "Prepare drawing environment with proper units, layers, and architectural standards.",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "title": "Configure Drawing Units and Scale",
+          "subtitle": "Set up for architectural floor plan requirements",
+          "why": "Floor plans typically use 1:50 or 1:100 scale and require millimeter precision for accurate construction.",
+          "commands": ["UNITS","LIMITS"],
+          "instructions": [
+            "Type UNITS and set Type to Decimal, Insertion Scale to Millimeters",
+            "Set Precision to 0 for whole millimeters (no decimal places needed)",
+            "Set LIMITS to accommodate building footprint (e.g., 0,0 to 20000,15000 for 20m x 15m building)",
+            "Set annotation scale to 1:50 for detailed plans or 1:100 for overall plans",
+            "Save as Floor_Plan_Template.dwt for future projects"
+          ]
+        },
+        {
+          "stepNumber": 2,
+          "title": "Create Floor Plan Layer System",
+          "subtitle": "Organize all architectural elements",
+          "why": "Proper layer organization is essential for controlling visibility, printing different plan types, and municipal review.",
+          "commands": ["LAYER"],
+          "instructions": [
+            "Create structural layers: WALL (Red, 0.40mm), COLUMN (Cyan, 0.50mm), BEAM (Yellow, 0.35mm)",
+            "Create opening layers: DOOR (Magenta, 0.25mm), WINDOW (Blue, 0.25mm), STAIR (Green, 0.30mm)",
+            "Create fixture layers: FIXTURES (White, 0.20mm), PLUMBING (Brown, 0.25mm), ELECTRICAL (Red, 0.18mm)",
+            "Create annotation layers: TEXT (White, 0.18mm), DIMENSION (Yellow, 0.18mm), HATCH (Dark Gray, 0.13mm)",
+            "Create reference layers: GRID (Gray, 0.09mm), CENTERLINE (Green, 0.13mm), FURNITURE (Light Gray, 0.15mm)",
+            "Create special layers: DEMOLITION (Red, 0.25mm, Dashed), NEW_CONSTRUCTION (Green, 0.40mm)"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 2,
+      "phaseTitle": "Structural Layout — Grids and Columns",
+      "phaseDescription": "Establish the building grid and place structural elements.",
+      "steps": [
+        {
+          "stepNumber": 3,
+          "title": "Create Column Grid Layout",
+          "subtitle": "Establish structural grid system",
+          "why": "Column grid provides the structural framework and reference for all building elements.",
+          "commands": ["LINE","ARRAY","TEXT"],
+          "instructions": [
+            "Set current layer to GRID",
+            "Draw grid lines at regular intervals (typically 3m, 4m, or 5m spacing)",
+            "Use ARRAY to create multiple grid lines efficiently",
+            "Add grid labels (A, B, C along one axis, 1, 2, 3 along perpendicular axis)",
+            "Ensure grid extends beyond building footprint for clarity",
+            "Use different linetype for main grid vs. secondary grid if needed"
+          ]
+        },
+        {
+          "stepNumber": 4,
+          "title": "Place Structural Columns",
+          "subtitle": "Position columns at grid intersections",
+          "why": "Columns support the structure and must be precisely positioned according to structural design.",
+          "commands": ["RECTANG","CIRCLE","COPY","ARRAY"],
+          "instructions": [
+            "Set current layer to COLUMN",
+            "Draw column cross-section (typically square 300x300mm to 600x600mm)",
+            "Place columns at grid intersections as per structural design",
+            "Use ARRAY for regular column patterns",
+            "Add column identification marks if required",
+            "Show column sizes and reinforcement details in separate schedule if needed"
+          ]
+        },
+        {
+          "stepNumber": 5,
+          "title": "Add Beams and Structural Elements",
+          "subtitle": "Complete structural framework",
+          "why": "Beams and other structural elements complete the building's structural system.",
+          "commands": ["PLINE","OFFSET","TRIM"],
+          "instructions": [
+            "Set current layer to BEAM",
+            "Draw beam lines connecting columns",
+            "Use OFFSET to show beam width (typically 200-300mm wide)",
+            "Show beam drops or variations in height if required",
+            "Add structural notes and specifications",
+            "Ensure structural elements don't conflict with architectural requirements"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 3,
+      "phaseTitle": "Wall Layout and Room Definition",
+      "phaseDescription": "Draw walls and define room spaces.",
+      "steps": [
+        {
+          "stepNumber": 6,
+          "title": "Draw Exterior Walls with Field Verification",
+          "subtitle": "Create building perimeter using measured dimensions",
+          "why": "Exterior walls define the building envelope and must match field measurements with building code compliance.",
+          "commands": ["PLINE","OFFSET","FILLET","MEASUREGEOM"],
+          "instructions": [
+            "Set current layer to WALL",
+            "Field Method: Measure wall dimensions on-site using laser distance meter",
+            "Draw exterior wall centerlines using measured dimensions",
+            "Use OFFSET to create wall thickness (200-300mm for exterior walls)",
+            "Verify diagonal measurements for squareness (use MEASUREGEOM)",
+            "Use FILLET to create clean wall corners with proper radii",
+            "Add wall construction annotations (e.g., '250mm RCC wall')",
+            "Include fire rating if required by building code"
+          ],
+          "practicalTip": {
+            "title": "Field Measurement Accuracy",
+            "text": "Always measure each wall at least twice and at different heights. Record the average dimension. For irregular walls, take measurements at 0.5m intervals."
+          }
+        },
+        {
+          "stepNumber": 7,
+          "title": "Draw Interior Walls and Partitions",
+          "subtitle": "Define interior spaces",
+          "why": "Interior walls create room divisions and must follow functional and code requirements.",
+          "commands": ["PLINE","OFFSET","TRIM"],
+          "instructions": [
+            "Continue with WALL layer for interior walls",
+            "Draw interior partition walls (typically 100mm to 150mm thick)",
+            "Use TRIM to clean up wall intersections",
+            "Ensure wall placement allows for proper room dimensions",
+            "Consider acoustic and fire rating requirements for partition types"
+          ]
+        },
+        {
+          "stepNumber": 8,
+          "title": "Add Wall Openings and Penetrations",
+          "subtitle": "Show openings for doors, windows, and services",
+          "why": "Wall openings must be properly shown and sized for doors, windows, and service penetrations.",
+          "commands": ["RECTANG","TRIM","BREAK"],
+          "instructions": [
+            "Create openings in walls for doors and windows",
+            "Use RECTANG to define opening sizes, then TRIM wall lines",
+            "Add service penetrations for plumbing, electrical, and HVAC",
+            "Show lintel details above openings if required",
+            "Add opening size annotations and specifications"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 4,
+      "phaseTitle": "Doors and Windows",
+      "phaseDescription": "Add doors and windows with proper symbols and dimensions.",
+      "steps": [
+        {
+          "stepNumber": 9,
+          "title": "Draw Doors and Door Swings",
+          "subtitle": "Show door types and opening directions",
+          "why": "Door symbols must show clear opening direction and type for circulation and code compliance.",
+          "commands": ["RECTANG","ARC","CIRCLE"],
+          "instructions": [
+            "Set current layer to DOOR",
+            "Draw door leaf (typically 35mm thick shown as rectangle)",
+            "Add door swing arc showing opening direction",
+            "Show door frame and hardware if required",
+            "Use different symbols for different door types (single, double, sliding)",
+            "Add door size annotations (e.g., '900x2100' for 900mm wide x 2100mm high)"
+          ]
+        },
+        {
+          "stepNumber": 10,
+          "title": "Draw Windows and Openings",
+          "subtitle": "Show window types and locations",
+          "why": "Windows must be properly shown with type, size, and opening method for natural light and ventilation.",
+          "commands": ["LINE","RECTANG","TRIM"],
+          "instructions": [
+            "Set current layer to WINDOW",
+            "Draw window openings in walls (typically 100-200mm deep shown)",
+            "Show window frame and glazing lines",
+            "Indicate opening method (sliding, casement, fixed) with appropriate symbols",
+            "Add window size annotations and type specifications",
+            "Ensure windows meet building code requirements for light and ventilation"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 5,
+      "phaseTitle": "Vertical Circulation — Stairs and Elevators",
+      "phaseDescription": "Add stairs, elevators, and other vertical circulation elements.",
+      "steps": [
+        {
+          "stepNumber": 11,
+          "title": "Draw Stairs and Landings",
+          "subtitle": "Show vertical circulation",
+          "why": "Stairs must be properly dimensioned and shown with direction indicators for safety and code compliance.",
+          "commands": ["RECTANG","LINE","ARRAY","ARROW"],
+          "instructions": [
+            "Set current layer to STAIR",
+            "Draw stair outline and landing areas",
+            "Use ARRAY to create individual treads (typically 250-300mm deep)",
+            "Add direction arrow showing 'UP' or 'DOWN' direction",
+            "Show handrail and guardrail locations if required",
+            "Add stair dimensions: width, riser height, tread depth",
+            "Include stair identification and fire rating if required"
+          ]
+        },
+        {
+          "stepNumber": 12,
+          "title": "Add Elevators and Lifts",
+          "subtitle": "Show vertical transport systems",
+          "why": "Elevators must be clearly shown with dimensions and machine room locations.",
+          "commands": ["RECTANG","TEXT"],
+          "instructions": [
+            "Draw elevator car dimensions (typically 1500x2100mm for passenger elevator)",
+            "Show elevator doors and opening direction",
+            "Add machine room location if applicable",
+            "Include elevator capacity and type annotations",
+            "Show pit and overhead clearance requirements if needed"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 6,
+      "phaseTitle": "Fixtures and Equipment",
+      "phaseDescription": "Add plumbing fixtures, kitchen equipment, and built-in fixtures.",
+      "steps": [
+        {
+          "stepNumber": 13,
+          "title": "Add Plumbing Fixtures",
+          "subtitle": "Show toilets, sinks, and drainage",
+          "why": "Plumbing fixtures must be properly located and sized for building code compliance.",
+          "commands": ["RECTANG","CIRCLE","INSERT"],
+          "instructions": [
+            "Set current layer to PLUMBING",
+            "Draw toilet fixtures (typically 600x1000mm for standard toilet)",
+            "Add sinks, urinals, and other fixtures as required",
+            "Show drainage connections and vent pipes if required",
+            "Add fixture type and size annotations",
+            "Ensure fixtures meet accessibility requirements (ADA/local codes)"
+          ]
+        },
+        {
+          "stepNumber": 14,
+          "title": "Add Kitchen and Built-in Fixtures",
+          "subtitle": "Show built-in equipment and fixtures",
+          "why": "Built-in fixtures and equipment must be properly shown for space planning and utilities.",
+          "commands": ["RECTANG","PLINE","HATCH"],
+          "instructions": [
+            "Set current layer to FIXTURES",
+            "Draw kitchen counters, cabinets, and built-in appliances",
+            "Show shelving, storage, and other built-in elements",
+            "Add laboratory or specialized fixtures if applicable",
+            "Use HATCH to differentiate fixture types",
+            "Add fixture specifications and clearance requirements"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 7,
+      "phaseTitle": "Annotations and Dimensions",
+      "phaseDescription": "Add dimensions, room names, and technical annotations.",
+      "steps": [
+        {
+          "stepNumber": 15,
+          "title": "Add Dimension Strings with Verification",
+          "subtitle": "Complete technical dimensioning with field verification notes",
+          "why": "Accurate dimensions with verification notes are essential for construction quality and municipal approval.",
+          "commands": ["DIMLINEAR","DIMALIGNED","DIMCONTINUE","TOLERANCE"],
+          "instructions": [
+            "Set current layer to DIMENSION",
+            "Add overall building dimensions with tolerance notes (±10mm)",
+            "Dimension individual room sizes with clear annotations",
+            "Add field verification notes: 'Measured on-site 2025-01-15'",
+            "Use DIMCONTINUE for efficient chained dimensions",
+            "Add structural grid dimensions and column locations",
+            "Include construction tolerances where critical",
+            "Verify dimensions don't overlap and are clearly readable"
+          ],
+          "dimensioningStandards": {
+            "overallDimensions": "±10mm tolerance",
+            "roomDimensions": "±5mm tolerance",
+            "structuralDimensions": "±3mm tolerance",
+            "textHeight": "3mm at 1:50 scale",
+            "extensionLines": "2mm beyond object",
+            "dimensionLineOffset": "8mm from object"
+          }
+        },
+        {
+          "stepNumber": 16,
+          "title": "Add Room Names and Areas",
+          "subtitle": "Identify all spaces",
+          "why": "Room names and areas are required for building permits and space planning.",
+          "commands": ["TEXT","MTEXT","FIELD"],
+          "instructions": [
+            "Set current layer to TEXT",
+            "Add room names (e.g., 'LIVING ROOM', 'BEDROOM 1', 'KITCHEN')",
+            "Calculate and annotate room areas (e.g., '15.5 m²')",
+            "Use consistent text height (typically 3mm at print scale)",
+            "Position text to avoid overlapping with dimensions or fixtures",
+            "Add floor level identification if multiple floors"
+          ]
+        },
+        {
+          "stepNumber": 17,
+          "title": "Add Building Code Annotations",
+          "subtitle": "Include required code information",
+          "why": "Building code annotations are mandatory for municipal permit approval.",
+          "commands": ["TEXT","QLEADER"],
+          "instructions": [
+            "Add occupancy load calculations for each room",
+            "Show required means of egress and travel distances",
+            "Add fire rating requirements for walls and doors",
+            "Include accessibility compliance notes",
+            "Add construction material specifications if required",
+            "Show required clearances and minimum dimensions"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 8,
+      "phaseTitle": "Finishing Details and Municipal Requirements",
+      "phaseDescription": "Complete the floor plan with final details and required elements.",
+      "steps": [
+        {
+          "stepNumber": 18,
+          "title": "Add Floor Finishes and Materials",
+          "subtitle": "Show flooring types and patterns",
+          "why": "Floor finishes may be required for specific areas and affect construction details.",
+          "commands": ["HATCH","TEXT"],
+          "instructions": [
+            "Set current layer to HATCH",
+            "Use different hatch patterns for different floor materials",
+            "Add material legends and specifications",
+            "Show special flooring requirements (wet areas, clean rooms)",
+            "Include flooring transitions and thresholds",
+            "Add finish schedule if multiple types used"
+          ]
+        },
+        {
+          "stepNumber": 19,
+          "title": "Add North Arrow and Scale",
+          "subtitle": "Essential plan elements",
+          "why": "North arrow and scale are mandatory for all floor plan submissions.",
+          "commands": ["INSERT","TEXT"],
+          "instructions": [
+            "Insert professional north arrow pointing to true north",
+            "Add scale bar appropriate to drawing scale (1:50 or 1:100)",
+            "Include written scale notation",
+            "Place elements in non-obtrusive but visible locations"
+          ]
+        },
+        {
+          "stepNumber": 20,
+          "title": "Create Title Block and Drawing Information",
+          "subtitle": "Complete submission documentation",
+          "why": "Title block provides essential project identification and drawing information.",
+          "commands": ["RECTANG","TEXT"],
+          "instructions": [
+            "Create title block with project name, floor plan title, scale, date",
+            "Include drawing number, floor level, and revision information",
+            "Add designer, checker, and approval signatures",
+            "Include municipal reference numbers and permit details",
+            "Add drawing index and related sheet references"
+          ]
+        },
+        {
+          "stepNumber": 21,
+          "title": "Final Municipal Compliance Check",
+          "subtitle": "Verify all requirements with field verification",
+          "why": "Municipalities require field-verified dimensions and complete code compliance for floor plan approval.",
+          "commands": ["LAYER","PLOT","AREA","MEASUREGEOM"],
+          "instructions": [
+            "Verify all dimensions match field measurements within tolerance",
+            "Check room names and areas with calculated verification",
+            "Ensure minimum room sizes per NBC requirements",
+            "Confirm accessibility requirements (ADA/local codes) are fully met",
+            "Verify egress routes and travel distances",
+            "Check natural light and ventilation compliance",
+            "Prepare field measurement verification sheet",
+            "Create PDF submission with construction-ready layers"
+          ],
+          "complianceChecklist": [
+            "All dimensions field-verified with dates",
+            "Room areas meet minimum size requirements",
+            "Ceiling heights ≥ 2.75m throughout",
+            "Natural light ≥ 10% of floor area",
+            "Two means of egress from all spaces",
+            "Accessible routes to all facilities",
+            "Fire ratings shown where required",
+            "Structural grid and dimensions accurate",
+            "File naming: ProjectName_FloorPlan_Level_Date.pdf"
+          ]
+        }
+      ]
+    }
+  ]
+}

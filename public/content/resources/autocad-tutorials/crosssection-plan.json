@@ -1,0 +1,540 @@
+{
+  "courseTitle": "Cross-Section Plan Drawing — Municipal Building Standards",
+  "courseDescription": "Complete guide to creating professional cross-section plans for municipal submission. Covers building sections, structural elements, floor assemblies, roof construction, field measurements, and all building code requirements for building permits and construction approval.",
+  "practicalExamples": [
+    {
+      "title": "Residential Building Section",
+      "description": "Detailed section through 3-story residential building",
+      "steps": [
+        "Survey existing building dimensions using laser scanner",
+        "Design section cut through critical structural elements",
+        "Show floor assembly details with insulation",
+        "Include roof structure and waterproofing",
+        "Detail foundation and basement construction"
+      ],
+      "municipalRequirements": {
+        "floorAssembly": "Minimum R-3.5 thermal resistance",
+        "fireRating": "2-hour separation between units",
+        "foundationDepth": "Below frost line (1.2m in Kathmandu)",
+        "roofPitch": "Minimum 1:4 for drainage",
+        "ventilation": "Cross ventilation required"
+      }
+    },
+    {
+      "title": "Commercial Building Section",
+      "description": "Section through commercial office building",
+      "steps": [
+        "Measure structural elements and clear spans",
+        "Design HVAC integration in ceiling space",
+        "Show raised flooring for services",
+        "Detail curtain wall attachment",
+        "Include service core and elevator shaft"
+      ],
+      "municipalRequirements": {
+        "fireSeparation": "2-hour between floors",
+        "accessibleRoutes": "Minimum 1.5m width",
+        "emergencyPower": "Backup systems required",
+        "sprinklerSystem": "Required for >500 sq m",
+        "occupancyLoad": "1 person per 10 sq m"
+      }
+    },
+    {
+      "title": "Industrial Facility Section",
+      "description": "Section through manufacturing plant",
+      "steps": [
+        "Survey crane runway and support structure",
+        "Design heavy equipment foundations",
+        "Show overhead service systems",
+        "Detail loading dock and truck access",
+        "Include ventilation and dust collection"
+      ],
+      "municipalRequirements": {
+        "craneCapacity": "Structural certification required",
+        "foundationLoad": "Soil bearing capacity verification",
+        "ventilationRate": "12 air changes per hour",
+        "fireProtection": "Specialized systems required",
+        "environmentalControls": "Effluent treatment mandatory"
+      }
+    }
+  ],
+  "realWorldExamples": [
+    {
+      "location": "Kupondole, Lalitpur",
+      "projectType": "Mixed-Use Building",
+      "buildingHeight": "25m",
+      "challenges": ["Complex floor assemblies", "Multiple occupancy types", "Structural transfers"],
+      "solutions": ["Transfer beams", "Fire-rated assemblies", "Integrated services"]
+    },
+    {
+      "location": "Balkhu, Kathmandu",
+      "projectType": "Industrial Workshop",
+      "buildingHeight": "12m",
+      "challenges": ["Heavy equipment loads", "Crane systems", "Specialized ventilation"],
+      "solutions": ["Reinforced foundations", "Steel structure", "Dedicated HVAC"]
+    },
+    {
+      "location": "Pokhara Industrial Area",
+      "projectType": "Manufacturing Plant",
+      "buildingHeight": "18m",
+      "challenges": ["Large clear spans", "Heavy machinery", "Environmental controls"],
+      "solutions": ["Steel trusses", "Isolated foundations", "Advanced filtration"]
+    }
+  ],
+  "targetAudience": ["Civil Engineering Students","Architects","Structural Engineers","Municipality Draft Review Trainees","Building Designers","Construction Professionals"],
+  "courseObjectives": [
+    "Create accurate cross-section plans showing building construction details",
+    "Include structural elements, materials, and building assemblies",
+    "Add proper dimensions, levels, and building code annotations",
+    "Produce municipal-compliant cross-section plans ready for building permit submission"
+  ],
+  "phases": [
+    {
+      "phaseNumber": 1,
+      "phaseTitle": "Setup — Cross-Section Plan Standards and Layers",
+      "phaseDescription": "Prepare drawing environment with proper units, layers, and structural standards.",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "title": "Configure Drawing Units and Scale",
+          "subtitle": "Set up for cross-section requirements",
+          "why": "Cross-sections typically use 1:20 or 1:50 scale and require millimeter precision for construction details.",
+          "commands": ["UNITS","LIMITS"],
+          "instructions": [
+            "Type UNITS and set Type to Decimal, Insertion Scale to Millimeters",
+            "Set Precision to 0 for whole millimeters",
+            "Set LIMITS to accommodate section width and height (e.g., 0,0 to 30000,20000 for 30m wide x 20m high)",
+            "Set annotation scale to 1:20 for detailed sections or 1:50 for general sections",
+            "Save as CrossSection_Plan_Template.dwt for future projects"
+          ]
+        },
+        {
+          "stepNumber": 2,
+          "title": "Create Cross-Section Layer System",
+          "subtitle": "Organize all section elements",
+          "why": "Proper layer organization is essential for controlling visibility, printing different section types, and municipal review.",
+          "commands": ["LAYER"],
+          "instructions": [
+            "Create structural layers: STRUCT_SECTION (Red, 0.50mm), FOUNDATION_SECTION (Brown, 0.60mm), COLUMN_SECTION (Cyan, 0.50mm)",
+            "Create assembly layers: FLOOR_ASSEMBLY (Blue, 0.40mm), ROOF_ASSEMBLY (Green, 0.40mm), WALL_ASSEMBLY (Magenta, 0.40mm)",
+            "Create material layers: CONCRETE (Gray, 0.30mm), STEEL (White, 0.35mm), WOOD (Brown, 0.25mm), INSULATION (Light Gray, 0.20mm)",
+            "Create annotation layers: TEXT_SECTION (White, 0.18mm), DIM_SECTION (Yellow, 0.18mm), HATCH_SECTION (Dark Gray, 0.13mm)",
+            "Create detail layers: HARDWARE_SECTION (Black, 0.25mm), FASTENERS (Red, 0.15mm), MEMBRANE (Blue, 0.20mm)",
+            "Create reference layers: GRADE_SECTION (Brown, 0.25mm), GRID_SECTION (Gray, 0.09mm), CUT_LINE (Red, 0.40mm)"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 2,
+      "phaseTitle": "Section Layout and Ground Preparation",
+      "phaseDescription": "Establish the section cut line and ground conditions.",
+      "steps": [
+        {
+          "stepNumber": 3,
+          "title": "Define Section Cut Line",
+          "subtitle": "Establish section location and direction",
+          "why": "Section cut line shows where the building is cut and must be clearly indicated.",
+          "commands": ["PLINE","TEXT","ARROW"],
+          "instructions": [
+            "Set current layer to CUT_LINE",
+            "Draw section cut line on floor plan showing section location",
+            "Add arrows showing viewing direction",
+            "Label section (e.g., 'SECTION A-A', 'SECTION B-B')",
+            "Ensure section cuts through important structural and architectural elements",
+            "Coordinate section location with structural and architectural requirements"
+          ]
+        },
+        {
+          "stepNumber": 4,
+          "title": "Draw Ground Profile and Foundation",
+          "subtitle": "Show ground conditions and foundation",
+          "why": "Ground profile and foundation are critical for structural design and construction.",
+          "commands": ["LINE","SPLINE","HATCH"],
+          "instructions": [
+            "Set current layer to GRADE_SECTION",
+            "Draw existing ground profile using SPLINE or LINE",
+            "Show finished grade level at building perimeter",
+            "Set current layer to FOUNDATION_SECTION",
+            "Draw foundation walls and footings based on structural design",
+            "Use HATCH with concrete pattern for foundation elements",
+            "Add foundation depth and width dimensions"
+          ]
+        },
+        {
+          "stepNumber": 5,
+          "title": "Add Soil and Backfill Details",
+          "subtitle": "Show soil conditions and backfill",
+          "why": "Soil conditions affect foundation design and construction requirements.",
+          "commands": ["HATCH","LINE","TEXT"],
+          "instructions": [
+            "Use HATCH with earth pattern for soil areas",
+            "Show different soil types if required (native soil, fill material)",
+            "Add compaction requirements if specified",
+            "Show drainage layers or waterproofing if required",
+            "Add soil bearing capacity annotations if needed"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 3,
+      "phaseTitle": "Structural Elements and Assemblies",
+      "phaseDescription": "Draw structural elements and building assemblies.",
+      "steps": [
+        {
+          "stepNumber": 3,
+          "title": "Draw Structural Elements with Field Verification",
+          "subtitle": "Show structural elements with measured dimensions",
+          "why": "Structural elements must match actual field measurements and provide accurate construction details.",
+          "commands": ["RECTANG","HATCH","OFFSET","MEASUREGEOM"],
+          "instructions": [
+            "Set current layer to COLUMN_SECTION",
+            "Field Method: Measure actual column sizes on-site",
+            "Draw column cross-sections with measured dimensions",
+            "Add reinforcement details based on structural drawings",
+            "Switch to STRUCT_SECTION layer for beams",
+            "Measure and draw beam spans and support conditions",
+            "Use HATCH with appropriate material patterns",
+            "Add field verification notes: 'Verified on-site 2025-01-15'"
+          ],
+          "practicalTip": {
+            "title": "Structural Measurement Verification",
+            "text": "Always verify structural dimensions with as-built measurements. Document any variations from design drawings and obtain engineer approval for modifications."
+          }
+        },
+        {
+          "stepNumber": 7,
+          "title": "Add Floor and Roof Assemblies",
+          "subtitle": "Show complete floor and roof construction",
+          "why": "Floor and roof assemblies show complete construction details for proper building.",
+          "commands": ["LINE","OFFSET","HATCH"],
+          "instructions": [
+            "Set current layer to FLOOR_ASSEMBLY",
+            "Draw floor slab with thickness (typically 100-200mm)",
+            "Add floor finishing layers (screed, flooring)",
+            "Show ceiling assembly if applicable",
+            "Switch to ROOF_ASSEMBLY layer",
+            "Draw roof structure (joists, rafters, or slab)",
+            "Add roofing layers (decking, insulation, membrane)",
+            "Show parapet details if required"
+          ]
+        },
+        {
+          "stepNumber": 8,
+          "title": "Draw Wall Assemblies",
+          "subtitle": "Show complete wall construction",
+          "why": "Wall assemblies show all layers from exterior to interior finishes.",
+          "commands": ["LINE","OFFSET","HATCH"],
+          "instructions": [
+            "Set current layer to WALL_ASSEMBLY",
+            "Draw exterior wall with all layers (brick, insulation, drywall)",
+            "Show interior partitions with proper construction",
+            "Add vapor barriers and insulation if required",
+            "Show wall finishes and trim details",
+            "Add structural connections and anchorage details"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 4,
+      "phaseTitle": "Materials and Construction Details",
+      "phaseDescription": "Show material types and construction details with appropriate patterns.",
+      "steps": [
+        {
+          "stepNumber": 9,
+          "title": "Add Concrete and Masonry Details",
+          "subtitle": "Show concrete and masonry materials",
+          "why": "Concrete and masonry materials require specific detailing and reinforcement.",
+          "commands": ["HATCH","LINE","CIRCLE"],
+          "instructions": [
+            "Set current layer to CONCRETE",
+            "Use HATCH with concrete pattern for concrete elements",
+            "Add reinforcement details (rebar) with appropriate spacing",
+            "Show concrete cover and protection details",
+            "Add expansion joints or control joints if required",
+            "Include concrete strength specifications"
+          ]
+        },
+        {
+          "stepNumber": 10,
+          "title": "Add Steel and Metal Elements",
+          "subtitle": "Show structural steel and metal components",
+          "why": "Steel elements require proper detailing of connections and fasteners.",
+          "commands": ["LINE","HATCH","CIRCLE"],
+          "instructions": [
+            "Set current layer to STEEL",
+            "Draw steel beams, columns, and connections",
+            "Show bolt or weld connections with proper symbols",
+            "Add steel section designations (e.g., W200x46, HSS200x200)",
+            "Show steel decking or metal studs if used",
+            "Include steel grade and protection specifications"
+          ]
+        },
+        {
+          "stepNumber": 11,
+          "title": "Add Wood and Insulation Materials",
+          "subtitle": "Show wood framing and insulation",
+          "why": "Wood framing and insulation require proper detailing for structural and thermal performance.",
+          "commands": ["LINE","HATCH","RECTANG"],
+          "instructions": [
+            "Set current layer to WOOD",
+            "Draw wood framing members (studs, joists, rafters)",
+            "Show wood grain direction with appropriate hatching",
+            "Switch to INSULATION layer",
+            "Add insulation with appropriate hatching pattern",
+            "Show vapor barriers and air barriers if required",
+            "Include R-value or thermal performance specifications"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 5,
+      "phaseTitle": "Building Systems and Services",
+      "phaseDescription": "Add mechanical, electrical, and plumbing systems in section.",
+      "steps": [
+        {
+          "stepNumber": 12,
+          "title": "Add Plumbing and Drainage Systems",
+          "subtitle": "Show plumbing pipes and drainage",
+          "why": "Plumbing systems must be properly shown for construction and code compliance.",
+          "commands": ["LINE","CIRCLE","TEXT"],
+          "instructions": [
+            "Draw water supply lines (typically cold and hot)",
+            "Show drainage pipes with proper slopes",
+            "Add vent stacks if visible in section",
+            "Show plumbing fixtures and connections",
+            "Add pipe sizes and material specifications",
+            "Include cleanout locations and access points"
+          ]
+        },
+        {
+          "stepNumber": 13,
+          "title": "Add HVAC and Mechanical Systems",
+          "subtitle": "Show heating, ventilation, and air conditioning",
+          "why": "HVAC systems require space and structural support considerations.",
+          "commands": ["RECTANG","LINE","TEXT"],
+          "instructions": [
+            "Draw ductwork and plenums if visible",
+            "Show mechanical equipment and clearances",
+            "Add pipe insulation if required",
+            "Show vibration isolation and support details",
+            "Include equipment access and maintenance space",
+            "Add system specifications and performance data"
+          ]
+        },
+        {
+          "stepNumber": 14,
+          "title": "Add Electrical Systems",
+          "subtitle": "Show electrical distribution and fixtures",
+          "why": "Electrical systems must be properly integrated with building structure.",
+          "commands": ["LINE","CIRCLE","TEXT"],
+          "instructions": [
+            "Draw electrical conduit and raceways if visible",
+            "Show main electrical service entrance",
+            "Add junction boxes and outlet locations if applicable",
+            "Show lighting fixtures in ceiling assembly",
+            "Include cable trays or bus ducts if required",
+            "Add electrical specifications and clearances"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 6,
+      "phaseTitle": "Annotations and Dimensions",
+      "phaseDescription": "Add dimensions, levels, and technical annotations.",
+      "steps": [
+        {
+          "stepNumber": 15,
+          "title": "Add Vertical Dimensions",
+          "subtitle": "Complete height dimensioning",
+          "why": "Vertical dimensions are critical for construction accuracy and code compliance.",
+          "commands": ["DIMLINEAR","DIMCONTINUE","TEXT"],
+          "instructions": [
+            "Set current layer to DIM_SECTION",
+            "Add overall building height dimensions",
+            "Dimension floor-to-floor heights",
+            "Add foundation depth dimensions",
+            "Show ceiling heights and clearances",
+            "Include roof height and parapet dimensions",
+            "Add structural member depths and sizes"
+          ]
+        },
+        {
+          "stepNumber": 16,
+          "title": "Add Horizontal Dimensions",
+          "subtitle": "Complete width and thickness dimensioning",
+          "why": "Horizontal dimensions show member sizes and spatial relationships.",
+          "commands": ["DIMLINEAR","DIMCONTINUE"],
+          "instructions": [
+            "Add overall section width dimensions",
+            "Dimension wall and member thicknesses",
+            "Show opening widths and clearances",
+            "Add foundation width and footing dimensions",
+            "Include spacing between structural elements",
+            "Show material layer thicknesses"
+          ]
+        },
+        {
+          "stepNumber": 17,
+          "title": "Add Level and Elevation Annotations",
+          "subtitle": "Show finished levels and grades",
+          "why": "Level annotations are essential for construction and site work.",
+          "commands": ["TEXT","LINE"],
+          "instructions": [
+            "Set current layer to TEXT_SECTION",
+            "Add finished floor level annotations",
+            "Show existing and finished grade levels",
+            "Add ceiling height annotations",
+            "Include roof and parapet levels",
+            "Show foundation bottom levels",
+            "Use standard level annotation symbols"
+          ]
+        },
+        {
+          "stepNumber": 18,
+          "title": "Add Material and Construction Annotations",
+          "subtitle": "Identify all materials and construction details",
+          "why": "Material annotations are required for construction specifications and municipal approval.",
+          "commands": ["TEXT","QLEADER"],
+          "instructions": [
+            "Add material labels for all different elements",
+            "Use QLEADER to point to specific construction details",
+            "Include material specifications and standards",
+            "Add manufacturer information if required",
+            "Show construction sequence or assembly notes",
+            "Include testing or inspection requirements"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 7,
+      "phaseTitle": "Building Code and Safety Details",
+      "phaseDescription": "Add building code requirements and safety features.",
+      "steps": [
+        {
+          "stepNumber": 19,
+          "title": "Add Fire Protection Details",
+          "subtitle": "Show fire-rated assemblies and protection",
+          "why": "Fire protection is a critical building code requirement.",
+          "commands": ["TEXT","HATCH","LINE"],
+          "instructions": [
+            "Show fire-rated wall and floor assemblies",
+            "Add fire-stopping at penetrations",
+            "Show fire protection for structural elements",
+            "Add fire barrier and fire wall details",
+            "Include fire rating annotations (e.g., '2-HR FIRE RATING')",
+            "Show fire sealant and protection systems"
+          ]
+        },
+        {
+          "stepNumber": 20,
+          "title": "Add Accessibility and Safety Features",
+          "subtitle": "Show accessibility and life safety requirements",
+          "why": "Accessibility and safety features are mandatory building code requirements.",
+          "commands": ["TEXT","LINE","DIMENSION"],
+          "instructions": [
+            "Show accessible routes and clearances",
+            "Add ramp dimensions and slopes",
+            "Show accessible bathroom details if applicable",
+            "Include safety railing and guard details",
+            "Add emergency egress requirements",
+            "Show safety glazing and protection"
+          ]
+        },
+        {
+          "stepNumber": 21,
+          "title": "Add Structural and Load Annotations",
+          "subtitle": "Show structural loads and requirements",
+          "why": "Structural load information is essential for construction and code compliance.",
+          "commands": ["TEXT","QLEADER"],
+          "instructions": [
+            "Add load annotations for structural elements",
+            "Show bearing points and support conditions",
+            "Include seismic and wind load details if required",
+            "Add deflection requirements and limitations",
+            "Show connection details and requirements",
+            "Include structural design specifications"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 8,
+      "phaseTitle": "Final Details and Municipal Requirements",
+      "phaseDescription": "Complete the cross-section with final details and required elements.",
+      "steps": [
+        {
+          "stepNumber": 22,
+          "title": "Add Scale and North Arrow",
+          "subtitle": "Essential section elements",
+          "why": "Scale and orientation are mandatory for all section submissions.",
+          "commands": ["INSERT","TEXT"],
+          "instructions": [
+            "Insert scale bar appropriate to drawing scale (1:20 or 1:50)",
+            "Include written scale notation",
+            "Add section direction indicator if needed",
+            "Place elements in non-obtrusive but visible locations"
+          ]
+        },
+        {
+          "stepNumber": 23,
+          "title": "Create Title Block and Drawing Information",
+          "subtitle": "Complete submission documentation",
+          "why": "Title block provides essential project identification and drawing information.",
+          "commands": ["RECTANG","TEXT"],
+          "instructions": [
+            "Create title block with project name, section title, scale, date",
+            "Include drawing number and section identification (A-A, B-B)",
+            "Add designer, checker, and approval signatures",
+            "Include municipal reference numbers and permit details",
+            "Add drawing index and related sheet references"
+          ]
+        },
+        {
+          "stepNumber": 24,
+          "title": "Add Detail Callouts and References",
+          "subtitle": "Reference enlarged details if required",
+          "why": "Complex areas may require enlarged details for clarity.",
+          "commands": ["CIRCLE","TEXT","LINE"],
+          "instructions": [
+            "Add detail callout circles for complex areas",
+            "Reference detail drawing numbers",
+            "Show break lines for discontinuous sections",
+            "Add notes for special construction requirements",
+            "Include manufacturer installation details if required"
+          ]
+        },
+        {
+          "stepNumber": 25,
+          "title": "Final Municipal Compliance Check",
+          "subtitle": "Verify all requirements with field verification",
+          "why": "Municipalities require field-verified cross-sections with complete structural and material compliance information.",
+          "commands": ["LAYER","PLOT","MEASUREGEOM","AREA"],
+          "instructions": [
+            "Verify all dimensions match field measurements within tolerance",
+            "Check material annotations include fire ratings and specifications",
+            "Ensure structural elements match as-built conditions",
+            "Confirm building code requirements are fully shown",
+            "Verify fire protection systems are properly detailed",
+            "Prepare field measurement verification sheet",
+            "Create PDF submission with construction-ready layers"
+          ],
+          "complianceChecklist": [
+            "All structural dimensions field-verified",
+            "Material fire ratings clearly specified",
+            "Floor assemblies meet thermal requirements",
+            "Foundation depth below frost line",
+            "Fire separation walls properly detailed",
+            "Accessibility features fully shown",
+            "HVAC and services integration complete",
+            "File naming: ProjectName_Section_Location_Date.pdf"
+          ]
+        }
+      ]
+    }
+  ]
+}

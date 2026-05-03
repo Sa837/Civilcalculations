@@ -1,0 +1,492 @@
+{
+  "courseTitle": "Elevation Plan Drawing — Municipal Building Standards",
+  "courseDescription": "Complete guide to creating professional elevation plans for municipal submission. Covers exterior building faces, materials, dimensions, architectural features, field measurements, and all building code requirements for building permits and façade approval.",
+  "practicalExamples": [
+    {
+      "title": "Modern Residential Elevation",
+      "description": "Contemporary 3-story residential building elevation",
+      "steps": [
+        "Measure building heights using laser level or total station",
+        "Photograph all façades for reference",
+        "Design elevation per architectural drawings",
+        "Include material samples and finishes",
+        "Ensure compliance with height restrictions"
+      ],
+      "municipalRequirements": {
+        "maxBuildingHeight": "15m in residential areas",
+        "setbackFromRoad": "6m minimum",
+        "façadeMaterials": "Fire-rated materials required",
+        "windowArea": "Maximum 60% of façade area",
+        "balconySetback": "1.5m from property line"
+      }
+    },
+    {
+      "title": "Commercial Building Elevation",
+      "description": "Mixed-use commercial complex elevation",
+      "steps": [
+        "Survey existing façade conditions",
+        "Design storefront and office façade elements",
+        "Include signage locations and sizes",
+        "Plan accessibility features and ramps",
+        "Design lighting and security features"
+      ],
+      "municipalRequirements": {
+        "maxBuildingHeight": "20m in commercial zones",
+        "signageArea": "Maximum 10% of façade",
+        "accessibleEntrance": "Minimum 1.5m width",
+        "emergencyExits": "Clearly marked and illuminated",
+        "energyEfficiency": "Green façade materials encouraged"
+      }
+    },
+    {
+      "title": "Educational Institution Elevation",
+      "description": "School building with multiple façade treatments",
+      "steps": [
+        "Measure existing building dimensions",
+        "Design classroom window layouts",
+        "Include playground and outdoor areas",
+        "Plan safety features and emergency exits",
+        "Ensure natural lighting optimization"
+      ],
+      "municipalRequirements": {
+        "classroomWindows": "Minimum 20% of wall area",
+        "emergencyExits": "Multiple clearly marked exits",
+        "playgroundVisibility": "From main office",
+        "façadeMaterials": "Durable and maintainable",
+        "accessibility": "Full compliance required"
+      }
+    }
+  ],
+  "realWorldExamples": [
+    {
+      "location": "Durbar Marg, Kathmandu",
+      "projectType": "Commercial High-Rise",
+      "buildingHeight": "45m",
+      "challenges": ["Height restrictions", "Heritage area requirements", "Limited façade space"],
+      "solutions": ["Setback variations", "Traditional materials integration", "Vertical façade treatment"]
+    },
+    {
+      "location": "Lakeside, Pokhara",
+      "projectType": "Residential Resort",
+      "buildingHeight": "12m",
+      "challenges": ["Slope terrain", "Environmental restrictions", "Tourist area aesthetics"],
+      "solutions": ["Terraced elevation", "Natural material integration", "Minimal site impact"]
+    },
+    {
+      "location": "Birtamode, Jhapa",
+      "projectType": "Industrial Facility",
+      "buildingHeight": "18m",
+      "challenges": ["Large façade area", "Industrial requirements", "Climate considerations"],
+      "solutions": ["Prefabricated panels", "Climate-responsive design", "Efficient material use"]
+    }
+  ],
+  "targetAudience": ["Civil Engineering Students","Architects","Site Engineers","Municipality Draft Review Trainees","Building Designers","Construction Professionals"],
+  "courseObjectives": [
+    "Create accurate elevation plans showing all building faces",
+    "Include architectural features, materials, and exterior finishes",
+    "Add proper dimensions, grades, and building code annotations",
+    "Produce municipal-compliant elevation plans ready for building permit submission"
+  ],
+  "phases": [
+    {
+      "phaseNumber": 1,
+      "phaseTitle": "Setup — Elevation Plan Standards and Layers",
+      "phaseDescription": "Prepare drawing environment with proper units, layers, and architectural standards.",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "title": "Configure Drawing Units and Scale",
+          "subtitle": "Set up for elevation plan requirements",
+          "why": "Elevation plans typically use 1:50 or 1:100 scale and require millimeter precision for accurate construction.",
+          "commands": ["UNITS","LIMITS"],
+          "instructions": [
+            "Type UNITS and set Type to Decimal, Insertion Scale to Millimeters",
+            "Set Precision to 0 for whole millimeters",
+            "Set LIMITS to accommodate building width and height (e.g., 0,0 to 25000,15000 for 25m wide x 15m high)",
+            "Set annotation scale to 1:50 for detailed elevations or 1:100 for overall elevations",
+            "Save as Elevation_Plan_Template.dwt for future projects"
+          ]
+        },
+        {
+          "stepNumber": 2,
+          "title": "Create Elevation Plan Layer System",
+          "subtitle": "Organize all elevation elements",
+          "why": "Proper layer organization is essential for controlling visibility, printing different elevations, and municipal review.",
+          "commands": ["LAYER"],
+          "instructions": [
+            "Create structural layers: WALL_ELEV (Red, 0.40mm), FOUNDATION (Brown, 0.50mm), ROOF_LINE (Blue, 0.35mm)",
+            "Create opening layers: DOOR_ELEV (Magenta, 0.25mm), WINDOW_ELEV (Cyan, 0.25mm), BALCONY (Green, 0.30mm)",
+            "Create material layers: BRICK_PATTERN (Orange, 0.20mm), STONE_PATTERN (Gray, 0.20mm), STUCCO (Light Gray, 0.18mm)",
+            "Create annotation layers: TEXT_ELEV (White, 0.18mm), DIM_ELEV (Yellow, 0.18mm), HATCH_ELEV (Dark Gray, 0.13mm)",
+            "Create detail layers: MOULDING (White, 0.15mm), TRIM (Light Blue, 0.20mm), HARDWARE (Black, 0.25mm)",
+            "Create reference layers: GRADE_LINE (Brown, 0.25mm), GRID_REF (Gray, 0.09mm), EXISTING (Red, 0.25mm, Dashed)"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 2,
+      "phaseTitle": "Building Layout and Structure",
+      "phaseDescription": "Establish the building outline and structural elements.",
+      "steps": [
+        {
+          "stepNumber": 3,
+          "title": "Create Building Outline with Field Measurements",
+          "subtitle": "Define building footprint using measured heights and dimensions",
+          "why": "Building outline must match actual field measurements and provide accurate reference for elevation details.",
+          "commands": ["RECTANG","PLINE","OFFSET","MEASUREGEOM"],
+          "instructions": [
+            "Set current layer to WALL_ELEV",
+            "Field Method: Measure building height using laser level or total station",
+            "Draw grade line as horizontal reference (use actual surveyed grade)",
+            "Create building outline using measured width from site",
+            "Add height verification notes: 'Measured on-site 2025-01-15'",
+            "Use OFFSET to show wall depth if required (typically 200-300mm)",
+            "Verify building height matches architectural drawings within tolerance"
+          ],
+          "practicalTip": {
+            "title": "Height Measurement Accuracy",
+            "text": "Measure building height at multiple points to account for slope or settlement. Use the highest point for maximum height compliance check."
+          }
+        },
+        {
+          "stepNumber": 4,
+          "title": "Add Foundation and Grade Line",
+          "subtitle": "Show ground level and foundation",
+          "why": "Foundation and grade line show the building's relationship to ground level.",
+          "commands": ["LINE","OFFSET","HATCH"],
+          "instructions": [
+            "Set current layer to FOUNDATION",
+            "Draw grade line showing existing ground level",
+            "Use OFFSET to show foundation depth below grade",
+            "Add foundation wall if visible in elevation",
+            "Hatch ground area below grade with earth pattern",
+            "Add finished floor height above grade (typically 300-600mm)"
+          ]
+        },
+        {
+          "stepNumber": 5,
+          "title": "Define Floor Levels and Ceilings",
+          "subtitle": "Show floor-to-floor heights",
+          "why": "Floor levels must be clearly shown for construction and code compliance.",
+          "commands": ["LINE","OFFSET","TEXT"],
+          "instructions": [
+            "Continue with WALL_ELEV layer",
+            "Draw floor lines at each level using horizontal lines",
+            "Use OFFSET to create standard floor heights (typically 3000mm)",
+            "Show ceiling lines if different from floor heights",
+            "Add floor level annotations (e.g., 'GF', 'FF', 'SF' for ground, first, second floor)",
+            "Include floor-to-floor height dimensions"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 3,
+      "phaseTitle": "Openings — Doors and Windows",
+      "phaseDescription": "Add doors, windows, and other openings with proper symbols.",
+      "steps": [
+        {
+          "stepNumber": 6,
+          "title": "Draw Doors in Elevation",
+          "subtitle": "Show door types and details",
+          "why": "Doors must be properly shown with type, size, and architectural details.",
+          "commands": ["RECTANG","LINE","ARC"],
+          "instructions": [
+            "Set current layer to DOOR_ELEV",
+            "Draw door opening dimensions based on floor plan",
+            "Show door frame and panel details",
+            "Add door hardware (handles, locks) if visible",
+            "Show door swing direction if applicable",
+            "Add door size annotations and type specifications"
+          ]
+        },
+        {
+          "stepNumber": 7,
+          "title": "Draw Windows and Openings",
+          "subtitle": "Show window types and details",
+          "why": "Windows are major architectural elements and must be accurately detailed.",
+          "commands": ["RECTANG","LINE","DIVIDE"],
+          "instructions": [
+            "Set current layer to WINDOW_ELEV",
+            "Draw window opening dimensions based on floor plan",
+            "Show window frame and mullion details",
+            "Add glazing lines to show window panes",
+            "Show window sill and head details",
+            "Add window size annotations and opening type if operable"
+          ]
+        },
+        {
+          "stepNumber": 8,
+          "title": "Add Special Openings and Features",
+          "subtitle": "Show other openings and architectural features",
+          "why": "Special openings like garage doors, vents, and grilles must be properly shown.",
+          "commands": ["RECTANG","PLINE","CIRCLE"],
+          "instructions": [
+            "Draw garage doors with panel details",
+            "Add ventilation grilles and louvers",
+            "Show skylights or roof windows if visible",
+            "Add decorative openings or architectural features",
+            "Include mechanical equipment openings if visible"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 4,
+      "phaseTitle": "Architectural Features and Details",
+      "phaseDescription": "Add architectural elements and decorative features.",
+      "steps": [
+        {
+          "stepNumber": 9,
+          "title": "Add Roof Structure and Details",
+          "subtitle": "Show roof shape and features",
+          "why": "Roof is a major architectural element and must be properly detailed.",
+          "commands": ["PLINE","LINE","OFFSET"],
+          "instructions": [
+            "Set current layer to ROOF_LINE",
+            "Draw roof outline and pitch (slope)",
+            "Show eaves, overhangs, and gutters",
+            "Add ridge lines and valley details if applicable",
+            "Show roof materials and textures",
+            "Add roof height and pitch annotations"
+          ]
+        },
+        {
+          "stepNumber": 10,
+          "title": "Add Balconies and Decks",
+          "subtitle": "Show exterior platforms and railings",
+          "why": "Balconies and decks are important architectural and safety features.",
+          "commands": ["RECTANG","LINE","OFFSET"],
+          "instructions": [
+            "Set current layer to BALCONY",
+            "Draw balcony floor and edge details",
+            "Add railing or balustrade details",
+            "Show structural support columns if visible",
+            "Add balcony dimensions and safety details",
+            "Include access doors to balconies"
+          ]
+        },
+        {
+          "stepNumber": 11,
+          "title": "Add Mouldings and Trim",
+          "subtitle": "Show decorative architectural elements",
+          "why": "Mouldings and trim provide architectural detail and character.",
+          "commands": ["LINE","OFFSET","ARC"],
+          "instructions": [
+            "Set current layer to MOULDING",
+            "Add cornice mouldings at roof line",
+            "Show window and door trim details",
+            "Add decorative bands or belt courses",
+            "Show base mouldings at foundation line",
+            "Include other decorative trim elements"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 5,
+      "phaseTitle": "Materials and Finishes",
+      "phaseDescription": "Show exterior materials and finishes with appropriate patterns.",
+      "steps": [
+        {
+          "stepNumber": 12,
+          "title": "Add Brick and Masonry Patterns",
+          "subtitle": "Show brick or masonry finishes",
+          "why": "Material patterns help identify exterior finishes and construction methods.",
+          "commands": ["HATCH","RECTANG","OFFSET"],
+          "instructions": [
+            "Set current layer to BRICK_PATTERN",
+            "Use HATCH with brick pattern for brick walls",
+            "Show different brick bonds if required (running bond, Flemish bond)",
+            "Add weep holes and expansion joints if required",
+            "Show brick details at corners and openings",
+            "Add brick type and color specifications"
+          ]
+        },
+        {
+          "stepNumber": 13,
+          "title": "Add Stone and Other Materials",
+          "subtitle": "Show stone and other exterior materials",
+          "why": "Different materials must be clearly distinguished for construction and aesthetic purposes.",
+          "commands": ["HATCH","RECTANG","LINE"],
+          "instructions": [
+            "Set current layer to STONE_PATTERN",
+            "Use HATCH with stone pattern for stone veneer",
+            "Show stone details at foundation or accent areas",
+            "Add stucco or plaster finishes using appropriate patterns",
+            "Show wood siding or cladding if used",
+            "Add material specifications and transitions"
+          ]
+        },
+        {
+          "stepNumber": 14,
+          "title": "Add Metal and Glass Features",
+          "subtitle": "Show modern architectural materials",
+          "why": "Metal and glass elements require special detailing and annotation.",
+          "commands": ["LINE","HATCH","RECTANG"],
+          "instructions": [
+            "Show metal panel systems or curtain walls",
+            "Add glass railing systems if used",
+            "Show metal roofing or flashing details",
+            "Add decorative metal features or ornaments",
+            "Include material specifications and finishes"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 6,
+      "phaseTitle": "Annotations and Dimensions",
+      "phaseDescription": "Add dimensions, levels, and technical annotations.",
+      "steps": [
+        {
+          "stepNumber": 15,
+          "title": "Add Vertical Dimensions",
+          "subtitle": "Complete height dimensioning",
+          "why": "Vertical dimensions are essential for construction and code compliance.",
+          "commands": ["DIMLINEAR","DIMCONTINUE","TEXT"],
+          "instructions": [
+            "Set current layer to DIM_ELEV",
+            "Add overall building height dimensions",
+            "Dimension floor-to-floor heights",
+            "Add opening heights (doors, windows)",
+            "Show foundation depth below grade",
+            "Include roof height and ridge dimensions"
+          ]
+        },
+        {
+          "stepNumber": 16,
+          "title": "Add Horizontal Dimensions",
+          "subtitle": "Complete width dimensioning",
+          "why": "Horizontal dimensions show building width and opening locations.",
+          "commands": ["DIMLINEAR","DIMCONTINUE"],
+          "instructions": [
+            "Add overall building width dimensions",
+            "Dimension opening locations and widths",
+            "Show spacing between architectural features",
+            "Add projection dimensions for overhangs",
+            "Include module or grid dimensions if applicable"
+          ]
+        },
+        {
+          "stepNumber": 17,
+          "title": "Add Level Annotations and Grades",
+          "subtitle": "Show finished floor and grade levels",
+          "why": "Level annotations are critical for construction and site work.",
+          "commands": ["TEXT","LINE"],
+          "instructions": [
+            "Set current layer to TEXT_ELEV",
+            "Add finished floor level annotations (e.g., '+0.000', '+3.000')",
+            "Show existing and finished grade levels",
+            "Add ceiling height annotations if required",
+            "Include roof height and parapet details",
+            "Use standard level annotation symbols"
+          ]
+        },
+        {
+          "stepNumber": 18,
+          "title": "Add Material and Finish Annotations",
+          "subtitle": "Identify all exterior materials",
+          "why": "Material annotations are required for construction specifications and municipal approval.",
+          "commands": ["TEXT","QLEADER"],
+          "instructions": [
+            "Add material labels for all different finishes",
+            "Use QLEADER to point to specific material areas",
+            "Include color and finish specifications",
+            "Add manufacturer information if required",
+            "Show special treatment or coating details"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 7,
+      "phaseTitle": "Site Context and Final Details",
+      "phaseDescription": "Add site context and complete elevation details.",
+      "steps": [
+        {
+          "stepNumber": 19,
+          "title": "Add Site Context and Surroundings",
+          "subtitle": "Show relationship to adjacent elements",
+          "why": "Site context helps reviewers understand the building's relationship to its surroundings.",
+          "commands": ["LINE","HATCH","TEXT"],
+          "instructions": [
+            "Show adjacent buildings or property lines if relevant",
+            "Add existing ground contours or slopes",
+            "Show landscaping elements that affect the elevation",
+            "Add site features like retaining walls or steps",
+            "Include property line setbacks if visible"
+          ]
+        },
+        {
+          "stepNumber": 20,
+          "title": "Add Building Code Annotations",
+          "subtitle": "Include required code information",
+          "why": "Building code annotations are mandatory for municipal permit approval.",
+          "commands": ["TEXT","QLEADER"],
+          "instructions": [
+            "Add fire rating requirements for exterior walls",
+            "Show required egress windows and their dimensions",
+            "Include accessibility requirements for entrances",
+            "Add facade material fire ratings if required",
+            "Show required clearances from property lines"
+          ]
+        },
+        {
+          "stepNumber": 21,
+          "title": "Add North Arrow and Scale",
+          "subtitle": "Essential elevation elements",
+          "why": "North arrow and scale are mandatory for all elevation submissions.",
+          "commands": ["INSERT","TEXT"],
+          "instructions": [
+            "Insert north arrow showing elevation direction (e.g., 'NORTH ELEVATION')",
+            "Add scale bar appropriate to drawing scale (1:50 or 1:100)",
+            "Include written scale notation",
+            "Place elements in non-obtrusive but visible locations"
+          ]
+        },
+        {
+          "stepNumber": 22,
+          "title": "Create Title Block and Drawing Information",
+          "subtitle": "Complete submission documentation",
+          "why": "Title block provides essential project identification and drawing information.",
+          "commands": ["RECTANG","TEXT"],
+          "instructions": [
+            "Create title block with project name, elevation title, scale, date",
+            "Include drawing number and elevation direction (North, South, East, West)",
+            "Add designer, checker, and approval signatures",
+            "Include municipal reference numbers and permit details",
+            "Add drawing index and related sheet references"
+          ]
+        },
+        {
+          "stepNumber": 23,
+          "title": "Final Municipal Compliance Check",
+          "subtitle": "Verify all requirements with field verification",
+          "why": "Municipalities require field-verified elevations with complete material and code compliance information.",
+          "commands": ["LAYER","PLOT","MEASUREGEOM","AREA"],
+          "instructions": [
+            "Verify all dimensions match field measurements within tolerance",
+            "Check material annotations include fire ratings and specifications",
+            "Ensure building height complies with zoning restrictions",
+            "Confirm accessibility features are properly shown",
+            "Verify façade materials meet fire and energy codes",
+            "Prepare field measurement verification sheet",
+            "Create PDF submission with print-optimized layers"
+          ],
+          "complianceChecklist": [
+            "Building height within zoning limits",
+            "All dimensions field-verified with dates",
+            "Material fire ratings clearly specified",
+            "Accessibility features fully detailed",
+            "Setback dimensions from property lines",
+            "Window area ratio within limits",
+            "Emergency exit locations clearly marked",
+            "File naming: ProjectName_Elevation_Direction_Date.pdf"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import {
   Search,
   Filter,
@@ -20,6 +21,8 @@ import {
 import Fuse from 'fuse.js'
 import { resources, getCategoryCounts, getRegionCounts } from '../../lib/data/resources'
 import { Resource, ResourceCategory, ResourceRegion, SortOption } from '../../lib/types/resources'
+// Temporarily disabled AdSense to resolve build issues
+// import { AdSenseAd } from '@/components/AdSenseAd'
 
 const categoryIcons = {
   Codes: BookOpen,
@@ -454,7 +457,7 @@ export default function ResourcesPage() {
 
                             {/* Date */}
                             <div className="text-xs text-body/40 dark:text-body-dark/40">
-                              Updated {new Date(resource.updatedAt).toLocaleDateString()}
+                              Updated {String(resource.updatedAt)}
                             </div>
 
                             {/* Click Handler */}
@@ -509,21 +512,9 @@ export default function ResourcesPage() {
       </AnimatePresence>
       {/* Bottom Horizontal Ad */}
       <div className="mt-12 py-8 border-t border-b border-slate-200/20 dark:border-slate-800/20">
+        {/* AdSenseAd temporarily disabled */}
         <div className="min-h-[280px] flex items-center justify-center rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800/50">
-          <script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2472384896413922"
-            crossOrigin="anonymous"
-          ></script>
-          <ins
-            className="adsbygoogle"
-            style={{ display: 'block' }}
-            data-ad-client="ca-pub-2472384896413922"
-            data-ad-slot="4121346160"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          ></ins>
-          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+          <div className="text-body/60 dark:text-body-dark/60">Ad temporarily disabled</div>
         </div>
       </div>
     </main>

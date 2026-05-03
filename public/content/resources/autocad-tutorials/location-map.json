@@ -1,0 +1,320 @@
+{
+  "courseTitle": "Location Map Drawing — Municipal Submission Standards",
+  "courseDescription": "Complete guide to creating professional location maps for municipal submissions. Covers site location, surrounding roads, landmarks, north arrow, scale, GPS coordinates, Google Maps tracing, and municipality-required formatting for building permits and land development proposals.",
+  "practicalExamples": [
+    {
+      "title": "Google Maps Screenshot Method",
+      "description": "Take screenshot from Google Maps and trace in AutoCAD",
+      "steps": [
+        "Go to Google Maps and find your project location",
+        "Set map view to satellite or hybrid mode",
+        "Take screenshot at appropriate zoom level",
+        "Insert screenshot in AutoCAD using IMAGEATTACH command",
+        "Scale the image using known reference points",
+        "Trace roads, boundaries, and landmarks on separate layers",
+        "Remove or hide the background image when tracing is complete"
+      ],
+      "screenshotUrl": "/images/location-map-google-maps-screenshot.png"
+    },
+    {
+      "title": "GPS Coordinate Method",
+      "description": "Use precise GPS coordinates for accurate positioning",
+      "steps": [
+        "Obtain GPS coordinates for site corners using GPS device or smartphone",
+        "Use online tools like GPS Coordinate Converter for UTM conversion",
+        "In AutoCAD, use POINT command to mark coordinate positions",
+        "Connect points using PLINE to create accurate boundaries",
+        "Verify coordinates using GEOGRAPHICLOCATION command in AutoCAD",
+        "Add coordinate annotations for municipal reference"
+      ],
+      "gpsFormat": {
+        "decimalDegrees": "27.7172° N, 85.3240° E",
+        "utmCoordinates": "45Q 358456E 3067123N",
+        "example": "Kathmandu City Center coordinates"
+      }
+    },
+    {
+      "title": "Survey Data Integration",
+      "description": "Import professional survey data for highest accuracy",
+      "steps": [
+        "Obtain survey data from licensed surveyor (DXF or DWG format)",
+        "Import survey data using INSERT or XREF command",
+        "Verify coordinate system and units match your drawing standards",
+        "Clean up survey data keeping only relevant information",
+        "Add your project elements based on accurate survey base",
+        "Include survey license number and date in title block"
+      ]
+    }
+  ],
+  "realWorldExamples": [
+    {
+      "location": "Thamel, Kathmandu",
+      "description": "Commercial building location map in busy urban area",
+      "challenges": ["Dense surrounding buildings", "Narrow streets", "Multiple access points"],
+      "solutions": ["Detailed street names", "Pedestrian access routes", "Parking area locations"]
+    },
+    {
+      "location": "Lakeside, Pokhara",
+      "description": "Residential project near Phewa Lake",
+      "challenges": ["Irregular terrain", "Environmental protection zones", "Tourist area access"],
+      "solutions": ["Contour lines", "Protected area boundaries", "Tourist facility locations"]
+    },
+    {
+      "location": "Birtamode, Jhapa",
+      "description": "Industrial facility location in eastern Nepal",
+      "challenges": ["Large site area", "Multiple access roads", "Utility infrastructure"],
+      "solutions": ["Detailed road network", "Utility corridor mapping", "Transport routes"]
+    }
+  ],
+  "targetAudience": ["Civil Engineering Students","Site Engineers","Municipality Draft Review Trainees","Land Development Professionals","Urban Planners"],
+  "courseObjectives": [
+    "Create accurate location maps showing project site within surrounding area",
+    "Include essential municipal requirements: north arrow, scale, legend, and title block",
+    "Draw surrounding roads, landmarks, and reference points clearly",
+    "Produce print-ready location maps meeting municipal submission standards"
+  ],
+  "phases": [
+    {
+      "phaseNumber": 1,
+      "phaseTitle": "Setup — Drawing Environment and Reference Data",
+      "phaseDescription": "Prepare your drawing file with correct units, layers, and reference materials.",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "title": "Set Up Drawing File and Units",
+          "subtitle": "Configure for location map scale and units",
+          "why": "Location maps typically use larger scales (1:2000, 1:5000) and require different unit setup than building plans.",
+          "commands": ["UNITS","LIMITS"],
+          "instructions": [
+            "Type UNITS and set Type to Decimal, Insertion Scale to Meters for large-scale maps",
+            "Set Precision to 0.00 for meter-level accuracy",
+            "Use LIMITS to set appropriate drawing area (e.g., 0,0 to 1000,1000 for 1km x 1km area)",
+            "Save as Location_Map_Template.dwt for reuse"
+          ]
+        },
+        {
+          "stepNumber": 2,
+          "title": "Create Location Map Layers",
+          "subtitle": "Organize different map elements",
+          "why": "Proper layer organization makes it easy to control visibility and print different map versions.",
+          "commands": ["LAYER"],
+          "instructions": [
+            "Create layers: SITE_BOUNDARY (Red, 0.50mm), ROADS (Yellow, 0.40mm), BUILDINGS (White, 0.30mm)",
+            "Add layers: LANDMARKS (Cyan, 0.25mm), TEXT (White, 0.18mm), NORTH_ARROW (Green, 0.40mm)",
+            "Create layers: SCALE_BAR (Magenta, 0.35mm), GRID (Gray, 0.09mm), TITLE_BLOCK (Blue, 0.25mm)",
+            "Set appropriate colors and lineweights for professional appearance"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 2,
+      "phaseTitle": "Base Map — Site Boundary and Surrounding Area",
+      "phaseDescription": "Draw the project site boundary and surrounding infrastructure.",
+      "steps": [
+        {
+          "stepNumber": 3,
+          "title": "Draw Project Site Boundary",
+          "subtitle": "Define the exact project limits using GPS or survey data",
+          "why": "The site boundary clearly shows the project area and must be accurate for legal and planning purposes.",
+          "commands": ["PLINE","RECTANG","POINT","GEOGRAPHICLOCATION"],
+          "instructions": [
+            "Set current layer to SITE_BOUNDARY",
+            "Method 1: GPS Coordinates - Use POINT command to mark GPS coordinates, then connect with PLINE",
+            "Method 2: Google Maps Tracing - Insert screenshot, scale using reference points, then trace boundary",
+            "Method 3: Survey Data - Import professional survey coordinates using absolute X,Y format",
+            "Close the polyline to create a complete boundary",
+            "Add GPS coordinate annotations at key corners (e.g., '27.7172°N, 85.3240°E')",
+            "Calculate and annotate total site area using AREA command"
+          ],
+          "practicalTip": {
+            "title": "GPS Coordinate Accuracy",
+            "text": "For municipal submissions, use professional GPS devices with ±3m accuracy. Smartphone GPS is acceptable for preliminary drawings only. Always verify coordinates with multiple readings."
+          }
+        },
+        {
+          "stepNumber": 4,
+          "title": "Draw Surrounding Roads and Streets",
+          "subtitle": "Show access routes using Google Maps reference and field verification",
+          "why": "Road access is critical for municipal approval and shows how the site connects to the infrastructure network.",
+          "commands": ["PLINE","OFFSET","FILLET","IMAGEATTACH"],
+          "instructions": [
+            "Set current layer to ROADS",
+            "Reference Method: Use Google Maps screenshot to trace road centerlines and edges",
+            "Field Verification: Measure actual road widths on-site (typically 6-12m for main roads)",
+            "Draw main roads first using PLINE with measured widths",
+            "Use OFFSET to create road edges and medians",
+            "Add road names, street numbers, and highway route numbers",
+            "Include pedestrian pathways and bicycle lanes if applicable",
+            "Show traffic direction indicators for one-way streets"
+          ],
+          "roadStandards": {
+            "mainHighway": "Width: 12-15m, Shoulders: 1.5m each side",
+            "arterialRoad": "Width: 8-12m, Median: 1-2m if divided",
+            "localStreet": "Width: 6-8m, Parking lanes: 2m each side",
+            "alleyLane": "Width: 3-4m, No sidewalk required"
+          }
+        },
+        {
+          "stepNumber": 5,
+          "title": "Add Surrounding Buildings and Structures",
+          "subtitle": "Show context and neighboring properties",
+          "why": "Context buildings help reviewers understand the project's relationship with existing development.",
+          "commands": ["RECTANG","PLINE","HATCH"],
+          "instructions": [
+            "Set current layer to BUILDINGS",
+            "Draw neighboring building footprints using RECTANG or PLINE",
+            "Use simple rectangles for existing buildings - detailed architecture not needed",
+            "Add important landmarks like schools, hospitals, temples using LANDMARKS layer",
+            "Use HATCH with different patterns to distinguish between building types if required"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 3,
+      "phaseTitle": "Map Elements — North Arrow, Scale, and Grid",
+      "phaseDescription": "Add essential map elements required for municipal submission.",
+      "steps": [
+        {
+          "stepNumber": 6,
+          "title": "Add Professional North Arrow",
+          "subtitle": "Standard north direction indicator",
+          "why": "North arrow is mandatory for all location maps and must point to true north, not magnetic north.",
+          "commands": ["INSERT","ROTATE"],
+          "instructions": [
+            "Set current layer to NORTH_ARROW",
+            "Insert a professional north arrow block (create one if not available)",
+            "Place north arrow in a corner where it doesn't obscure important details",
+            "Ensure arrow points to true north (top of map typically)",
+            "Add 'N' label if not included in the block",
+            "Size should be proportional to map scale - typically 20-30mm at print scale"
+          ]
+        },
+        {
+          "stepNumber": 7,
+          "title": "Create Scale Bar",
+          "subtitle": "Graphical scale representation",
+          "why": "Scale bar provides quick distance reference and remains accurate even if map is reproduced at different sizes.",
+          "commands": ["PLINE","TEXT","ARRAY"],
+          "instructions": [
+            "Set current layer to SCALE_BAR",
+            "Draw scale bar using PLINE with appropriate divisions (e.g., 0, 50, 100, 200m)",
+            "Make primary divisions longer than secondary divisions for clarity",
+            "Add distance labels using TEXT (e.g., '0', '50m', '100m', '200m')",
+            "Add title 'SCALE' above the bar",
+            "Place scale bar in bottom corner, typically bottom right or bottom left"
+          ]
+        },
+        {
+          "stepNumber": 8,
+          "title": "Add Reference Grid",
+          "subtitle": "Coordinate grid for location reference",
+          "why": "Grid helps locate specific areas and is useful for municipal planning discussions.",
+          "commands": ["GRID","LINE","TEXT"],
+          "instructions": [
+            "Set current layer to GRID",
+            "Create grid lines at regular intervals (e.g., every 100m or 200m)",
+            "Add grid coordinates along edges (A,B,C or 1,2,3)",
+            "Use lighter lineweight so grid doesn't dominate the map",
+            "Ensure grid is visible but not distracting from main features"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 4,
+      "phaseTitle": "Annotations and Legend",
+      "phaseDescription": "Add text labels, legend, and title information.",
+      "steps": [
+        {
+          "stepNumber": 9,
+          "title": "Add Text Labels and Annotations",
+          "subtitle": "Identify roads, buildings, and landmarks",
+          "why": "Clear labels help reviewers quickly understand the map context and identify key features.",
+          "commands": ["TEXT","MTEXT","QLEADER"],
+          "instructions": [
+            "Set current layer to TEXT",
+            "Add road names, building names, and landmark labels",
+            "Use consistent text height (e.g., 3mm at print scale for main labels)",
+            "Position text to avoid overlapping with map features",
+            "Use QLEADER for detailed notes pointing to specific features",
+            "Add site name and project title prominently"
+          ]
+        },
+        {
+          "stepNumber": 10,
+          "title": "Create Legend",
+          "subtitle": "Explain symbols and patterns used",
+          "why": "Legend explains all symbols, colors, and patterns used in the map for clarity.",
+          "commands": ["RECTANG","TEXT","HATCH"],
+          "instructions": [
+            "Create legend box in corner using RECTANG",
+            "List all symbols used with explanations (e.g., '■ Existing Building', '■ Proposed Site')",
+            "Include color/linetype explanations if multiple types used",
+            "Keep legend compact but complete",
+            "Place legend where it doesn't obscure important map areas"
+          ]
+        },
+        {
+          "stepNumber": 11,
+          "title": "Add Title Block Information",
+          "subtitle": "Project details and submission information",
+          "why": "Title block provides essential project identification and submission details required by municipalities.",
+          "commands": ["TEXT","RECTANG"],
+          "instructions": [
+            "Create title block in bottom or top margin",
+            "Include: Project Name, Location Map Title, Scale, Date",
+            "Add: Drawing Number, Prepared By, Checked By, Municipality Name",
+            "Include contact information and reference numbers",
+            "Use professional formatting and clear hierarchy"
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 5,
+      "phaseTitle": "Final Review and Export",
+      "phaseDescription": "Review completeness and prepare for municipal submission.",
+      "steps": [
+        {
+          "stepNumber": 12,
+          "title": "Verify Municipal Requirements",
+          "subtitle": "Check all mandatory elements",
+          "why": "Municipalities reject incomplete location maps. Ensure all requirements are met before submission.",
+          "commands": ["LAYER","PLOT"],
+          "instructions": [
+            "Verify north arrow points to true north",
+            "Check scale bar is accurate and clearly labeled",
+            "Ensure site boundary is clearly highlighted",
+            "Confirm all text is readable at intended print scale",
+            "Check that surrounding context is adequate for project understanding"
+          ]
+        },
+        {
+          "stepNumber": 13,
+          "title": "Export for Submission",
+          "subtitle": "Create print-ready PDF with coordinate verification",
+          "why": "Municipalities require specific file formats and coordinate verification for official submissions.",
+          "commands": ["PLOT","EXPORTPDF","-DWGPREFIX"],
+          "instructions": [
+            "Set up layout with appropriate paper size (A1 or A0 for large sites)",
+            "Include coordinate grid and GPS reference points in final output",
+            "Export to PDF with vector output for digital submissions",
+            "Create coordinate verification sheet showing key GPS points",
+            "Verify file naming: ProjectName_LocationMap_Date_Scale.pdf",
+            "Include metadata: coordinate system, datum, and survey source"
+          ],
+          "submissionChecklist": [
+            "GPS coordinates clearly marked at site corners",
+            "Scale bar and north arrow present and accurate",
+            "Coordinate system specified (WGS84/UTM Zone 45N for Nepal)",
+            "Survey license number and date included",
+            "All surrounding roads named and width dimensioned",
+            "File size under 10MB for digital submission"
+          ]
+        }
+      ]
+    }
+  ]
+}
