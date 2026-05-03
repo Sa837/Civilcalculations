@@ -21,8 +21,7 @@ import {
 import Fuse from 'fuse.js'
 import { resources, getCategoryCounts, getRegionCounts } from '../../lib/data/resources'
 import { Resource, ResourceCategory, ResourceRegion, SortOption } from '../../lib/types/resources'
-// Temporarily disabled AdSense to resolve build issues
-// import { AdSenseAd } from '@/components/AdSenseAd'
+// AdSense component temporarily removed to resolve build issues
 
 const categoryIcons = {
   Codes: BookOpen,
