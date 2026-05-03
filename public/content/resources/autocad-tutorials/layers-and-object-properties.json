@@ -1,0 +1,799 @@
+{
+  "courseTitle": "Layers and Object Properties — Complete Practical Guide",
+  "courseDescription": "A comprehensive beginner-friendly course on AutoCAD layers and object properties. Learn how to organize drawings with layers, control line styles and thickness, manage object appearance, and create professional municipal drawings. This course emphasizes practical, hands-on skills required for real-world engineering work.",
+  "targetAudience": [
+    "Civil Engineering Students",
+    "Beginner AutoCAD Users",
+    "Municipality Drawing Trainees",
+    "Site Engineers",
+    "Draftsmen",
+    "Drawing Coordinators"
+  ],
+  "courseObjectives": [
+    "Understand layers as the foundation of professional drawing organization",
+    "Create and manage layers for different drawing elements",
+    "Control line styles (solid, dashed, center lines) and line thickness",
+    "Edit object properties using the Properties panel and other tools",
+    "Fix objects placed on wrong layers using practical commands",
+    "Produce organized, print-ready municipal drawings"
+  ],
+  "phases": [
+    {
+      "phaseNumber": 1,
+      "phaseTitle": "Layer Fundamentals — Why Layers Matter",
+      "phaseDescription": "Understand what layers are, why they are essential, and how professional engineers use them to organize drawings.",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "title": "What is a Layer in AutoCAD?",
+          "subtitle": "Think of layers like transparent sheets stacked on top of each other",
+          "why": "Without layers, all your drawing objects — walls, dimensions, text, doors — get mixed together into one confusing mess. Layers separate different types of drawing content so you can organize, control, and print each type independently.",
+          "commands": [],
+          "instructions": [
+            "Imagine you are creating a floor plan on transparent sheets",
+            "Sheet 1 has all the walls (WALL layer)",
+            "Sheet 2 has all the dimensions (DIMENSION layer)",
+            "Sheet 3 has room labels and text (TEXT layer)",
+            "Sheet 4 has door openings (DOOR layer)",
+            "You can show or hide any sheet without affecting the others",
+            "You can print any combination of sheets together",
+            "This is exactly how AutoCAD layers work"
+          ],
+          "realWorldExample": {
+            "scenario": "Municipal Residential Drawing",
+            "description": "A professional floor plan for municipality submission might have 10 to 15 layers: WALL (all walls), COLUMN (structural columns), DOOR, WINDOW, DIMENSION (all measurements), TEXT (room labels), GRID (column centerlines), HATCH (material fills), TITLEBLOCK, and more. Each layer controls a specific type of content."
+          },
+          "note": {
+            "type": "info",
+            "label": "Professional standard",
+            "text": "Every municipal drawing submission requires properly organized layers. Drawings with random elements on Layer 0 are rejected by most municipalities as unprofessional."
+          }
+        },
+        {
+          "stepNumber": 2,
+          "title": "Layer 0 and Defpoints — Special Layers You Should Know About",
+          "subtitle": "Layer 0 is the default but should never be used for regular drawing",
+          "why": "Understanding these special layers prevents common beginner mistakes that corrupt drawings or create printing problems.",
+          "commands": [],
+          "instructions": [
+            "Layer 0: Every new AutoCAD drawing has this layer by default. It CANNOT be deleted or renamed. It is only for block geometry that needs to inherit layer properties. NEVER draw your actual walls, dimensions, or content on Layer 0.",
+            "Defpoints: AutoCAD creates this automatically when you place your first dimension. Dimension definition points are stored here. Objects on Defpoints are visible on screen but do NOT print. Never intentionally draw content on Defpoints.",
+            "Your drawing should have at least 8-10 named layers like WALL, COLUMN, DOOR, DIMENSION, TEXT, etc. All actual drawing content goes on these named layers, not on Layer 0."
+          ],
+          "commonMistake": {
+            "mistake": "Drawing everything on Layer 0",
+            "consequence": "When you try to change the appearance of all walls at once by changing the layer color, nothing changes because it is all on Layer 0. You must edit each wall individually.",
+            "solution": "Always create named layers FIRST. Then draw on the correct layer."
+          },
+          "note": {
+            "type": "warning",
+            "label": "Do not use Layer 0",
+            "text": "Set your current layer to WALL (or COLUMN, DOOR, etc.) BEFORE drawing. Check the layer dropdown in the ribbon every single time before placing an object."
+          }
+        },
+        {
+          "stepNumber": 3,
+          "title": "The Three Key Layer Properties You Will Control",
+          "subtitle": "Color, Linetype, and Lineweight — the foundation of layer management",
+          "why": "These three properties control how every object on a layer looks. Understanding them now makes the rest of this course easy to follow.",
+          "commands": [],
+          "instructions": [
+            "Property 1 - Color: Each layer has a color (Red for WALL, Yellow for DIMENSION, etc.). Every object on that layer inherits this color. Changing the layer color instantly changes all objects on that layer.",
+            "Property 2 - Linetype: Controls whether lines appear solid, dashed, center-marked, or dotted. WALL layer = Continuous (solid). CENTERLINE layer = CENTER2 (dashed). This makes different elements visually distinct.",
+            "Property 3 - Lineweight: The printed thickness of lines. Walls print thick (0.40 mm). Dimensions print thin (0.18 mm). This creates a professional visual hierarchy on the printed drawing."
+          ],
+          "example": {
+            "scenario": "One layer, three properties",
+            "wall_layer": {
+              "name": "WALL",
+              "color": "Red - so all walls are instantly recognizable as red",
+              "linetype": "Continuous - walls are solid lines, not dashed",
+              "lineweight": "0.40 mm - walls print thick and prominent"
+            }
+          },
+          "note": {
+            "type": "info",
+            "label": "You control all three",
+            "text": "When you create a layer, you assign all three properties. Once set, every object on that layer automatically gets these properties. This consistency makes drawings look professional and professional, and it makes editing fast."
+          }
+        }
+      ]
+    },
+    {
+      "phaseNumber": 2,
+      "phaseTitle": "Creating and Managing Layers in Layer Properties Manager",
+      "phaseDescription": "Hands-on work creating the layer structure for a municipal residential drawing.",
+      "steps": [
+        {
+          "stepNumber": 4,
+          "title": "Open Layer Properties Manager and Create Your First Layer",
+          "subtitle": "Command: LA or LAYER",
+          "why": "This is where you create, name, color, and configure all layers for your drawing. This single dialog is your layer control center.",
+          "commands": ["LA", "LAYER"],
+          "instructions": [
+            "Type LA in the command line and press Enter",
+            "The Layer Properties Manager panel opens on the left side of your screen",
+            "You see Layer 0 already listed — this is the default layer",
+            "Click the New Layer button (page icon with a star at the top of the panel)",
+            "A new layer appears in the list named Layer1",
+            "Double-click Layer1 name and type WALL to rename it",
+            "Press Enter to confirm the rename"
+          ],
+          "firstLayerSteps": [
+            {
+              "step": "Rename",
+              "action": "Double-click the name 'Layer1' and type WALL"
+            },
+            {
+              "step": "Set Color",
+              "action": "Click the Red color square next to WALL layer, select Color 1 (Red) from the dialog"
+            },
+            {
+              "step": "Set Linetype",
+              "action": "Click 'Continuous' next to WALL layer, select Continuous from the dialog"
+            },
+            {
+              "step": "Set Lineweight",
+              "action": "Click '0.30 mm' next to WALL layer, select 0.40 mm for walls"
+            }
+          ],
+          "note": {
+            "type": "info",
+            "label": "Keep Layer Manager open",
+            "text": "Do not close Layer Properties Manager while you are creating all your layers. Keep it open in the panel on the left so you can create layers one after another quickly."
+          }
+        },
+        {
+          "stepNumber": 5,
+          "title": "Create All Standard Layers for Municipal Drawings",
+          "subtitle": "Build your complete layer structure in 10 minutes",
+          "why": "Professional drawings require a standard set of organized layers. Creating all layers before drawing anything ensures a clean, consistent drawing structure.",
+          "commands": ["LA"],
+          "instructions": [
+            "Keep Layer Properties Manager open",
+            "Create each layer by clicking New Layer, renaming it, then setting its color, linetype, and lineweight",
+            "Follow the Standard Layer Table below for each layer",
+            "For any linetype other than Continuous: click the linetype cell, click Load if the linetype is not listed, find it in the library, and click OK",
+            "Do not skip any layer — all are needed for complete professional drawings"
+          ],
+          "standardLayers": [
+            {
+              "name": "WALL",
+              "color": 1,
+              "colorName": "Red",
+              "linetype": "Continuous",
+              "lineweight": "0.40 mm",
+              "use": "All external and internal walls"
+            },
+            {
+              "name": "COLUMN",
+              "color": 4,
+              "colorName": "Cyan",
+              "linetype": "Continuous",
+              "lineweight": "0.50 mm",
+              "use": "Structural columns and pillars"
+            },
+            {
+              "name": "DOOR",
+              "color": 6,
+              "colorName": "Magenta",
+              "linetype": "Continuous",
+              "lineweight": "0.25 mm",
+              "use": "Door openings and swing arcs"
+            },
+            {
+              "name": "WINDOW",
+              "color": 5,
+              "colorName": "Blue",
+              "linetype": "Continuous",
+              "lineweight": "0.25 mm",
+              "use": "Window openings in walls"
+            },
+            {
+              "name": "DIMENSION",
+              "color": 2,
+              "colorName": "Yellow",
+              "linetype": "Continuous",
+              "lineweight": "0.18 mm",
+              "use": "All dimension lines and measurements"
+            },
+            {
+              "name": "TEXT",
+              "color": 7,
+              "colorName": "White",
+              "linetype": "Continuous",
+              "lineweight": "0.18 mm",
+              "use": "Room labels, notes, text annotations"
+            },
+            {
+              "name": "CENTERLINE",
+              "color": 3,
+              "colorName": "Green",
+              "linetype": "CENTER2",
+              "lineweight": "0.13 mm",
+              "use": "Column grid lines and center references"
+            },
+            {
+              "name": "HATCH",
+              "color": 8,
+              "colorName": "Dark Gray",
+              "linetype": "Continuous",
+              "lineweight": "0.13 mm",
+              "use": "Material hatches (concrete, brick, earth)"
+            },
+            {
+              "name": "GRID",
+              "color": 9,
+              "colorName": "Gray",
+              "linetype": "Continuous",
+              "lineweight": "0.09 mm",
+              "use": "Structural column grid layout"
+            }
+          ],
+          "note": {
+            "type": "warning",
+            "label": "CENTER2 linetype loading",
+            "text": "If CENTER2 is not in the linetype list, click Load, find CENTER2 in the acadiso.lin library, and click OK. This linetype is standard but must be loaded once."
+          }
+        },
+        {
+          "stepNumber": 6,
+          "title": "Set the Current Layer Before Drawing Each Element",
+          "subtitle": "Critical habit: Check the layer dropdown before placing any object",
+          "why": "The current layer is where all new objects will be placed. Drawing walls on the TEXT layer or dimensions on the WALL layer creates chaos and wastes hours fixing it later.",
+          "commands": [],
+          "instructions": [
+            "Look at the Layer dropdown in the ribbon at the top left of the screen",
+            "It shows which layer is currently active",
+            "BEFORE drawing walls — click the dropdown and select WALL",
+            "BEFORE adding dimensions — click the dropdown and select DIMENSION",
+            "BEFORE typing room labels — click the dropdown and select TEXT",
+            "Make this a habit: Always check the layer dropdown and set the correct layer BEFORE placing any object"
+          ],
+          "quickTip": {
+            "method": "Set current layer by clicking",
+            "steps": [
+              "Look at the Layer dropdown in the ribbon (top-left of screen)",
+              "Click the dropdown arrow",
+              "Select the layer you want to draw on",
+              "Your new objects will now be placed on that layer"
+            ]
+          },
+          "note": {
+            "type": "success",
+            "label": "This single habit prevents 90% of layer problems",
+            "text": "Professional engineers check the current layer every single time before drawing. This is not extra work — it is fundamental discipline that saves hours of rework."
+          }
+        }
+      ]
+    },
+    {
+      "phaseNumber": 3,
+      "phaseTitle": "Understanding Line Styles — Linetypes and Thickness",
+      "phaseDescription": "Learn how to control the appearance of lines: which lines are solid, which are dashed, and how thick each line prints.",
+      "steps": [
+        {
+          "stepNumber": 7,
+          "title": "Linetype Basics — Solid Lines vs Dashed vs Center Lines",
+          "subtitle": "Why different elements need different line styles",
+          "why": "Different drawing elements need different line styles to be visually distinct. Walls are solid. Center lines are dashed. Hidden elements are dotted. This visual distinction makes drawings clear and professional.",
+          "commands": [],
+          "instructions": [
+            "Continuous (solid) — walls, doors, windows, all permanent building elements. These lines are completely solid with no gaps.",
+            "CENTER2 (dashed pattern) — grid lines, column centerlines, reference lines. These lines have a pattern of dashes and gaps that makes them visually distinct.",
+            "DASHED — hidden lines, elements behind a cut plane. Used in sections and elevations.",
+            "HIDDEN, PHANTOM, DOT — other specialized linetype patterns for specific situations"
+          ],
+          "example": {
+            "scenario": "Floor plan layer structure",
+            "layers": [
+              {
+                "layer": "WALL",
+                "linetype": "Continuous",
+                "appearance": "Solid red line",
+                "reason": "Walls are permanent features shown as solid lines"
+              },
+              {
+                "layer": "CENTERLINE",
+                "linetype": "CENTER2",
+                "appearance": "Green dashed line with gaps",
+                "reason": "Grid lines are reference only, shown as dashed for distinction"
+              },
+              {
+                "layer": "DIMENSION",
+                "linetype": "Continuous",
+                "appearance": "Yellow solid line",
+                "reason": "Dimension lines are measurements, shown solid"
+              }
+            ]
+          },
+          "note": {
+            "type": "info",
+            "label": "Linetype is a layer property",
+            "text": "You assign a linetype to a layer when you create it. All objects on that layer inherit the linetype. If all walls are on the WALL layer with Continuous linetype, all walls automatically appear as solid lines."
+          }
+        },
+        {
+          "stepNumber": 8,
+          "title": "Lineweight — Controlling How Thick Lines Print",
+          "subtitle": "Professional drawings have a visual hierarchy: thick lines, thin lines, very thin lines",
+          "why": "Lineweight creates visual hierarchy. Important elements like walls print thick. Details like dimensions print thin. This makes the drawing clear and easy to read when printed on paper.",
+          "commands": ["LWDISPLAY"],
+          "instructions": [
+            "Lineweight is how thick a line appears when printed on paper",
+            "It does NOT affect how the line looks on screen by default — only on the printed output",
+            "To see lineweights on screen while working: Type LWDISPLAY and press ON (or click the LWT button in the status bar)",
+            "Standard lineweights for municipal drawings:",
+            "  — 0.09 mm: Very thin — grid lines, reference lines",
+            "  — 0.18 mm: Thin — dimensions, text, light lines",
+            "  — 0.25 mm: Medium-thin — doors, windows, secondary elements",
+            "  — 0.40 mm: Medium — standard walls",
+            "  — 0.50 mm: Thick — columns, heavy structural elements",
+            "  — 0.70 mm: Very thick — section cut lines, title block border",
+            "  — 1.00 mm: Extra thick — drawing border frame"
+          ],
+          "practicalExample": {
+            "drawing": "Professional floor plan",
+            "structure": [
+              {
+                "element": "Walls (WALL layer)",
+                "lineweight": "0.40 mm",
+                "reason": "Prominent — main visible element"
+              },
+              {
+                "element": "Grid lines (GRID layer)",
+                "lineweight": "0.09 mm",
+                "reason": "Reference only — should be subtle"
+              },
+              {
+                "element": "Dimensions (DIMENSION layer)",
+                "lineweight": "0.18 mm",
+                "reason": "Important but secondary to walls — printed thinner"
+              }
+            ]
+          },
+          "note": {
+            "type": "info",
+            "label": "Lineweight is assigned per layer",
+            "text": "Just like color and linetype, you assign lineweight to a layer when you create it. All objects on that layer use the same lineweight. This ensures consistency: all walls print at 0.40 mm, all dimensions at 0.18 mm."
+          }
+        },
+        {
+          "stepNumber": 9,
+          "title": "LTSCALE — Controlling the Size of Dashed Line Patterns",
+          "subtitle": "If center lines look like solid lines, increase LTSCALE",
+          "why": "Sometimes a dashed linetype appears as a solid line on screen because the dashes are too small to see. LTSCALE controls the overall size of the dashed pattern.",
+          "commands": ["LTSCALE"],
+          "instructions": [
+            "Type LTSCALE and press Enter",
+            "The command line shows the current value, usually 1",
+            "For 1:100 scale drawings, try LTSCALE = 75 to 100",
+            "For 1:50 scale drawings, try LTSCALE = 50 to 75",
+            "Type the new value and press Enter",
+            "Look at your center lines — if the dashes are now visible, you have set LTSCALE correctly",
+            "If dashes are too large, decrease LTSCALE. If they are too small, increase it."
+          ],
+          "visualGuide": {
+            "problem": "CENTER2 linetype appears as a solid line",
+            "cause": "LTSCALE is too low — the dashes are smaller than screen pixels and appear solid",
+            "solution": "Type LTSCALE 100 and press Enter. The dashes are now larger and visible."
+          },
+          "note": {
+            "type": "warning",
+            "label": "LTSCALE is drawing-wide",
+            "text": "LTSCALE affects ALL dashed linetypes in your entire drawing. Set it once to a value that looks good for your drawing scale. For 1:100 drawings, LTSCALE = 75-100 is typical."
+          }
+        }
+      ]
+    },
+    {
+      "phaseNumber": 4,
+      "phaseTitle": "Object Properties — Making Changes to Individual Objects",
+      "phaseDescription": "Learn how to edit the properties of specific objects using the Properties panel and other tools.",
+      "steps": [
+        {
+          "stepNumber": 10,
+          "title": "Open Properties Panel to Edit Any Object",
+          "subtitle": "Ctrl+1 — the most powerful tool for fixing objects",
+          "why": "The Properties panel lets you see and edit every property of any selected object: layer, color, linetype, lineweight, size, position. It is the fastest way to fix objects.",
+          "commands": ["Ctrl+1", "PROPERTIES"],
+          "instructions": [
+            "Select any object on your drawing by clicking it",
+            "Press Ctrl+1 — the Properties panel opens on the right side showing all properties of that object",
+            "You can now edit any property:",
+            "  — Change the Layer: click the layer name and select a different layer",
+            "  — Change the Color: click the color value and select a new color",
+            "  — Change the Linetype: click the linetype and select a different one",
+            "  — Change Geometry: edit exact coordinates, length, radius, etc.",
+            "Press Enter to apply any change"
+          ],
+          "commonFixes": [
+            {
+              "problem": "I drew a wall on the wrong layer",
+              "solution": "Select the wall, press Ctrl+1, click Layer field, select WALL, press Enter. Done."
+            },
+            {
+              "problem": "A dimension is in the wrong position",
+              "solution": "Select it, press Ctrl+1, edit the X and Y coordinates to the correct position, press Enter"
+            },
+            {
+              "problem": "Text is too small",
+              "solution": "Select it, press Ctrl+1, find the Height property, type a larger value, press Enter"
+            }
+          ],
+          "note": {
+            "type": "info",
+            "label": "Properties panel is faster than dialogs",
+            "text": "Using Properties panel to change an object's layer or color is faster than selecting the object, right-clicking, and using a dialog. Ctrl+1 is your speed shortcut."
+          }
+        },
+        {
+          "stepNumber": 11,
+          "title": "ByLayer vs Explicit Properties — Understanding Property Inheritance",
+          "subtitle": "Professional objects are set to ByLayer, not explicit colors",
+          "why": "When an object is set to ByLayer, it automatically inherits the color, linetype, and lineweight of its layer. If you later change the layer properties, all objects on that layer update automatically. Explicit properties override this and cause inconsistency.",
+          "commands": [],
+          "instructions": [
+            "ByLayer (correct): Object uses color, linetype, and lineweight from its layer. If you change the WALL layer color from Red to Blue, all objects on the WALL layer become Blue instantly.",
+            "Explicit/Override (incorrect): Object has a specific color, linetype set directly on it. If you change the WALL layer color to Blue, this object stays Red because it has an explicit override.",
+            "Professional practice: Always set object properties to ByLayer. This ensures consistency and makes editing fast.",
+            "To set an object to ByLayer: Select it, press Ctrl+1, set Color to ByLayer, Linetype to ByLayer, Lineweight to ByLayer"
+          ],
+          "example": {
+            "scenario": "You drew 50 walls and want to make them all thicker for printing",
+            "withByLayer": [
+              "1. Select any wall",
+              "2. Press Ctrl+1",
+              "3. Check: Color = ByLayer, Linetype = ByLayer, Lineweight = ByLayer",
+              "4. If yes, all 50 walls are set to inherit from WALL layer",
+              "5. Open Layer Properties Manager, click WALL layer",
+              "6. Change lineweight to 0.50 mm",
+              "7. All 50 walls instantly become thicker — no need to select each one"
+            ],
+            "withExplicitProperties": [
+              "If each wall was drawn with an explicit lineweight (not ByLayer):",
+              "You must select each of the 50 walls individually and change them one by one",
+              "This takes 10 minutes instead of 10 seconds"
+            ]
+          },
+          "note": {
+            "type": "success",
+            "label": "Best practice is always ByLayer",
+            "text": "Professional engineers set all object properties to ByLayer unless there is a very specific reason to override. This maintains consistency and makes editing efficient."
+          }
+        },
+        {
+          "stepNumber": 12,
+          "title": "Match Properties — Copy Properties from One Object to Others",
+          "subtitle": "Command: MA (MATCHPROP) — the fastest way to fix objects on wrong layers",
+          "why": "If you have 10 walls drawn on the wrong layer, selecting each one individually and changing it is slow. Match Properties lets you fix all 10 at once.",
+          "commands": ["MA", "MATCHPROP"],
+          "instructions": [
+            "Type MA and press Enter",
+            "Click a correctly placed object as the source — this is the object whose properties you want to copy",
+            "The cursor changes to a paintbrush",
+            "Click all the incorrectly placed objects to transfer properties from the source",
+            "Press Escape or Enter to finish",
+            "All selected objects now have the same layer, color, linetype, and lineweight as the source"
+          ],
+          "practicalExample": {
+            "problem": "You drew 10 walls but they are all on Layer 0 instead of WALL layer",
+            "solution": [
+              "1. Draw one wall correctly on the WALL layer",
+              "2. Type MA and press Enter",
+              "3. Click the correctly placed wall as source",
+              "4. Click each of the 10 incorrectly placed walls",
+              "5. All 10 walls are now on the WALL layer"
+            ],
+            "timeComparison": {
+              "slow_way": "Select each wall individually, press Ctrl+1, change layer manually — 10 minutes",
+              "fast_way": "Type MA, click source, click 10 walls — 30 seconds"
+            }
+          },
+          "note": {
+            "type": "success",
+            "label": "Match Properties is your speed tool",
+            "text": "Every professional uses MA regularly. Instead of fixing each object individually, fix one correctly, then copy its properties to all the broken ones. This is the fastest way to fix layer organization mistakes."
+          }
+        }
+      ]
+    },
+    {
+      "phaseNumber": 5,
+      "phaseTitle": "Practical Tools for Layer Management",
+      "phaseDescription": "Learn quick commands that let you control layers without opening menus and dialogs.",
+      "steps": [
+        {
+          "stepNumber": 13,
+          "title": "Quick Layer Commands — Freeze, Isolate, Lock Without Dialogs",
+          "subtitle": "Speed-essential layer management keyboard shortcuts",
+          "why": "Opening the Layer Properties Manager every time you need to hide a layer is slow. These commands let you control layers instantly from the drawing.",
+          "commands": ["LAYISO", "LAYFRZ", "LAYOFF", "LAYLCK"],
+          "instructions": [
+            "LAYISO (Layer Isolate): Make only one layer visible",
+            "  Command: Type LAYISO, press Enter, click any object on the layer you want to isolate",
+            "  Result: All other layers become invisible, only your selected layer is visible",
+            "  Use: When you want to focus on editing walls without other elements distracting",
+            "",
+            "LAYFRZ (Layer Freeze): Freeze a layer instantly",
+            "  Command: Type LAYFRZ, press Enter, click any object on the layer to freeze",
+            "  Result: That entire layer becomes invisible and locked from memory",
+            "  Use: Freeze completed layers like TITLEBLOCK to prevent accidentally editing them",
+            "",
+            "LAYOFF (Layer Off): Hide a layer instantly",
+            "  Command: Type LAYOFF, press Enter, click any object on the layer to hide",
+            "  Result: That layer becomes invisible but still in memory",
+            "  Use: Quickly hide furniture or hatch to see the structure clearly",
+            "",
+            "LAYLCK (Layer Lock): Lock a layer so nothing can be selected",
+            "  Command: Type LAYLCK, press Enter, click any object on the layer",
+            "  Result: Objects on that layer cannot be selected or moved",
+            "  Use: Lock WALL layer after drawing walls to prevent accidentally moving them while adding dimensions"
+          ],
+          "workflowExample": {
+            "task": "Draw dimensions on a floor plan without accidentally moving walls",
+            "steps": [
+              "1. After finishing all walls, type LAYLCK and press Enter",
+              "2. Click any wall object",
+              "3. All walls are now locked — they cannot be selected or moved",
+              "4. Now draw dimensions freely without fear of moving walls",
+              "5. When done with dimensions, type LAYULK and click any wall to unlock"
+            ]
+          },
+          "note": {
+            "type": "info",
+            "label": "These commands are much faster than the dialog",
+            "text": "Instead of: Open Layer Manager, find the layer, click the icon — you just type LAYISO and click an object. Professional engineers use these keyboard shortcuts constantly."
+          }
+        },
+        {
+          "stepNumber": 14,
+          "title": "Select Similar — Select All Objects of One Type at Once",
+          "subtitle": "Right-click > Select Similar — instantly select all walls, all doors, etc.",
+          "why": "Instead of selecting objects one by one, Select Similar lets you select all walls, all dimensions, or all doors on a layer instantly. Then change all their properties together.",
+          "commands": ["SELECTSIMILAR"],
+          "instructions": [
+            "Click any wall object",
+            "Right-click and choose Select Similar from the context menu",
+            "All objects on the WALL layer are now selected",
+            "Now you can:",
+            "  — Change their layer all at once (press Ctrl+1, change layer field)",
+            "  — Change their color all at once",
+            "  — Delete them all at once",
+            "  — Move them all at once",
+            "",
+            "This works for any layer: click a door, Select Similar, all doors are selected"
+          ],
+          "practicalExample": {
+            "problem": "You have 20 dimension lines and want to move them all to a different location",
+            "slowWay": "Click each dimension, move it manually — very tedious",
+            "fastWay": [
+              "1. Click any dimension",
+              "2. Right-click, Select Similar",
+              "3. All 20 dimensions are selected",
+              "4. Press Move (M), specify a vector to move all 20 at once",
+              "5. Done"
+            ]
+          },
+          "note": {
+            "type": "info",
+            "label": "Select Similar is perfect for batch operations",
+            "text": "Whenever you need to change multiple objects of the same type, use Select Similar. It saves huge amounts of time."
+          }
+        },
+        {
+          "stepNumber": 15,
+          "title": "Layer States Manager — Save and Restore Complete Layer Configurations",
+          "subtitle": "Save a 'working state' and a 'printing state' — switch between them instantly",
+          "why": "While working, you might want all layers visible. But when printing, you want only specific layers to print. Layer States let you save both configurations and switch between them with one click.",
+          "commands": ["LAYERSTATE"],
+          "instructions": [
+            "Type LAYERSTATE and press Enter — the Layer States Manager opens",
+            "Click New to save the current layer configuration with a name",
+            "Name it WORKING_STATE (all layers you normally work with visible)",
+            "Click OK",
+            "",
+            "Now turn off all layers except those you want to print",
+            "Click New in Layer States Manager again",
+            "Name it PRINT_STATE",
+            "Click OK",
+            "",
+            "Now whenever you need to print:",
+            "Type LAYERSTATE, select PRINT_STATE, click Restore",
+            "Only your print layers are visible and will print",
+            "",
+            "After printing, do the same: restore WORKING_STATE to go back to full view"
+          ],
+          "practicalSetup": {
+            "workingState": {
+              "name": "WORKING_STATE",
+              "visibility": "All layers ON — you see everything while drawing"
+            },
+            "printState": {
+              "name": "PRINT_STATE",
+              "visibility": "Only structure layers (WALL, COLUMN, DOOR, WINDOW, DIMENSION) are ON. Construction layers like GRID and CONSTRUCTION are OFF"
+            }
+          },
+          "note": {
+            "type": "success",
+            "label": "Professional workflow uses Layer States",
+            "text": "Every professional AutoCAD user has multiple layer states saved. Switch between them instantly: one for working, one for printing, one for review. This prevents mistakes in printing."
+          }
+        }
+      ]
+    },
+    {
+      "phaseNumber": 6,
+      "phaseTitle": "Common Problems and Solutions",
+      "phaseDescription": "Quick reference for the most frequent layer and property issues and their solutions.",
+      "steps": [
+        {
+          "stepNumber": 16,
+          "title": "Problem: Walls Changed Color After I Changed the Layer Color",
+          "subtitle": "This is actually CORRECT behavior — objects set to ByLayer inherit layer colors",
+          "why": "Understanding this prevents you from 'fixing' something that is already correct.",
+          "commands": [],
+          "instructions": [
+            "What happened: You had walls on the WALL layer set to ByLayer. You changed the WALL layer color from Red to Green. All walls turned Green instantly.",
+            "Why: When an object is set to ByLayer, it automatically inherits color from its layer. This is intentional and correct.",
+            "Is this a problem? NO — this is exactly how ByLayer is supposed to work. This is why professionals use ByLayer.",
+            "If you do NOT want walls to change when you change the layer color, select each wall, press Ctrl+1, set the color to a specific value like Red (not ByLayer). But this defeats the purpose of using layers."
+          ],
+          "note": {
+            "type": "info",
+            "label": "ByLayer is working as designed",
+            "text": "This is not a bug or problem — it is the entire point of using ByLayer. Objects that inherit from their layer automatically update when the layer is edited."
+          }
+        },
+        {
+          "stepNumber": 17,
+          "title": "Problem: Center Lines Look Like Solid Lines on Screen",
+          "subtitle": "Increase LTSCALE — the dashes are too small to see",
+          "why": "For high zoom levels or small-scale drawings, the dashes in a CENTER2 linetype may be smaller than the screen pixels and appear as solid lines.",
+          "commands": ["LTSCALE", "Z"],
+          "instructions": [
+            "Type LTSCALE and press Enter",
+            "Type a larger value — try 100 for 1:100 scale drawings",
+            "Press Enter",
+            "Look at your center lines — dashes should now be visible",
+            "If still solid, increase LTSCALE more (try 150). If dashes are too coarse, decrease it.",
+            "For 1:50 drawings, try LTSCALE 50-75",
+            "For 1:100 drawings, try LTSCALE 75-100",
+            "For 1:200 drawings, try LTSCALE 150-200"
+          ],
+          "note": {
+            "type": "info",
+            "label": "LTSCALE is a global setting",
+            "text": "LTSCALE affects all dashed and center line patterns in your entire drawing. Set it once to a value that looks good, then leave it."
+          }
+        },
+        {
+          "stepNumber": 18,
+          "title": "Problem: I Cannot Select or Move an Object",
+          "subtitle": "The layer is probably locked — use LAYULK to unlock it",
+          "why": "When a layer is locked, all objects on it cannot be selected or edited. This is a safety feature to prevent accidentally moving completed elements.",
+          "commands": ["LAYULK"],
+          "instructions": [
+            "Type LAYULK and press Enter",
+            "Click the object you cannot select",
+            "The layer containing that object is now unlocked",
+            "Try selecting and moving it again — it should work now",
+            "",
+            "If you want to lock a layer again after editing:",
+            "Type LAYLCK and press Enter",
+            "Click any object on the layer to lock it"
+          ],
+          "note": {
+            "type": "warning",
+            "label": "Check layer lock status",
+            "text": "Before concluding something is broken, always check if the object's layer is locked. Look at the Layer Properties Manager — a locked layer has a padlock icon."
+          }
+        },
+        {
+          "stepNumber": 19,
+          "title": "Problem: Objects Are Placed on the Wrong Layer",
+          "subtitle": "Use Match Properties (MA) to fix all of them at once",
+          "why": "It is easy to accidentally draw on the wrong layer. Instead of moving each object individually, Match Properties fixes all of them instantly.",
+          "commands": ["MA"],
+          "instructions": [
+            "Step 1: Draw ONE object correctly on the right layer (e.g., one wall on the WALL layer)",
+            "Step 2: Type MA and press Enter",
+            "Step 3: Click the correctly placed object as the source",
+            "Step 4: Click all the incorrectly placed objects",
+            "Step 5: Press Escape — all objects are now on the correct layer",
+            "",
+            "Example: You drew 15 dimension lines but they are all on the WALL layer",
+            "1. Draw one dimension correctly on the DIMENSION layer",
+            "2. Type MA, click it as source",
+            "3. Click all 15 incorrect dimensions",
+            "4. All 15 are now on the DIMENSION layer"
+          ],
+          "note": {
+            "type": "success",
+            "label": "Match Properties is the fastest fix",
+            "text": "Never manually fix 10+ objects. Use Match Properties every time."
+          }
+        }
+      ]
+    },
+    {
+      "phaseNumber": 7,
+      "phaseTitle": "Professional Checklist — Before Printing Your Drawing",
+      "phaseDescription": "Final verification steps to ensure your drawing is organized, consistent, and ready for municipal submission.",
+      "steps": [
+        {
+          "stepNumber": 20,
+          "title": "Layer Organization Checklist",
+          "subtitle": "Verify every layer is correct before printing",
+          "why": "Municipal authorities reject drawings with poor layer organization. Following this checklist ensures your drawing meets professional standards.",
+          "commands": ["LA", "LAYER"],
+          "instructions": [
+            "Open Layer Properties Manager (type LA)",
+            "Check: Do all required layers exist? ✓ WALL ✓ COLUMN ✓ DOOR ✓ WINDOW ✓ DIMENSION ✓ TEXT ✓ CENTERLINE ✓ HATCH ✓ GRID",
+            "Check: Each layer has a unique color assigned (RED for WALL, YELLOW for DIMENSION, etc.)",
+            "Check: Each layer has the correct linetype (WALL = Continuous, CENTERLINE = CENTER2)",
+            "Check: Each layer has the correct lineweight (WALL = 0.40 mm, DIMENSION = 0.18 mm)",
+            "Check: Objects are on the correct layers — use Select Similar to verify"
+          ],
+          "note": {
+            "type": "warning",
+            "label": "Layer organization is non-negotiable",
+            "text": "Professional drawings MUST have organized layers. Disorganized layers = drawing rejected by municipality."
+          }
+        },
+        {
+          "stepNumber": 21,
+          "title": "Set Print State and Verify Print Visibility",
+          "subtitle": "Before printing, ensure only the correct layers are visible",
+          "why": "You do not want construction lines, reference layers, or partially completed elements to print. Layer States ensure only final, approved content prints.",
+          "commands": ["LAYERSTATE"],
+          "instructions": [
+            "Open Layer States Manager (type LAYERSTATE)",
+            "If you have not already, save a PRINT_STATE configuration with only printable layers visible",
+            "Restore PRINT_STATE before printing",
+            "Layers that SHOULD print: WALL, COLUMN, DOOR, WINDOW, DIMENSION, TEXT, CENTERLINE, HATCH",
+            "Layers that SHOULD NOT print: GRID (reference), CONSTRUCTION (temporary lines), VIEWPORT (layout viewports)",
+            "Verify by looking at the drawing — only finalized content is visible"
+          ],
+          "note": {
+            "type": "info",
+            "label": "Print state prevents mistakes",
+            "text": "Accidentally printing construction lines or grid references is a common mistake. Using a dedicated PRINT_STATE prevents this."
+          }
+        },
+        {
+          "stepNumber": 22,
+          "title": "Final Verification Checklist — Ready to Print",
+          "subtitle": "One final review before sending to municipality",
+          "why": "This checklist catches the most common problems that cause drawings to be rejected.",
+          "commands": [],
+          "instructions": [
+            "✓ All layers are created with correct names, colors, and linetypes",
+            "✓ All objects are placed on the correct layers",
+            "✓ All objects are set to ByLayer (not explicit properties)",
+            "✓ Lineweights are set per layer: walls thick, dimensions thin, grid very thin",
+            "✓ LTSCALE is set correctly so center lines are dashed, not solid",
+            "✓ Text height is consistent (all room labels same size, all dimension text same size)",
+            "✓ Dimensions are on the DIMENSION layer in yellow color",
+            "✓ PRINT_STATE is active — only printable layers are visible",
+            "✓ Drawing title block is complete with project name, scale, date, engineer name",
+            "✓ Print preview shows exactly what will print on paper"
+          ],
+          "beforePrinting": [
+            "1. Restore PRINT_STATE from Layer States Manager",
+            "2. Use File > Print Preview to see exactly what will print",
+            "3. Check that no unwanted layers are visible",
+            "4. Check that line thickness looks professional (thick walls, thin dimensions)",
+            "5. Check that text is readable",
+            "6. Only then proceed to actual print"
+          ],
+          "note": {
+            "type": "success",
+            "label": "This checklist prevents 99% of print problems",
+            "text": "Professional engineers complete this checklist every single time before printing. It takes 2 minutes and saves hours of reprinting mistakes."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -36,24 +36,24 @@ declare namespace __next_route_internal_types__ {
     | `/blog/bridge-engineering-innovative-design`
     | `/blog/concrete-technology-advanced-mix-design`
     | `/blog/construction-technology-drones-robotics`
-    | `/blog/digital-twins-construction-management`
     | `/blog/environmental-engineering-remediation`
+    | `/blog/digital-twins-construction-management`
     | `/blog/geotechnical-soil-structure-interaction`
     | `/blog/infrastructure-resilience-climate-change`
     | `/blog/project-management-lean-construction`
     | `/blog/smart-cities-iot-urban-infrastructure`
-    | `/blog/sustainable-construction-green-materials`
     | `/blog/steel-structure-design-modern-analysis`
+    | `/blog/sustainable-construction-green-materials`
     | `/blog/transportation-highway-design-standards`
     | `/blog/water-resources-sustainable-management`
+    | `/contact`
     | `/calculators`
     | `/contact-action`
-    | `/resources`
     | `/converters`
     | `/cookie-policy`
-    | `/contact`
     | `/disclaimer`
     | `/privacy-policy`
+    | `/resources`
     | `/terms-and-conditions`
   type DynamicRoutes<T extends string = string> = 
     | `/calculators/${SafeSlug<T>}`

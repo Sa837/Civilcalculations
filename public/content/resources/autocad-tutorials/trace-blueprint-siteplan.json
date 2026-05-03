@@ -1,0 +1,257 @@
+{
+  "courseTitle": "Tracing Blueprints for Site Plans — Municipality Focus",
+  "courseDescription": "Practical, beginner-focused course on tracing and preparing site plans from blueprints for municipal submission (regular and irregular plots), with special emphasis on municipality rules: setbacks, right-of-way, contours, and site annotations.",
+  "targetAudience": [
+    "Civil Engineering Students",
+    "Site Engineers",
+    "Draftsmen and Survey Assistants",
+    "Municipal Drawing Trainees"
+  ],
+  "courseObjectives": [
+    "Trace and digitize paper or scanned blueprints accurately",
+    "Handle regular and irregular plot boundaries",
+    "Apply municipal setback, right-of-way (ROW), and building line rules",
+    "Create a complete site plan ready for municipality submission"
+  ],
+  "phases": [
+    {
+      "phaseNumber": 1,
+      "phaseTitle": "Prepare the Drawing — Scale, Units, and Reference",
+      "phaseDescription": "Set up your drawing correctly before tracing to avoid scale errors.",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "title": "Import or Scan the Blueprint",
+          "subtitle": "Attach the scanned image as an underlay",
+          "why": "A clean underlay lets you trace accurately without altering the original file.",
+          "commands": ["ATTACH", "IMAGE"],
+          "instructions": [
+            "Scan the blueprint at high resolution (300 dpi or higher). Save as PDF or PNG.",
+            "In AutoCAD type ATTACH (or IMAGE) and select the file to insert as an underlay.",
+            "Place the underlay near origin and lock its layer to avoid accidental moves."
+          ],
+          "note": {"label": "Info", "text": "Lock the underlay layer and set it to a faded color for visibility."}
+        },
+        {
+          "stepNumber": 2,
+          "title": "Set Units and Scale — Match the Blueprint",
+          "subtitle": "Ensure drawing units match the blueprint units (meters/mm)",
+          "why": "Tracing at the wrong units causes incorrect dimensions and rework during municipal checks.",
+          "commands": ["UNITS", "SCALE"],
+          "instructions": [
+            "Open UNITS and set units to Millimeters (or Meters) depending on municipality format.",
+            "If the underlay is not to scale: find a known dimension on the blueprint (for example, site frontage) and use SCALE to match it.",
+            "Use the DIST command to verify a known distance on the image and compare it to the printed dimension." 
+          ],
+          "practicalExample": {"scenario": "Site has a 20 m road frontage", "action": "Measure on the image, compute scale factor, use SCALE with reference points."}
+        },
+        {
+          "stepNumber": 3,
+          "title": "Set Layers and Drawing Standards",
+          "subtitle": "Create standard layers for boundaries, setbacks, contours, buildings, text",
+          "why": "Organized layers make verification and printing straightforward for municipal submission.",
+          "commands": ["LA"],
+          "instructions": [
+            "Create layers: SITE_BOUNDARY, SETBACK, ROW, CONTOUR, BUILDING, TEXT, DIMENSION, TITLEBLOCK, UNDERLAY",
+            "Set standard colors and lineweights (e.g., SITE_BOUNDARY = red, BUILDING = cyan, SETBACK = magenta dashed).",
+            "Keep the underlay on the UNDERLAY layer and lock it."
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 2,
+      "phaseTitle": "Trace Site Boundary — Regular and Irregular Plots",
+      "phaseDescription": "Techniques to trace clean, accurate site boundaries for both regular (rectangular) and irregular plots.",
+      "steps": [
+        {
+          "stepNumber": 4,
+          "title": "Trace Regular Plots — Use Rectangle and Polyline",
+          "subtitle": "Fast method for square/rectangular sites",
+          "why": "Regular plots are common and can be drawn precisely using simple tools.",
+          "commands": ["RECTANGLE", "PLINE"],
+          "instructions": [
+            "Use RECTANGLE for perfect rectangles: snap corners to underlay reference points.",
+            "If dimensions are given, draw to exact length using the command line entry.",
+            "Convert rectangle to polyline (if needed) to apply lineweights and hatch."
+          ]
+        },
+        {
+          "stepNumber": 5,
+          "title": "Trace Irregular Plots — Polyline by Coordinates",
+          "subtitle": "Trace each vertex carefully and close the polyline",
+          "why": "Irregular boundaries require precise vertex placement to compute areas and setbacks correctly.",
+          "commands": ["PLINE", "OSNAP", "ENDPOINT", "INTERSECTION"],
+          "instructions": [
+            "Enable Object Snaps (OSNAP) to Endpoint, Intersection, Midpoint for accuracy.",
+            "Trace each boundary segment with PLINE, snapping to the underlay image at each corner.",
+            "Close the polyline with C or use JOIN if segments are separate.",
+            "Use AREA to verify site area matches blueprint label (if provided)."
+          ],
+          "note": {"label": "Warning", "text": "If the underlay is skewed, first use ALIGN with three reference points to correct rotation."}
+        },
+        {
+          "stepNumber": 6,
+          "title": "Clean Up Boundary — Simplify and Snap",
+          "subtitle": "Remove overlapping segments and ensure topology is correct",
+          "why": "Municipal checks fail when boundaries have gaps, overlaps, or non-closed polylines.",
+          "commands": ["OVERKILL", "JOIN", "PEDIT"],
+          "instructions": [
+            "Use OVERKILL to remove duplicate segments and tiny slivers.",
+            "Use PEDIT > Join to merge segments into single polylines.",
+            "Zoom and inspect every vertex for small gaps; use FILLET 0 to snap coincident endpoints if necessary."
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 3,
+      "phaseTitle": "Apply Municipal Rules — Setbacks, ROW, and Building Lines",
+      "phaseDescription": "Implement municipality-specific setbacks, road setbacks, and other regulatory constraints.",
+      "steps": [
+        {
+          "stepNumber": 7,
+          "title": "Understand Municipal Setback Classes",
+          "subtitle": "Residential vs commercial vs mixed-use setbacks",
+          "why": "Different land use categories enforce different building line distances; apply correct class to avoid rejection.",
+          "instructions": [
+            "Check  municipality document for setback rules (front, rear, side). Typical example for pokhara municipality: Front setback = 2m (residential), Side = 1.5m, Rear = 2m — verify exact current values.",
+            "Record the correct values in the drawing notes in the TITLEBLOCK or a dedicated NOTES layer."
+          ],
+          "note": {"label": "Info", "text": "If official rules change, update your template header and notify the team."}
+        },
+         {
+          "stepNumber": 8,
+          "title": "Handle Right-Of-Way (ROW) and Road Setbacks",
+          "subtitle": "Apply ROW widths and future road widening zones",
+          "why": "Municipal ROW influences buildable area and parking requirements.",
+          "commands": ["OFFSET", "BUFFER"],
+          "instructions": [
+            "If the site borders a road, trace the road centerline and offset half ROW on both sides to show full ROW.",
+            "Mark future widening by offsetting additional zone in a dashed style on ROW layer.",
+            "Note the road classification (local, arterial) in drawing notes — Municipal rules may vary by road class."
+          ]
+        },
+        {
+          "stepNumber": 9,
+          "title": "Create Building Lines and Buildable Area",
+          "subtitle": "Offset setbacks from the site boundary",
+          "why": "Building lines show where construction is allowed and are critical for municipal approval.",
+          "commands": ["OFFSET"],
+          "instructions": [
+            "Use OFFSET to create setback lines from the SITE_BOUNDARY polyline: front, rear, and sides as per municipal rules.",
+            "Label each setback line with its class (e.g., FRONT_SETBACK) on the SETBACK layer.",
+            "The area inside the setback lines is the buildable area; consider hatching it lightly for visualization."
+          ]
+        },
+        {
+          "stepNumber": 8,
+          "title": "Create Setback Offsets — OFFSET and POLYOFFSET",
+          "subtitle": "Generate setback lines from the site boundary",
+          "why": "Setback lines visually show where building footprints are allowed.",
+          "commands": ["OFFSET"],
+          "instructions": [
+            "Select the SITE_BOUNDARY polyline and use OFFSET with the setback distance (e.g., OFFSET 3000 for 3m).",
+            "Place the offset to the inside for building setback (or outside for buffer/ROW visualization).",
+            "Label each offset line on the SETBACK layer with its class name (FRONT_SETBACK, SIDE_SETBACK)."
+          ]
+        }
+       
+      ]
+    },
+    {
+      "phaseNumber": 4,
+      "phaseTitle": "Add Site Details — Contours, Existing Structures, Utilities",
+      "phaseDescription": "Trace contours and locate existing structures/utilities for a complete site plan.",
+      "steps": [
+        {
+          "stepNumber": 10,
+          "title": "Trace Contours and Spot Levels",
+          "subtitle": "Digitize elevation lines and labels",
+          "why": "Contours and spot levels help assess grading, cut/fill, and drainage for site design.",
+          "commands": ["PLINE", "TEXT", "HATCH"],
+          "instructions": [
+            "Trace contour lines on the CONTOUR layer using PLINE; keep lineweights light.",
+            "Add text labels for contour elevations on TEXT layer; maintain consistent text height.",
+            "If contours are dense or unclear, simplify using smooth polylines but keep critical elevation points accurate."
+          ]
+        },
+        {
+          "stepNumber": 11,
+          "title": "Locate Existing Buildings, Trees, and Utilities",
+          "subtitle": "Mark existing conditions clearly",
+          "why": "Municipal reviewers need existing features shown for approval and impact assessment.",
+          "commands": ["BLOCK", "INSERT", "HATCH"],
+          "instructions": [
+            "Trace building footprints on BUILDING layer and mark entrances, eaves, and chimneys if relevant.",
+            "Mark utilities (water, sewer, electric) with standard symbols and note their locations.",
+            "Use hatch patterns to show paved areas, lawns, or impervious surfaces on HATCH layer."
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 5,
+      "phaseTitle": "Cutting, Filling and Grading — Calculate Basic Earthworks",
+      "phaseDescription": "Beginner-friendly steps to estimate cut/fill and show grading sketches for municipal submission.",
+      "steps": [
+        {
+          "stepNumber": 12,
+          "title": "Simple Cut/Fill Zones — Use Spot Levels and Sections",
+          "subtitle": "Mark cut and fill areas with approximate depths",
+          "why": "Municipal review needs an idea of grading impact and drainage paths.",
+          "commands": ["TEXT", "HATCH", "LINE"],
+          "instructions": [
+            "Place spot levels at key points and calculate difference from proposed finished level to existing level.",
+            "Sketch simple cross-sections for steep sites showing cut/fill extent and retaining need.",
+            "Label cut as negative values and fill as positive values on the drawing."
+          ]
+        },
+        {
+          "stepNumber": 13,
+          "title": "Define Drainage Paths and Surface Flow",
+          "subtitle": "Show direction arrows and low points",
+          "why": "Proper drainage prevents water pooling and reduces erosion — reviewers check this carefully.",
+          "commands": ["LEADER", "ARROW"],
+          "instructions": [
+            "Add flow arrows from higher contours to lower areas on the drawing.",
+            "Show proposed drainage features: swales, storm drain inlets, and direction of flow.",
+            "Ensure building finished floor levels (FFL) are above adjacent drainage low points."
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 6,
+      "phaseTitle": "Finalize Drawing — Annotations, Dimensions, and Checklist",
+      "phaseDescription": "Prepare the final site plan with required annotations and a municipal-ready checklist.",
+      "steps": [
+        {
+          "stepNumber": 14,
+          "title": "Add Dimensions and North Arrow",
+          "subtitle": "Clear dimensions and orientation are mandatory",
+          "why": "Reviewers must be able to verify distances, setbacks, and orientation at a glance.",
+          "commands": ["DIMLINEAR", "DIMALIGNED", "INSERT"],
+          "instructions": [
+            "Dimension overall site extents and building setbacks clearly on DIMENSION layer.",
+            "Place a north arrow symbol in the title block area or near the site on a dedicated layer.",
+            "Include scale text and a scale bar if needed."
+          ]
+        },
+        {
+          "stepNumber": 15,
+          "title": "Title Block, Notes, and Submission Checklist",
+          "subtitle": "Complete metadata required by municipality",
+          "why": "Incomplete title blocks or missing notes lead to rejection or delay.",
+          "commands": [],
+          "instructions": [
+            "Fill title block: project name, owner, address, scale, date, drafter name, and contact.",
+            "Add notes: applied setback values, reference documents, and any assumptions made during tracing.",
+            "Checklist: Ensure SITE_BOUNDARY closed, SETBACKS drawn, ROW shown, Contours labeled, North arrow present, Titleblock complete."
+          ],
+          "note": {"label": "Success", "text": "Use Layer States to create a PRINT_STATE showing only printable layers before exporting PDF."}
+        }
+      ]
+    }
+  ]
+}

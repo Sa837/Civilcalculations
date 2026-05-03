@@ -218,22 +218,6 @@ export const resources: Resource[] = [
         title: 'Section B: Transportation Engineering (10%)',
         url: '/resources/pokhara-university-msc-structure-2025/transportation-engineering',
       },
-      {
-        title: 'Section C: Geotechnical Engineering (15%)',
-        url: '/resources/pokhara-university-msc-structure-2025/geotechnical-engineering',
-      },
-      {
-        title: 'Section D: Structural Engineering (30%)',
-        url: '/resources/pokhara-university-msc-structure-2025/structural-engineering',
-      },
-      {
-        title: 'Section E: Water Resources Engineering (20%)',
-        url: '/resources/pokhara-university-msc-structure-2025/water-resources-engineering',
-      },
-      {
-        title: 'Section F: Environmental Engineering (15%)',
-        url: '/resources/pokhara-university-msc-structure-2025/environmental-engineering',
-      },
     ],
     createdAt: new Date('2025-01-01'),
     updatedAt: new Date('2025-01-01'),
@@ -267,8 +251,8 @@ export const resources: Resource[] = [
         url: '/resources/autocad-tutorials/blocks-and-attributes',
       },
       {
-        title: 'Section F: 3D Modeling Basics',
-        url: '/resources/autocad-tutorials/3d-modeling-basics',
+        title: 'Section F: Tracing Blueprints — Site Plan & Municipal Requirements',
+        url: '/resources/autocad-tutorials/trace-blueprint-siteplan',
       },
     ],
     createdAt: new Date('2025-01-01'),

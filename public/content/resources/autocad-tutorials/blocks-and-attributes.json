@@ -1,0 +1,174 @@
+{
+  "courseTitle": "Blocks & Attributes — Efficient Reuse and Titleblock Data",
+  "courseDescription": "Practical guide for creating and managing blocks, attributes, dynamic blocks, and titleblock metadata for municipal drawings. Focus on consistency, attribute extraction, and avoiding common beginner pitfalls.",
+  "targetAudience": ["Draftsmen","Site Engineers","CAD Technicians","Civil Students"],
+  "courseObjectives": [
+    "Create reusable blocks for common symbols and fixtures",
+    "Define and extract block attributes for titleblocks and schedules",
+    "Use dynamic blocks for parametric doors/windows",
+    "Manage block libraries and avoid broken references during submission"
+  ],
+  "phases": [
+    {
+      "phaseNumber": 1,
+      "phaseTitle": "Block Basics — Why Use Blocks",
+      "phaseDescription": "Understand the advantages of blocks for consistency and file size reduction.",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "title": "What is a Block?",
+          "subtitle": "Blocks are grouped objects saved under a name",
+          "why": "Blocks let you reuse symbols (doors, windows, trees) and update all instances by editing the definition.",
+          "commands": ["BLOCK","WBLOCK","INSERT"],
+          "instructions": [
+            "Select objects to include and type BLOCK to create an in-file block definition.",
+            "Use WBLOCK to write a block to a separate .dwg file for a shared library.",
+            "Insert blocks using INSERT or the DesignCenter for fast reuse."
+          ],
+          "note": {"label":"Info","text":"Use descriptive names (DOOR_SWING_900, WINDOW_1200x900) to keep libraries searchable."}
+        }
+      ]
+    },
+    {
+      "phaseNumber": 2,
+      "phaseTitle": "Creating Blocks — Best Practices",
+      "phaseDescription": "How to build clean, annotative-ready blocks that play well with layers and styles.",
+      "steps": [
+        {
+          "stepNumber": 2,
+          "title": "Define Base Point and Layers",
+          "subtitle": "Choose a logical insertion point and set ByLayer properties",
+          "why": "Correct base point ensures easy insertion; ByLayer keeps appearance consistent.",
+          "commands": ["BLOCK","PROPERTIES"],
+          "instructions": [
+            "When creating BLOCK, set the base point at a logical snap (e.g., door hinge or center).",
+            "Set block contents to use ByLayer for color/linetype so inserted instances inherit the target layer properties.",
+            "Avoid embedding text with explicit properties; use ByLayer text or attributes instead."
+          ]
+        },
+        {
+          "stepNumber": 3,
+          "title": "Use WBLOCK for Library Files",
+          "subtitle": "Keep a shared blocks folder for project reuse",
+          "why": "External block libraries allow team-wide consistency and reduce duplication.",
+          "commands": ["WBLOCK"],
+          "instructions": [
+            "Select the block or objects and type WBLOCK to export to a .dwg in your BLOCKS library folder.",
+            "Reference these via DesignCenter or insert them when needed. Avoid XREF'ing blocks unless managed centrally."
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 3,
+      "phaseTitle": "Attributes and Titleblock Data",
+      "phaseDescription": "Add dynamic text fields to blocks for metadata and create extractable schedules.",
+      "steps": [
+        {
+          "stepNumber": 4,
+          "title": "Create Block Attributes (ATTDEF)",
+          "subtitle": "Add attributes for project name, scale, date",
+          "why": "Attributes let you store structured data (project, owner) inside blocks for automatic extraction.",
+          "commands": ["ATTDEF","BATTMAN","EATTEDIT"],
+          "instructions": [
+            "Type ATTDEF to create an attribute: set tag (PROJECT_NAME), prompt, default value, and text style (use TXT_MUNI).",
+            "Place attributes in your TITLEBLOCK block so each insertion can be filled with project-specific data.",
+            "Use BATTMAN to manage attribute visibility and order."
+          ],
+          "practicalExample": {"scenario":"Titleblock attributes","attributes":["PROJECT","DRAWN_BY","SCALE","DATE"]}
+        },
+        {
+          "stepNumber": 5,
+          "title": "Extract Attributes to a Schedule",
+          "subtitle": "Use EATTEXT or ATTEXT for export",
+          "why": "Municipal forms often need a table of project data; attributes let you export consistent values easily.",
+          "commands": ["DATAEXTRACTION","ATTEXT","EATTEDIT"],
+          "instructions": [
+            "Use DATAEXTRACTION wizard to create a table from block attributes and insert it into the drawing or export to CSV.",
+            "Alternatively use ATTEXTRACT tools or scripts to pull attributes for external reports."
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 4,
+      "phaseTitle": "Dynamic Blocks & Parameters",
+      "phaseDescription": "Create flexible blocks (doors/windows) that change size without multiple definitions.",
+      "steps": [
+        {
+          "stepNumber": 6,
+          "title": "Basic Dynamic Block Parameters",
+          "subtitle": "Visibility, Stretch, Flip parameters",
+          "why": "Dynamic blocks reduce the number of block types and speed drafting.",
+          "commands": ["BEDIT","BLOCKREPLACE"],
+          "instructions": [
+            "Open BEDIT to edit block definition and add parameters (e.g., Linear parameter for door width).",
+            "Add actions (Stretch, Array) and test with the Test Block tool inside BEDIT.",
+            "Save and reload block; update instances as needed."
+          ],
+          "note": {"label":"Info","text":"Start simple: implement size parameter for doors before adding complex visibility states."}
+        }
+      ]
+    },
+    {
+      "phaseNumber": 5,
+      "phaseTitle": "Insert, Update, and Manage Blocks",
+      "phaseDescription": "Best practices for using blocks in multi-sheet projects and avoiding broken references.",
+      "steps": [
+        {
+          "stepNumber": 7,
+          "title": "Insert and Replace Blocks Safely",
+          "subtitle": "Use Insert or DesignCenter",
+          "why": "Consistent insertion avoids mismatched scales and broken links.",
+          "commands": ["INSERT","SCAL","DESIGNCENTER"],
+          "instructions": [
+            "Insert blocks at 1:1 and let the target layer control appearance. If the block is external, ensure the .dwg path is relative within project folder.",
+            "To update a block across drawings, replace definition in a master file and use INSERT with same name or use BlockReplace plugin."
+          ]
+        },
+        {
+          "stepNumber": 8,
+          "title": "Avoid Exploding Blocks Unnecessarily",
+          "subtitle": "Exploding breaks attribute links and consistency",
+          "why": "Exploding destroys the block’s future editability and can break attribute data.",
+          "commands": ["EXPLODE","REFEDIT"],
+          "instructions": [
+            "Only explode when you absolutely must (for one-off edits).",
+            "If you need to edit a block instance, use REFEDIT or BEDIT to edit the definition instead."
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 6,
+      "phaseTitle": "Library Management & Submission Checklist",
+      "phaseDescription": "Keep libraries clean and ensure blocks will survive municipal review and team sharing.",
+      "steps": [
+        {
+          "stepNumber": 9,
+          "title": "Purge and Audit Block Library",
+          "subtitle": "Use PURGE and AUDIT to clean files",
+          "why": "Unused or corrupted blocks increase file size and cause errors during submission.",
+          "commands": ["PURGE","AUDIT","WBLOCK"],
+          "instructions": [
+            "Run PURGE to remove unused block definitions and styles. Run AUDIT to fix file issues.",
+            "Export key blocks to WBLOCK into a library folder for reuse across projects.",
+            "Version your library and avoid changing names of widely used blocks unexpectedly."
+          ]
+        },
+        {
+          "stepNumber": 10,
+          "title": "Titleblock Attribute Check Before Submission",
+          "subtitle": "Verify all attributes are filled",
+          "why": "Municipality reviewers expect completed metadata such as project name, owner, and drafter.",
+          "commands": ["BATTMAN","DATAEXTRACTION"],
+          "instructions": [
+            "Use BATTMAN to check attribute order and visibility in the titleblock.",
+            "Run DATAEXTRACTION to produce a CSV of attributes and confirm values are correct before final PDF export.",
+            "Lock the titleblock layer in layouts to prevent accidental edits."
+          ]
+        }
+      ]
+    }
+  ]
+}

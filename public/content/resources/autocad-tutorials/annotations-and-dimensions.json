@@ -1,0 +1,173 @@
+{
+  "courseTitle": "Annotations & Dimensions — Municipal Drawing Best Practices",
+  "courseDescription": "Beginner-friendly guide to text, dimensioning, leaders, and annotation styles for clear municipal drawings (Pokhara-friendly conventions). Focuses on annotative scaling, dimension styles, and print-ready settings.",
+  "targetAudience": ["Civil Engineering Students","Draftsmen","Site Engineers","Municipality Draft Review Trainees"],
+  "courseObjectives": [
+    "Create consistent text and dimension styles for municipal submissions",
+    "Use annotative objects and scale-aware annotations",
+    "Dimension plans accurately with best-practice settings",
+    "Produce print-ready PDF drawings with correct annotation sizes"
+  ],
+  "phases": [
+    {
+      "phaseNumber": 1,
+      "phaseTitle": "Setup — Units, Text Style, and Annotation Scaling",
+      "phaseDescription": "Prepare your drawing with correct units and scalable annotation styles.",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "title": "Set Drawing Units and Precision",
+          "subtitle": "UNITS command — match municipality preferences",
+          "why": "Wrong units or precision lead to rejected drawings and incorrect dimensions.",
+          "commands": ["UNITS"],
+          "instructions": [
+            "Type UNITS and set Type to Decimal, Insertion Scale to Millimeters (or Meters if used).",
+            "Set Precision to match municipal expectations (e.g., 0.00 for cm-level, 0.000 for mm-level).",
+            "Save as a template once configured for reuse."
+          ]
+        },
+        {
+          "stepNumber": 2,
+          "title": "Create Text and Dimension Styles",
+          "subtitle": "Define `TEXT` and `DIMSTYLE` templates",
+          "why": "Consistent text height and dimension appearance are mandatory for professional submissions.",
+          "commands": ["STYLE","DIMSTYLE"],
+          "instructions": [
+            "Open `STYLE`, create a style named TXT_MUNI: set font, height (e.g., 3.5 mm for plan text at 1:100), and orientation.",
+            "Open `DIMSTYLE`, create MUNI_DIM: set text height (2.5-3.5 mm), arrow size (2.5 mm), and units format to match UNITS.",
+            "Enable Annotative for styles when you plan to use multiple viewport scales."
+          ],
+          "note": {"label":"Info","text":"Store these styles in your office template (.dwt) for consistent reuse."}
+        }
+      ]
+    },
+    {
+      "phaseNumber": 2,
+      "phaseTitle": "Dimension Styles — Configure for Accuracy",
+      "phaseDescription": "Set up dimension rules so distances, radii, and angles appear correctly and consistently.",
+      "steps": [
+        {
+          "stepNumber": 3,
+          "title": "Create and Modify Dimension Style",
+          "subtitle": "DIMSTYLE → New / Modify",
+          "why": "A single dimension style ensures all dims follow municipal rules and are readable at print scale.",
+          "commands": ["DIMSTYLE","DIMALIGNED","DIMLINEAR"],
+          "instructions": [
+            "Type DIMSTYLE → New → MUNI_DIM → Continue.",
+            "In Fit tab choose Text placement (Above Dimension Line) and set Text gap to 1.5 mm.",
+            "Set Primary units to match UNITS (decimal), precision appropriate to project (0.00 or 0.000).",
+            "Set Arrowheads to a consistent size (2.5 mm) and string format for tolerances if required."
+          ],
+          "practicalExample": {"scenario":"Site plan at 1:100","note":"Use Annotative dims when using model/layout scaling."}
+        },
+        {
+          "stepNumber": 4,
+          "title": "Dimensioning Commands — Aligned, Linear, and Angular",
+          "subtitle": "Use the right command for the right measurement",
+          "why": "Incorrect dimension types cause misinterpretation during review.",
+          "commands": ["DIMALIGNED","DIMLINEAR","DIMANGULAR","DIMRADIUS"],
+          "instructions": [
+            "Use DIMALIGNED for slanted walls and perimeter distances — it measures the true length between two points.",
+            "Use DIMLINEAR for orthogonal widths and heights (X or Y direction).",
+            "Use DIMANGULAR for corner angles, and DIMRADIUS / DIMDIAMETER for arcs and circles.",
+            "Place dimension text outside the object for clarity and avoid overlapping other annotations."
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 3,
+      "phaseTitle": "Annotative Text and Multileaders",
+      "phaseDescription": "Create scalable annotations that maintain readable size across viewports and scales.",
+      "steps": [
+        {
+          "stepNumber": 5,
+          "title": "Create Annotative Text (MText) and Styles",
+          "subtitle": "Use annotative text for multiple viewport scales",
+          "why": "Annotative text automatically scales for different viewport scales, preventing manual resizing errors.",
+          "commands": ["MTEXT","STYLE","ANNOALL"],
+          "instructions": [
+            "Create MText with the TXT_MUNI style and enable Annotative property in the Text Style settings.",
+            "When inserting, set the annotation scale (1:100, 1:200) so text appears correctly in each viewport.",
+            "Use ANNOALL to convert existing text to annotative if needed."
+          ],
+          "note": {"label":"Warning","text":"Avoid mixing annotative and non-annotative text in the same label."}
+        },
+        {
+          "stepNumber": 6,
+          "title": "Use Multileader (QLEADER) for Notes",
+          "subtitle": "Create readable callouts for materials, north arrows, legends",
+          "why": "Leaders keep notes connected to objects without cluttering the drawing.",
+          "commands": ["QLEADER","MLEADER"],
+          "instructions": [
+            "Type QLEADER and click the object, then place the leader text on TEXT layer using an annotative MText.",
+            "For repeated standard notes (e.g., 'Existing tree to remain'), create a block with leader and insert it where needed.",
+            "Keep leader arrowheads consistent and use the same leader landing distances for neatness."
+          ]
+        }
+      ]
+    },
+    {
+      "phaseNumber": 4,
+      "phaseTitle": "Layout, Viewports and Print Scaling",
+      "phaseDescription": "Produce final drawing sheets with correctly scaled annotations and viewports.",
+      "steps": [
+        {
+          "stepNumber": 7,
+          "title": "Create Layout and Viewports",
+          "subtitle": "Paper Space workflows for plotting",
+          "why": "Layouts let you present multiple scales and views on the same sheet with consistent annotation sizes.",
+          "commands": ["LAYOUT","MVIEW","SCALELISTEDIT"],
+          "instructions": [
+            "Create a Layout, insert a viewport (MVIEW) and set its scale to 1:100 or municipality-required scale.",
+            "Ensure Annotative text/dims are set to the same scale so they display correctly in the viewport.",
+            "Lock viewport after setting scale to prevent accidental rescale."
+          ]
+        },
+        {
+          "stepNumber": 8,
+          "title": "Plot and PDF Export Settings",
+          "subtitle": "Use PRINT/EXPORTPDF with the right settings",
+          "why": "Municipal reviewers expect PDFs with readable text and true lineweights.",
+          "commands": ["PLOT","EXPORTPDF"],
+          "instructions": [
+            "Before plotting, restore a PRINT_STATE with only printable layers visible.",
+            "Use Plot Preview to verify lineweights and text legibility at final scale.",
+            "Export to PDF with vector output; embed fonts if required by municipality."
+          ],
+          "note": {"label":"Success","text":"Always submit a PDF sample at the municipal scale for quick review."}
+        }
+      ]
+    },
+    {
+      "phaseNumber": 5,
+      "phaseTitle": "Common Problems & Quick Fixes",
+      "phaseDescription": "Troubleshooting annotation and dimension issues.",
+      "steps": [
+        {
+          "stepNumber": 9,
+          "title": "Dimension Text Overlaps or Disappears",
+          "subtitle": "Check text height, scale, and fit settings",
+          "why": "Small or overlapped text causes reviewers to misread measurements.",
+          "commands": ["DIMSTYLE","PROPERTIES","ANNOALL"],
+          "instructions": [
+            "If dim text overlaps, open DIMSTYLE → Fit → adjust text placement or scale.",
+            "If text disappears in viewport, ensure the annotative scale matches viewport scale and that objects are annotative.",
+            "Use QSELECT to find text with incorrect styles and change them to TXT_MUNI."
+          ]
+        },
+        {
+          "stepNumber": 10,
+          "title": "Units or Decimal Mismatch",
+          "subtitle": "Verify UNITS and DIMSTYLE settings",
+          "why": "Mismatched units lead to numeric errors and rework.",
+          "commands": ["UNITS","DIMSTYLE"],
+          "instructions": [
+            "Check UNITS → Insertion Scale and Primary Units in DIMSTYLE are consistent.",
+            "Update template if municipality changes unit preferences."
+          ]
+        }
+      ]
+    }
+  ]
+}
