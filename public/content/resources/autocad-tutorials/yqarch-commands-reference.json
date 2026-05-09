@@ -1,0 +1,3475 @@
+{
+  "meta": {
+    "title": "YQArch Commands Reference",
+    "subtitle": "Essential AutoCAD Plugin for Municipal Drawing",
+    "description": "Complete YQArch command reference with prioritized list of essential commands for municipal drawing work.",
+    "version": "1.0",
+    "updatedAt": "2026-05-09",
+    "targetAudience": "Civil engineers, municipal planners, architects working with YQArch plugin",
+    "prerequisites": [
+      "AutoCAD 2018 or later",
+      "YQArch plugin installed and activated",
+      "Basic knowledge of municipal drawing standards"
+    ]
+  },
+  "essentialCommands": {
+    "title": "Essential Commands for Municipal Drawing",
+    "description": "The most critical YQArch commands for daily municipal drawing work, ranked by frequency and importance.",
+    "commands": [
+      {
+        "rank": 1,
+        "stars": 5,
+        "shortcut": "SD",
+        "name": "Set Drawing / System Scale",
+        "category": "Dimension Tools",
+        "municipalUse": "ALWAYS use first. Set 1:500 for site plans, 1:100 for building plans, 1:200 for utility layouts.",
+        "tip": "Used every time you start a municipal drawing to set correct scale."
+      },
+      {
+        "rank": 2,
+        "stars": 5,
+        "shortcut": "ZXW",
+        "name": "Draw Grid Axis",
+        "category": "Axis & Grid",
+        "municipalUse": "Essential for site plans. Set spacing to 50m for large sites, 20m for small sites. Label with numbers and letters for legal referencing.",
+        "tip": "Creates coordinate grids for site planning and lot referencing. Used first when starting any site plan."
+      },
+      {
+        "rank": 3,
+        "stars": 5,
+        "shortcut": "WW",
+        "name": "Draw Wall",
+        "category": "Wall & Column",
+        "municipalUse": "Create property boundary walls (0.1m thick), building footprints, retaining walls. Use 0.23m for brick walls, 0.15m for concrete walls.",
+        "tip": "Draws building footprints, boundary walls, retaining walls. Most used command for creating any building or boundary."
+      },
+      {
+        "rank": 4,
+        "stars": 5,
+        "shortcut": "DD / DDX",
+        "name": "Dim Linear / Dim Aligned",
+        "category": "Dimension Tools",
+        "municipalUse": "Dimension property lines, road widths (6m), setbacks (3m front, 2m rear). Most used dimension command.",
+        "tip": "Essential for dimensioning property lines, setbacks, road widths. Used on every municipal drawing."
+      },
+      {
+        "rank": 5,
+        "stars": 5,
+        "shortcut": "MJ",
+        "name": "Accumulate Area",
+        "category": "Statistics & Data",
+        "municipalUse": "ESSENTIAL for site area, building coverage ratio, parking calculations, and green space area.",
+        "tip": "Calculates site area, building coverage, parking areas. Critical for zoning compliance calculations."
+      },
+      {
+        "rank": 6,
+        "stars": 5,
+        "shortcut": "XD",
+        "name": "Double Lines",
+        "category": "Extra Tools",
+        "municipalUse": "ESSENTIAL for drawing roads (6m carriageway + 1.5m sidewalks), utility trenches, fence lines. Set spacing to road width.",
+        "tip": "Draws parallel lines for roads, sidewalks, utility trenches. Very common in site plans."
+      },
+      {
+        "rank": 7,
+        "stars": 5,
+        "shortcut": "ZZB",
+        "name": "Collect Coordinates",
+        "category": "Statistics & Data",
+        "municipalUse": "Export property corner coordinates for legal descriptions and survey records.",
+        "tip": "Exports survey points, property corners, utility locations. Required for legal descriptions and survey data."
+      },
+      {
+        "rank": 8,
+        "stars": 5,
+        "shortcut": "TK",
+        "name": "Drawing Frame (A0-A4)",
+        "category": "System & Interface",
+        "municipalUse": "Adds title block for submission. Used on every sheet for permit applications.",
+        "tip": "Used on every sheet for permit applications."
+      },
+      {
+        "rank": 9,
+        "stars": 5,
+        "shortcut": "ERD",
+        "name": "Isolate Layers",
+        "category": "Layer Tools",
+        "municipalUse": "ESSENTIAL — view only roads layer, only utilities, or only buildings for focused work.",
+        "tip": "Focuses on specific layers (roads, utilities, parcels). Used constantly when working on complex drawings."
+      },
+      {
+        "rank": 10,
+        "stars": 5,
+        "shortcut": "TC",
+        "name": "Quick Hatching",
+        "category": "Hatching & Linetype",
+        "municipalUse": "ESSENTIAL for zoning maps — hatch residential zones, commercial zones, park areas, utility easements with different patterns.",
+        "tip": "Hatches zoning areas, park spaces, utility easements. Used frequently for land use differentiation."
+      },
+      {
+        "rank": 11,
+        "stars": 5,
+        "shortcut": "KK",
+        "name": "YQ Block Library",
+        "category": "Block & Attribute Tools",
+        "municipalUse": "ESSENTIAL — insert standard municipal symbols like manholes, streetlights, fire hydrants, trees, catch basins.",
+        "tip": "Insert standard municipal symbols. Used heavily in site plans."
+      },
+      {
+        "rank": 12,
+        "stars": 4,
+        "shortcut": "FTB",
+        "name": "Building Area Statistics",
+        "category": "Statistics & Data",
+        "municipalUse": "Compute total FSI/FAR for zoning compliance — critical for permit approval.",
+        "tip": "Computes total floor area for zoning compliance. Essential for permit calculations."
+      },
+      {
+        "rank": 13,
+        "stars": 4,
+        "shortcut": "AD / AW",
+        "name": "Open Door / Open Window",
+        "category": "Door & Window",
+        "municipalUse": "Places doors/windows on building elevations. Required for building permit drawings.",
+        "tip": "Required for building permit drawings."
+      },
+      {
+        "rank": 14,
+        "stars": 4,
+        "shortcut": "BG",
+        "name": "Designed Elevation",
+        "category": "Architectural Symbols",
+        "municipalUse": "Label building finished floor levels (FFL), road centerline elevations, and drainage inverts.",
+        "tip": "Labels finished floor elevations, road centerlines. Important for grading and drainage."
+      },
+      {
+        "rank": 15,
+        "stars": 4,
+        "shortcut": "ZB",
+        "name": "Geodesic Coordinates",
+        "category": "Architectural Symbols",
+        "municipalUse": "Add GPS coordinates at property corners for legal descriptions. Required for survey submissions.",
+        "tip": "Adds GPS coordinates to site plan. Required for legal property descriptions."
+      },
+      {
+        "rank": 16,
+        "stars": 4,
+        "shortcut": "PUA",
+        "name": "Purge All in DWG",
+        "category": "Check & Correct",
+        "municipalUse": "MUST-DO before submitting to municipality. Reduces file size and removes junk data.",
+        "tip": "Cleans unused items before submission. Must-do before sending to municipality."
+      },
+      {
+        "rank": 17,
+        "stars": 4,
+        "shortcut": "BPT",
+        "name": "Batch-Plot",
+        "category": "Other Tools",
+        "municipalUse": "Prints all permit sheets at once. Saves time on every submission.",
+        "tip": "Saves time on every submission."
+      },
+      {
+        "rank": 18,
+        "stars": 4,
+        "shortcut": "ERAF",
+        "name": "Turn Off All Layers",
+        "category": "Layer Tools",
+        "municipalUse": "Very common — quickly clear all clutter to work on one discipline at a time.",
+        "tip": "Quickly clears clutter to examine one discipline. Used frequently for focused work."
+      },
+      {
+        "rank": 19,
+        "stars": 4,
+        "shortcut": "ABH",
+        "name": "Auto Serial Number",
+        "category": "Statistics & Data",
+        "municipalUse": "Number building units, parking spaces, or utility poles sequentially.",
+        "tip": "Common in subdivisions."
+      },
+      {
+        "rank": 20,
+        "stars": 4,
+        "shortcut": "XTC",
+        "name": "Change Hatching Scale",
+        "category": "Hatching & Linetype",
+        "municipalUse": "Adjust hatch scale after changing drawing scale. Common when switching from 1:500 to 1:100.",
+        "tip": "Often needed after scale changes."
+      },
+      {
+        "rank": 21,
+        "stars": 4,
+        "shortcut": "MCB",
+        "name": "Win/Door List",
+        "category": "Statistics & Data",
+        "municipalUse": "Required table for building permit submissions.",
+        "tip": "Generates door/window schedule. Required for building permits."
+      },
+      {
+        "rank": 22,
+        "stars": 3,
+        "shortcut": "ERM",
+        "name": "Merge Layers",
+        "category": "Layer Tools",
+        "municipalUse": "Consolidate imported survey layers (SURVEY-ROAD, SURVEY-BLDG) into standard layers (A-ROAD, A-BLDG).",
+        "tip": "Common when combining survey data."
+      },
+      {
+        "rank": 23,
+        "stars": 3,
+        "shortcut": "XBG",
+        "name": "Contour Elevation",
+        "category": "Architectural Symbols",
+        "municipalUse": "Label existing ground levels on topo surveys. Critical for grading and drainage analysis.",
+        "tip": "Used on topo surveys and grading plans."
+      },
+      {
+        "rank": 24,
+        "stars": 3,
+        "shortcut": "PD",
+        "name": "Slope Symbol",
+        "category": "Architectural Symbols",
+        "municipalUse": "ESSENTIAL — shows drainage direction, ramp slopes. Required for ADA compliance (max 1:12 slope).",
+        "tip": "Shows drainage direction and ramp slopes."
+      },
+      {
+        "rank": 25,
+        "stars": 3,
+        "shortcut": "CLB",
+        "name": "Material List",
+        "category": "Statistics & Data",
+        "municipalUse": "Calculate concrete, asphalt, and paving quantities for cost estimates.",
+        "tip": "Used for cost estimates."
+      },
+      {
+        "rank": 26,
+        "stars": 3,
+        "shortcut": "AAX",
+        "name": "Arrow Leader",
+        "category": "Indexing & Referencing",
+        "municipalUse": "Annotates easement notes, utility callouts. Common for special conditions.",
+        "tip": "Common for special conditions annotations."
+      },
+      {
+        "rank": 27,
+        "stars": 3,
+        "shortcut": "VVS",
+        "name": "Set Viewport Scale",
+        "category": "Viewport & Layout Tools",
+        "municipalUse": "Set site plan viewports to 1:500, building plans to 1:100, details to 1:50 for municipal submission.",
+        "tip": "Used for every sheet layout."
+      },
+      {
+        "rank": 28,
+        "stars": 3,
+        "shortcut": "PQF",
+        "name": "Section Plane Symbols",
+        "category": "Architectural Symbols",
+        "municipalUse": "Mark building section cuts for permit review drawings.",
+        "tip": "Used in detailed building plans."
+      },
+      {
+        "rank": 29,
+        "stars": 3,
+        "shortcut": "ZO",
+        "name": "Clear Z-axis of Objs",
+        "category": "Check & Correct",
+        "municipalUse": "Flattens imported 3D survey data to 2D plan view. Very common with GPS survey imports.",
+        "tip": "Common when importing survey points."
+      },
+      {
+        "rank": 30,
+        "stars": 3,
+        "shortcut": "RD",
+        "name": "Eliminate Overlapping",
+        "category": "Check & Correct",
+        "municipalUse": "Clean up duplicate lines from imported survey data. Critical before area calculations.",
+        "tip": "Important for clean drawings."
+      }
+    ]
+  },
+  "categories": [
+    {
+      "id": "system-interface",
+      "title": "System & Interface",
+      "icon": "settings",
+      "description": "Core plugin configuration, interface controls, and system preferences.",
+      "commands": [
+        {
+          "name": "User Preferences",
+          "shortcut": "YQSYS",
+          "description": "Opens YQArch user preferences to customize plugin behavior.",
+          "municipalUse": null
+        },
+        {
+          "name": "YQArch Command Pane",
+          "shortcut": "YQ",
+          "description": "Toggles the YQArch command panel on/off.",
+          "municipalUse": null
+        },
+        {
+          "name": "Show YQArch Toolbars",
+          "shortcut": "TBA",
+          "description": "Displays all YQArch toolbars.",
+          "municipalUse": null
+        },
+        {
+          "name": "Hide YQArch Toolbars",
+          "shortcut": "TBAF",
+          "description": "Hides all YQArch toolbars.",
+          "municipalUse": null
+        },
+        {
+          "name": "Select Current User",
+          "shortcut": "YQUSER",
+          "description": "Switches between different user profiles/settings.",
+          "municipalUse": null
+        },
+        {
+          "name": "Select Language",
+          "shortcut": "YQLANG",
+          "description": "Changes the plugin interface language.",
+          "municipalUse": null
+        },
+        {
+          "name": "Set Default Units",
+          "shortcut": "YQUNITS",
+          "description": "Sets the default drawing units (mm, cm, m, etc.).",
+          "municipalUse": null
+        },
+        {
+          "name": "Reload YQArch Menu",
+          "shortcut": "YQMENU",
+          "description": "Refreshes the YQArch menu after customization.",
+          "municipalUse": null
+        },
+        {
+          "name": "Set Drawing / System Scale",
+          "shortcut": "SD",
+          "description": "Sets the scale for the current drawing and symbols.",
+          "municipalUse": "Set 1:500 for site plans, 1:100 for building plans, 1:200 for utility layouts."
+        },
+        {
+          "name": "Drawing Frame (A0-A4)",
+          "shortcut": "TK",
+          "description": "Inserts a standardized drawing frame/title block.",
+          "municipalUse": "Adds title block for submission. Used on every sheet for permit applications."
+        },
+        {
+          "name": "YQArch Help",
+          "shortcut": "YQHELP",
+          "description": "Opens the help documentation.",
+          "municipalUse": null
+        },
+        {
+          "name": "YQArch Version",
+          "shortcut": "YQVER",
+          "description": "Displays current YQArch version.",
+          "municipalUse": null
+        },
+        {
+          "name": "YQArch Website",
+          "shortcut": "YQWEB",
+          "description": "Opens the YQArch official website.",
+          "municipalUse": null
+        },
+        {
+          "name": "Donate / Support",
+          "shortcut": "DONATE",
+          "description": "Opens donation/support page.",
+          "municipalUse": null
+        },
+        {
+          "name": "About YQArch",
+          "shortcut": "YQABOUT",
+          "description": "Shows software credits and info.",
+          "municipalUse": null
+        },
+        {
+          "name": "YQArch Uninstall",
+          "shortcut": "YQUNINST",
+          "description": "Starts the uninstallation process.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "main-interface",
+      "title": "Main Interface Tools",
+      "icon": "grid",
+      "description": "Primary command palette shortcuts that open grouped tool panels.",
+      "commands": [
+        {
+          "name": "System Setup",
+          "shortcut": "SYS",
+          "description": "Opens main system setup dialog for YQArch.",
+          "municipalUse": null
+        },
+        {
+          "name": "Plane Wall/Column",
+          "shortcut": "WWW",
+          "description": "Draws walls or columns in plan view.",
+          "municipalUse": null
+        },
+        {
+          "name": "Plane Window/Door",
+          "shortcut": "MMM",
+          "description": "Places windows or doors in plan view.",
+          "municipalUse": null
+        },
+        {
+          "name": "Building Component",
+          "shortcut": "GGG",
+          "description": "Opens building component library (stairs, ramps, etc.).",
+          "municipalUse": null
+        },
+        {
+          "name": "Decoration Component",
+          "shortcut": "ZZZ",
+          "description": "Opens decoration component library (furniture, fixtures).",
+          "municipalUse": null
+        },
+        {
+          "name": "Architectural Symbols",
+          "shortcut": "FFF",
+          "description": "Inserts architectural symbols (north arrows, elevation marks).",
+          "municipalUse": null
+        },
+        {
+          "name": "Indexer Symbols",
+          "shortcut": "YYY",
+          "description": "Inserts indexing symbols (section cuts, detail references).",
+          "municipalUse": null
+        },
+        {
+          "name": "Statistics Tools",
+          "shortcut": "III",
+          "description": "Opens area, length, and counting tools.",
+          "municipalUse": null
+        },
+        {
+          "name": "Text Content",
+          "shortcut": "TTT",
+          "description": "Creates or edits multi-line text content.",
+          "municipalUse": null
+        },
+        {
+          "name": "Text Modify",
+          "shortcut": "TTTT",
+          "description": "Advanced text modification tools.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dimension Draw",
+          "shortcut": "DDD",
+          "description": "Starts dimension drawing commands.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dimension Modify",
+          "shortcut": "DDDD",
+          "description": "Modifies existing dimensions.",
+          "municipalUse": null
+        },
+        {
+          "name": "Curve Tools",
+          "shortcut": "XXX",
+          "description": "Tools for editing curves, polylines, arcs.",
+          "municipalUse": null
+        },
+        {
+          "name": "Extra Tool",
+          "shortcut": "EEE",
+          "description": "Additional utilities like double lines, alignment.",
+          "municipalUse": null
+        },
+        {
+          "name": "Modify Plus",
+          "shortcut": "EEEE",
+          "description": "Advanced modification tools (scale per object, dynamic copy).",
+          "municipalUse": null
+        },
+        {
+          "name": "Check And Correct",
+          "shortcut": "CCC",
+          "description": "Drawing cleanup and error checking tools.",
+          "municipalUse": null
+        },
+        {
+          "name": "Block Tools",
+          "shortcut": "BBB",
+          "description": "Block creation, renaming, and management.",
+          "municipalUse": null
+        },
+        {
+          "name": "Hatching Tool",
+          "shortcut": "HHH",
+          "description": "Hatching and pattern tools.",
+          "municipalUse": null
+        },
+        {
+          "name": "Layer Tool",
+          "shortcut": "LLL",
+          "description": "Layer management shortcuts.",
+          "municipalUse": null
+        },
+        {
+          "name": "View Point Tool",
+          "shortcut": "VVV",
+          "description": "Viewport and layout tools.",
+          "municipalUse": null
+        },
+        {
+          "name": "Matching Brush",
+          "shortcut": "SSS",
+          "description": "Copies properties from one object to another.",
+          "municipalUse": null
+        },
+        {
+          "name": "Other Tools",
+          "shortcut": "QQQ",
+          "description": "Miscellaneous utilities (batch plot, DWG catalog, etc.).",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "axis-grid",
+      "title": "Axis & Grid",
+      "icon": "compass",
+      "description": "Commands for drawing and managing axis lines and coordinate grids.",
+      "commands": [
+        {
+          "name": "Draw Axis Line",
+          "shortcut": "AX",
+          "description": "Draws a single axis line.",
+          "municipalUse": "Mark property boundaries and setback lines."
+        },
+        {
+          "name": "Draw Grid Axis",
+          "shortcut": "ZXW",
+          "description": "Creates a rectangular grid of axes.",
+          "municipalUse": "Essential for site plans. Set spacing to 50m for large sites, 20m for small sites. Label with numbers and letters for legal referencing."
+        },
+        {
+          "name": "Axis Lines Of Walls",
+          "shortcut": "XWW",
+          "description": "Generates axis lines from existing walls.",
+          "municipalUse": "Quick structural grid from building footprints for permit drawings."
+        },
+        {
+          "name": "Rebuilt Wall Axis",
+          "shortcut": "WWA",
+          "description": "Rebuilds axis lines based on wall positions.",
+          "municipalUse": "Update structural grid after building layout changes."
+        }
+      ]
+    },
+    {
+      "id": "wall-column",
+      "title": "Wall & Column",
+      "icon": "building",
+      "description": "Tools for drawing, modifying, and managing walls and structural columns.",
+      "commands": [
+        {
+          "name": "Draw Wall",
+          "shortcut": "WW",
+          "description": "Draws a wall with specified thickness and height.",
+          "municipalUse": "Create property boundary walls (0.1m thick), building footprints, retaining walls. Use 0.23m for brick walls, 0.15m for concrete walls."
+        },
+        {
+          "name": "Wall Scissor",
+          "shortcut": "TW",
+          "description": "Cuts or trims walls at intersections.",
+          "municipalUse": "Clean wall intersections at building corners and T-junctions."
+        },
+        {
+          "name": "Change Wall Thickness",
+          "shortcut": "WWT",
+          "description": "Changes the thickness of selected walls.",
+          "municipalUse": "Adjust boundary wall thickness after municipal code review."
+        },
+        {
+          "name": "Wall Offsetting",
+          "shortcut": "WWO",
+          "description": "Offsets a wall by a specified distance.",
+          "municipalUse": "Create setback lines parallel to property boundaries."
+        },
+        {
+          "name": "Fill in Walls / Columns",
+          "shortcut": "WWF",
+          "description": "Fills wall or column outlines with a hatch/pattern.",
+          "municipalUse": "Hatch building footprints to show coverage area on site plans."
+        },
+        {
+          "name": "Rectangular Column",
+          "shortcut": "ZZR",
+          "description": "Creates a rectangular column in plan.",
+          "municipalUse": "Place structural columns at grid intersections for permit drawings."
+        },
+        {
+          "name": "'O' Shape Column",
+          "shortcut": "ZZC",
+          "description": "Creates an O-shaped (circular/oval) column.",
+          "municipalUse": null
+        },
+        {
+          "name": "'L' Shape Column",
+          "shortcut": "ZZL",
+          "description": "Creates an L-shaped column.",
+          "municipalUse": null
+        },
+        {
+          "name": "'T' Shape Column",
+          "shortcut": "ZZT",
+          "description": "Creates a T-shaped column.",
+          "municipalUse": null
+        },
+        {
+          "name": "'+' Shape Column",
+          "shortcut": "ZZX",
+          "description": "Creates a plus-shaped column.",
+          "municipalUse": null
+        },
+        {
+          "name": "Arrange Columns",
+          "shortcut": "ZZBZ",
+          "description": "Automatically arranges columns along an axis or grid.",
+          "municipalUse": null
+        },
+        {
+          "name": "Convert To Column",
+          "shortcut": "XXZZ",
+          "description": "Converts selected polylines/circles into columns.",
+          "municipalUse": null
+        },
+        {
+          "name": "Fill In Columns",
+          "shortcut": "ZZF",
+          "description": "Fills column outlines with a hatch.",
+          "municipalUse": null
+        },
+        {
+          "name": "Del Win/Dr/Wall/Col",
+          "shortcut": "EW",
+          "description": "Erases selected windows, doors, walls, or columns.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "door-window",
+      "title": "Door & Window",
+      "icon": "door",
+      "description": "Insert, modify, and manage doors and windows within walls.",
+      "commands": [
+        {
+          "name": "Open Door",
+          "shortcut": "AD",
+          "description": "Opens a door in a selected wall.",
+          "municipalUse": "Required for building permit drawings."
+        },
+        {
+          "name": "Draw A Door",
+          "shortcut": "AD2",
+          "description": "Draws a door with custom parameters.",
+          "municipalUse": null
+        },
+        {
+          "name": "Open Window",
+          "shortcut": "AW",
+          "description": "Opens a window in a selected wall.",
+          "municipalUse": "Required for building permit drawings."
+        },
+        {
+          "name": "Draw a Window",
+          "shortcut": "AW2",
+          "description": "Draws a window with custom parameters.",
+          "municipalUse": null
+        },
+        {
+          "name": "Replace Window/Door",
+          "shortcut": "TD",
+          "description": "Replaces an existing door/window with a different type.",
+          "municipalUse": null
+        },
+        {
+          "name": "Auto Open Hole",
+          "shortcut": "HO",
+          "description": "Automatically creates opening holes for doors/windows.",
+          "municipalUse": null
+        },
+        {
+          "name": "Open Pocket Door",
+          "shortcut": "ADT",
+          "description": "Opens a pocket sliding door.",
+          "municipalUse": null
+        },
+        {
+          "name": "Draw a Pocket Door",
+          "shortcut": "ADT2",
+          "description": "Draws a pocket sliding door with parameters.",
+          "municipalUse": null
+        },
+        {
+          "name": "Replace By Pocket Door",
+          "shortcut": "TDD",
+          "description": "Replaces an existing door with a pocket door.",
+          "municipalUse": null
+        },
+        {
+          "name": "Open Param Window",
+          "shortcut": "WD",
+          "description": "Opens a parameterized window dialog.",
+          "municipalUse": null
+        },
+        {
+          "name": "Draw a Param Window",
+          "shortcut": "WD2",
+          "description": "Draws a parameterized window.",
+          "municipalUse": null
+        },
+        {
+          "name": "Replace by Param window",
+          "shortcut": "TDW",
+          "description": "Replaces existing window with parameterized one.",
+          "municipalUse": null
+        },
+        {
+          "name": "Open Corner Window",
+          "shortcut": "WDZ",
+          "description": "Opens a corner window at wall intersection.",
+          "municipalUse": null
+        },
+        {
+          "name": "Replace Corner Window",
+          "shortcut": "TDZ",
+          "description": "Replaces existing window with a corner window.",
+          "municipalUse": null
+        },
+        {
+          "name": "Doorsill Manager",
+          "shortcut": "MKX",
+          "description": "Manages doorsill settings and placement.",
+          "municipalUse": null
+        },
+        {
+          "name": "Door Opening Manager",
+          "shortcut": "MDX",
+          "description": "Manages door opening parameters.",
+          "municipalUse": null
+        },
+        {
+          "name": "Lines of Windows",
+          "shortcut": "XWD",
+          "description": "Creates line representations of windows.",
+          "municipalUse": null
+        },
+        {
+          "name": "Change Window/Door Width",
+          "shortcut": "CW",
+          "description": "Changes the width of a selected window or door.",
+          "municipalUse": null
+        },
+        {
+          "name": "Move Window/Door",
+          "shortcut": "VW",
+          "description": "Moves a window or door along a wall.",
+          "municipalUse": null
+        },
+        {
+          "name": "Repair Win/Door/Column",
+          "shortcut": "XF",
+          "description": "Repairs corrupted or missing window/door/column data.",
+          "municipalUse": null
+        },
+        {
+          "name": "Move and Fix",
+          "shortcut": "VX",
+          "description": "Moves an object and fixes it to wall/alignment.",
+          "municipalUse": null
+        },
+        {
+          "name": "Copy and Fix",
+          "shortcut": "CK",
+          "description": "Copies an object and fixes it to wall/alignment.",
+          "municipalUse": null
+        },
+        {
+          "name": "Mirror and Fix",
+          "shortcut": "RRX",
+          "description": "Mirrors an object and fixes it to wall/alignment.",
+          "municipalUse": null
+        },
+        {
+          "name": "Window Serial Number",
+          "shortcut": "WBH",
+          "description": "Adds automatic serial numbers to windows.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "components",
+      "title": "Components (Stairs, Elevators, Curtain Walls)",
+      "icon": "layers",
+      "description": "Library of architectural components including stairs, elevators, and curtain wall systems.",
+      "commands": [
+        {
+          "name": "Index of Components",
+          "shortcut": "GJ",
+          "description": "Opens the component index/library.",
+          "municipalUse": null
+        },
+        {
+          "name": "Plan/Elev Escalator",
+          "shortcut": "LTF",
+          "description": "Draws an escalator in plan or elevation.",
+          "municipalUse": null
+        },
+        {
+          "name": "Plan of Staircase",
+          "shortcut": "LTJ",
+          "description": "Draws a staircase in plan view.",
+          "municipalUse": null
+        },
+        {
+          "name": "Plan of Arch Staircase",
+          "shortcut": "ITA",
+          "description": "Draws an architectural staircase (curved/spiral).",
+          "municipalUse": null
+        },
+        {
+          "name": "Plan of Elevator",
+          "shortcut": "DTJ",
+          "description": "Draws an elevator in plan view.",
+          "municipalUse": null
+        },
+        {
+          "name": "Elevation of Door",
+          "shortcut": "ADE",
+          "description": "Creates door elevation view.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section of Door",
+          "shortcut": "ADS",
+          "description": "Creates door section view.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section of Bay Win",
+          "shortcut": "WTS",
+          "description": "Creates section view of a bay window.",
+          "municipalUse": null
+        },
+        {
+          "name": "Elevation of Window",
+          "shortcut": "WDE",
+          "description": "Creates window elevation view.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section of Window",
+          "shortcut": "WDS",
+          "description": "Creates window section view.",
+          "municipalUse": null
+        },
+        {
+          "name": "Elev/Sect of Shutter",
+          "shortcut": "BY",
+          "description": "Creates elevation/section of shutters.",
+          "municipalUse": null
+        },
+        {
+          "name": "Curtain Wall Glass",
+          "shortcut": "MBL",
+          "description": "Draws a curtain wall with glass panels.",
+          "municipalUse": null
+        },
+        {
+          "name": "Lines to Window Elev",
+          "shortcut": "WDD",
+          "description": "Converts linework to window elevation.",
+          "municipalUse": null
+        },
+        {
+          "name": "SN. to Window Elev",
+          "shortcut": "T2W",
+          "description": "Converts serial numbers to window elevations.",
+          "municipalUse": null
+        },
+        {
+          "name": "Elevation of Curtain Wall",
+          "shortcut": "MQ",
+          "description": "Creates curtain wall elevation.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section of Partition",
+          "shortcut": "MQS",
+          "description": "Creates section view of a partition wall.",
+          "municipalUse": null
+        },
+        {
+          "name": "Elevation Banister",
+          "shortcut": "LG",
+          "description": "Creates banister/railing elevation.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section of Staircase",
+          "shortcut": "LTP",
+          "description": "Creates staircase section view.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section of Steps",
+          "shortcut": "LXTB",
+          "description": "Creates section view of steps.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section of Waterproof",
+          "shortcut": "FSC",
+          "description": "Creates section view of waterproofing layer.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section of Stucco",
+          "shortcut": "FN",
+          "description": "Creates section view of stucco/plaster.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "decoration-interior",
+      "title": "Decoration & Interior",
+      "icon": "home",
+      "description": "Interior design elements, furniture, fixtures, and material sections.",
+      "commands": [
+        {
+          "name": "Index Of Decco Components",
+          "shortcut": "ZS",
+          "description": "Opens decoration components library.",
+          "municipalUse": null
+        },
+        {
+          "name": "Auto Arrange Furniture",
+          "shortcut": "IJ",
+          "description": "Automatically arranges furniture in a room.",
+          "municipalUse": null
+        },
+        {
+          "name": "Arrange WC/Shower",
+          "shortcut": "WC",
+          "description": "Places toilet and shower fixtures in plan.",
+          "municipalUse": null
+        },
+        {
+          "name": "Plan of Chest",
+          "shortcut": "YG",
+          "description": "Draws a chest/cabinet in plan view.",
+          "municipalUse": null
+        },
+        {
+          "name": "Plan of Curtain",
+          "shortcut": "CLP",
+          "description": "Draws curtains in plan view.",
+          "municipalUse": null
+        },
+        {
+          "name": "Plan of Plaster String",
+          "shortcut": "SGX",
+          "description": "Draws plaster string/cornice in plan.",
+          "municipalUse": null
+        },
+        {
+          "name": "Plan of Cupboard",
+          "shortcut": "GZ",
+          "description": "Draws a cupboard in plan view.",
+          "municipalUse": null
+        },
+        {
+          "name": "Elev. of Cupboard",
+          "shortcut": "GZE",
+          "description": "Creates cupboard elevation.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section of Stone Style",
+          "shortcut": "STB",
+          "description": "Creates stone style section.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section of Wooden Frame",
+          "shortcut": "MF",
+          "description": "Creates wooden frame section.",
+          "municipalUse": null
+        },
+        {
+          "name": "Boards Array",
+          "shortcut": "CBZ",
+          "description": "Creates an array of boards/planks.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section Of Blockboard",
+          "shortcut": "MGB",
+          "description": "Creates blockboard section.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section Of Plywood",
+          "shortcut": "IB",
+          "description": "Creates plywood section.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section Of Wood Flooring",
+          "shortcut": "MDB",
+          "description": "Creates wood flooring section.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section Of Gypsum Board",
+          "shortcut": "SGB",
+          "description": "Creates gypsum board section.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section Light Trough",
+          "shortcut": "THDC",
+          "description": "Creates light trough/cove section.",
+          "municipalUse": null
+        },
+        {
+          "name": "Partition Wall",
+          "shortcut": "GQ",
+          "description": "Draws a partition wall.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section of Glass",
+          "shortcut": "BL",
+          "description": "Creates glass section.",
+          "municipalUse": null
+        },
+        {
+          "name": "Formed Steel",
+          "shortcut": "XG",
+          "description": "Draws formed steel shapes.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section Iron Frame",
+          "shortcut": "IGJ",
+          "description": "Creates iron frame section.",
+          "municipalUse": null
+        },
+        {
+          "name": "Cotton Insulation",
+          "shortcut": "BWM",
+          "description": "Draws cotton insulation batting.",
+          "municipalUse": null
+        },
+        {
+          "name": "Welding Line",
+          "shortcut": "HF",
+          "description": "Draws welding line symbols.",
+          "municipalUse": null
+        },
+        {
+          "name": "Draw Hose",
+          "shortcut": "RG",
+          "description": "Draws a flexible hose/pipe.",
+          "municipalUse": null
+        },
+        {
+          "name": "Draw Pipe",
+          "shortcut": "GX",
+          "description": "Draws rigid pipe/tube.",
+          "municipalUse": null
+        },
+        {
+          "name": "Hole on Board",
+          "shortcut": "KD",
+          "description": "Creates a hole in a board/panel.",
+          "municipalUse": null
+        },
+        {
+          "name": "Cylinder Shadow",
+          "shortcut": "YZX",
+          "description": "Creates cylinder shadow effect.",
+          "municipalUse": null
+        },
+        {
+          "name": "Back-Bolt Hole",
+          "shortcut": "BSK",
+          "description": "Draws back-bolt hole detail.",
+          "municipalUse": null
+        },
+        {
+          "name": "Arrange Lamps",
+          "shortcut": "DJ",
+          "description": "Automatically arranges lamps in a room.",
+          "municipalUse": null
+        },
+        {
+          "name": "Random Spread",
+          "shortcut": "MTX",
+          "description": "Randomly distributes selected objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Indoor Elevation",
+          "shortcut": "IM",
+          "description": "Creates indoor elevation view.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "architectural-symbols",
+      "title": "Architectural Symbols",
+      "icon": "map-pin",
+      "description": "Standard architectural annotation symbols including elevation markers, slope indicators, and coordinate tools.",
+      "commands": [
+        {
+          "name": "Index of Symbols",
+          "shortcut": "FH",
+          "description": "Opens architectural symbols library.",
+          "municipalUse": null
+        },
+        {
+          "name": "Arrange Axis Symbols",
+          "shortcut": "AZH",
+          "description": "Automatically arranges axis bubble symbols.",
+          "municipalUse": null
+        },
+        {
+          "name": "Draw Axis Symbols",
+          "shortcut": "ZH",
+          "description": "Draws individual axis bubble symbols.",
+          "municipalUse": null
+        },
+        {
+          "name": "Geodesic Coordinates",
+          "shortcut": "ZB",
+          "description": "Inserts geodesic coordinate points.",
+          "municipalUse": "Add GPS coordinates at property corners for legal descriptions. Required for survey submissions."
+        },
+        {
+          "name": "Designed Elevation",
+          "shortcut": "BG",
+          "description": "Inserts elevation marker (designed level).",
+          "municipalUse": "Label building finished floor levels (FFL), road centerline elevations, and drainage inverts."
+        },
+        {
+          "name": "Contour Elevation",
+          "shortcut": "XBG",
+          "description": "Inserts contour elevation label.",
+          "municipalUse": "Label existing ground levels on topo surveys. Critical for grading and drainage analysis."
+        },
+        {
+          "name": "Section Plane Symbols",
+          "shortcut": "PQF",
+          "description": "Draws section plane cut symbols.",
+          "municipalUse": "Mark building section cuts for permit review drawings."
+        },
+        {
+          "name": "Section Cutter Symbols",
+          "shortcut": "DMF",
+          "description": "Draws section cutter line symbols.",
+          "municipalUse": null
+        },
+        {
+          "name": "Slope Symbol",
+          "shortcut": "PD",
+          "description": "Inserts slope/ramp direction arrow.",
+          "municipalUse": "ESSENTIAL — shows drainage direction, ramp slopes. Required for ADA compliance (max 1:12 slope)."
+        },
+        {
+          "name": "Disconnection Line",
+          "shortcut": "ZX",
+          "description": "Draws a break/disconnection line.",
+          "municipalUse": null
+        },
+        {
+          "name": "Pipe Cutting Symbol",
+          "shortcut": "GPX",
+          "description": "Inserts pipe cut symbol.",
+          "municipalUse": null
+        },
+        {
+          "name": "Symmetry Axis",
+          "shortcut": "DCZ",
+          "description": "Draws symmetry axis line.",
+          "municipalUse": null
+        },
+        {
+          "name": "Central Line",
+          "shortcut": "ZXX",
+          "description": "Draws a central line (dashed).",
+          "municipalUse": "Road centerlines and utility alignment lines."
+        },
+        {
+          "name": "Wire Surround",
+          "shortcut": "ACC",
+          "description": "Draws a wire/rope surround symbol.",
+          "municipalUse": null
+        },
+        {
+          "name": "Erase Surround",
+          "shortcut": "ECC",
+          "description": "Erases wire surround symbol.",
+          "municipalUse": null
+        },
+        {
+          "name": "Bent Arrow",
+          "shortcut": "AAW",
+          "description": "Draws a bent/doglegged arrow.",
+          "municipalUse": null
+        },
+        {
+          "name": "Entrance Arrow",
+          "shortcut": "AAE",
+          "description": "Draws entrance direction arrow.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "indexing-referencing",
+      "title": "Indexing & Referencing",
+      "icon": "bookmark",
+      "description": "Section symbols, elevation indexers, detail references, and leader lines.",
+      "commands": [
+        {
+          "name": "Index of Indexers",
+          "shortcut": "SY",
+          "description": "Opens indexer symbols library.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section Symbol 1",
+          "shortcut": "SY1",
+          "description": "Inserts type 1 section cut symbol.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section Symbol 2",
+          "shortcut": "SY2",
+          "description": "Inserts type 2 section cut symbol.",
+          "municipalUse": null
+        },
+        {
+          "name": "Section Symbol 3",
+          "shortcut": "SY3",
+          "description": "Inserts type 3 section cut symbol.",
+          "municipalUse": null
+        },
+        {
+          "name": "Elevation Indexer (4 In1)",
+          "shortcut": "I0",
+          "description": "Inserts combination elevation marker (4 views).",
+          "municipalUse": null
+        },
+        {
+          "name": "Elevation Indexer 1",
+          "shortcut": "I1",
+          "description": "Inserts type 1 elevation marker.",
+          "municipalUse": null
+        },
+        {
+          "name": "Elevation Indexer 2",
+          "shortcut": "I2",
+          "description": "Inserts type 2 elevation marker.",
+          "municipalUse": null
+        },
+        {
+          "name": "Elevation Indexer 3",
+          "shortcut": "I3",
+          "description": "Inserts type 3 elevation marker.",
+          "municipalUse": null
+        },
+        {
+          "name": "Elevation Indexer 4",
+          "shortcut": "I4",
+          "description": "Inserts type 4 elevation marker.",
+          "municipalUse": null
+        },
+        {
+          "name": "Detail Drawing Symbols 1",
+          "shortcut": "XT1",
+          "description": "Inserts type 1 detail reference symbol.",
+          "municipalUse": null
+        },
+        {
+          "name": "Detail Drawing Symbols 2",
+          "shortcut": "XT2",
+          "description": "Inserts type 2 detail reference symbol.",
+          "municipalUse": null
+        },
+        {
+          "name": "Indexer 1",
+          "shortcut": "S1",
+          "description": "Inserts type 1 general indexer.",
+          "municipalUse": null
+        },
+        {
+          "name": "Indexer 2",
+          "shortcut": "S2",
+          "description": "Inserts type 2 general indexer.",
+          "municipalUse": null
+        },
+        {
+          "name": "Indexer 3",
+          "shortcut": "S3",
+          "description": "Inserts type 3 general indexer.",
+          "municipalUse": null
+        },
+        {
+          "name": "Indexer 4",
+          "shortcut": "S4",
+          "description": "Inserts type 4 general indexer.",
+          "municipalUse": null
+        },
+        {
+          "name": "Indexer 5",
+          "shortcut": "S5",
+          "description": "Inserts type 5 general indexer.",
+          "municipalUse": null
+        },
+        {
+          "name": "Indexer 6",
+          "shortcut": "S6",
+          "description": "Inserts type 6 general indexer.",
+          "municipalUse": null
+        },
+        {
+          "name": "Indexer 7",
+          "shortcut": "S7",
+          "description": "Inserts type 7 general indexer.",
+          "municipalUse": null
+        },
+        {
+          "name": "Indexer 8",
+          "shortcut": "S8",
+          "description": "Inserts type 8 general indexer.",
+          "municipalUse": null
+        },
+        {
+          "name": "Indexer 9",
+          "shortcut": "S9",
+          "description": "Inserts type 9 general indexer.",
+          "municipalUse": null
+        },
+        {
+          "name": "Arrow Leader",
+          "shortcut": "AAX",
+          "description": "Draws a single-arrow leader line.",
+          "municipalUse": "Annotates easement notes, utility callouts. Common for special conditions."
+        },
+        {
+          "name": "Multi-Point Leader",
+          "shortcut": "AAXX",
+          "description": "Draws a multi-point leader line.",
+          "municipalUse": null
+        },
+        {
+          "name": "Vertical Multi-point Leader",
+          "shortcut": "AAYY",
+          "description": "Draws a vertical multi-point leader.",
+          "municipalUse": null
+        },
+        {
+          "name": "Add/Remove Leader Vertex",
+          "shortcut": "AAV",
+          "description": "Adds or removes vertex points on leader.",
+          "municipalUse": null
+        },
+        {
+          "name": "Add Leader Arrows",
+          "shortcut": "AAJ",
+          "description": "Adds arrows to an existing leader line.",
+          "municipalUse": null
+        },
+        {
+          "name": "Decoration Drawing Title",
+          "shortcut": "BT",
+          "description": "Inserts a title block for decoration drawings.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "statistics-data",
+      "title": "Statistics & Data",
+      "icon": "bar-chart",
+      "description": "Area calculations, coordinate collection, schedules, tables, and material takeoffs.",
+      "commands": [
+        {
+          "name": "Index of Statistics",
+          "shortcut": "TJ",
+          "description": "Opens statistics tools panel.",
+          "municipalUse": null
+        },
+        {
+          "name": "Easy Filtered Select",
+          "shortcut": "SS",
+          "description": "Selects objects with easy filtering options.",
+          "municipalUse": "Quickly select all dimensions, all text, or all hatches for batch editing."
+        },
+        {
+          "name": "Auto Serial Number",
+          "shortcut": "ABH",
+          "description": "Automatically numbers selected objects.",
+          "municipalUse": "Number building units, parking spaces, or utility poles sequentially."
+        },
+        {
+          "name": "Make Empty Table",
+          "shortcut": "KBG",
+          "description": "Creates an empty table in the drawing.",
+          "municipalUse": "Create zoning compliance tables, parking calculation summaries."
+        },
+        {
+          "name": "Table Texts Aligning",
+          "shortcut": "BGZ",
+          "description": "Aligns text inside table cells.",
+          "municipalUse": null
+        },
+        {
+          "name": "Cell Area By Text",
+          "shortcut": "TMJ",
+          "description": "Calculates cell area based on contained text.",
+          "municipalUse": null
+        },
+        {
+          "name": "Text to Cell Editor",
+          "shortcut": "T2E",
+          "description": "Converts text to editable table cell.",
+          "municipalUse": null
+        },
+        {
+          "name": "Text To Table",
+          "shortcut": "ZBG",
+          "description": "Converts selected text into a table.",
+          "municipalUse": "Organize scattered site notes into a formatted permit table."
+        },
+        {
+          "name": "Win/Door List",
+          "shortcut": "MCB",
+          "description": "Generates a schedule of windows and doors.",
+          "municipalUse": "Required table for building permit submissions."
+        },
+        {
+          "name": "Block List",
+          "shortcut": "BBL",
+          "description": "Generates a list of all blocks in the drawing.",
+          "municipalUse": null
+        },
+        {
+          "name": "Block Attribute List",
+          "shortcut": "SXL",
+          "description": "Lists all block attributes and their values.",
+          "municipalUse": null
+        },
+        {
+          "name": "Collect Coordinates",
+          "shortcut": "ZZB",
+          "description": "Collects and exports coordinates of selected points.",
+          "municipalUse": "Export property corner coordinates for legal descriptions and survey records."
+        },
+        {
+          "name": "Collect Any Strings",
+          "shortcut": "TTQ",
+          "description": "Extracts and collects any text strings from the drawing.",
+          "municipalUse": null
+        },
+        {
+          "name": "Material List",
+          "shortcut": "CLB",
+          "description": "Generates a bill of materials.",
+          "municipalUse": "Calculate concrete, asphalt, and paving quantities for cost estimates."
+        },
+        {
+          "name": "Accumulate Area",
+          "shortcut": "MJ",
+          "description": "Calculates total area of selected objects.",
+          "municipalUse": "ESSENTIAL for site area, building coverage ratio, parking calculations, and green space area."
+        },
+        {
+          "name": "Area Link Text",
+          "shortcut": "PMJ",
+          "description": "Links area calculation to text (auto-updates).",
+          "municipalUse": "Create auto-updating area labels that change when boundaries are modified."
+        },
+        {
+          "name": "Accumulate Perimeter",
+          "shortcut": "ZC",
+          "description": "Calculates total perimeter of selected objects.",
+          "municipalUse": "Calculate total boundary length for fencing estimates."
+        },
+        {
+          "name": "Perimeter Link Text",
+          "shortcut": "PZC",
+          "description": "Links perimeter calculation to text (auto-updates).",
+          "municipalUse": null
+        },
+        {
+          "name": "Calculate Weight",
+          "shortcut": "ZL",
+          "description": "Calculates weight based on area/thickness/material.",
+          "municipalUse": null
+        },
+        {
+          "name": "Building Area Statistics",
+          "shortcut": "FTB",
+          "description": "Calculates total building area including all floors.",
+          "municipalUse": "Compute total FSI/FAR for zoning compliance — critical for permit approval."
+        },
+        {
+          "name": "Addition (+)",
+          "shortcut": "+",
+          "description": "Adds two numbers or values.",
+          "municipalUse": null
+        },
+        {
+          "name": "Subtraction (-)",
+          "shortcut": "-",
+          "description": "Subtracts two numbers or values.",
+          "municipalUse": null
+        },
+        {
+          "name": "Multiplication (*)",
+          "shortcut": "*",
+          "description": "Multiplies two numbers or values.",
+          "municipalUse": null
+        },
+        {
+          "name": "Division (/)",
+          "shortcut": "/",
+          "description": "Divides two numbers or values.",
+          "municipalUse": null
+        },
+        {
+          "name": "Eval. Expression",
+          "shortcut": "IS",
+          "description": "Evaluates a mathematical expression.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "text-tools",
+      "title": "Text Tools",
+      "icon": "type",
+      "description": "Create, edit, format, translate, and manage text objects in drawings.",
+      "commands": [
+        {
+          "name": "User Dictionary",
+          "shortcut": "DIC",
+          "description": "Opens the user dictionary for text translation.",
+          "municipalUse": null
+        },
+        {
+          "name": "Translate Text",
+          "shortcut": "FY",
+          "description": "Translates text using the user dictionary.",
+          "municipalUse": "Converts bilingual municipal annotation if needed."
+        },
+        {
+          "name": "Update Text From List",
+          "shortcut": "EQ",
+          "description": "Updates text based on a list of replacements.",
+          "municipalUse": null
+        },
+        {
+          "name": "Input a Text",
+          "shortcut": "TT",
+          "description": "Creates a new text object.",
+          "municipalUse": null
+        },
+        {
+          "name": "Modify Any Text",
+          "shortcut": "TTE",
+          "description": "Edits any text object (single-line or multi-line).",
+          "municipalUse": null
+        },
+        {
+          "name": "Dictionary To Text",
+          "shortcut": "TTG",
+          "description": "Converts dictionary entries into text objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Create/Input Texts",
+          "shortcut": "CTT",
+          "description": "Creates multiple text entries at once.",
+          "municipalUse": null
+        },
+        {
+          "name": "Edit/Output Texts",
+          "shortcut": "CED",
+          "description": "Edits and outputs multiple texts to file.",
+          "municipalUse": null
+        },
+        {
+          "name": "Replace/Calculate",
+          "shortcut": "TTR",
+          "description": "Replaces text and performs calculations.",
+          "municipalUse": null
+        },
+        {
+          "name": "Replace Substrings",
+          "shortcut": "TTRS",
+          "description": "Replaces a substring within text objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Join Texts",
+          "shortcut": "TTA",
+          "description": "Joins multiple text objects into one.",
+          "municipalUse": null
+        },
+        {
+          "name": "Merge Multi-Line Text",
+          "shortcut": "TTJ",
+          "description": "Merges separate text lines into a single multi-line text.",
+          "municipalUse": null
+        },
+        {
+          "name": "Break Text",
+          "shortcut": "TTB",
+          "description": "Breaks a multi-line text into separate lines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Text to Characters",
+          "shortcut": "TTBB",
+          "description": "Explodes text into individual character objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Increment Duplicate",
+          "shortcut": "1234",
+          "description": "Creates incremental copies (1,2,3...).",
+          "municipalUse": null
+        },
+        {
+          "name": "Add Increment",
+          "shortcut": "INC",
+          "description": "Adds increment numbers to selected texts.",
+          "municipalUse": null
+        },
+        {
+          "name": "Increase Text",
+          "shortcut": "TTZ",
+          "description": "Increases numerical content of text by a value.",
+          "municipalUse": null
+        },
+        {
+          "name": "Seek Specific Text",
+          "shortcut": "TTF",
+          "description": "Finds and highlights specific text in the drawing.",
+          "municipalUse": null
+        },
+        {
+          "name": "Exchange Content",
+          "shortcut": "JH",
+          "description": "Swaps content between two text objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "New Text Style",
+          "shortcut": "TTN",
+          "description": "Creates a new text style.",
+          "municipalUse": null
+        },
+        {
+          "name": "Set Current Style",
+          "shortcut": "TTS",
+          "description": "Sets the current text style.",
+          "municipalUse": null
+        },
+        {
+          "name": "Update Text By Style",
+          "shortcut": "TTU",
+          "description": "Updates all text of a style to match style settings.",
+          "municipalUse": null
+        },
+        {
+          "name": "Auto Replace Fonts",
+          "shortcut": "TTRF",
+          "description": "Automatically replaces missing fonts.",
+          "municipalUse": null
+        },
+        {
+          "name": "Change Text",
+          "shortcut": "TTC",
+          "description": "Changes text content (batch).",
+          "municipalUse": null
+        },
+        {
+          "name": "Change Height/Aspects",
+          "shortcut": "TTW",
+          "description": "Changes text height or width factor.",
+          "municipalUse": null
+        },
+        {
+          "name": "Reorder Table Text",
+          "shortcut": "TTPX",
+          "description": "Reorders text inside a table.",
+          "municipalUse": null
+        },
+        {
+          "name": "Text Alignment Left",
+          "shortcut": "TTL",
+          "description": "Aligns text to the left.",
+          "municipalUse": null
+        },
+        {
+          "name": "Text Alignment Right",
+          "shortcut": "TTLL",
+          "description": "Aligns text to the right.",
+          "municipalUse": null
+        },
+        {
+          "name": "Restored Mirrored/Rot",
+          "shortcut": "TTRR",
+          "description": "Restores mirrored or rotated text to normal orientation.",
+          "municipalUse": null
+        },
+        {
+          "name": "Convert Texts/Attdefs",
+          "shortcut": "TTSX",
+          "description": "Converts text to attribute definitions or vice versa.",
+          "municipalUse": null
+        },
+        {
+          "name": "Explode Texts To Line",
+          "shortcut": "TTX",
+          "description": "Explodes text into line/vector objects.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "dimension-tools",
+      "title": "Dimension Tools",
+      "icon": "ruler",
+      "description": "Comprehensive dimensioning commands for linear, angular, radial, and baseline measurements.",
+      "commands": [
+        {
+          "name": "Set Dwg/Sym. Scale",
+          "shortcut": "SD",
+          "description": "Sets drawing and symbol scale.",
+          "municipalUse": "ALWAYS use first. Set 1:500 for site plans, 1:100 for building plans, 1:200 for utility layouts."
+        },
+        {
+          "name": "Dim Linear",
+          "shortcut": "DD",
+          "description": "Creates a linear dimension.",
+          "municipalUse": "Dimension property lines, road widths (6m), setbacks (3m front, 2m rear). Most used dimension command."
+        },
+        {
+          "name": "Dim Aligned",
+          "shortcut": "DDX",
+          "description": "Creates an aligned dimension.",
+          "municipalUse": "Dimension angled property boundaries and diagonal building dimensions."
+        },
+        {
+          "name": "Dim Baseline",
+          "shortcut": "DDB",
+          "description": "Creates a baseline dimension from a previous dimension.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim Radius",
+          "shortcut": "DDR",
+          "description": "Creates a radius dimension.",
+          "municipalUse": "Dimension curved roads, roundabouts, and cul-de-sacs."
+        },
+        {
+          "name": "Dim Diameter",
+          "shortcut": "DDJ",
+          "description": "Creates a diameter dimension.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim Angular",
+          "shortcut": "DDAN",
+          "description": "Creates an angular dimension.",
+          "municipalUse": "Measure corner angles at property boundaries."
+        },
+        {
+          "name": "Dim Arch Length",
+          "shortcut": "DDAR",
+          "description": "Creates an arc length dimension.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim 3 Point's Arc",
+          "shortcut": "DDA3",
+          "description": "Creates a dimension for an arc defined by 3 points.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim Quick",
+          "shortcut": "DDQ",
+          "description": "Quickly dimensions selected objects.",
+          "municipalUse": "Fast dimensioning of multiple building elements."
+        },
+        {
+          "name": "Dim Closed Space",
+          "shortcut": "DDZ",
+          "description": "Dimensions a closed space (room).",
+          "municipalUse": "Auto-dimension room sizes for floor plans."
+        },
+        {
+          "name": "Dim Closed PLine",
+          "shortcut": "DDZZ",
+          "description": "Dimensions a closed polyline.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim PLine/Lines",
+          "shortcut": "DDSS",
+          "description": "Dimensions a polyline or multiple lines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim Of Axis/Windows",
+          "shortcut": "DDW",
+          "description": "Dimensions axes or windows.",
+          "municipalUse": "Dimensions grid axes — critical for site plans."
+        },
+        {
+          "name": "Dim of Blks/Walls",
+          "shortcut": "DDWW",
+          "description": "Dimensions blocks or walls.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim of Cupboard",
+          "shortcut": "DDGZ",
+          "description": "Dimensions cupboards/cabinets.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim of Steps",
+          "shortcut": "DDST",
+          "description": "Dimensions stair steps.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim Fix Length Parts",
+          "shortcut": "DDVD",
+          "description": "Dimensions fixed-length parts.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim Breaks At Inters",
+          "shortcut": "DDXX",
+          "description": "Breaks dimension lines at intersections.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim Chord at Inters",
+          "shortcut": "DDCC",
+          "description": "Dimensions chord length at intersection.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim Arch at Inters",
+          "shortcut": "DDAC",
+          "description": "Dimensions arc at intersection.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim Rebuild by Texts",
+          "shortcut": "DDP",
+          "description": "Rebuilds dimensions based on text values.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim Merge Baseline",
+          "shortcut": "DDBB",
+          "description": "Merges baseline dimensions.",
+          "municipalUse": null
+        },
+        {
+          "name": "Switch Dim Layer",
+          "shortcut": "DDER",
+          "description": "Switches the layer of selected dimensions.",
+          "municipalUse": "Sends dimensions to a dedicated layer for plotting control."
+        },
+        {
+          "name": "Set Current DimStyle",
+          "shortcut": "DDS",
+          "description": "Sets the current dimension style.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dim Update By Style",
+          "shortcut": "DDU",
+          "description": "Updates dimensions to current style.",
+          "municipalUse": null
+        },
+        {
+          "name": "Switch YQ DimStyle",
+          "shortcut": "DDYQ",
+          "description": "Switches to YQArch default dimension style.",
+          "municipalUse": null
+        },
+        {
+          "name": "Adjust Text Position",
+          "shortcut": "DDAA",
+          "description": "Adjusts the position of dimension text.",
+          "municipalUse": null
+        },
+        {
+          "name": "Extend Dim Line",
+          "shortcut": "DDE",
+          "description": "Extends dimension lines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Split/Ext Into Many",
+          "shortcut": "DD2",
+          "description": "Splits a dimension into multiple segments.",
+          "municipalUse": null
+        },
+        {
+          "name": "Merge Dims",
+          "shortcut": "DD1",
+          "description": "Merges multiple dimensions into one.",
+          "municipalUse": null
+        },
+        {
+          "name": "Align Definition Pts",
+          "shortcut": "DDV",
+          "description": "Aligns dimension definition points.",
+          "municipalUse": null
+        },
+        {
+          "name": "Align Dim MLine",
+          "shortcut": "DDVV",
+          "description": "Aligns dimension multi-leader lines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Align Feet Point",
+          "shortcut": "DDL",
+          "description": "Aligns the feet points of dimensions.",
+          "municipalUse": null
+        },
+        {
+          "name": "Fix Extension Lengths",
+          "shortcut": "DDLE",
+          "description": "Fixes the length of extension lines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Adjust Base Spacing",
+          "shortcut": "DDY",
+          "description": "Adjusts base spacing for baseline dimensions.",
+          "municipalUse": null
+        },
+        {
+          "name": "Batch Base Spacing",
+          "shortcut": "DDYY",
+          "description": "Batch adjusts baseline spacing for multiple dimensions.",
+          "municipalUse": null
+        },
+        {
+          "name": "Show Extension Lines",
+          "shortcut": "DD2E",
+          "description": "Shows/hides extension lines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Aligned or Rotated",
+          "shortcut": "DDRA",
+          "description": "Toggles dimension between aligned and rotated.",
+          "municipalUse": null
+        },
+        {
+          "name": "Overturn Dim Text",
+          "shortcut": "DDFZ",
+          "description": "Flips the dimension text orientation.",
+          "municipalUse": null
+        },
+        {
+          "name": "Lock The Text Content",
+          "shortcut": "DDF",
+          "description": "Locks the dimension text to prevent auto-update.",
+          "municipalUse": null
+        },
+        {
+          "name": "Reset Default Value",
+          "shortcut": "DDRE",
+          "description": "Resets dimension to its measured value.",
+          "municipalUse": null
+        },
+        {
+          "name": "Units to Meter",
+          "shortcut": "DDM",
+          "description": "Converts dimension units to meters.",
+          "municipalUse": null
+        },
+        {
+          "name": "Rounds Dim Value",
+          "shortcut": "DDO",
+          "description": "Rounds the dimension value to specified precision.",
+          "municipalUse": null
+        },
+        {
+          "name": "New Dim Text",
+          "shortcut": "DDN",
+          "description": "Creates new custom dimension text.",
+          "municipalUse": null
+        },
+        {
+          "name": "Move Dim Text",
+          "shortcut": "DDT",
+          "description": "Moves the dimension text.",
+          "municipalUse": null
+        },
+        {
+          "name": "Reset Dim Text Home",
+          "shortcut": "DDH",
+          "description": "Resets dimension text to its default position.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "curve-polyline",
+      "title": "Curve & Polyline Tools",
+      "icon": "pen-tool",
+      "description": "Edit, join, split, and convert curves, polylines, arcs, and splines.",
+      "commands": [
+        {
+          "name": "Add/Remove Vertexes",
+          "shortcut": "XXV",
+          "description": "Adds or removes vertices on a polyline.",
+          "municipalUse": null
+        },
+        {
+          "name": "Optimize Plines",
+          "shortcut": "XXY",
+          "description": "Optimizes polylines by removing redundant vertices.",
+          "municipalUse": null
+        },
+        {
+          "name": "PLine Segment To Arc",
+          "shortcut": "XXA",
+          "description": "Converts a polyline segment to an arc.",
+          "municipalUse": null
+        },
+        {
+          "name": "PLine Segment Width",
+          "shortcut": "XXW",
+          "description": "Sets the width of a polyline segment.",
+          "municipalUse": null
+        },
+        {
+          "name": "PLine Segment Offset",
+          "shortcut": "XXS",
+          "description": "Offsets a polyline segment.",
+          "municipalUse": null
+        },
+        {
+          "name": "Join PLine/Arc/Line",
+          "shortcut": "XXJ",
+          "description": "Joins multiple polylines, arcs, and lines into one.",
+          "municipalUse": null
+        },
+        {
+          "name": "Close PLine/Arc/Line",
+          "shortcut": "XXC",
+          "description": "Closes an open polyline, arc, or line.",
+          "municipalUse": null
+        },
+        {
+          "name": "Reserve Curve Direct",
+          "shortcut": "XXFZ",
+          "description": "Reserves curve direction.",
+          "municipalUse": null
+        },
+        {
+          "name": "W-PLine To Wireframe",
+          "shortcut": "XXFW",
+          "description": "Converts a wide polyline to wireframe lines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Connect 2pline Vertexes",
+          "shortcut": "LXJ",
+          "description": "Connects vertices of two polylines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Find Border/Outline",
+          "shortcut": "LK",
+          "description": "Finds and traces the outer boundary of selected objects.",
+          "municipalUse": "Traces site boundary from imported raster or linework."
+        },
+        {
+          "name": "Find Inner Contours",
+          "shortcut": "NLK",
+          "description": "Finds inner contours (holes) within a boundary.",
+          "municipalUse": null
+        },
+        {
+          "name": "Contours + Offset",
+          "shortcut": "NLKS",
+          "description": "Finds contours and creates offset outlines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Convert To Freehand",
+          "shortcut": "HW",
+          "description": "Converts a polyline to a freehand sketch.",
+          "municipalUse": null
+        },
+        {
+          "name": "Break To Equal Parts",
+          "shortcut": "DF",
+          "description": "Breaks a curve into equal length segments.",
+          "municipalUse": null
+        },
+        {
+          "name": "Divide By 2 Points",
+          "shortcut": "DFX",
+          "description": "Divides a curve between two picked points.",
+          "municipalUse": null
+        },
+        {
+          "name": "Ellipse To Arcs",
+          "shortcut": "E2A",
+          "description": "Converts an ellipse to arc segments.",
+          "municipalUse": null
+        },
+        {
+          "name": "Curve To Arc PLine",
+          "shortcut": "CCA",
+          "description": "Converts a spline/curve to an arc polyline.",
+          "municipalUse": null
+        },
+        {
+          "name": "Curve To Line PLine",
+          "shortcut": "CCX",
+          "description": "Converts a spline/curve to a line polyline.",
+          "municipalUse": null
+        },
+        {
+          "name": "Curve To Bowstrings",
+          "shortcut": "CCXX",
+          "description": "Converts a curve to bowstring chords.",
+          "municipalUse": null
+        },
+        {
+          "name": "Curve Projection",
+          "shortcut": "CCY",
+          "description": "Projects a curve onto a plane or surface.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "extra-tools",
+      "title": "Extra Tools",
+      "icon": "tool",
+      "description": "Double lines for roads, alignment tools, object breaking, and transformation utilities.",
+      "commands": [
+        {
+          "name": "Number Lines Manage",
+          "shortcut": "VV",
+          "description": "Manages numbered line sets.",
+          "municipalUse": null
+        },
+        {
+          "name": "Double Lines",
+          "shortcut": "XD",
+          "description": "Draws double lines (parallel lines).",
+          "municipalUse": "ESSENTIAL for drawing roads (6m carriageway + 1.5m sidewalks), utility trenches, fence lines. Set spacing to road width."
+        },
+        {
+          "name": "Double Lines Scissor",
+          "shortcut": "TX",
+          "description": "Cuts or trims double lines at intersections.",
+          "municipalUse": "Clean road intersections and utility crossings."
+        },
+        {
+          "name": "Double Line Thickness",
+          "shortcut": "XDT",
+          "description": "Changes the thickness/spacing of double lines.",
+          "municipalUse": "Adjust road width from 6m to 5.5m after municipal review."
+        },
+        {
+          "name": "To Double Lines",
+          "shortcut": "XXD",
+          "description": "Converts single lines to double lines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Double Lines Offset",
+          "shortcut": "XDO",
+          "description": "Offsets double lines as a pair.",
+          "municipalUse": null
+        },
+        {
+          "name": "Axis of Double Lines",
+          "shortcut": "CE",
+          "description": "Draws the center axis of double lines.",
+          "municipalUse": "Create road centerlines for alignment and dimensioning."
+        },
+        {
+          "name": "Objects Alignment",
+          "shortcut": "DQ",
+          "description": "Aligns multiple objects horizontally/vertically.",
+          "municipalUse": null
+        },
+        {
+          "name": "Leaders Alignment",
+          "shortcut": "AADQ",
+          "description": "Aligns multiple leader lines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Align Frame With Line",
+          "shortcut": "TKTZ",
+          "description": "Aligns a drawing frame to a selected line.",
+          "municipalUse": null
+        },
+        {
+          "name": "Break By a Knife",
+          "shortcut": "BD",
+          "description": "Breaks objects along a cutting line (like a knife).",
+          "municipalUse": null
+        },
+        {
+          "name": "Break By Knives",
+          "shortcut": "BDD",
+          "description": "Breaks objects along multiple cutting lines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Break/Erase in Frames",
+          "shortcut": "BX",
+          "description": "Breaks or erases objects inside a boundary frame.",
+          "municipalUse": null
+        },
+        {
+          "name": "Copy/Paste The Detail",
+          "shortcut": "QG",
+          "description": "Copies a detail view to another location.",
+          "municipalUse": null
+        },
+        {
+          "name": "Transform",
+          "shortcut": "TF",
+          "description": "Transforms objects with scale, rotate, and move combined.",
+          "municipalUse": null
+        },
+        {
+          "name": "Bounding Box",
+          "shortcut": "JX",
+          "description": "Creates a bounding box around selected objects.",
+          "municipalUse": "Creates a minimal box around a building for footprint area."
+        },
+        {
+          "name": "To Bounding Box",
+          "shortcut": "WK",
+          "description": "Converts selected objects to their bounding box.",
+          "municipalUse": null
+        },
+        {
+          "name": "Minimum Bounding Box",
+          "shortcut": "XJX",
+          "description": "Creates the minimum area bounding box.",
+          "municipalUse": null
+        },
+        {
+          "name": "Turn Objects",
+          "shortcut": "FZX",
+          "description": "Rotates objects 180 degrees around their center.",
+          "municipalUse": null
+        },
+        {
+          "name": "Exchange Location",
+          "shortcut": "JH",
+          "description": "Swaps positions of two objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Copy to Points",
+          "shortcut": "DZBZ",
+          "description": "Copies an object to multiple selected points.",
+          "municipalUse": null
+        },
+        {
+          "name": "Assistant Lines",
+          "shortcut": "FZX",
+          "description": "Draws construction/assistant lines.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "modify-plus",
+      "title": "Modify Plus",
+      "icon": "edit",
+      "description": "Advanced modification tools including per-object scaling, dynamic copy, and object breaking.",
+      "commands": [
+        {
+          "name": "Scale For Each",
+          "shortcut": "ASC",
+          "description": "Scales each selected object independently.",
+          "municipalUse": null
+        },
+        {
+          "name": "Rotate For Each",
+          "shortcut": "ART",
+          "description": "Rotates each selected object independently.",
+          "municipalUse": null
+        },
+        {
+          "name": "Mirror For Each",
+          "shortcut": "AMI",
+          "description": "Mirrors each selected object independently.",
+          "municipalUse": null
+        },
+        {
+          "name": "XY Scale",
+          "shortcut": "SCX",
+          "description": "Scales objects non-uniformly in X and Y directions.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dynamic Copy",
+          "shortcut": "CV",
+          "description": "Creates dynamic copies that update with source changes.",
+          "municipalUse": null
+        },
+        {
+          "name": "Stretch with Distance",
+          "shortcut": "STD",
+          "description": "Stretches objects by a specified distance.",
+          "municipalUse": null
+        },
+        {
+          "name": "Move with a Distance",
+          "shortcut": "VD",
+          "description": "Moves objects by a specified distance.",
+          "municipalUse": null
+        },
+        {
+          "name": "Memorial Move",
+          "shortcut": "VR",
+          "description": "Moves objects but remembers original position.",
+          "municipalUse": null
+        },
+        {
+          "name": "Memorial Copy",
+          "shortcut": "CR",
+          "description": "Copies objects and remembers source position.",
+          "municipalUse": null
+        },
+        {
+          "name": "Super Offset",
+          "shortcut": "SF",
+          "description": "Offsets objects with multiple options.",
+          "municipalUse": "Offsets property lines, building setbacks, road edges."
+        },
+        {
+          "name": "Extend to Point/Line",
+          "shortcut": "EXX",
+          "description": "Extends objects to a specified point or line.",
+          "municipalUse": null
+        },
+        {
+          "name": "Link Arc/Line/PLine",
+          "shortcut": "FF",
+          "description": "Links separate arcs, lines, or polylines into one.",
+          "municipalUse": null
+        },
+        {
+          "name": "Connect 2 Group Lines",
+          "shortcut": "FX",
+          "description": "Connects two groups of lines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Add/Remove Wipeout",
+          "shortcut": "ZZ",
+          "description": "Adds or removes a wipeout mask to selected objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Break All Objects",
+          "shortcut": "BA",
+          "description": "Breaks all intersecting objects at intersection points.",
+          "municipalUse": "Breaks intersecting lines at utility crossings."
+        },
+        {
+          "name": "Break And Erase Remains",
+          "shortcut": "TE",
+          "description": "Breaks objects and erases the remaining parts.",
+          "municipalUse": null
+        },
+        {
+          "name": "Break at A Point",
+          "shortcut": "BB",
+          "description": "Breaks an object at a single point.",
+          "municipalUse": null
+        },
+        {
+          "name": "Break at 2 Points",
+          "shortcut": "BF",
+          "description": "Breaks an object between two points.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "check-correct",
+      "title": "Check & Correct",
+      "icon": "check-circle",
+      "description": "Drawing cleanup, error detection, duplicate removal, and file purging tools.",
+      "commands": [
+        {
+          "name": "Clear Z-axis of Objs",
+          "shortcut": "ZO",
+          "description": "Sets Z-coordinate of selected objects to zero.",
+          "municipalUse": "Flattens imported 3D survey data to 2D plan view. Very common with GPS survey imports."
+        },
+        {
+          "name": "Clear Z-axis in Blks",
+          "shortcut": "BBZO",
+          "description": "Clears Z-coordinates inside block definitions.",
+          "municipalUse": null
+        },
+        {
+          "name": "Eliminate Overlapping",
+          "shortcut": "RD",
+          "description": "Removes overlapping duplicate objects.",
+          "municipalUse": "Clean up duplicate lines from imported survey data. Critical before area calculations."
+        },
+        {
+          "name": "Merge Overlap Lines",
+          "shortcut": "LU",
+          "description": "Merges overlapping or collinear lines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Connect Lines / Arcs",
+          "shortcut": "LX",
+          "description": "Connects lines and arcs that touch end-to-end.",
+          "municipalUse": null
+        },
+        {
+          "name": "Remove Pt/Short Lines",
+          "shortcut": "LC",
+          "description": "Removes points and very short lines.",
+          "municipalUse": null
+        },
+        {
+          "name": "Adjust Objs To Grid",
+          "shortcut": "JZ",
+          "description": "Snaps objects to the current grid.",
+          "municipalUse": null
+        },
+        {
+          "name": "Oblique Correction",
+          "shortcut": "XGZ",
+          "description": "Corrects oblique/skewed objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Dialog Merge",
+          "shortcut": "XHB",
+          "description": "Merges overlapping objects via dialog options.",
+          "municipalUse": null
+        },
+        {
+          "name": "Purge All in DWG",
+          "shortcut": "PUA",
+          "description": "Purges all unused items (layers, blocks, styles).",
+          "municipalUse": "MUST-DO before submitting to municipality. Reduces file size and removes junk data."
+        },
+        {
+          "name": "Purge DWGs in Folder",
+          "shortcut": "PUF",
+          "description": "Purges all DWG files in a selected folder.",
+          "municipalUse": null
+        },
+        {
+          "name": "Check Object's Color",
+          "shortcut": "CYS",
+          "description": "Checks and reports object colors.",
+          "municipalUse": null
+        },
+        {
+          "name": "Find Non-Ortho Lines",
+          "shortcut": "BPX",
+          "description": "Finds lines that are not orthogonal.",
+          "municipalUse": null
+        },
+        {
+          "name": "Find Unmatch WCS Plan",
+          "shortcut": "UM",
+          "description": "Finds objects not aligned with the World Coordinate System.",
+          "municipalUse": null
+        },
+        {
+          "name": "Orthoaxis Check",
+          "shortcut": "BCZ",
+          "description": "Checks orthographic alignment.",
+          "municipalUse": null
+        },
+        {
+          "name": "Revcloud",
+          "shortcut": "YX",
+          "description": "Creates revision clouds.",
+          "municipalUse": "Marks review comments or changes on revision sheets."
+        },
+        {
+          "name": "Comment Frame",
+          "shortcut": "STK",
+          "description": "Adds a comment frame/stamp.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "block-attribute",
+      "title": "Block & Attribute Tools",
+      "icon": "package",
+      "description": "Block library access, creation, renaming, attribute management, and symbol placement.",
+      "commands": [
+        {
+          "name": "Heap Trees",
+          "shortcut": "ZW",
+          "description": "Places trees in plan (block library).",
+          "municipalUse": null
+        },
+        {
+          "name": "Landscape Analyzing",
+          "shortcut": "HJ",
+          "description": "Analyzes landscape layout.",
+          "municipalUse": null
+        },
+        {
+          "name": "Reset Layer in Blocks",
+          "shortcut": "BBO",
+          "description": "Resets the layer properties of all objects inside blocks.",
+          "municipalUse": null
+        },
+        {
+          "name": "Change Base Point",
+          "shortcut": "BBL",
+          "description": "Changes the insertion base point of a block.",
+          "municipalUse": null
+        },
+        {
+          "name": "Block Rename",
+          "shortcut": "BBR",
+          "description": "Renames a block definition.",
+          "municipalUse": null
+        },
+        {
+          "name": "Block Batch Rename",
+          "shortcut": "BBG",
+          "description": "Batch renames multiple blocks.",
+          "municipalUse": null
+        },
+        {
+          "name": "Create Detail Block",
+          "shortcut": "BBD",
+          "description": "Creates a block from a detail drawing.",
+          "municipalUse": null
+        },
+        {
+          "name": "Set Block Scale",
+          "shortcut": "BBS",
+          "description": "Sets the scale of a block reference.",
+          "municipalUse": null
+        },
+        {
+          "name": "Write Out Blocks",
+          "shortcut": "BBW",
+          "description": "Writes blocks to external DWG files.",
+          "municipalUse": null
+        },
+        {
+          "name": "Replace by DWG",
+          "shortcut": "BBD",
+          "description": "Replaces a block with an external DWG file.",
+          "municipalUse": null
+        },
+        {
+          "name": "Create Block Quickly",
+          "shortcut": "BBN",
+          "description": "Quickly creates a block from selected objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Append to a Block",
+          "shortcut": "BBA",
+          "description": "Adds objects to an existing block definition.",
+          "municipalUse": null
+        },
+        {
+          "name": "Erase Object of Block",
+          "shortcut": "BBE",
+          "description": "Erases selected objects inside a block (in-place).",
+          "municipalUse": null
+        },
+        {
+          "name": "Copy Objects From a Block",
+          "shortcut": "BBC",
+          "description": "Copies objects from a block to the drawing.",
+          "municipalUse": null
+        },
+        {
+          "name": "Add/Del Block Wipeout",
+          "shortcut": "BBZZ",
+          "description": "Adds or removes a wipeout mask in a block.",
+          "municipalUse": null
+        },
+        {
+          "name": "Create Minisert Block",
+          "shortcut": "BBJM",
+          "description": "Creates a minisert (mini-insert) block.",
+          "municipalUse": null
+        },
+        {
+          "name": "Explode Minisert Blocks",
+          "shortcut": "BBX",
+          "description": "Explodes a minisert block.",
+          "municipalUse": null
+        },
+        {
+          "name": "Explode Nest Blocks",
+          "shortcut": "BBXX",
+          "description": "Explodes nested blocks (blocks within blocks).",
+          "municipalUse": null
+        },
+        {
+          "name": "Block Text to Attribute",
+          "shortcut": "BBSX",
+          "description": "Converts text in a block to an attribute.",
+          "municipalUse": null
+        },
+        {
+          "name": "Modify Attributes",
+          "shortcut": "SXG",
+          "description": "Modifies attribute values and properties.",
+          "municipalUse": null
+        },
+        {
+          "name": "Increase Attributes",
+          "shortcut": "SXZ",
+          "description": "Increases numerical attribute values.",
+          "municipalUse": null
+        },
+        {
+          "name": "Change Attributes",
+          "shortcut": "SXC",
+          "description": "Changes attribute properties (layer, style, etc.).",
+          "municipalUse": null
+        },
+        {
+          "name": "Change Attribute to Text",
+          "shortcut": "SXT",
+          "description": "Converts an attribute to plain text.",
+          "municipalUse": null
+        },
+        {
+          "name": "Erase Attribute in Block",
+          "shortcut": "SXE",
+          "description": "Erases an attribute from a block definition.",
+          "municipalUse": null
+        },
+        {
+          "name": "YQ Block Library",
+          "shortcut": "KK",
+          "description": "Opens the YQArch block library.",
+          "municipalUse": "ESSENTIAL — insert standard municipal symbols like manholes, streetlights, fire hydrants, trees, catch basins."
+        },
+        {
+          "name": "User Block Library",
+          "shortcut": "BV",
+          "description": "Opens user block library.",
+          "municipalUse": "Store custom municipal symbols specific to your local authority (e.g., local streetlight types, municipal manhole covers)."
+        },
+        {
+          "name": "User Block Library 1",
+          "shortcut": "BV1",
+          "description": "Opens first user block library folder.",
+          "municipalUse": null
+        },
+        {
+          "name": "User Block Library 2",
+          "shortcut": "BV2",
+          "description": "Opens second user block library folder.",
+          "municipalUse": null
+        },
+        {
+          "name": "User Block Library 3",
+          "shortcut": "BV3",
+          "description": "Opens third user block library folder.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "hatching-linetype",
+      "title": "Hatching & Linetype",
+      "icon": "grid",
+      "description": "Hatch patterns for zoning, fill, and material representation; linetype management.",
+      "commands": [
+        {
+          "name": "Hatching Shortcuts",
+          "shortcut": "HHSC",
+          "description": "Opens hatching tools shortcut panel.",
+          "municipalUse": null
+        },
+        {
+          "name": "Change Hatching Scale",
+          "shortcut": "XTC",
+          "description": "Changes the scale of a hatch pattern.",
+          "municipalUse": "Adjust hatch scale after changing drawing scale. Common when switching from 1:500 to 1:100."
+        },
+        {
+          "name": "Quick Hatching",
+          "shortcut": "TC",
+          "description": "Quickly hatches a closed boundary.",
+          "municipalUse": "ESSENTIAL for zoning maps — hatch residential zones, commercial zones, park areas, utility easements with different patterns."
+        },
+        {
+          "name": "Hatching By Template",
+          "shortcut": "TCT",
+          "description": "Hatches using a predefined template pattern.",
+          "municipalUse": null
+        },
+        {
+          "name": "Param./ Slide Hatch",
+          "shortcut": "TCC",
+          "description": "Creates a hatch from parameters or slide library.",
+          "municipalUse": null
+        },
+        {
+          "name": "Set Hatch Base Point",
+          "shortcut": "HHL",
+          "description": "Sets the base point for a hatch pattern.",
+          "municipalUse": null
+        },
+        {
+          "name": "Hatching Angle",
+          "shortcut": "HHA",
+          "description": "Changes the angle of a hatch pattern.",
+          "municipalUse": null
+        },
+        {
+          "name": "Hatching Border",
+          "shortcut": "HHB",
+          "description": "Creates or redraws a border around a hatch.",
+          "municipalUse": null
+        },
+        {
+          "name": "Hatching Clipping",
+          "shortcut": "HHJ",
+          "description": "Clips a hatch with a boundary.",
+          "municipalUse": null
+        },
+        {
+          "name": "Split Hatching",
+          "shortcut": "HHX",
+          "description": "Splits a single hatch into separate hatches by boundary.",
+          "municipalUse": null
+        },
+        {
+          "name": "Hatching Union",
+          "shortcut": "HHU",
+          "description": "Unions multiple hatches into one.",
+          "municipalUse": null
+        },
+        {
+          "name": "Hatching Disassociate",
+          "shortcut": "HHGL",
+          "description": "Disassociates a hatch from its boundary.",
+          "municipalUse": null
+        },
+        {
+          "name": "Fill In Walls/Columns",
+          "shortcut": "WWF",
+          "description": "Fills walls or columns with a hatch.",
+          "municipalUse": null
+        },
+        {
+          "name": "Make Hatch Pat 1mm",
+          "shortcut": "MP",
+          "description": "Creates a custom hatch pattern at 1mm scale.",
+          "municipalUse": null
+        },
+        {
+          "name": "Make Hatch Pat 1:1",
+          "shortcut": "MP1",
+          "description": "Creates a custom hatch pattern at 1:1 scale.",
+          "municipalUse": null
+        },
+        {
+          "name": "Make Pat By Hatch",
+          "shortcut": "MPP",
+          "description": "Creates a pattern file from an existing hatch.",
+          "municipalUse": null
+        },
+        {
+          "name": "Linetype Shortcuts",
+          "shortcut": "LTSC",
+          "description": "Opens linetype tools shortcut panel.",
+          "municipalUse": null
+        },
+        {
+          "name": "Change Linetype Scale",
+          "shortcut": "XTC",
+          "description": "Changes the linetype scale.",
+          "municipalUse": null
+        },
+        {
+          "name": "Linetype Switch",
+          "shortcut": "XTS",
+          "description": "Switches the linetype of selected objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Replace LT Scale",
+          "shortcut": "PLTS",
+          "description": "Replaces the linetype scale globally.",
+          "municipalUse": null
+        },
+        {
+          "name": "Make Letter Linetype",
+          "shortcut": "MLT",
+          "description": "Creates a custom linetype using letters/text.",
+          "municipalUse": null
+        },
+        {
+          "name": "Load Linetypes",
+          "shortcut": "ILT",
+          "description": "Loads linetypes from a LIN file.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "layer-tools",
+      "title": "Layer Tools",
+      "icon": "layers",
+      "description": "Full layer management: isolate, freeze, lock, rename, merge, and batch-edit layers.",
+      "commands": [
+        {
+          "name": "Change to Current Layer",
+          "shortcut": "ENC",
+          "description": "Changes selected objects to the current layer.",
+          "municipalUse": null
+        },
+        {
+          "name": "Make a New Layer",
+          "shortcut": "ERN",
+          "description": "Creates a new layer.",
+          "municipalUse": null
+        },
+        {
+          "name": "Set Current Layer",
+          "shortcut": "ERS",
+          "description": "Sets an existing layer as current.",
+          "municipalUse": null
+        },
+        {
+          "name": "Save / Restore Layers",
+          "shortcut": "ERR",
+          "description": "Saves or restores layer states.",
+          "municipalUse": "Save layer states before major changes to easily revert."
+        },
+        {
+          "name": "Wildcard Layer's",
+          "shortcut": "ERQ",
+          "description": "Selects layers using wildcard patterns.",
+          "municipalUse": null
+        },
+        {
+          "name": "Isolate Layers",
+          "shortcut": "ERD",
+          "description": "Isolates selected layers (hides others).",
+          "municipalUse": "ESSENTIAL — view only roads layer, only utilities, or only buildings for focused work."
+        },
+        {
+          "name": "Turn Off Layers",
+          "shortcut": "ERF",
+          "description": "Turns off selected layers.",
+          "municipalUse": null
+        },
+        {
+          "name": "Turn Off All Layers",
+          "shortcut": "ERAF",
+          "description": "Turns off all layers except the current.",
+          "municipalUse": "Very common — quickly clear all clutter to work on one discipline at a time."
+        },
+        {
+          "name": "Turn On Layers",
+          "shortcut": "ERA",
+          "description": "Turns on selected layers.",
+          "municipalUse": null
+        },
+        {
+          "name": "Turn On All Layers",
+          "shortcut": "ERAA",
+          "description": "Turns on all layers.",
+          "municipalUse": null
+        },
+        {
+          "name": "All Layers On/Off",
+          "shortcut": "ERV",
+          "description": "Toggles all layers on/off.",
+          "municipalUse": null
+        },
+        {
+          "name": "Lock Layers",
+          "shortcut": "ERL",
+          "description": "Locks selected layers.",
+          "municipalUse": null
+        },
+        {
+          "name": "Isolate_Lock",
+          "shortcut": "ERDL",
+          "description": "Isolates selected layers and locks others.",
+          "municipalUse": null
+        },
+        {
+          "name": "Unlock Layers",
+          "shortcut": "ERU",
+          "description": "Unlocks selected layers.",
+          "municipalUse": null
+        },
+        {
+          "name": "Freeze Layers",
+          "shortcut": "ERZ",
+          "description": "Freezes selected layers.",
+          "municipalUse": null
+        },
+        {
+          "name": "Isolate Freeze",
+          "shortcut": "ERDZ",
+          "description": "Isolates selected layers and freezes others.",
+          "municipalUse": null
+        },
+        {
+          "name": "Thaw Out Layers",
+          "shortcut": "ERT",
+          "description": "Thaws selected frozen layers.",
+          "municipalUse": null
+        },
+        {
+          "name": "Turn Off in Block",
+          "shortcut": "ERBF",
+          "description": "Turns off a layer inside block definitions.",
+          "municipalUse": null
+        },
+        {
+          "name": "Freeze in Block",
+          "shortcut": "ERBZ",
+          "description": "Freezes a layer inside block definitions.",
+          "municipalUse": null
+        },
+        {
+          "name": "Thaw/Unlock/Open All",
+          "shortcut": "ERER",
+          "description": "Thaws, unlocks, and turns on all layers.",
+          "municipalUse": null
+        },
+        {
+          "name": "Batch Replace Layers",
+          "shortcut": "ERTD",
+          "description": "Batch replaces one layer with another.",
+          "municipalUse": null
+        },
+        {
+          "name": "Layers Batch Rename",
+          "shortcut": "ERG",
+          "description": "Batch renames layers.",
+          "municipalUse": null
+        },
+        {
+          "name": "Merge Layers",
+          "shortcut": "ERM",
+          "description": "Merges multiple layers into one.",
+          "municipalUse": "Consolidate imported survey layers (SURVEY-ROAD, SURVEY-BLDG) into standard layers (A-ROAD, A-BLDG)."
+        },
+        {
+          "name": "Form Layers by Color",
+          "shortcut": "C2ER",
+          "description": "Creates layers based on object colors.",
+          "municipalUse": null
+        },
+        {
+          "name": "Layer Shortcuts",
+          "shortcut": "ERSC",
+          "description": "Opens layer shortcut panel.",
+          "municipalUse": null
+        },
+        {
+          "name": "Wildcard Layer Shortcuts",
+          "shortcut": "ERW",
+          "description": "Manages layer shortcuts with wildcards.",
+          "municipalUse": null
+        },
+        {
+          "name": "Color Shortcuts",
+          "shortcut": "ERK",
+          "description": "Opens color shortcut panel.",
+          "municipalUse": null
+        },
+        {
+          "name": "Output Layer Text File",
+          "shortcut": "ERO",
+          "description": "Exports layer list to a text file.",
+          "municipalUse": null
+        },
+        {
+          "name": "Input Layer Text File",
+          "shortcut": "ERL",
+          "description": "Imports layer settings from a text file.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "viewport-layout",
+      "title": "Viewport & Layout Tools",
+      "icon": "monitor",
+      "description": "Create, scale, lock, and manage layout viewports for multi-sheet municipal submissions.",
+      "commands": [
+        {
+          "name": "VPort Layer Manager",
+          "shortcut": "VVC",
+          "description": "Manages viewport layer properties.",
+          "municipalUse": null
+        },
+        {
+          "name": "Freeze Viewport Layers",
+          "shortcut": "VVZ",
+          "description": "Freezes layers in a specific viewport.",
+          "municipalUse": null
+        },
+        {
+          "name": "Freeze Block VP Layer",
+          "shortcut": "VVBZ",
+          "description": "Freezes block layers in a viewport.",
+          "municipalUse": null
+        },
+        {
+          "name": "Thaw Out VPort Layers",
+          "shortcut": "VVT",
+          "description": "Thaws layers in a selected viewport.",
+          "municipalUse": null
+        },
+        {
+          "name": "Isolate VP's Layers",
+          "shortcut": "VVDZ",
+          "description": "Isolates layers in a viewport.",
+          "municipalUse": null
+        },
+        {
+          "name": "Isolate Other VP Layers",
+          "shortcut": "VVZZ",
+          "description": "Isolates layers in all other viewports.",
+          "municipalUse": null
+        },
+        {
+          "name": "Grayed VP Layers",
+          "shortcut": "VVH",
+          "description": "Sets viewport layers to gray display.",
+          "municipalUse": null
+        },
+        {
+          "name": "Recover VP Layer Color",
+          "shortcut": "VVHF",
+          "description": "Restores original colors in viewport.",
+          "municipalUse": null
+        },
+        {
+          "name": "New Viewport",
+          "shortcut": "VVN",
+          "description": "Creates a new layout viewport.",
+          "municipalUse": null
+        },
+        {
+          "name": "Viewport Split",
+          "shortcut": "VV2",
+          "description": "Splits a viewport into two.",
+          "municipalUse": null
+        },
+        {
+          "name": "Viewport from Model Sp.",
+          "shortcut": "MVV",
+          "description": "Creates a viewport from model space objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Curve to Viewport",
+          "shortcut": "XXVV",
+          "description": "Converts a curve to a viewport boundary.",
+          "municipalUse": null
+        },
+        {
+          "name": "Set Viewport Scale",
+          "shortcut": "VVS",
+          "description": "Sets the scale of a viewport.",
+          "municipalUse": "ESSENTIAL — set site plan viewports to 1:500, building plans to 1:100, details to 1:50 for municipal submission."
+        },
+        {
+          "name": "Scale Viewports",
+          "shortcut": "VVSC",
+          "description": "Scales multiple viewports simultaneously.",
+          "municipalUse": null
+        },
+        {
+          "name": "VP's Content Sync",
+          "shortcut": "VVDQ",
+          "description": "Synchronizes viewport content.",
+          "municipalUse": null
+        },
+        {
+          "name": "Viewport Pan",
+          "shortcut": "VVP",
+          "description": "Pans within a viewport.",
+          "municipalUse": null
+        },
+        {
+          "name": "Lock Viewports",
+          "shortcut": "VVL",
+          "description": "Locks selected viewports to prevent accidental pan/zoom.",
+          "municipalUse": "Prevents accidental scale changes on printed sheets."
+        },
+        {
+          "name": "Look All Viewports",
+          "shortcut": "VVAL",
+          "description": "Looks at all viewports (zooms to extents).",
+          "municipalUse": null
+        },
+        {
+          "name": "Unlock Viewports",
+          "shortcut": "VVU",
+          "description": "Unlocks selected viewports.",
+          "municipalUse": null
+        },
+        {
+          "name": "Unlock All Viewports",
+          "shortcut": "VVAU",
+          "description": "Unlocks all viewports.",
+          "municipalUse": null
+        },
+        {
+          "name": "Isolate Viewports",
+          "shortcut": "VVD",
+          "description": "Isolates selected viewports.",
+          "municipalUse": null
+        },
+        {
+          "name": "Turn Off Viewports",
+          "shortcut": "VVF",
+          "description": "Turns off selected viewports.",
+          "municipalUse": null
+        },
+        {
+          "name": "Turn Off All Viewports",
+          "shortcut": "VVAF",
+          "description": "Turns off all viewports.",
+          "municipalUse": null
+        },
+        {
+          "name": "Turn On Viewports",
+          "shortcut": "VVA",
+          "description": "Turns on selected viewports.",
+          "municipalUse": null
+        },
+        {
+          "name": "Turn On All Viewports",
+          "shortcut": "VVAA",
+          "description": "Turns on all viewports.",
+          "municipalUse": null
+        },
+        {
+          "name": "Copy to Paper Space",
+          "shortcut": "VVBB",
+          "description": "Copies objects from model space to paper space.",
+          "municipalUse": null
+        },
+        {
+          "name": "Rename Layouts",
+          "shortcut": "TZG",
+          "description": "Renames layout tabs.",
+          "municipalUse": null
+        },
+        {
+          "name": "Frame to Layouts",
+          "shortcut": "TZF",
+          "description": "Frames a layout to match drawing frame.",
+          "municipalUse": null
+        },
+        {
+          "name": "Frame Range Divides",
+          "shortcut": "TZFG",
+          "description": "Divides a frame range across multiple layouts.",
+          "municipalUse": null
+        },
+        {
+          "name": "Rotate Viewport dir",
+          "shortcut": "VVR",
+          "description": "Rotates the view direction within a viewport.",
+          "municipalUse": null
+        },
+        {
+          "name": "Snapshot of a View",
+          "shortcut": "KZ",
+          "description": "Captures a snapshot of a view.",
+          "municipalUse": null
+        },
+        {
+          "name": "Hyperlink Views",
+          "shortcut": "CLJ",
+          "description": "Adds hyperlinks to views for navigation.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "matching-brush",
+      "title": "Matching Brush & Properties",
+      "icon": "copy",
+      "description": "Match and transfer properties such as layer, color, linetype, text style, and block type between objects.",
+      "commands": [
+        {
+          "name": "Match/Replace Block",
+          "shortcut": "SSB",
+          "description": "Matches or replaces a block with another block.",
+          "municipalUse": null
+        },
+        {
+          "name": "Match Dynamic Props",
+          "shortcut": "SSD",
+          "description": "Matches dynamic block properties.",
+          "municipalUse": null
+        },
+        {
+          "name": "Match Rotation Angle",
+          "shortcut": "SSA",
+          "description": "Matches the rotation angle of an object.",
+          "municipalUse": null
+        },
+        {
+          "name": "Match Layer",
+          "shortcut": "SSER",
+          "description": "Matches the layer of a source object.",
+          "municipalUse": null
+        },
+        {
+          "name": "Match Color",
+          "shortcut": "SSC",
+          "description": "Matches the color of a source object.",
+          "municipalUse": null
+        },
+        {
+          "name": "Match Layer and Color",
+          "shortcut": "SSCC",
+          "description": "Matches both layer and color.",
+          "municipalUse": null
+        },
+        {
+          "name": "Match Viewport Layers",
+          "shortcut": "SSVV",
+          "description": "Matches viewport layer settings.",
+          "municipalUse": null
+        },
+        {
+          "name": "Match Text Content",
+          "shortcut": "SST",
+          "description": "Matches text content.",
+          "municipalUse": null
+        },
+        {
+          "name": "Match Text Style",
+          "shortcut": "SSST",
+          "description": "Matches text style.",
+          "municipalUse": null
+        },
+        {
+          "name": "Match Text Height",
+          "shortcut": "SSH",
+          "description": "Matches text height.",
+          "municipalUse": null
+        },
+        {
+          "name": "Match Text by Att. Tag",
+          "shortcut": "SSQ",
+          "description": "Matches text using attribute tags.",
+          "municipalUse": null
+        },
+        {
+          "name": "Match Width of PLine",
+          "shortcut": "SSW",
+          "description": "Matches the width of a polyline.",
+          "municipalUse": null
+        },
+        {
+          "name": "Match LineType",
+          "shortcut": "SSXT",
+          "description": "Matches the linetype of an object.",
+          "municipalUse": null
+        },
+        {
+          "name": "Match Thickness",
+          "shortcut": "SSTH",
+          "description": "Matches the thickness (Z-height) of an object.",
+          "municipalUse": null
+        }
+      ]
+    },
+    {
+      "id": "other-tools",
+      "title": "Other Tools",
+      "icon": "more-horizontal",
+      "description": "Batch plotting, DWG management, object visibility, grouping, and export utilities.",
+      "commands": [
+        {
+          "name": "Batch-Plot",
+          "shortcut": "BPT",
+          "description": "Batch plots multiple layouts or drawings.",
+          "municipalUse": "Prints all permit sheets at once. Saves time on every submission."
+        },
+        {
+          "name": "Drawing Catalog",
+          "shortcut": "DWGL",
+          "description": "Creates a catalog of DWG files.",
+          "municipalUse": null
+        },
+        {
+          "name": "Output DWGs Batches",
+          "shortcut": "DWGS",
+          "description": "Batch exports DWG files to other formats.",
+          "municipalUse": null
+        },
+        {
+          "name": "Arrange Frames/DWGs",
+          "shortcut": "DWGA",
+          "description": "Arranges drawing frames or DWG files on sheet.",
+          "municipalUse": null
+        },
+        {
+          "name": "Reset Objects Layer",
+          "shortcut": "EEO",
+          "description": "Resets object layers to default (ByLayer).",
+          "municipalUse": null
+        },
+        {
+          "name": "Hide Objects",
+          "shortcut": "EEF",
+          "description": "Hides selected objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Hide Unselected Ent.",
+          "shortcut": "EED",
+          "description": "Hides all unselected objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Display Temp. Hidden",
+          "shortcut": "EEA",
+          "description": "Displays temporarily hidden objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Display All Objects",
+          "shortcut": "EEAA",
+          "description": "Displays all objects (unhides everything).",
+          "municipalUse": null
+        },
+        {
+          "name": "Create a Group",
+          "shortcut": "GGN",
+          "description": "Creates a new group from selected objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Explodes a Group",
+          "shortcut": "GGX",
+          "description": "Explodes a group into individual objects.",
+          "municipalUse": null
+        },
+        {
+          "name": "Append to a Group",
+          "shortcut": "GGA",
+          "description": "Adds objects to an existing group.",
+          "municipalUse": null
+        },
+        {
+          "name": "Erase from a Group",
+          "shortcut": "GGE",
+          "description": "Removes objects from a group.",
+          "municipalUse": null
+        },
+        {
+          "name": "Separate from a Group",
+          "shortcut": "GGS",
+          "description": "Separates objects from a group without erasing.",
+          "municipalUse": null
+        },
+        {
+          "name": "Purge Groups",
+          "shortcut": "GGP",
+          "description": "Purges empty or unused groups.",
+          "municipalUse": null
+        },
+        {
+          "name": "Switch YQArch Dynamic",
+          "shortcut": "DTYQ",
+          "description": "Switches YQArch dynamic mode on/off.",
+          "municipalUse": null
+        },
+        {
+          "name": "Excel Clipboard Points",
+          "shortcut": "ZTB",
+          "description": "Copies points from Excel clipboard to AutoCAD.",
+          "municipalUse": null
+        },
+        {
+          "name": "To Google Earth",
+          "shortcut": "A2K",
+          "description": "Exports drawing objects to Google Earth.",
+          "municipalUse": null
+        },
+        {
+          "name": "YQArch Command Finder",
+          "shortcut": "ZML",
+          "description": "Searches for YQArch commands by keyword.",
+          "municipalUse": null
+        },
+        {
+          "name": "Last YQArch Command",
+          "shortcut": "",
+          "description": "Repeats the last used YQArch command.",
+          "municipalUse": null
+        }
+      ]
+    }
+  ]
+}

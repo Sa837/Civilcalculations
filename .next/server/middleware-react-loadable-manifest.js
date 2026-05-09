@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST='{"app/resources/[category]/[sub]/page.tsx -> ../../../../components/ads/AdSlot":{"id":5482,"files":["static/chunks/5482.4c689958a3ae2a1c.js"]}}';
+self.__REACT_LOADABLE_MANIFEST="{}"

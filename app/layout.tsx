@@ -67,7 +67,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={`${inter.variable} ${poppins.variable} min-h-screen bg-background text-body antialiased dark:bg-background-dark dark:text-body-dark`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem={true}
+        >
           <div className="flex min-h-screen flex-col">
             <Nav />
             <div className="flex-1">{children}</div>
@@ -75,6 +79,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
           <CookieConsent />
           <ConsentScripts />
+          {process.env.PLAUSIBLE_DOMAIN ? (
+            <script
+              defer
+              data-domain={process.env.PLAUSIBLE_DOMAIN}
+              src="https://plausible.io/js/script.js"
+            />
+          ) : null}
           {process.env.PLAUSIBLE_DOMAIN ? (
             <script
               defer

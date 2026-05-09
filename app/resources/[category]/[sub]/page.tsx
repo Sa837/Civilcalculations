@@ -5,10 +5,11 @@ import { useMemo, useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import { resources } from '../../../../lib/data/resources'
 
-const AdSlot = dynamic(() => import('../../../../components/ads/AdSlot'), {
-  ssr: false,
-  loading: () => <div className="h-24 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" />
-})
+// AdSlot temporarily disabled to fix chunk loading error
+// const AdSlot = dynamic(() => import('../../../../components/ads/AdSlot'), {
+//   ssr: false,
+//   loading: () => <div className="h-24 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" />
+// })
 
 interface SubPageProps {
   params: {
@@ -141,7 +142,13 @@ export default function SubPage({ params }: SubPageProps) {
       setError('')
       try {
         const res = await fetch(`/content/resources/${category}/${sub}.json`, { cache: 'no-store' })
-        if (!res.ok) throw new Error('Not found')
+        if (!res.ok) {
+          setError('Tutorial not found. Please check if the tutorial exists or try a different topic.')
+          return
+        } else if (res.status === 404) {
+          setError('Tutorial not found. Please check if the tutorial exists or try a different topic.')
+          return
+        }
         const data = await res.json()
         if (cancelled) return
 
@@ -238,14 +245,57 @@ export default function SubPage({ params }: SubPageProps) {
           }
         } else if ((!data.sections || data.sections.length === 0) && Array.isArray(data.categories)) {
           const overviewSections = []
-          if (typeof data.description === 'string' && data.description.trim()) {
+          const overviewText = data.meta?.description || data.description
+          if (typeof overviewText === 'string' && overviewText.trim()) {
             overviewSections.push({
               type: 'notes',
               level: 3,
               title: 'Overview',
-              content: data.description,
+              content: overviewText,
             })
           }
+
+          const essential = data.essentialCommands
+          const essentialChapter = essential
+            ? [
+                {
+                  type: 'chapter',
+                  level: 2,
+                  title: essential.title || 'Essential Commands',
+                  sections: [
+                    ...(essential.description
+                      ? [
+                          {
+                            type: 'notes',
+                            level: 3,
+                            title: 'About',
+                            content: essential.description,
+                          },
+                        ]
+                      : []),
+                    ...(Array.isArray(essential.commands) && essential.commands.length
+                      ? [
+                          {
+                            type: 'table',
+                            table: {
+                              header: ['Rank', 'Stars', 'Command', 'Shortcut', 'Category', 'Municipal Use', 'Tip'],
+                              rows: essential.commands.map((cmd: any) => [
+                                String(cmd.rank || ''),
+                                '★'.repeat(cmd.stars || 0) + '☆'.repeat(5 - (cmd.stars || 0)),
+                                cmd.name || '',
+                                cmd.shortcut || '',
+                                cmd.category || '',
+                                cmd.municipalUse || '',
+                                cmd.tip || '',
+                              ]),
+                            },
+                          },
+                        ]
+                      : []),
+                  ],
+                },
+              ]
+            : []
 
           normalizedData = {
             ...data,
@@ -255,33 +305,43 @@ export default function SubPage({ params }: SubPageProps) {
                     {
                       type: 'chapter',
                       level: 2,
-                      title: data.title || 'Overview',
+                      title: data.meta?.title || data.title || 'Overview',
                       sections: overviewSections,
                     },
                   ]
                 : []),
+              ...essentialChapter,
               ...data.categories.map((cat: any) => ({
                 type: 'chapter',
                 level: 2,
-                title: cat.category || cat.id,
+                title: cat.title || cat.id || cat.category,
                 sections: [
-                  ...(cat.description ? [{
-                    type: 'notes',
-                    level: 3,
-                    title: 'Description',
-                    content: cat.description,
-                  }] : []),
-                  ...(Array.isArray(cat.shortcuts)
-                    ? cat.shortcuts.map((shortcut: any) => ({
-                        type: 'notes',
-                        level: 3,
-                        title: `${shortcut.key}: ${shortcut.name}`,
-                        content: [
-                          shortcut.description ? `${shortcut.description}\n\n` : '',
-                          shortcut.howToUse ? `**How to use:** ${shortcut.howToUse}\n\n` : '',
-                          shortcut.tip ? `**Tip:** ${shortcut.tip}` : '',
-                        ].filter(Boolean).join(''),
-                      }))
+                  ...(cat.description
+                    ? [
+                        {
+                          type: 'notes',
+                          level: 3,
+                          title: 'Description',
+                          content: cat.description,
+                        },
+                      ]
+                    : []),
+                  ...(Array.isArray(cat.commands) && cat.commands.length
+                    ? [
+                        {
+                          type: 'table',
+                          table: {
+                            header: ['Command', 'Shortcut', 'Description', 'Municipal Use', 'Tip'],
+                            rows: cat.commands.map((cmd: any) => [
+                              cmd.name || '',
+                              cmd.shortcut || '',
+                              cmd.description || '',
+                              cmd.municipalUse || '',
+                              cmd.tip || '',
+                            ]),
+                          },
+                        },
+                      ]
                     : []),
                 ],
               })),
@@ -605,7 +665,8 @@ export default function SubPage({ params }: SubPageProps) {
             </div>
           </div>
 
-          {mounted && <AdSlot position="inline" slotId="9285440299" className="my-4" />}
+          {/* AdSlot temporarily disabled to fix chunk loading error */}
+{/* {mounted && <AdSlot position="inline" slotId="9285440299" className="my-4" />} */}
 
           <div className="grid gap-6 lg:grid-cols-[200px_1fr]">
             <aside className="hidden lg:block">
@@ -700,7 +761,8 @@ export default function SubPage({ params }: SubPageProps) {
             </article>
           </div>
 
-          {mounted && <AdSlot position="inline" slotId="pu-sub-bottom" className="my-6" />}
+          {/* AdSlot temporarily disabled to fix chunk loading error */}
+{/* {mounted && <AdSlot position="inline" slotId="pu-sub-bottom" className="my-6" />} */}
 
           <style jsx>{`
             :global(.card) {

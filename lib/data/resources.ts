@@ -274,9 +274,13 @@ export const resources: Resource[] = [
         title: 'Section K: Cross-Section Plan Drawing — Municipal Building Standards',
         url: '/resources/autocad-tutorials/crosssection-plan',
       },
+      {
+        title: 'Section L: YQArch Commands Reference — Essential for Municipal Drawing',
+        url: '/resources/autocad-tutorials/yqarch-commands-reference',
+      },
     ],
     createdAt: new Date('2026-01-01'),
-    updatedAt: new Date('2026-04-15'),
+    updatedAt: new Date('2026-05-09'),
   },
   {
     slug: 'engineering-blogs-articles',
