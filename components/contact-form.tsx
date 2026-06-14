@@ -14,22 +14,35 @@ type FormValues = z.infer<typeof schema>
 
 export default function ContactForm() {
   const [status, setStatus] = useState<'idle'|'success'|'error'>('idle')
+  const [errorMessage, setErrorMessage] = useState<string>('')
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<FormValues>({
     resolver: zodResolver(schema),
   })
 
   const onSubmit = async (values: FormValues) => {
     try {
+      setErrorMessage('')
       const res = await fetch('/contact-action', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
       })
-      if (!res.ok) throw new Error('Failed')
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setStatus('error')
+        setErrorMessage(data.error || 'Failed to send message. Please try again.')
+        return
+      }
+
       setStatus('success')
+      setErrorMessage('')
       reset()
-    } catch {
+    } catch (error) {
       setStatus('error')
+      setErrorMessage('Network error. Please check your connection and try again.')
+      console.error('Contact form error:', error)
     }
   }
 
@@ -83,7 +96,7 @@ export default function ContactForm() {
       {status === 'success' && (
         <div className="rounded-xl bg-secondary/10 p-4 text-center dark:bg-secondary/20">
           <p className="font-sans text-sm text-secondary dark:text-secondary">
-            Message sent successfully! We will get back to you soon.
+            ✓ Message sent successfully! We will get back to you soon.
           </p>
         </div>
       )}
@@ -91,7 +104,7 @@ export default function ContactForm() {
       {status === 'error' && (
         <div className="rounded-xl bg-error/10 p-4 text-center dark:bg-error/20">
           <p className="font-sans text-sm text-error dark:text-error">
-            Something went wrong. Please try again or contact us directly.
+            ✕ {errorMessage}
           </p>
         </div>
       )}
