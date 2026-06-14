@@ -31,7 +31,7 @@ export async function POST(req: Request) {
       try {
         const resend = new Resend(apiKey)
         const result = await resend.emails.send({
-          from: 'Civil Calculation <noreply@civil-calculation.app>',
+          from: 'onboarding@resend.dev',
           to: [recipientEmail],
           replyTo: email,
           subject: `New Contact Form Submission from ${name}`,
