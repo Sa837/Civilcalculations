@@ -28,40 +28,40 @@ export async function POST(req: Request) {
       )
     }
 
-    try {
-      const resend = new Resend(apiKey)
-      const result = await resend.emails.send({
-        from: 'Civil Calculation <noreply@civil-calculation.app>',
-        to: [recipientEmail],
-        replyTo: email,
-        subject: `New Contact Form Submission from ${name}`,
-        html: `
-          <h2>New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-          <p><strong>Message:</strong></p>
-          <p>${escapeHtml(message).replace(/\n/g, '<br>')}</p>
-        `,
-        text: `From: ${name} <${email}>\n\nMessage:\n${message}`,
-      })
+      try {
+        const resend = new Resend(apiKey)
+        const result = await resend.emails.send({
+          from: 'Civil Calculation <noreply@civil-calculation.app>',
+          to: [recipientEmail],
+          replyTo: email,
+          subject: `New Contact Form Submission from ${name}`,
+          html: `
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+            <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+            <p><strong>Message:</strong></p>
+            <div>${escapeHtml(message).replace(/\n/g, '<br>')}</div>
+          `,
+          text: `From: ${name} <${email}>\n\nMessage:\n${message}`,
+        })
 
-      if (result.error) {
-        console.error('[Contact] Resend error:', result.error)
+        if (result.error) {
+          console.error('[Contact] Resend error:', result.error)
+          return NextResponse.json(
+            { error: 'Failed to send email. Please try again.' },
+            { status: 500 }
+          )
+        }
+
+        console.log('[Contact] Email sent successfully:', result.data?.id)
+        return NextResponse.json({ ok: true })
+      } catch (resendError) {
+        console.error('[Contact] Resend service error:', resendError)
         return NextResponse.json(
-          { error: 'Failed to send email. Please try again.' },
+          { error: 'Email service error. Please try again later.' },
           { status: 500 }
         )
       }
-
-      console.log('[Contact] Email sent successfully:', result.data?.id)
-      return NextResponse.json({ ok: true })
-    } catch (resendError) {
-      console.error('[Contact] Resend service error:', resendError)
-      return NextResponse.json(
-        { error: 'Email service error. Please try again later.' },
-        { status: 500 }
-      )
-    }
   } catch (e) {
     console.error('[Contact] Unexpected error:', e)
     return NextResponse.json({ error: 'Server error' }, { status: 500 })
