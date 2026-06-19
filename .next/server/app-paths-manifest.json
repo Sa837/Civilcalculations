@@ -1,3 +1,4 @@
 {
-  "/resources/[category]/[sub]/page": "app/resources/[category]/[sub]/page.js"
+  "/contact/page": "app/contact/page.js",
+  "/page": "app/page.js"
 }

@@ -35,17 +35,17 @@ declare namespace __next_route_internal_types__ {
     | `/blog/bim-building-information-modeling`
     | `/blog/bridge-engineering-innovative-design`
     | `/blog/concrete-technology-advanced-mix-design`
-    | `/blog/construction-technology-drones-robotics`
     | `/blog/digital-twins-construction-management`
+    | `/blog/construction-technology-drones-robotics`
     | `/blog/environmental-engineering-remediation`
     | `/blog/geotechnical-soil-structure-interaction`
     | `/blog/project-management-lean-construction`
-    | `/blog/infrastructure-resilience-climate-change`
     | `/blog/smart-cities-iot-urban-infrastructure`
+    | `/blog/infrastructure-resilience-climate-change`
     | `/blog/steel-structure-design-modern-analysis`
-    | `/blog/transportation-highway-design-standards`
-    | `/blog/water-resources-sustainable-management`
     | `/blog/sustainable-construction-green-materials`
+    | `/blog/water-resources-sustainable-management`
+    | `/blog/transportation-highway-design-standards`
     | `/calculators`
     | `/contact`
     | `/contact-action`

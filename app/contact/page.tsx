@@ -21,8 +21,8 @@ export default function ContactPage() {
         </p>
         <p className="mt-4 font-sans text-sm text-body/70 dark:text-body-dark/70">
           Or email us directly at{' '}
-          <a href="mailto:sa.9819158546@gmail.com" className="underline hover:no-underline">
-            sa.9819158546@gmail.com
+          <a href="mailto:paveengineeringofficial@gmail.com" className="underline hover:no-underline">
+            paveengineeringofficial@gmail.com
           </a>
           .
         </p>

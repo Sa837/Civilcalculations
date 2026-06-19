@@ -25,10 +25,14 @@ export default function ContactForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
       })
-      if (!res.ok) throw new Error('Failed')
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Failed to send message')
+      }
       setStatus('success')
       reset()
-    } catch {
+    } catch (error) {
+      console.error('Contact form error:', error)
       setStatus('error')
     }
   }
