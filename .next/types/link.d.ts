@@ -36,28 +36,28 @@ declare namespace __next_route_internal_types__ {
     | `/blog/bridge-engineering-innovative-design`
     | `/blog/concrete-technology-advanced-mix-design`
     | `/blog/digital-twins-construction-management`
-    | `/blog/construction-technology-drones-robotics`
-    | `/blog/environmental-engineering-remediation`
     | `/blog/geotechnical-soil-structure-interaction`
+    | `/blog/environmental-engineering-remediation`
+    | `/blog/construction-technology-drones-robotics`
+    | `/blog/infrastructure-resilience-climate-change`
     | `/blog/project-management-lean-construction`
     | `/blog/smart-cities-iot-urban-infrastructure`
-    | `/blog/infrastructure-resilience-climate-change`
-    | `/blog/steel-structure-design-modern-analysis`
+    | `/blog/transportation-highway-design-standards`
     | `/blog/sustainable-construction-green-materials`
     | `/blog/water-resources-sustainable-management`
-    | `/blog/transportation-highway-design-standards`
-    | `/calculators`
+    | `/blog/steel-structure-design-modern-analysis`
     | `/contact`
     | `/contact-action`
     | `/converters`
-    | `/cookie-policy`
     | `/disclaimer`
-    | `/privacy-policy`
+    | `/cookie-policy`
+    | `/calculators`
     | `/resources`
     | `/terms-and-conditions`
+    | `/privacy-policy`
   type DynamicRoutes<T extends string = string> = 
-    | `/calculators/${SafeSlug<T>}`
     | `/converters/${SafeSlug<T>}`
+    | `/calculators/${SafeSlug<T>}`
     | `/resources/${SafeSlug<T>}`
     | `/resources/${SafeSlug<T>}/${SafeSlug<T>}`
 

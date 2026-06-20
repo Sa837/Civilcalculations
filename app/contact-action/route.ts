@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     }
     const resend = new Resend(apiKey)
     const result = await resend.emails.send({
-      from: 'noreply@nestnepal.com',
+      from: 'noreply@civilcalculation.com',
       to: ['paveengineeringofficial@gmail.com'],
       replyTo: email,
       subject: `Contact form: ${name}`,
