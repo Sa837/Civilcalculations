@@ -1,26 +1,23 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
-import { Sparkles, Lock, Unlock, Gauge, Eye, Download, FileText, AlertTriangle, PlayCircle } from 'lucide-react'
+import { Sparkles, Lock, Unlock, Eye, Download, FileText, X, Clock } from 'lucide-react'
+import AdSlot from '@/components/ads/AdSlot'
 
 /**
- * PREMIUM UNLOCK VIA REWARDED ADS
- * --------------------------------
- * This uses Google's Ad Placement API (the same API AdSense uses for
- * rewarded ads in HTML5 games). It is NOT a normal <ins class="adsbygoogle">
- * banner — that ad type has no concept of "watched" and can't gate anything.
- *
- * Requirements for this to actually work in production:
- * 1. Your AdSense account must be eligible/approved for rewarded ads
- *    (Ad Placement API). Not every account has this enabled — it is a
- *    limited-availability product. If it isn't enabled, `adBreak` will
- *    report no ad available and users will see the "no ad available" state
- *    below instead of a silent unlock.
- * 2. Replace AD_CLIENT below with your real ca-pub id (already set).
- * 3. Remove `adBreakTest` / set it to false before going live — it forces
- *    a test ad so you can verify the flow without burning real inventory.
+ * PREMIUM UNLOCK VIA TIMED AD MODAL
+ * ----------------------------------
+ * Simple, reliable, no dependency on Google account eligibility:
+ * 1. User clicks "Unlock with ad".
+ * 2. A modal opens showing your normal AdSlot (the same ad unit already
+ *    working elsewhere on the site).
+ * 3. A countdown runs (default 15s). The close button is disabled/hidden
+ *    until it reaches 0 — this is what actually enforces "watch the ad".
+ * 4. Once the timer finishes, a close (X) button appears. Clicking it
+ *    unlocks premium features for the rest of the session and closes
+ *    the modal.
  */
-const AD_CLIENT = 'ca-pub-2472384896413922'
+const WATCH_SECONDS = 15
 const STORAGE_PREFIX = 'premium-unlock:'
 
 let unlockVersion = 0
@@ -44,99 +41,11 @@ function readUnlocked(storageKey: string): boolean {
   return window.sessionStorage.getItem(storageKey) === 'true'
 }
 
-// ---- Ad Placement API loader (loaded once, shared across all calculators) ----
-
-type AdBreakConfig = {
-  type: 'reward'
-  name: string
-  beforeAd?: () => void
-  afterAd?: () => void
-  beforeReward?: (showAdFn: () => void) => void
-  adDismissed?: () => void
-  adViewed?: () => void
-  adBreakDone?: (placementInfo: { breakType?: string; breakStatus?: string; breakName?: string }) => void
-}
-
-declare global {
-  interface Window {
-    adsbygoogle?: { push: (params?: any) => void }[]
-    adBreak?: (config: AdBreakConfig) => void
-    adConfig?: (config: Record<string, unknown>) => void
-  }
-}
-
-let adPlacementLoadPromise: Promise<void> | null = null
-let adConfigCalled = false
-
-/**
- * Loads the Ad Placement API and calls adConfig() exactly once.
- * `data-adbreak-test="on"` goes on the <script> tag itself — it is NOT a
- * valid parameter to adBreak() or adConfig(). This is easy to get wrong
- * because none of the JS-side functions accept it; Google reads it off
- * the script element at load time.
- */
-function loadAdPlacementApi(testMode: boolean): Promise<void> {
-  if (typeof window === 'undefined') return Promise.resolve()
-  if (window.adBreak && adConfigCalled) return Promise.resolve()
-  if (adPlacementLoadPromise) return adPlacementLoadPromise
-
-  adPlacementLoadPromise = new Promise((resolve, reject) => {
-    window.adsbygoogle = window.adsbygoogle || []
-    // Required shim per Google's Ad Placement API docs.
-    window.adBreak = window.adConfig = function (o: AdBreakConfig | Record<string, unknown>) {
-      ;(window.adsbygoogle as unknown[]).push(o)
-    }
-
-    const finishSetup = () => {
-      if (!adConfigCalled) {
-        adConfigCalled = true
-        window.adConfig?.({
-          preloadAdBreaks: 'on',
-          sound: 'off', // this is a calculator page, not a game — no audio
-          onReady: () => resolve(),
-        })
-        // onReady should fire quickly, but don't hang forever if it doesn't.
-        setTimeout(resolve, 2000)
-      } else {
-        resolve()
-      }
-    }
-
-    const existing = document.querySelector<HTMLScriptElement>(
-      'script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]',
-    )
-    if (existing) {
-      finishSetup()
-      return
-    }
-
-    const script = document.createElement('script')
-    script.async = true
-    script.crossOrigin = 'anonymous'
-    script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${AD_CLIENT}`
-    script.setAttribute('data-ad-client', AD_CLIENT)
-    if (testMode) script.setAttribute('data-adbreak-test', 'on')
-    script.onload = finishSetup
-    script.onerror = () => reject(new Error('Failed to load AdSense script'))
-    document.head.appendChild(script)
-  })
-
-  return adPlacementLoadPromise
-}
-
 // ---- Unlock hook ----
 
-type UnlockStatus = 'idle' | 'loading' | 'watching' | 'unavailable' | 'dismissed' | 'unlocked'
-
-interface UsePremiumUnlockOptions {
-  /** Forces a guaranteed test ad instead of a real one. Set false before shipping. */
-  testMode?: boolean
-}
-
-export function usePremiumUnlock(calculatorId: string, options: UsePremiumUnlockOptions = {}) {
-  const { testMode = false } = options
+export function usePremiumUnlock(calculatorId: string) {
   const storageKey = getPremiumStorageKey(calculatorId)
-  const [status, setStatus] = useState<UnlockStatus>('idle')
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const pendingComplete = useRef<(() => void) | undefined>(undefined)
 
   const isUnlocked = useSyncExternalStore(
@@ -145,89 +54,112 @@ export function usePremiumUnlock(calculatorId: string, options: UsePremiumUnlock
     () => false,
   )
 
-  const grantUnlock = useCallback(() => {
-    window.sessionStorage.setItem(storageKey, 'true')
-    notifySubscribers()
-    setStatus('unlocked')
-    pendingComplete.current?.()
-    pendingComplete.current = undefined
-  }, [storageKey])
-
-  const requestRewardedAd = useCallback(
-    async (onComplete?: () => void) => {
+  const openUnlockModal = useCallback(
+    (onComplete?: () => void) => {
       if (readUnlocked(storageKey)) {
         onComplete?.()
         return
       }
-      if (status === 'loading' || status === 'watching') return
-
       pendingComplete.current = onComplete
-      setStatus('loading')
-
-      try {
-        await loadAdPlacementApi(testMode)
-      } catch {
-        setStatus('unavailable')
-        return
-      }
-
-      if (typeof window.adBreak !== 'function') {
-        setStatus('unavailable')
-        return
-      }
-
-      window.adBreak({
-        type: 'reward',
-        name: `premium-unlock-${calculatorId}`,
-        beforeAd: () => {
-          // Ad is about to show — pause anything noisy/animated here if needed.
-        },
-        afterAd: () => {
-          // Ad finished (viewed or dismissed) — cleanup point.
-        },
-        beforeReward: (showAdFn) => {
-          // An ad is ready. Show it immediately since the user already
-          // clicked "Unlock with ad" (this must fire from a user gesture).
-          setStatus('watching')
-          showAdFn()
-        },
-        adViewed: () => {
-          // Per Google's Ad Placement API docs this fires when "Ad was
-          // viewed and closed" — this is the correct reward signal.
-          grantUnlock()
-        },
-        adDismissed: () => {
-          // User closed the ad before it finished — no reward.
-          setStatus('dismissed')
-          pendingComplete.current = undefined
-        },
-        adBreakDone: (placementInfo) => {
-          // Always fires last, even if no ad was available at all.
-          if (placementInfo?.breakStatus && placementInfo.breakStatus !== 'viewed') {
-            setStatus((current) => (current === 'watching' ? 'dismissed' : 'unavailable'))
-          }
-        },
-      })
+      setIsModalOpen(true)
     },
-    [storageKey, status, calculatorId, testMode, grantUnlock],
+    [storageKey],
   )
 
-  const retry = useCallback(
-    (onComplete?: () => void) => {
-      setStatus('idle')
-      requestRewardedAd(onComplete)
-    },
-    [requestRewardedAd],
-  )
+  const finishUnlock = useCallback(() => {
+    window.sessionStorage.setItem(storageKey, 'true')
+    notifySubscribers()
+    setIsModalOpen(false)
+    pendingComplete.current?.()
+    pendingComplete.current = undefined
+  }, [storageKey])
 
   return {
     isUnlocked,
-    status,
-    isUnlocking: status === 'loading' || status === 'watching',
-    unlock: requestRewardedAd,
-    retry,
+    isModalOpen,
+    openUnlockModal,
+    finishUnlock,
     calculatorId,
   }
+}
+
+// ---- Ad watch modal ----
+
+interface AdWatchModalProps {
+  open: boolean
+  onFinish: () => void
+  watchSeconds?: number
+}
+
+function AdWatchModal({ open, onFinish, watchSeconds = WATCH_SECONDS }: AdWatchModalProps) {
+  const [secondsLeft, setSecondsLeft] = useState(watchSeconds)
+
+  useEffect(() => {
+    if (!open) return
+    setSecondsLeft(watchSeconds)
+    const interval = window.setInterval(() => {
+      setSecondsLeft((s) => (s > 0 ? s - 1 : 0))
+    }, 1000)
+    return () => window.clearInterval(interval)
+  }, [open, watchSeconds])
+
+  if (!open) return null
+
+  const canClose = secondsLeft <= 0
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Watch ad to unlock premium features"
+    >
+      <div className="relative w-full max-w-md rounded-2xl border border-amber-200/60 bg-white p-5 shadow-xl dark:border-amber-700/30 dark:bg-slate-900">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+            <Sparkles className="h-4 w-4" />
+            <h3 className="text-base font-semibold">Watching ad…</h3>
+          </div>
+
+          {canClose ? (
+            <button
+              type="button"
+              onClick={onFinish}
+              aria-label="Close and unlock"
+              className="rounded-full border border-slate-300 p-1.5 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 dark:border-slate-600 dark:text-slate-400 dark:hover:bg-slate-800"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          ) : (
+            <div className="flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700 dark:border-amber-700 dark:bg-amber-900/30 dark:text-amber-300">
+              <Clock className="h-3.5 w-3.5" />
+              {secondsLeft}s
+            </div>
+          )}
+        </div>
+
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          {canClose
+            ? 'Thanks for watching! Close this to unlock premium features for your session.'
+            : `Please wait ${secondsLeft}s — premium features unlock automatically once the ad finishes.`}
+        </p>
+
+        <div className="mt-4 min-h-[250px] overflow-hidden rounded-xl border border-dashed border-amber-300/70 bg-amber-50/40 dark:border-amber-700/40 dark:bg-slate-800/40">
+          <AdSlot slotId="8833542673" position="sidebar" format="auto" responsive="true" />
+        </div>
+
+        {canClose && (
+          <button
+            type="button"
+            onClick={onFinish}
+            className="mt-4 w-full rounded-xl bg-amber-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-700"
+          >
+            Continue to premium features
+          </button>
+        )}
+      </div>
+    </div>
+  )
 }
 
 // ---- UI components (same amber theme as before) ----
@@ -243,17 +175,15 @@ interface PremiumUnlockPanelProps {
   title?: string
   description?: string
   className?: string
-  testMode?: boolean
 }
 
 export function PremiumUnlockPanel({
   calculatorId,
   title = 'Premium Estimate Features',
-  description = 'Watch a short rewarded ad to unlock detailed summary, step-by-step breakdown, and export options.',
+  description = `Watch a ${WATCH_SECONDS}-second ad to unlock detailed summary, step-by-step breakdown, and export options.`,
   className = '',
-  testMode = false,
 }: PremiumUnlockPanelProps) {
-  const { isUnlocked, status, unlock, retry } = usePremiumUnlock(calculatorId, { testMode })
+  const { isUnlocked, isModalOpen, openUnlockModal, finishUnlock } = usePremiumUnlock(calculatorId)
 
   if (isUnlocked) return null
 
@@ -269,43 +199,16 @@ export function PremiumUnlockPanel({
           </div>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{description}</p>
         </div>
-
-        {status === 'unavailable' || status === 'dismissed' ? (
-          <button
-            type="button"
-            onClick={() => retry()}
-            className="rounded-xl border border-red-300 bg-white px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 dark:border-red-700 dark:bg-slate-900 dark:text-red-300"
-          >
-            <span className="flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4" />
-              {status === 'dismissed' ? 'Ad closed early — try again' : 'No ad available — retry'}
-            </span>
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={() => unlock()}
-            disabled={status === 'loading' || status === 'watching'}
-            className="rounded-xl border border-amber-300 bg-white px-3 py-2 text-sm font-medium text-amber-700 transition hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-70 dark:border-amber-700 dark:bg-slate-900 dark:text-amber-300"
-          >
-            {status === 'loading' ? (
-              <span className="flex items-center gap-2">
-                <Gauge className="h-4 w-4 animate-spin" />
-                Loading ad…
-              </span>
-            ) : status === 'watching' ? (
-              <span className="flex items-center gap-2">
-                <PlayCircle className="h-4 w-4 animate-pulse" />
-                Watching ad…
-              </span>
-            ) : (
-              <span className="flex items-center gap-2">
-                <Lock className="h-4 w-4" />
-                Unlock with ad
-              </span>
-            )}
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={() => openUnlockModal()}
+          className="rounded-xl border border-amber-300 bg-white px-3 py-2 text-sm font-medium text-amber-700 transition hover:bg-amber-50 dark:border-amber-700 dark:bg-slate-900 dark:text-amber-300"
+        >
+          <span className="flex items-center gap-2">
+            <Lock className="h-4 w-4" />
+            Unlock with ad
+          </span>
+        </button>
       </div>
 
       <ul className="mt-4 grid gap-2 sm:grid-cols-3">
@@ -319,20 +222,6 @@ export function PremiumUnlockPanel({
           </li>
         ))}
       </ul>
-
-      {status === 'unavailable' && (
-        <div className="mt-4 rounded-xl border border-red-200 bg-red-50/80 p-3 text-sm text-red-700 dark:border-red-700/30 dark:bg-red-900/20 dark:text-red-300">
-          No rewarded ad is available right now. This can happen if your AdSense account
-          isn&apos;t yet approved for rewarded ads, or if no ad filled for this request. Please
-          try again shortly.
-        </div>
-      )}
-      {status === 'dismissed' && (
-        <div className="mt-4 rounded-xl border border-red-200 bg-red-50/80 p-3 text-sm text-red-700 dark:border-red-700/30 dark:bg-red-900/20 dark:text-red-300">
-          You closed the ad before it finished, so premium features weren&apos;t unlocked. Watch
-          the full ad to unlock.
-        </div>
-      )}
 
       <div className="mt-4 rounded-xl border border-dashed border-amber-300/70 bg-white/80 p-3 text-sm text-slate-700 dark:border-amber-700/40 dark:bg-slate-900/60 dark:text-slate-200">
         Your basic calculation is ready. Unlock premium features below to view the full estimate summary.
@@ -350,6 +239,8 @@ export function PremiumUnlockPanel({
           Dev only: reset unlock for this calculator
         </button>
       )}
+
+      <AdWatchModal open={isModalOpen} onFinish={finishUnlock} />
     </div>
   )
 }
@@ -360,7 +251,6 @@ interface PremiumFeatureGateProps {
   title?: string
   description?: string
   className?: string
-  testMode?: boolean
 }
 
 export function PremiumFeatureGate({
@@ -369,9 +259,8 @@ export function PremiumFeatureGate({
   title,
   description,
   className,
-  testMode = false,
 }: PremiumFeatureGateProps) {
-  const { isUnlocked } = usePremiumUnlock(calculatorId, { testMode })
+  const { isUnlocked } = usePremiumUnlock(calculatorId)
 
   if (!isUnlocked) {
     return (
@@ -380,7 +269,6 @@ export function PremiumFeatureGate({
         title={title}
         description={description}
         className={className}
-        testMode={testMode}
       />
     )
   }
@@ -405,7 +293,6 @@ interface PremiumLockedButtonProps {
   inactiveClassName?: string
   isActive?: boolean
   disabled?: boolean
-  testMode?: boolean
 }
 
 export function PremiumLockedButton({
@@ -417,31 +304,33 @@ export function PremiumLockedButton({
   inactiveClassName = '',
   isActive = false,
   disabled = false,
-  testMode = false,
 }: PremiumLockedButtonProps) {
-  const { isUnlocked, isUnlocking, unlock } = usePremiumUnlock(calculatorId, { testMode })
+  const { isUnlocked, isModalOpen, openUnlockModal, finishUnlock } = usePremiumUnlock(calculatorId)
 
   const handleClick = () => {
-    if (disabled || isUnlocking) return
+    if (disabled) return
     if (isUnlocked) {
       onAuthorizedClick()
     } else {
-      unlock(onAuthorizedClick)
+      openUnlockModal(onAuthorizedClick)
     }
   }
 
   const stateClass = isActive ? activeClassName : inactiveClassName
 
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      disabled={disabled || isUnlocking}
-      className={`${stateClass} ${className}`}
-    >
-      {!isUnlocked && !isUnlocking && <Lock className="mr-1 inline h-3.5 w-3.5" />}
-      {isUnlocking ? 'Watching ad…' : children}
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={handleClick}
+        disabled={disabled}
+        className={`${stateClass} ${className}`}
+      >
+        {!isUnlocked && <Lock className="mr-1 inline h-3.5 w-3.5" />}
+        {children}
+      </button>
+      <AdWatchModal open={isModalOpen} onFinish={finishUnlock} />
+    </>
   )
 }
 
@@ -450,33 +339,33 @@ interface PremiumLockedActionProps {
   onAuthorizedClick: () => void
   children: ReactNode
   className?: string
-  testMode?: boolean
 }
 
-/** Inline export/action control that requires watching a rewarded ad */
+/** Inline export/action control that requires watching a timed ad */
 export function PremiumLockedAction({
   calculatorId,
   onAuthorizedClick,
   children,
   className = 'rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800',
-  testMode = false,
 }: PremiumLockedActionProps) {
-  const { isUnlocked, isUnlocking, unlock } = usePremiumUnlock(calculatorId, { testMode })
+  const { isUnlocked, isModalOpen, openUnlockModal, finishUnlock } = usePremiumUnlock(calculatorId)
 
   const handleClick = () => {
-    if (isUnlocking) return
     if (isUnlocked) {
       onAuthorizedClick()
     } else {
-      unlock(onAuthorizedClick)
+      openUnlockModal(onAuthorizedClick)
     }
   }
 
   return (
-    <button type="button" onClick={handleClick} disabled={isUnlocking} className={className}>
-      {!isUnlocked && !isUnlocking && <Lock className="mr-1 inline h-3.5 w-3.5" />}
-      {isUnlocking ? 'Watching ad…' : children}
-    </button>
+    <>
+      <button type="button" onClick={handleClick} className={className}>
+        {!isUnlocked && <Lock className="mr-1 inline h-3.5 w-3.5" />}
+        {children}
+      </button>
+      <AdWatchModal open={isModalOpen} onFinish={finishUnlock} />
+    </>
   )
 }
 
