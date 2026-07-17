@@ -1,10 +1,16 @@
 'use client'
 
-import { useCallback, useState, useSyncExternalStore, type ReactNode } from 'react'
-import { Sparkles, Lock, Unlock, Gauge, Eye, Download, FileText } from 'lucide-react'
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
+import { Sparkles, Lock, Unlock, Gauge, Eye, Download, FileText, AlertTriangle } from 'lucide-react'
 import AdSlot from '@/components/ads/AdSlot'
 
 const STORAGE_PREFIX = 'premium-unlock:'
+// Minimum time (ms) the ad must be "showing" before we allow unlock,
+// even if AdSense reports the slot as done rendering almost instantly.
+const MIN_WATCH_MS = 6000
+// How long to wait for the ad to render at all before treating it as blocked/failed.
+const AD_LOAD_TIMEOUT_MS = 8000
+
 let unlockVersion = 0
 const subscribers = new Set<() => void>()
 
@@ -28,15 +34,49 @@ function readUnlocked(storageKey: string): boolean {
   return window.sessionStorage.getItem(storageKey) === 'true'
 }
 
+type UnlockStatus = 'idle' | 'waiting' | 'blocked' | 'unlocked'
+
 export function usePremiumUnlock(calculatorId: string) {
   const storageKey = getPremiumStorageKey(calculatorId)
-  const [isUnlocking, setIsUnlocking] = useState(false)
-  const [adLoaded, setAdLoaded] = useState(false)
+  const [status, setStatus] = useState<UnlockStatus>('idle')
+  const timers = useRef<{ poll?: number; loadTimeout?: number; minWait?: number }>({})
+  const adReadyRef = useRef(false)
+  const minWaitDoneRef = useRef(false)
 
   const isUnlocked = useSyncExternalStore(
     subscribe,
     () => readUnlocked(storageKey),
     () => false,
+  )
+
+  const clearTimers = () => {
+    if (timers.current.poll) window.clearInterval(timers.current.poll)
+    if (timers.current.loadTimeout) window.clearTimeout(timers.current.loadTimeout)
+    if (timers.current.minWait) window.clearTimeout(timers.current.minWait)
+    timers.current = {}
+  }
+
+  useEffect(() => clearTimers, [])
+
+  const finishUnlock = useCallback(
+    (onComplete?: () => void) => {
+      window.sessionStorage.setItem(storageKey, 'true')
+      notifySubscribers()
+      setStatus('unlocked')
+      clearTimers()
+      onComplete?.()
+    },
+    [storageKey],
+  )
+
+  const maybeFinish = useCallback(
+    (onComplete?: () => void) => {
+      // Require BOTH: the ad slot actually rendered, AND the minimum watch time elapsed.
+      if (adReadyRef.current && minWaitDoneRef.current) {
+        finishUnlock(onComplete)
+      }
+    },
+    [finishUnlock],
   )
 
   const unlock = useCallback(
@@ -45,40 +85,51 @@ export function usePremiumUnlock(calculatorId: string) {
         onComplete?.()
         return
       }
-      if (isUnlocking) return
-      setIsUnlocking(true)
-      setAdLoaded(false)
-      
-      // Wait for ad to load before unlocking
-      const checkAdLoaded = () => {
-        const adElement = document.querySelector('.adsbygoogle[data-ad-status="done"]')
-        if (adElement) {
-          setAdLoaded(true)
-          window.sessionStorage.setItem(storageKey, 'true')
-          notifySubscribers()
-          setIsUnlocking(false)
-          onComplete?.()
-        } else {
-          // Fallback: unlock after 3 seconds if ad doesn't load
-          setTimeout(() => {
-            if (!adLoaded) {
-              setAdLoaded(true)
-              window.sessionStorage.setItem(storageKey, 'true')
-              notifySubscribers()
-              setIsUnlocking(false)
-              onComplete?.()
-            }
-          }, 7000)
-        }
-      }
+      if (status === 'waiting') return
 
-      // Start checking for ad load
-      setTimeout(checkAdLoaded, 500)
+      adReadyRef.current = false
+      minWaitDoneRef.current = false
+      setStatus('waiting')
+
+      // Poll for the real AdSense "done rendering" attribute.
+      timers.current.poll = window.setInterval(() => {
+        const adElement = document.querySelector(
+          '.adsbygoogle[data-adsbygoogle-status="done"]',
+        )
+        if (adElement) {
+          adReadyRef.current = true
+          window.clearInterval(timers.current.poll)
+          maybeFinish(onComplete)
+        }
+      }, 300)
+
+      // If the ad never renders (adblocker, no fill, offline), mark as blocked
+      // instead of silently unlocking.
+      timers.current.loadTimeout = window.setTimeout(() => {
+        if (!adReadyRef.current) {
+          clearTimers()
+          setStatus('blocked')
+        }
+      }, AD_LOAD_TIMEOUT_MS)
+
+      // Minimum watch time regardless of how fast the ad "finishes".
+      timers.current.minWait = window.setTimeout(() => {
+        minWaitDoneRef.current = true
+        maybeFinish(onComplete)
+      }, MIN_WATCH_MS)
     },
-    [storageKey, isUnlocking, adLoaded],
+    [storageKey, status, maybeFinish],
   )
 
-  return { isUnlocked, isUnlocking, unlock, calculatorId, adLoaded, setAdLoaded }
+  const retry = useCallback(
+    (onComplete?: () => void) => {
+      setStatus('idle')
+      unlock(onComplete)
+    },
+    [unlock],
+  )
+
+  return { isUnlocked, status, isUnlocking: status === 'waiting', unlock, retry, calculatorId }
 }
 
 const DEFAULT_FEATURES = [
@@ -100,7 +151,7 @@ export function PremiumUnlockPanel({
   description = 'Watch the ad below to unlock detailed summary, step-by-step breakdown, and export options.',
   className = '',
 }: PremiumUnlockPanelProps) {
-  const { isUnlocked, isUnlocking, unlock, adLoaded } = usePremiumUnlock(calculatorId)
+  const { isUnlocked, status, unlock, retry } = usePremiumUnlock(calculatorId)
 
   if (isUnlocked) return null
 
@@ -116,24 +167,38 @@ export function PremiumUnlockPanel({
           </div>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{description}</p>
         </div>
-        <button
-          type="button"
-          onClick={() => unlock()}
-          disabled={isUnlocking}
-          className="rounded-xl border border-amber-300 bg-white px-3 py-2 text-sm font-medium text-amber-700 transition hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-70 dark:border-amber-700 dark:bg-slate-900 dark:text-amber-300"
-        >
-          {isUnlocking ? (
+
+        {status === 'blocked' ? (
+          <button
+            type="button"
+            onClick={() => retry()}
+            className="rounded-xl border border-red-300 bg-white px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 dark:border-red-700 dark:bg-slate-900 dark:text-red-300"
+          >
             <span className="flex items-center gap-2">
-              <Gauge className="h-4 w-4 animate-spin" />
-              {adLoaded ? 'Unlocking…' : 'Loading ad…'}
+              <AlertTriangle className="h-4 w-4" />
+              Ad blocked — retry
             </span>
-          ) : (
-            <span className="flex items-center gap-2">
-              <Lock className="h-4 w-4" />
-              Unlock with ad
-            </span>
-          )}
-        </button>
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => unlock()}
+            disabled={status === 'waiting'}
+            className="rounded-xl border border-amber-300 bg-white px-3 py-2 text-sm font-medium text-amber-700 transition hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-70 dark:border-amber-700 dark:bg-slate-900 dark:text-amber-300"
+          >
+            {status === 'waiting' ? (
+              <span className="flex items-center gap-2">
+                <Gauge className="h-4 w-4 animate-spin" />
+                Watching ad…
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                <Lock className="h-4 w-4" />
+                Unlock with ad
+              </span>
+            )}
+          </button>
+        )}
       </div>
 
       <ul className="mt-4 grid gap-2 sm:grid-cols-3">
@@ -147,6 +212,13 @@ export function PremiumUnlockPanel({
           </li>
         ))}
       </ul>
+
+      {status === 'blocked' && (
+        <div className="mt-4 rounded-xl border border-red-200 bg-red-50/80 p-3 text-sm text-red-700 dark:border-red-700/30 dark:bg-red-900/20 dark:text-red-300">
+          We couldn't load an ad — this is usually caused by an adblocker. Please disable it for
+          this site and try again.
+        </div>
+      )}
 
       <div className="mt-4 rounded-xl border border-dashed border-amber-300/70 bg-white/80 p-3 text-sm text-slate-700 dark:border-amber-700/40 dark:bg-slate-900/60 dark:text-slate-200">
         Your basic calculation is ready. Unlock premium features below to view the full estimate summary.
