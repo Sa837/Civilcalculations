@@ -68,7 +68,7 @@ export function usePremiumUnlock(calculatorId: string) {
               setIsUnlocking(false)
               onComplete?.()
             }
-          }, 3000)
+          }, 7000)
         }
       }
 
