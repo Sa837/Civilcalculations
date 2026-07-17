@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Calculator,
@@ -14,6 +14,7 @@ import {
   FileDown,
   Download,
   CheckCircle,
+  FileText,
 } from 'lucide-react'
 import {
   WaterTankCalculator,
@@ -23,9 +24,16 @@ import {
   RainwaterHarvestingCalculator,
   SumpCapacityCalculator,
 } from '@/lib/registry/calculator/capacity-calculator'
-import * as XLSX from 'xlsx'
+import { exportEstimatePdf, exportEstimateText, exportEstimateXlsx } from './professional-estimate-utils'
+import {
+  PremiumFeatureGate,
+  PremiumLockedButton,
+  PremiumLockedAction,
+} from './advanced-estimate-gate'
 import AdSlot from '@/components/ads/AdSlot'
 import { TANK_CAPACITY_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/tank-capacitt-info-section'
+
+const CALC_ID = 'capacity'
 // Types for local form states
 type Unit = 'm' | 'ft'
 type Tab = 'water' | 'pool' | 'soak' | 'septic' | 'rainwater' | 'sump'
@@ -325,41 +333,43 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
     win.print()
   }
 
-  const downloadXLSX = () => {
+  const exportSummary = useCallback(() => {
     if (!result) return
     const rows = [
-      { Key: 'Type', Value: activeTab },
-      { Key: 'Volume (m3)', Value: Number(result.volume_m3?.toFixed(3) || 0) },
-      { Key: 'Volume (L)', Value: Number(result.volume_liters?.toFixed(0) || 0) },
-      { Key: 'Volume (US gal)', Value: Number(result.volume_gallons_us?.toFixed(0) || 0) },
+      { label: 'Type', value: activeTab, unit: '' },
+      { label: 'Volume (m³)', value: result.volume_m3?.toFixed(3) || '0', unit: 'm³' },
+      { label: 'Volume (L)', value: result.volume_liters?.toFixed(0) || '0', unit: 'L' },
+      { label: 'Volume (US gal)', value: result.volume_gallons_us?.toFixed(0) || '0', unit: 'gal' },
     ]
     if (result.effective_depth != null)
-      rows.push({ Key: 'Effective Depth (m)', Value: Number(result.effective_depth.toFixed(3)) })
+      rows.push({ label: 'Effective Depth', value: result.effective_depth.toFixed(3), unit: 'm' })
     if (result.turnover_flow_m3_per_h != null)
       rows.push({
-        Key: 'Turnover Flow (m3/h)',
-        Value: Number(result.turnover_flow_m3_per_h.toFixed(2)),
+        label: 'Turnover Flow',
+        value: result.turnover_flow_m3_per_h.toFixed(2),
+        unit: 'm³/h',
       })
     if (result.recommended_dimensions_m) {
       rows.push({
-        Key: 'Length (m)',
-        Value: Number(result.recommended_dimensions_m.length.toFixed(2)),
+        label: 'Length',
+        value: result.recommended_dimensions_m.length.toFixed(2),
+        unit: 'm',
       })
       rows.push({
-        Key: 'Width (m)',
-        Value: Number(result.recommended_dimensions_m.width.toFixed(2)),
+        label: 'Width',
+        value: result.recommended_dimensions_m.width.toFixed(2),
+        unit: 'm',
       })
       rows.push({
-        Key: 'Depth (m)',
-        Value: Number(result.recommended_dimensions_m.depth.toFixed(2)),
+        label: 'Depth',
+        value: result.recommended_dimensions_m.depth.toFixed(2),
+        unit: 'm',
       })
     }
-
-    const ws = XLSX.utils.json_to_sheet(rows)
-    const wb = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(wb, ws, 'Result')
-    XLSX.writeFile(wb, 'capacity_result.xlsx')
-  }
+    exportEstimateText('Capacity Estimate', rows)
+    exportEstimatePdf('Capacity Estimate', rows)
+    exportEstimateXlsx('Capacity Estimate', rows)
+  }, [result, activeTab])
 
   const copyResults = async () => {
     if (!result) return
@@ -905,26 +915,38 @@ export default function CapacityCalculator({ globalUnit = 'm' as Unit }) {
                 </div>
               </div>
 
-              <div className="mt-6 flex gap-2">
-                <button
-                  onClick={downloadPDF}
-                  className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2  text-sm hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800"
-                >
-                  <FileDown className="h-4 w-4" /> PDF
-                </button>
-                <button
-                  onClick={downloadXLSX}
-                  className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2  text-sm hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800"
-                >
-                  <Download className="h-4 w-4" /> Excel
-                </button>
-                <button
-                  onClick={copyResults}
-                  className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2  text-sm hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800"
-                >
-                  Copy Results
-                </button>
-              </div>
+              {/* Premium Features */}
+              <PremiumFeatureGate
+                calculatorId={CALC_ID}
+                title="Capacity Estimate Summary"
+                description="Watch the ad to unlock step-by-step calculation breakdown and export options."
+              >
+                {/* Steps */}
+                {(activeTab === 'water' ? water.showSteps : activeTab === 'pool' ? pool.showSteps : activeTab === 'soak' ? soak.showSteps : activeTab === 'septic' ? septic.showSteps : activeTab === 'rainwater' ? rain.showSteps : sump.showSteps) && result && (
+                  <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
+                    <h3 className="mb-4 text-lg font-semibold text-blue-800 dark:text-blue-200">
+                      Step-by-Step Calculation
+                    </h3>
+                    <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
+                      <li>Calculate volume based on shape and dimensions</li>
+                      <li>Convert to multiple units (m³, liters, gallons)</li>
+                      <li>Apply specific formulas for each calculator type</li>
+                    </ol>
+                  </div>
+                )}
+
+                {/* Export Buttons */}
+                <div className="flex flex-wrap gap-3 mt-6">
+                  <PremiumLockedAction
+                    calculatorId={CALC_ID}
+                    onAuthorizedClick={exportSummary}
+                    className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Export Estimate
+                  </PremiumLockedAction>
+                </div>
+              </PremiumFeatureGate>
             </motion.div>
           )}
         </AnimatePresence>

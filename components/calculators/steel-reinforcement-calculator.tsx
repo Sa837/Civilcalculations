@@ -1,11 +1,19 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Calculator, RotateCcw, Eye, EyeOff, Info, CheckCircle } from 'lucide-react'
+import { Calculator, RotateCcw, Eye, EyeOff, Info, CheckCircle, FileText } from 'lucide-react'
 import { SteelRebarCalculator } from '@/lib/registry/calculator/steel-reinforcement-calculator'
 import { STEEL_REINFORCEMENT_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/steel-reinfrcement-info-section'
 import BBSCalculatorCard from '@/components/calculators/bbs-calculator'
+import { exportEstimatePdf, exportEstimateText, exportEstimateXlsx } from './professional-estimate-utils'
+import {
+  PremiumFeatureGate,
+  PremiumLockedButton,
+  PremiumLockedAction,
+} from './advanced-estimate-gate'
+
+const CALC_ID = 'steel-reinforcement'
 
 interface SteelResult {
   totalWeight: number
@@ -52,6 +60,17 @@ export default function SteelReinforcementCalculator({
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
+
+  const exportSummary = useCallback(() => {
+    if (!result) return
+    const rows = [
+      { label: 'Total Weight', value: result.totalWeight.toFixed(2), unit: 'kg' },
+      { label: 'Total Length', value: result.totalLength.toFixed(2), unit: formData.unit === 'm' ? 'm' : 'ft' },
+    ]
+    exportEstimateText('Steel Reinforcement Estimate', rows)
+    exportEstimatePdf('Steel Reinforcement Estimate', rows)
+    exportEstimateXlsx('Steel Reinforcement Estimate', rows)
+  }, [result, formData.unit])
 
   const calculateSteel = async () => {
     if (!validateForm()) return
@@ -320,31 +339,50 @@ export default function SteelReinforcementCalculator({
                   </div>
                 </div>
               </div>
-              {/* Steps */}
-              {showSteps && result && (
-                <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
-                  <h3 className="mb-4   text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
-                    <Info className="h-5 w-5 text-blue-500 dark:text-blue-300" />
-                    Step-by-Step Calculation
-                  </h3>
-                  <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
-                    <li>
-                      <span className="font-semibold">Total Length:</span> Bar Length × Bar Count ={' '}
-                      {formData.barLength} × {formData.barCount} = {result.totalLength.toFixed(2)}{' '}
-                      {formData.unit === 'm' ? 'm' : 'ft'}
-                    </li>
-                    <li>
-                      <span className="font-semibold">Bar Volume:</span> π × (Diameter/2)
-                      <sup>2</sup> × Total Length = {Math.PI.toFixed(2)} × ({formData.barDiameter}
-                      /2)<sup>2</sup> × {result.totalLength.toFixed(2)}
-                    </li>
-                    <li>
-                      <span className="font-semibold">Total Weight:</span> Volume × Density = ... ={' '}
-                      {result.totalWeight.toFixed(2)} kg
-                    </li>
-                  </ol>
+              {/* Premium Features */}
+              <PremiumFeatureGate
+                calculatorId={CALC_ID}
+                title="Steel Reinforcement Estimate Summary"
+                description="Watch the ad to unlock step-by-step calculation breakdown and export options."
+              >
+                {/* Steps */}
+                {showSteps && result && (
+                  <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
+                    <h3 className="mb-4   text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
+                      <Info className="h-5 w-5 text-blue-500 dark:text-blue-300" />
+                      Step-by-Step Calculation
+                    </h3>
+                    <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
+                      <li>
+                        <span className="font-semibold">Total Length:</span> Bar Length × Bar Count ={' '}
+                        {formData.barLength} × {formData.barCount} = {result.totalLength.toFixed(2)}{' '}
+                        {formData.unit === 'm' ? 'm' : 'ft'}
+                      </li>
+                      <li>
+                        <span className="font-semibold">Bar Volume:</span> π × (Diameter/2)
+                        <sup>2</sup> × Total Length = {Math.PI.toFixed(2)} × ({formData.barDiameter}
+                        /2)<sup>2</sup> × {result.totalLength.toFixed(2)}
+                      </li>
+                      <li>
+                        <span className="font-semibold">Total Weight:</span> Volume × Density = ... ={' '}
+                        {result.totalWeight.toFixed(2)} kg
+                      </li>
+                    </ol>
+                  </div>
+                )}
+
+                {/* Export Buttons */}
+                <div className="flex flex-wrap gap-3 mt-6">
+                  <PremiumLockedAction
+                    calculatorId={CALC_ID}
+                    onAuthorizedClick={exportSummary}
+                    className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Export Estimate
+                  </PremiumLockedAction>
                 </div>
-              )}
+              </PremiumFeatureGate>
             </motion.div>
           )}
         </AnimatePresence>

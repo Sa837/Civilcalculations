@@ -6,6 +6,13 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { PaintCalculator as PaintCalculatorLib } from '@/lib/registry/calculator/paint-calculator'
 import { PAINT_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/paint-info-secto'
 import { exportEstimatePdf, exportEstimateText, exportEstimateXlsx } from './professional-estimate-utils'
+import {
+  PremiumFeatureGate,
+  PremiumLockedButton,
+  PremiumLockedAction,
+} from './advanced-estimate-gate'
+
+const CALC_ID = 'paint'
 
 interface PaintResult {
   paintRequired: number
@@ -328,27 +335,46 @@ export default function PaintCalculator({ globalUnit = 'm' }: { globalUnit?: 'm'
                   </tbody>
                 </table>
               </div>
-              {/* Step-by-step Calculation */}
-              {formData.showStepByStep && (
-                <div className="mb-8 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
-                  <h3 className="mb-4   text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
-                    Step-by-Step Calculation
-                  </h3>
-                  <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
-                    <li>
-                      Area = {useArea ? formData.area : `${formData.length} × ${formData.height}`}{' '}
-                      {formData.unit === 'm' ? 'm²' : 'ft²'}
-                    </li>
-                    <li>Coats = {formData.coats}</li>
-                    <li>Coverage = {formData.coverage} m²/L</li>
-                    <li>
-                      Paint Required = (Area × Coats) / Coverage = ((
-                      {useArea ? formData.area : `${formData.length} × ${formData.height}`}) ×{' '}
-                      {formData.coats}) / {formData.coverage} = {result.paintRequired.toFixed(2)} L
-                    </li>
-                  </ol>
+              {/* Premium Features */}
+              <PremiumFeatureGate
+                calculatorId={CALC_ID}
+                title="Paint Estimate Summary"
+                description="Watch the ad to unlock step-by-step calculation breakdown and export options."
+              >
+                {/* Step-by-step Calculation */}
+                {formData.showStepByStep && (
+                  <div className="mb-8 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
+                    <h3 className="mb-4   text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
+                      Step-by-Step Calculation
+                    </h3>
+                    <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
+                      <li>
+                        Area = {useArea ? formData.area : `${formData.length} × ${formData.height}`}{' '}
+                        {formData.unit === 'm' ? 'm²' : 'ft²'}
+                      </li>
+                      <li>Coats = {formData.coats}</li>
+                      <li>Coverage = {formData.coverage} m²/L</li>
+                      <li>
+                        Paint Required = (Area × Coats) / Coverage = ((
+                        {useArea ? formData.area : `${formData.length} × ${formData.height}`}) ×{' '}
+                        {formData.coats}) / {formData.coverage} = {result.paintRequired.toFixed(2)} L
+                      </li>
+                    </ol>
+                  </div>
+                )}
+
+                {/* Export Buttons */}
+                <div className="flex flex-wrap gap-3">
+                  <PremiumLockedAction
+                    calculatorId={CALC_ID}
+                    onAuthorizedClick={exportSummary}
+                    className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Export Estimate
+                  </PremiumLockedAction>
                 </div>
-              )}
+              </PremiumFeatureGate>
             </motion.div>
           )}
         </AnimatePresence>

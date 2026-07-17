@@ -6,6 +6,13 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { PlasterCalculator as PlasterCalculatorLib } from '@/lib/registry/calculator/plaster-calculator'
 import { PLASTER_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/plaster-info-section'
 import { exportEstimatePdf, exportEstimateText, exportEstimateXlsx } from './professional-estimate-utils'
+import {
+  PremiumFeatureGate,
+  PremiumLockedButton,
+  PremiumLockedAction,
+} from './advanced-estimate-gate'
+
+const CALC_ID = 'plaster'
 
 interface PlasterResult {
   plasterVolume: number
@@ -406,58 +413,77 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
                 </div>
               </div>
 
-              {/* Step-by-step Calculation */}
-              {formData.showStepByStep && (
-                <div className="mb-8 rounded-xl border border-blue-200/40 bg-blue-50 p-4 sm:p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
-                  <h3 className="mb-4   text-base sm:text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
-                    Step-by-Step Calculation
-                  </h3>
-                  <ol className="list-decimal list-inside space-y-2 text-sm sm:text-base text-blue-900 dark:text-blue-100">
-                    <li>
-                      Area = {useArea ? formData.area : `${formData.length} × ${formData.height}`}{' '}
-                      {formData.unit === 'metric' ? 'm²' : 'ft²'}
-                    </li>
-                    <li>
-                      Thickness = {formData.thickness} mm ={' '}
-                      {(Number(formData.thickness) / 1000).toFixed(3)} m
-                    </li>
-                    <li>
-                      Wet Volume = Area × Thickness ={' '}
-                      {useArea
-                        ? formData.area
-                        : (Number(formData.length) * Number(formData.height)).toFixed(2)}{' '}
-                      × {(Number(formData.thickness) / 1000).toFixed(3)} ={' '}
-                      {(
-                        ((useArea
-                          ? Number(formData.area)
-                          : Number(formData.length) * Number(formData.height)) *
-                          Number(formData.thickness)) /
-                        1000
-                      ).toFixed(3)}{' '}
-                      m³
-                    </li>
-                    <li>
-                      Dry Volume = Wet Volume × 1.27 ={' '}
-                      {(
-                        (((useArea
-                          ? Number(formData.area)
-                          : Number(formData.length) * Number(formData.height)) *
-                          Number(formData.thickness)) /
-                          1000) *
-                        1.27
-                      ).toFixed(3)}{' '}
-                      m³
-                    </li>
-                    <li>
-                      Cement = (Dry Volume / 7) × 1.5 × Density / 50 ={' '}
-                      {result.cementBags.toFixed(2)} bags
-                    </li>
-                    <li>
-                      Sand = (Dry Volume / 7) × 5.5 × Density = {result.sandWeight.toFixed(1)} kg
-                    </li>
-                  </ol>
+              {/* Premium Features */}
+              <PremiumFeatureGate
+                calculatorId={CALC_ID}
+                title="Plaster Estimate Summary"
+                description="Watch the ad to unlock step-by-step calculation breakdown and export options."
+              >
+                {/* Step-by-step Calculation */}
+                {formData.showStepByStep && (
+                  <div className="mb-8 rounded-xl border border-blue-200/40 bg-blue-50 p-4 sm:p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
+                    <h3 className="mb-4   text-base sm:text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
+                      Step-by-Step Calculation
+                    </h3>
+                    <ol className="list-decimal list-inside space-y-2 text-sm sm:text-base text-blue-900 dark:text-blue-100">
+                      <li>
+                        Area = {useArea ? formData.area : `${formData.length} × ${formData.height}`}{' '}
+                        {formData.unit === 'metric' ? 'm²' : 'ft²'}
+                      </li>
+                      <li>
+                        Thickness = {formData.thickness} mm ={' '}
+                        {(Number(formData.thickness) / 1000).toFixed(3)} m
+                      </li>
+                      <li>
+                        Wet Volume = Area × Thickness ={' '}
+                        {useArea
+                          ? formData.area
+                          : (Number(formData.length) * Number(formData.height)).toFixed(2)}{' '}
+                        × {(Number(formData.thickness) / 1000).toFixed(3)} ={' '}
+                        {(
+                          ((useArea
+                            ? Number(formData.area)
+                            : Number(formData.length) * Number(formData.height)) *
+                            Number(formData.thickness)) /
+                          1000
+                        ).toFixed(3)}{' '}
+                        m³
+                      </li>
+                      <li>
+                        Dry Volume = Wet Volume × 1.27 ={' '}
+                        {(
+                          (((useArea
+                            ? Number(formData.area)
+                            : Number(formData.length) * Number(formData.height)) *
+                            Number(formData.thickness)) /
+                            1000) *
+                          1.27
+                        ).toFixed(3)}{' '}
+                        m³
+                      </li>
+                      <li>
+                        Cement = (Dry Volume / 7) × 1.5 × Density / 50 ={' '}
+                        {result.cementBags.toFixed(2)} bags
+                      </li>
+                      <li>
+                        Sand = (Dry Volume / 7) × 5.5 × Density = {result.sandWeight.toFixed(1)} kg
+                      </li>
+                    </ol>
+                  </div>
+                )}
+
+                {/* Export Buttons */}
+                <div className="flex flex-wrap gap-3">
+                  <PremiumLockedAction
+                    calculatorId={CALC_ID}
+                    onAuthorizedClick={exportSummary}
+                    className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Export Estimate
+                  </PremiumLockedAction>
                 </div>
-              )}
+              </PremiumFeatureGate>
             </motion.div>
           )}
         </AnimatePresence>

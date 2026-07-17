@@ -31,6 +31,7 @@ function readUnlocked(storageKey: string): boolean {
 export function usePremiumUnlock(calculatorId: string) {
   const storageKey = getPremiumStorageKey(calculatorId)
   const [isUnlocking, setIsUnlocking] = useState(false)
+  const [adLoaded, setAdLoaded] = useState(false)
 
   const isUnlocked = useSyncExternalStore(
     subscribe,
@@ -46,17 +47,38 @@ export function usePremiumUnlock(calculatorId: string) {
       }
       if (isUnlocking) return
       setIsUnlocking(true)
-      window.setTimeout(() => {
-        window.sessionStorage.setItem(storageKey, 'true')
-        notifySubscribers()
-        setIsUnlocking(false)
-        onComplete?.()
-      }, 1200)
+      setAdLoaded(false)
+      
+      // Wait for ad to load before unlocking
+      const checkAdLoaded = () => {
+        const adElement = document.querySelector('.adsbygoogle[data-ad-status="done"]')
+        if (adElement) {
+          setAdLoaded(true)
+          window.sessionStorage.setItem(storageKey, 'true')
+          notifySubscribers()
+          setIsUnlocking(false)
+          onComplete?.()
+        } else {
+          // Fallback: unlock after 3 seconds if ad doesn't load
+          setTimeout(() => {
+            if (!adLoaded) {
+              setAdLoaded(true)
+              window.sessionStorage.setItem(storageKey, 'true')
+              notifySubscribers()
+              setIsUnlocking(false)
+              onComplete?.()
+            }
+          }, 3000)
+        }
+      }
+
+      // Start checking for ad load
+      setTimeout(checkAdLoaded, 500)
     },
-    [storageKey, isUnlocking],
+    [storageKey, isUnlocking, adLoaded],
   )
 
-  return { isUnlocked, isUnlocking, unlock, calculatorId }
+  return { isUnlocked, isUnlocking, unlock, calculatorId, adLoaded, setAdLoaded }
 }
 
 const DEFAULT_FEATURES = [
@@ -78,7 +100,7 @@ export function PremiumUnlockPanel({
   description = 'Watch the ad below to unlock detailed summary, step-by-step breakdown, and export options.',
   className = '',
 }: PremiumUnlockPanelProps) {
-  const { isUnlocked, isUnlocking, unlock } = usePremiumUnlock(calculatorId)
+  const { isUnlocked, isUnlocking, unlock, adLoaded } = usePremiumUnlock(calculatorId)
 
   if (isUnlocked) return null
 
@@ -103,7 +125,7 @@ export function PremiumUnlockPanel({
           {isUnlocking ? (
             <span className="flex items-center gap-2">
               <Gauge className="h-4 w-4 animate-spin" />
-              Loading ad…
+              {adLoaded ? 'Unlocking…' : 'Loading ad…'}
             </span>
           ) : (
             <span className="flex items-center gap-2">

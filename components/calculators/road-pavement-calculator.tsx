@@ -2,10 +2,17 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Calculator, AlertCircle, CheckCircle, RotateCcw, Info, Hammer } from 'lucide-react'
+import { Calculator, AlertCircle, CheckCircle, RotateCcw, Info, Hammer, FileText } from 'lucide-react'
 import { RoadPavementCalculatorLib } from '@/lib/registry/calculator/road-pavement-calculator'
 import { ROAD_PAVEMENT_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/road-pavement-info-section'
 import { exportEstimatePdf, exportEstimateText, exportEstimateXlsx } from './professional-estimate-utils'
+import {
+  PremiumFeatureGate,
+  PremiumLockedButton,
+  PremiumLockedAction,
+} from './advanced-estimate-gate'
+
+const CALC_ID = 'road-pavement'
 interface CalculationResult {
   area: number
   volume: number
@@ -304,14 +311,11 @@ export default function RoadPavementCalculator({ globalUnit = 'm' }: RoadPavemen
               exit={{ opacity: 0, height: 0 }}
               className="border-t border-slate-200/20 bg-gradient-to-r from-primary/5 to-secondary/5 p-8 dark:border-slate-800/20 dark:from-primary/10 dark:to-secondary/10"
             >
-              <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-                  <h2 className=" text-xl font-semibold text-heading dark:text-heading-dark">
-                    Calculation Results
-                  </h2>
-                </div>
-                <button type="button" onClick={exportSummary} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800">Export Summary</button>
+              <div className="mb-6 flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+                <h2 className=" text-xl font-semibold text-heading dark:text-heading-dark">
+                  Calculation Results
+                </h2>
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
@@ -339,38 +343,57 @@ export default function RoadPavementCalculator({ globalUnit = 'm' }: RoadPavemen
                 </div>
               )}
 
-              {showSteps && result && (
-                <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
-                  <h3 className="mb-4  text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
-                    <Info className="h-5 w-5 text-blue-500 dark:text-blue-300" />
-                    Step-by-Step Calculation
-                  </h3>
-                  <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
-                    {!useArea && (
+              {/* Premium Features */}
+              <PremiumFeatureGate
+                calculatorId={CALC_ID}
+                title="Road Pavement Estimate Summary"
+                description="Watch the ad to unlock step-by-step calculation breakdown and export options."
+              >
+                {showSteps && result && (
+                  <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
+                    <h3 className="mb-4  text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
+                      <Info className="h-5 w-5 text-blue-500 dark:text-blue-300" />
+                      Step-by-Step Calculation
+                    </h3>
+                    <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
+                      {!useArea && (
+                        <li>
+                          <span className="font-semibold">Area:</span> Length × Width ={' '}
+                          {formData.length} × {formData.width} ={' '}
+                          {(parseFloat(formData.length) * parseFloat(formData.width)).toFixed(3)} m²
+                        </li>
+                      )}
+                      {useArea && (
+                        <li>
+                          <span className="font-semibold">Area:</span> {formData.area} m² (direct
+                          input)
+                        </li>
+                      )}
                       <li>
-                        <span className="font-semibold">Area:</span> Length × Width ={' '}
-                        {formData.length} × {formData.width} ={' '}
-                        {(parseFloat(formData.length) * parseFloat(formData.width)).toFixed(3)} m²
+                        <span className="font-semibold">Thickness:</span> {formData.thickness}{' '}
+                        {formData.unit === 'm' ? 'm' : 'ft'}
                       </li>
-                    )}
-                    {useArea && (
                       <li>
-                        <span className="font-semibold">Area:</span> {formData.area} m² (direct
-                        input)
+                        <span className="font-semibold">Volume:</span> Area × Thickness ={' '}
+                        {result.area.toFixed(3)} × {formData.thickness} = {result.volume.toFixed(3)}{' '}
+                        m³
                       </li>
-                    )}
-                    <li>
-                      <span className="font-semibold">Thickness:</span> {formData.thickness}{' '}
-                      {formData.unit === 'm' ? 'm' : 'ft'}
-                    </li>
-                    <li>
-                      <span className="font-semibold">Volume:</span> Area × Thickness ={' '}
-                      {result.area.toFixed(3)} × {formData.thickness} = {result.volume.toFixed(3)}{' '}
-                      m³
-                    </li>
-                  </ol>
+                    </ol>
+                  </div>
+                )}
+
+                {/* Export Buttons */}
+                <div className="flex flex-wrap gap-3 mt-6">
+                  <PremiumLockedAction
+                    calculatorId={CALC_ID}
+                    onAuthorizedClick={exportSummary}
+                    className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Export Estimate
+                  </PremiumLockedAction>
                 </div>
-              )}
+              </PremiumFeatureGate>
             </motion.div>
           )}
         </AnimatePresence>

@@ -2,10 +2,17 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Calculator, AlertCircle, CheckCircle, RotateCcw, Info } from 'lucide-react'
+import { Calculator, AlertCircle, CheckCircle, RotateCcw, Info, FileText } from 'lucide-react'
 import { RetainingWallQuantityCalculator } from '@/lib/registry/calculator/retaining-wall-calculator'
 import { RETAINING_WALL_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/retaining-wall-info-section'
 import { exportEstimatePdf, exportEstimateText, exportEstimateXlsx } from './professional-estimate-utils'
+import {
+  PremiumFeatureGate,
+  PremiumLockedButton,
+  PremiumLockedAction,
+} from './advanced-estimate-gate'
+
+const CALC_ID = 'retaining-wall'
 const MIX_TYPES = [
   { value: 'M5', label: 'M5 (1:5:10)', ratios: { cement: 1, sand: 5, aggregate: 10 } },
   { value: 'M7.5', label: 'M7.5 (1:4:8)', ratios: { cement: 1, sand: 4, aggregate: 8 } },
@@ -494,12 +501,11 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
               transition={{ duration: 0.3 }}
               className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20"
             >
-              <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+              <div className="mb-6 flex items-center gap-2">
                 <h2 className=" text-2xl font-bold text-heading dark:text-heading-dark mb-2 flex items-center gap-2">
                   <CheckCircle className="h-6 w-6 text-green-600" />
                   Retaining Wall Calculation Results
                 </h2>
-                <button type="button" onClick={exportSummary} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800">Export Summary</button>
               </div>
               <div className="grid gap-4 md:grid-cols-2 mb-6">
                 <div className="space-y-2">
@@ -543,34 +549,54 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
                   <b>Engineering Summary:</b> {result.human_summary}
                 </div>
               )}
-              {showSteps && (
-                <div className="mt-12">
-                  <h3 className=" text-xl font-semibold text-heading dark:text-heading-dark mb-2">
-                    Step-by-Step Calculation
-                  </h3>
-                  <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
-                    <li>
-                      Calculate the <b>area</b> of the wall:{' '}
-                      <code>{useArea ? 'Area' : 'Length × Width'}</code> ={' '}
-                      <b>{result.area?.toFixed(3)} m²</b>
-                    </li>
-                    <li>
-                      Calculate the <b>wet volume</b>: <code>Area × Height</code> ={' '}
-                      <b>{result.wetVolume.toFixed(3)} m³</b>
-                    </li>
-                    <li>
-                      Calculate the <b>dry volume</b>:{' '}
-                      <code>Wet Volume × 1.54 × (1 + Wastage/100)</code> ={' '}
-                      <b>{result.dryVolume.toFixed(3)} m³</b>
-                    </li>
-                    <li>
-                      Apply the <b>mix ratio</b> ({result.mixRatio}) to split dry volume into
-                      cement, sand, and aggregate.
-                    </li>
-                    <li>Convert cement weight to bags (1 bag = 50kg).</li>
-                  </ol>
+
+              {/* Premium Features */}
+              <PremiumFeatureGate
+                calculatorId={CALC_ID}
+                title="Retaining Wall Estimate Summary"
+                description="Watch the ad to unlock step-by-step calculation breakdown and export options."
+              >
+                {showSteps && (
+                  <div className="mt-12">
+                    <h3 className=" text-xl font-semibold text-heading dark:text-heading-dark mb-2">
+                      Step-by-Step Calculation
+                    </h3>
+                    <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
+                      <li>
+                        Calculate the <b>area</b> of the wall:{' '}
+                        <code>{useArea ? 'Area' : 'Length × Width'}</code> ={' '}
+                        <b>{result.area?.toFixed(3)} m²</b>
+                      </li>
+                      <li>
+                        Calculate the <b>wet volume</b>: <code>Area × Height</code> ={' '}
+                        <b>{result.wetVolume.toFixed(3)} m³</b>
+                      </li>
+                      <li>
+                        Calculate the <b>dry volume</b>:{' '}
+                        <code>Wet Volume × 1.54 × (1 + Wastage/100)</code> ={' '}
+                        <b>{result.dryVolume.toFixed(3)} m³</b>
+                      </li>
+                      <li>
+                        Apply the <b>mix ratio</b> ({result.mixRatio}) to split dry volume into
+                        cement, sand, and aggregate.
+                      </li>
+                      <li>Convert cement weight to bags (1 bag = 50kg).</li>
+                    </ol>
+                  </div>
+                )}
+
+                {/* Export Buttons */}
+                <div className="flex flex-wrap gap-3 mt-6">
+                  <PremiumLockedAction
+                    calculatorId={CALC_ID}
+                    onAuthorizedClick={exportSummary}
+                    className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Export Estimate
+                  </PremiumLockedAction>
                 </div>
-              )}
+              </PremiumFeatureGate>
             </motion.div>
           )}
         </AnimatePresence>

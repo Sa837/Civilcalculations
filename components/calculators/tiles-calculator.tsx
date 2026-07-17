@@ -2,10 +2,17 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Calculator, RotateCcw, Eye, EyeOff, Info, CheckCircle } from 'lucide-react'
+import { Calculator, RotateCcw, Eye, EyeOff, Info, CheckCircle, FileText } from 'lucide-react'
 import { TilesCalculatorLib } from '@/lib/registry/calculator/tiles-calculator'
 import { TILES_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/tiles-info-section'
 import { exportEstimatePdf, exportEstimateText, exportEstimateXlsx } from './professional-estimate-utils'
+import {
+  PremiumFeatureGate,
+  PremiumLockedButton,
+  PremiumLockedAction,
+} from './advanced-estimate-gate'
+
+const CALC_ID = 'tiles'
 
 interface TilesResult {
   tilesNeeded: number
@@ -364,14 +371,11 @@ export default function TilesCalculator({ globalUnit = 'm' }: { globalUnit?: 'm'
               exit={{ opacity: 0, height: 0 }}
               className="border-t border-slate-200/20 bg-gradient-to-r from-primary/5 to-secondary/5 p-8 dark:border-slate-800/20 dark:from-primary/10 dark:to-secondary/10"
             >
-              <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-                  <h2 className="  text-xl font-semibold text-heading dark:text-heading-dark">
-                    Calculation Results
-                  </h2>
-                </div>
-                <button type="button" onClick={exportSummary} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800">Export Summary</button>
+              <div className="mb-6 flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+                <h2 className="  text-xl font-semibold text-heading dark:text-heading-dark">
+                  Calculation Results
+                </h2>
               </div>
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
@@ -403,44 +407,64 @@ export default function TilesCalculator({ globalUnit = 'm' }: { globalUnit?: 'm'
                   <b>Engineering Summary:</b> {result.human_summary}
                 </div>
               )}
-              {/* Steps */}
-              {showSteps && result && (
-                <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
-                  <h3 className="mb-4   text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
-                    <Info className="h-5 w-5 text-blue-500 dark:text-blue-300" />
-                    Step-by-Step Calculation
-                  </h3>
-                  <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
-                    <li>
-                      <span className="font-semibold">Area:</span>{' '}
-                      {useArea
-                        ? `${formData.area} m² (direct input)`
-                        : `Length × Width = ${formData.length} × ${formData.width} = ${(parseFloat(formData.length) * parseFloat(formData.width)).toFixed(2)} m²`}
-                    </li>
-                    <li>
-                      <span className="font-semibold">Tile Area:</span> {formData.tileLength} ×{' '}
-                      {formData.tileWidth} / 10,000 ={' '}
-                      {(
-                        (parseFloat(formData.tileLength) * parseFloat(formData.tileWidth)) /
-                        10000
-                      ).toFixed(4)}{' '}
-                      m²
-                    </li>
-                    <li>
-                      <span className="font-semibold">Tiles Needed (before wastage):</span> Area /
-                      Tile Area ={' '}
-                      {(
-                        result.area /
-                        ((parseFloat(formData.tileLength) * parseFloat(formData.tileWidth)) / 10000)
-                      ).toFixed(2)}
-                    </li>
-                    <li>
-                      <span className="font-semibold">Tiles Needed (after wastage):</span> Tiles
-                      Needed × (1 + {formData.wastage}% wastage) = {result.tilesNeeded}
-                    </li>
-                  </ol>
+
+              {/* Premium Features */}
+              <PremiumFeatureGate
+                calculatorId={CALC_ID}
+                title="Tiles Estimate Summary"
+                description="Watch the ad to unlock step-by-step calculation breakdown and export options."
+              >
+                {/* Steps */}
+                {showSteps && result && (
+                  <div className="mt-6 rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">
+                    <h3 className="mb-4   text-lg font-semibold text-blue-800 dark:text-blue-200 flex items-center gap-2">
+                      <Info className="h-5 w-5 text-blue-500 dark:text-blue-300" />
+                      Step-by-Step Calculation
+                    </h3>
+                    <ol className="list-decimal list-inside space-y-2 text-base text-blue-900 dark:text-blue-100">
+                      <li>
+                        <span className="font-semibold">Area:</span>{' '}
+                        {useArea
+                          ? `${formData.area} m² (direct input)`
+                          : `Length × Width = ${formData.length} × ${formData.width} = ${(parseFloat(formData.length) * parseFloat(formData.width)).toFixed(2)} m²`}
+                      </li>
+                      <li>
+                        <span className="font-semibold">Tile Area:</span> {formData.tileLength} ×{' '}
+                        {formData.tileWidth} / 10,000 ={' '}
+                        {(
+                          (parseFloat(formData.tileLength) * parseFloat(formData.tileWidth)) /
+                          10000
+                        ).toFixed(4)}{' '}
+                        m²
+                      </li>
+                      <li>
+                        <span className="font-semibold">Tiles Needed (before wastage):</span> Area /
+                        Tile Area ={' '}
+                        {(
+                          result.area /
+                          ((parseFloat(formData.tileLength) * parseFloat(formData.tileWidth)) / 10000)
+                        ).toFixed(2)}
+                      </li>
+                      <li>
+                        <span className="font-semibold">Tiles Needed (after wastage):</span> Tiles
+                        Needed × (1 + {formData.wastage}% wastage) = {result.tilesNeeded}
+                      </li>
+                    </ol>
+                  </div>
+                )}
+
+                {/* Export Buttons */}
+                <div className="flex flex-wrap gap-3">
+                  <PremiumLockedAction
+                    calculatorId={CALC_ID}
+                    onAuthorizedClick={exportSummary}
+                    className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Export Estimate
+                  </PremiumLockedAction>
                 </div>
-              )}
+              </PremiumFeatureGate>
             </motion.div>
           )}
         </AnimatePresence>
