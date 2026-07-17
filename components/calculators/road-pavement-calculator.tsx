@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator, AlertCircle, CheckCircle, RotateCcw, Info, Hammer } from 'lucide-react'
 import { RoadPavementCalculatorLib } from '@/lib/registry/calculator/road-pavement-calculator'
 import { ROAD_PAVEMENT_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/road-pavement-info-section'
+import { exportEstimatePdf, exportEstimateText, exportEstimateXlsx } from './professional-estimate-utils'
 interface CalculationResult {
   area: number
   volume: number
@@ -61,6 +62,17 @@ export default function RoadPavementCalculator({ globalUnit = 'm' }: RoadPavemen
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
+
+  const exportSummary = useCallback(() => {
+    if (!result) return
+    const rows = [
+      { label: 'Pavement Area', value: result.area.toFixed(3), unit: 'm²' },
+      { label: 'Pavement Volume', value: result.volume.toFixed(3), unit: 'm³' },
+    ]
+    exportEstimateText('Road Pavement Estimate', rows)
+    exportEstimatePdf('Road Pavement Estimate', rows)
+    exportEstimateXlsx('Road Pavement Estimate', rows)
+  }, [result])
 
   const calculate = async () => {
     if (!validateForm()) return
@@ -292,11 +304,14 @@ export default function RoadPavementCalculator({ globalUnit = 'm' }: RoadPavemen
               exit={{ opacity: 0, height: 0 }}
               className="border-t border-slate-200/20 bg-gradient-to-r from-primary/5 to-secondary/5 p-8 dark:border-slate-800/20 dark:from-primary/10 dark:to-secondary/10"
             >
-              <div className="mb-6 flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-                <h2 className=" text-xl font-semibold text-heading dark:text-heading-dark">
-                  Calculation Results
-                </h2>
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+                  <h2 className=" text-xl font-semibold text-heading dark:text-heading-dark">
+                    Calculation Results
+                  </h2>
+                </div>
+                <button type="button" onClick={exportSummary} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800">Export Summary</button>
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">

@@ -20,6 +20,18 @@ import {
 } from '@/lib/registry/calculator/brickwork-calculator'
 import { UnitConverter, UNIT_PRESETS } from '@/lib/registry/globalunits'
 import { BRICKWORK_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/brickwork-info-section'
+import {
+  PremiumFeatureGate,
+  PremiumLockedButton,
+  PremiumLockedAction,
+} from './advanced-estimate-gate'
+import {
+  exportEstimatePdf,
+  exportEstimateText,
+  exportEstimateXlsx,
+} from './professional-estimate-utils'
+
+const CALC_ID = 'brickwork'
 // =============================================================================
 // TYPES & INTERFACES
 // =============================================================================
@@ -1605,14 +1617,14 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                 Reset
               </button>
 
-              <button
-                type="button"
-                onClick={() => handleInputChange('showStepByStep', !formData.showStepByStep)}
-                className={`flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 font-medium transition-colors text-xs sm:text-sm whitespace-nowrap ${
-                  formData.showStepByStep
-                    ? 'bg-primary text-white'
-                    : 'border border-slate-300 bg-white text-heading dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark'
-                }`}
+              <PremiumLockedButton
+                calculatorId={CALC_ID}
+                onAuthorizedClick={() =>
+                  handleInputChange('showStepByStep', !formData.showStepByStep)
+                }
+                isActive={formData.showStepByStep}
+                activeClassName="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 font-medium transition-colors text-xs sm:text-sm whitespace-nowrap bg-primary text-white"
+                inactiveClassName="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 font-medium transition-colors text-xs sm:text-sm whitespace-nowrap border border-slate-300 bg-white text-heading dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark"
               >
                 {formData.showStepByStep ? (
                   <EyeOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -1620,7 +1632,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                   <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 )}
                 {formData.showStepByStep ? 'Hide' : 'Show'} Steps
-              </button>
+              </PremiumLockedButton>
             </div>
 
             <button
@@ -1661,6 +1673,11 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                 </h2>
               </div>
 
+              <PremiumFeatureGate
+                calculatorId={CALC_ID}
+                title="Brickwork Estimate Summary"
+                description="Watch the ad to unlock brick quantity summary, step-by-step breakdown, and export."
+              >
               {/* Main Results Table */}
               <div className="mb-8 overflow-hidden rounded-xl border border-slate-200/20 bg-white/70 dark:border-slate-700/30 dark:bg-slate-900/60">
                 <table className="w-full">
@@ -1727,6 +1744,49 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                     </tr>
                   </tbody>
                 </table>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                <PremiumLockedAction
+                  calculatorId={CALC_ID}
+                  onAuthorizedClick={() =>
+                    exportEstimatePdf('Brickwork Estimate', [
+                      { label: 'Bricks', value: result.numberOfBricks.toLocaleString(), unit: 'pcs' },
+                      { label: 'Cement', value: result.cementWeight.toFixed(1), unit: 'kg' },
+                      { label: 'Sand', value: result.sandWeight.toFixed(1), unit: 'kg' },
+                      { label: 'Mortar volume', value: result.mortarVolume.toFixed(3), unit: 'm³' },
+                    ])
+                  }
+                  className="rounded-lg bg-primary px-3 py-2 text-sm font-medium text-white"
+                >
+                  Export PDF
+                </PremiumLockedAction>
+                <PremiumLockedAction
+                  calculatorId={CALC_ID}
+                  onAuthorizedClick={() =>
+                    exportEstimateXlsx('Brickwork Estimate', [
+                      { label: 'Bricks', value: result.numberOfBricks.toLocaleString(), unit: 'pcs' },
+                      { label: 'Cement', value: result.cementWeight.toFixed(1), unit: 'kg' },
+                      { label: 'Sand', value: result.sandWeight.toFixed(1), unit: 'kg' },
+                      { label: 'Mortar volume', value: result.mortarVolume.toFixed(3), unit: 'm³' },
+                    ])
+                  }
+                >
+                  Export Excel
+                </PremiumLockedAction>
+                <PremiumLockedAction
+                  calculatorId={CALC_ID}
+                  onAuthorizedClick={() =>
+                    exportEstimateText('Brickwork Estimate', [
+                      { label: 'Bricks', value: result.numberOfBricks.toLocaleString(), unit: 'pcs' },
+                      { label: 'Cement', value: result.cementWeight.toFixed(1), unit: 'kg' },
+                      { label: 'Sand', value: result.sandWeight.toFixed(1), unit: 'kg' },
+                      { label: 'Mortar volume', value: result.mortarVolume.toFixed(3), unit: 'm³' },
+                    ])
+                  }
+                >
+                  Export Text
+                </PremiumLockedAction>
               </div>
 
               {/* Step-by-step Calculation */}
@@ -2059,6 +2119,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                   </div>
                 </div>
               )}
+              </PremiumFeatureGate>
             </motion.div>
           )}
         </AnimatePresence>

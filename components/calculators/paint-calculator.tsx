@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Info, RotateCcw, Eye, EyeOff, Calculator, CheckCircle } from 'lucide-react'
+import { Info, RotateCcw, Eye, EyeOff, Calculator, CheckCircle, FileText, FileDown } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { PaintCalculator as PaintCalculatorLib } from '@/lib/registry/calculator/paint-calculator'
 import { PAINT_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/paint-info-secto'
+import { exportEstimatePdf, exportEstimateText, exportEstimateXlsx } from './professional-estimate-utils'
 
 interface PaintResult {
   paintRequired: number
@@ -37,6 +38,17 @@ export default function PaintCalculator({ globalUnit = 'm' }: { globalUnit?: 'm'
   const [result, setResult] = useState<PaintResult | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [hasCalculated, setHasCalculated] = useState(false)
+
+  const exportSummary = useCallback(() => {
+    if (!result) return
+    const rows = [
+      { label: 'Paint Required', value: result.paintRequired.toFixed(2), unit: 'L' },
+      { label: 'Coats', value: result.coats.toString(), unit: 'coats' },
+    ]
+    exportEstimateText('Paint Estimate', rows)
+    exportEstimatePdf('Paint Estimate', rows)
+    exportEstimateXlsx('Paint Estimate', rows)
+  }, [result])
 
   const calculate = useCallback(() => {
     const length = formData.length ? parseFloat(formData.length) : undefined

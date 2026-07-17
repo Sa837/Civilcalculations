@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Info, CheckCircle, RotateCcw, Eye, EyeOff, Calculator } from 'lucide-react'
+import { Info, CheckCircle, RotateCcw, Eye, EyeOff, Calculator, FileText, FileDown } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { PlasterCalculator as PlasterCalculatorLib } from '@/lib/registry/calculator/plaster-calculator'
 import { PLASTER_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/plaster-info-section'
+import { exportEstimatePdf, exportEstimateText, exportEstimateXlsx } from './professional-estimate-utils'
 
 interface PlasterResult {
   plasterVolume: number
@@ -34,6 +35,18 @@ export default function PlasterCalculator({ globalUnit = 'm' }: { globalUnit?: '
   const [result, setResult] = useState<PlasterResult | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [hasCalculated, setHasCalculated] = useState(false)
+
+  const exportSummary = useCallback(() => {
+    if (!result) return
+    const rows = [
+      { label: 'Plaster Volume', value: result.plasterVolume.toFixed(3), unit: 'm³' },
+      { label: 'Cement Bags', value: result.cementBags.toFixed(2), unit: 'bags' },
+      { label: 'Sand Weight', value: result.sandWeight.toFixed(2), unit: 'kg' },
+    ]
+    exportEstimateText('Plaster Estimate', rows)
+    exportEstimatePdf('Plaster Estimate', rows)
+    exportEstimateXlsx('Plaster Estimate', rows)
+  }, [result])
 
   const calculate = useCallback(() => {
     const unitSystem = formData.unit

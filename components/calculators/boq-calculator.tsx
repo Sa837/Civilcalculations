@@ -12,6 +12,7 @@ import type {
   Unit,
 } from '@/lib/registry/calculator/boq/schema'
 import { BOQ_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/boq-info-section'
+import AdvancedEstimateGate from './advanced-estimate-gate'
 const CATEGORIES: WorkCategory[] = [
   'Site Preparation',
   'Earthwork',
@@ -1161,6 +1162,16 @@ export default function BOQCalculator({ globalUnit }: { globalUnit: 'm' | 'ft' }
 
       {result && (
         <div className="mt-6">
+          <AdvancedEstimateGate
+            title="BOQ Estimate"
+            description="Unlock a structured estimate summary with quantities, rates, and markup notes."
+            insights={[
+              { label: 'Items', value: result.results.length.toString(), unit: 'items' },
+              { label: 'Grand total', value: fmt(result.summary.grand_total, 2), unit: currency },
+              { label: 'Categories', value: result.summary.categories.length.toString(), unit: 'groups' },
+            ]}
+          />
+
           {/* Summary cards */}
           <div className="grid gap-4 md:grid-cols-3">
             <div className="rounded-xl border border-slate-200/20 bg-white/70 p-4 dark:border-slate-700/30 dark:bg-slate-900/60">

@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator, AlertCircle, CheckCircle, RotateCcw, Info } from 'lucide-react'
 import { RetainingWallQuantityCalculator } from '@/lib/registry/calculator/retaining-wall-calculator'
 import { RETAINING_WALL_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/retaining-wall-info-section'
+import { exportEstimatePdf, exportEstimateText, exportEstimateXlsx } from './professional-estimate-utils'
 const MIX_TYPES = [
   { value: 'M5', label: 'M5 (1:5:10)', ratios: { cement: 1, sand: 5, aggregate: 10 } },
   { value: 'M7.5', label: 'M7.5 (1:4:8)', ratios: { cement: 1, sand: 4, aggregate: 8 } },
@@ -92,6 +93,19 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
+
+  const exportSummary = useCallback(() => {
+    if (!result) return
+    const rows = [
+      { label: 'Wet Volume', value: result.wetVolume.toFixed(3), unit: 'm³' },
+      { label: 'Cement Bags', value: result.cementBags.toFixed(2), unit: 'bags' },
+      { label: 'Sand Weight', value: result.sandWeight.toFixed(2), unit: 'kg' },
+      { label: 'Aggregate Weight', value: result.aggregateWeight.toFixed(2), unit: 'kg' },
+    ]
+    exportEstimateText('Retaining Wall Estimate', rows)
+    exportEstimatePdf('Retaining Wall Estimate', rows)
+    exportEstimateXlsx('Retaining Wall Estimate', rows)
+  }, [result])
 
   const calculateConcrete = () => {
     if (!validateForm()) return
@@ -480,10 +494,13 @@ export default function RetainingWallCalculator({ globalUnit }: RetainingWallCal
               transition={{ duration: 0.3 }}
               className="mt-12 rounded-2xl border border-slate-200/40 bg-gradient-to-br from-primary/5 to-secondary/10 p-8 dark:border-slate-800/30 dark:from-primary/10 dark:to-secondary/20"
             >
-              <h2 className=" text-2xl font-bold text-heading dark:text-heading-dark mb-2 flex items-center gap-2">
-                <CheckCircle className="h-6 w-6 text-green-600" />
-                Retaining Wall Calculation Results
-              </h2>
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+                <h2 className=" text-2xl font-bold text-heading dark:text-heading-dark mb-2 flex items-center gap-2">
+                  <CheckCircle className="h-6 w-6 text-green-600" />
+                  Retaining Wall Calculation Results
+                </h2>
+                <button type="button" onClick={exportSummary} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800">Export Summary</button>
+              </div>
               <div className="grid gap-4 md:grid-cols-2 mb-6">
                 <div className="space-y-2">
                   <div className="flex justify-between">

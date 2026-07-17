@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator, RotateCcw, Eye, EyeOff, Info, CheckCircle } from 'lucide-react'
 import { EarthworkCalculatorLib } from '@/lib/registry/calculator/earthwork-calculator'
 import { EARTHWORK_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/earthwork-info-section'
+import { exportEstimatePdf, exportEstimateText, exportEstimateXlsx } from './professional-estimate-utils'
 interface EarthworkResult {
   volume: number
 }
@@ -42,6 +43,14 @@ export default function EarthworkCalculator({ globalUnit = 'm' }: { globalUnit?:
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
+
+  const exportSummary = useCallback(() => {
+    if (!result) return
+    const rows = [{ label: 'Earthwork Volume', value: result.volume.toFixed(3), unit: 'm³' }]
+    exportEstimateText('Earthwork Estimate', rows)
+    exportEstimatePdf('Earthwork Estimate', rows)
+    exportEstimateXlsx('Earthwork Estimate', rows)
+  }, [result])
 
   const calculateEarthwork = async () => {
     if (!validateForm()) return
@@ -257,11 +266,14 @@ export default function EarthworkCalculator({ globalUnit = 'm' }: { globalUnit?:
               exit={{ opacity: 0, height: 0 }}
               className="border-t border-slate-200/20 bg-gradient-to-r from-primary/5 to-secondary/5 p-8 dark:border-slate-800/20 dark:from-primary/10 dark:to-secondary/10"
             >
-              <div className="mb-6 flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-                <h2 className="  text-xl font-semibold text-heading dark:text-heading-dark">
-                  Calculation Results
-                </h2>
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+                  <h2 className="  text-xl font-semibold text-heading dark:text-heading-dark">
+                    Calculation Results
+                  </h2>
+                </div>
+                <button type="button" onClick={exportSummary} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-800">Export Summary</button>
               </div>
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">

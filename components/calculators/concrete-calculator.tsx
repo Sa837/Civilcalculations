@@ -1,6 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback, memo } from 'react'
+import { jsPDF } from 'jspdf'
+import * as XLSX from 'xlsx'
+import type { ConcreteProjectItem } from '@/lib/registry/calculator/concrete-calculator'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Calculator,
@@ -24,6 +27,13 @@ import {
 import { UnitConverter, UNIT_PRESETS } from '@/lib/registry/globalunits'
 import { DENSITIES } from '@/lib/registry/globalunits'
 import { CONCRETE_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/concrete-info-section'
+import {
+  PremiumFeatureGate,
+  PremiumLockedButton,
+  PremiumLockedAction,
+} from './advanced-estimate-gate'
+
+const CALC_ID = 'concrete'
 interface ConcreteResult {
   wetVolume: number
   dryVolume: number
@@ -37,6 +47,7 @@ interface ConcreteResult {
   mixRatio: string
   elementArea?: number
   totalParts: number
+  reinforcement?: any
   // Optional advanced fields (non-breaking)
   structural?: any
   human_summary?: string
@@ -54,6 +65,33 @@ interface ConcreteFormData {
   elementType: string
   subType?: string
   useArea: boolean
+  // Slab reinforcement
+  slabTopMainDiaMm?: string
+  slabTopMainSpacingMm?: string
+  slabTopDistDiaMm?: string
+  slabTopDistSpacingMm?: string
+  slabBottomMainDiaMm?: string
+  slabBottomMainSpacingMm?: string
+  slabBottomDistDiaMm?: string
+  slabBottomDistSpacingMm?: string
+  slabClearCoverMm?: string
+  slabExtraRebarPercent?: string
+  // Beam reinforcement
+  beamTopBarCount?: string
+  beamTopBarDiaMm?: string
+  beamBottomBarCount?: string
+  beamBottomBarDiaMm?: string
+  beamStirrupDiaMm?: string
+  beamStirrupSpacingMm?: string
+  beamClearCoverMm?: string
+  beamExtraRebarPercent?: string
+  // Column reinforcement
+  columnMainBarCount?: string
+  columnMainBarDiaMm?: string
+  columnTieDiaMm?: string
+  columnTieSpacingMm?: string
+  columnClearCoverMm?: string
+  columnExtraRebarPercent?: string
   // Column
   col_b?: string
   col_D?: string
@@ -90,6 +128,25 @@ interface ConcreteFormData {
   stair_steps2?: string
   stair_width?: string
   stair_landing_len?: string
+  // Footing reinforcement
+  footingRebarDiaMm?: string
+  footingRebarSpacingMm?: string
+  footingClearCoverMm?: string
+  footingExtraRebarPercent?: string
+  // Stair reinforcement
+  stairMainBarDiaMm?: string
+  stairMainBarSpacingMm?: string
+  stairDistBarDiaMm?: string
+  stairDistBarSpacingMm?: string
+  stairClearCoverMm?: string
+  stairExtraRebarPercent?: string
+  // Wall reinforcement
+  wallVerticalBarDiaMm?: string
+  wallVerticalBarSpacingMm?: string
+  wallHorizontalBarDiaMm?: string
+  wallHorizontalBarSpacingMm?: string
+  wallClearCoverMm?: string
+  wallExtraRebarPercent?: string
   // Beam
   beam_b?: string
   beam_D?: string
@@ -196,6 +253,38 @@ const ConcreteSVG = ({ formData }: { formData: ConcreteFormData }) => {
               fontWeight="bold"
             >
               Column
+            </text>
+          </>
+        )}
+
+        {formData.elementType === 'footing' && (
+          <>
+            <rect x="70" y="80" width="160" height="60" rx="8" fill="#cbd5e1" stroke="#64748b" strokeWidth="2" />
+            <line x1="70" y1="80" x2="230" y2="140" stroke="#64748b" strokeWidth="2" strokeDasharray="4 3" />
+            <line x1="230" y1="80" x2="70" y2="140" stroke="#64748b" strokeWidth="2" strokeDasharray="4 3" />
+            <text x="150" y="110" textAnchor="middle" fontSize="14" fill="#1e293b" fontWeight="bold">
+              Footing
+            </text>
+          </>
+        )}
+
+        {formData.elementType === 'wall' && (
+          <>
+            <rect x="80" y="60" width="140" height="90" fill="#94a3b8" stroke="#64748b" strokeWidth="2" />
+            <line x1="95" y1="60" x2="95" y2="150" stroke="#475569" strokeWidth="2" />
+            <line x1="195" y1="60" x2="195" y2="150" stroke="#475569" strokeWidth="2" />
+            <text x="150" y="105" textAnchor="middle" fontSize="14" fill="#1e293b" fontWeight="bold">
+              Wall
+            </text>
+          </>
+        )}
+
+        {formData.elementType === 'staircase' && (
+          <>
+            <rect x="80" y="60" width="140" height="100" fill="#cbd5e1" stroke="#64748b" strokeWidth="2" />
+            <path d="M90 150 L90 120 L120 120 L120 90 L150 90 L150 60 L180 60" stroke="#64748b" strokeWidth="3" fill="none" />
+            <text x="150" y="105" textAnchor="middle" fontSize="14" fill="#1e293b" fontWeight="bold">
+              Staircase
             </text>
           </>
         )}
@@ -326,6 +415,8 @@ const InputField = memo(
 
 InputField.displayName = 'InputField'
 
+const PROJECT_STORAGE_KEY = 'civil-concrete-project-v1'
+
 export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalculatorProps) {
   const [formData, setFormData] = useState<ConcreteFormData>({
     length: '',
@@ -343,6 +434,44 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
   const [result, setResult] = useState<ConcreteResult | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isCalculating, setIsCalculating] = useState(false)
+  const [projectItems, setProjectItems] = useState<ConcreteProjectItem[]>([])
+  const [projectName, setProjectName] = useState('Building Estimate')
+  const [projectRateInputs, setProjectRateInputs] = useState<Record<string, { concreteRate: string; steelRate: string }>>({})
+  const [projectSummary, setProjectSummary] = useState<ReturnType<typeof ConcreteCalculatorLib.summarizeProject> | null>(null)
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    try {
+      const saved = window.localStorage.getItem(PROJECT_STORAGE_KEY)
+      if (!saved) return
+
+      const parsed = JSON.parse(saved) as {
+        projectName?: string
+        projectItems?: ConcreteProjectItem[]
+        projectRateInputs?: Record<string, { concreteRate: string; steelRate: string }>
+      }
+
+      if (parsed.projectName) setProjectName(parsed.projectName)
+      if (parsed.projectItems && parsed.projectItems.length > 0) {
+        setProjectItems(parsed.projectItems)
+        setProjectSummary(ConcreteCalculatorLib.summarizeProject(parsed.projectItems))
+      }
+      if (parsed.projectRateInputs) {
+        setProjectRateInputs(parsed.projectRateInputs)
+      }
+    } catch {
+      window.localStorage.removeItem(PROJECT_STORAGE_KEY)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    window.localStorage.setItem(
+      PROJECT_STORAGE_KEY,
+      JSON.stringify({ projectName, projectItems, projectRateInputs }),
+    )
+  }, [projectName, projectItems, projectRateInputs])
 
   // Helper function to get unit system
   const getUnitSystem = (unit: 'm' | 'ft'): 'metric' | 'imperial' => {
@@ -450,18 +579,6 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
         if (!formData.ft_B_top) newErrors.ft_B_top = 'Enter top width (B2)'
         if (!formData.ft_L_top) newErrors.ft_L_top = 'Enter top length (L2)'
       }
-    } else if (formData.elementType === 'staircase') {
-      if (!formData.stair_riser) newErrors.stair_riser = 'Enter riser'
-      if (!formData.stair_tread) newErrors.stair_tread = 'Enter tread'
-      if (!formData.stair_steps) newErrors.stair_steps = 'Enter steps'
-      if (!formData.stair_width) newErrors.stair_width = 'Enter stair width'
-      if (
-        (formData.subType === 'dogleg' ||
-          formData.subType === 'quarter_turn' ||
-          formData.subType === 'u_shaped') &&
-        !formData.stair_steps2
-      )
-        newErrors.stair_steps2 = 'Enter steps for flight 2'
     } else if (formData.elementType === 'beam') {
       if (!formData.beam_b) newErrors.beam_b = 'Enter beam breadth'
       if (!formData.beam_D) newErrors.beam_D = 'Enter beam depth'
@@ -552,6 +669,10 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
         st3_t: formData.st3_t ? parseFloat(formData.st3_t) : undefined,
         // Stair
         stair_riser: formData.stair_riser ? parseFloat(formData.stair_riser) : undefined,
+        footingRebarDiaMm: formData.footingRebarDiaMm ? parseFloat(formData.footingRebarDiaMm) : undefined,
+        footingRebarSpacingMm: formData.footingRebarSpacingMm ? parseFloat(formData.footingRebarSpacingMm) : undefined,
+        footingClearCoverMm: formData.footingClearCoverMm ? parseFloat(formData.footingClearCoverMm) : undefined,
+        footingExtraRebarPercent: formData.footingExtraRebarPercent ? parseFloat(formData.footingExtraRebarPercent) : undefined,
         stair_tread: formData.stair_tread ? parseFloat(formData.stair_tread) : undefined,
         stair_steps: formData.stair_steps ? parseFloat(formData.stair_steps) : undefined,
         stair_steps2: formData.stair_steps2 ? parseFloat(formData.stair_steps2) : undefined,
@@ -559,13 +680,70 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
         stair_landing_len: formData.stair_landing_len
           ? parseFloat(formData.stair_landing_len)
           : undefined,
+        stairMainBarDiaMm: formData.stairMainBarDiaMm ? parseFloat(formData.stairMainBarDiaMm) : undefined,
+        stairMainBarSpacingMm: formData.stairMainBarSpacingMm ? parseFloat(formData.stairMainBarSpacingMm) : undefined,
+        stairDistBarDiaMm: formData.stairDistBarDiaMm ? parseFloat(formData.stairDistBarDiaMm) : undefined,
+        stairDistBarSpacingMm: formData.stairDistBarSpacingMm ? parseFloat(formData.stairDistBarSpacingMm) : undefined,
+        stairClearCoverMm: formData.stairClearCoverMm ? parseFloat(formData.stairClearCoverMm) : undefined,
+        stairExtraRebarPercent: formData.stairExtraRebarPercent ? parseFloat(formData.stairExtraRebarPercent) : undefined,
+        wallVerticalBarDiaMm: formData.wallVerticalBarDiaMm ? parseFloat(formData.wallVerticalBarDiaMm) : undefined,
+        wallVerticalBarSpacingMm: formData.wallVerticalBarSpacingMm ? parseFloat(formData.wallVerticalBarSpacingMm) : undefined,
+        wallHorizontalBarDiaMm: formData.wallHorizontalBarDiaMm ? parseFloat(formData.wallHorizontalBarDiaMm) : undefined,
+        wallHorizontalBarSpacingMm: formData.wallHorizontalBarSpacingMm ? parseFloat(formData.wallHorizontalBarSpacingMm) : undefined,
+        wallClearCoverMm: formData.wallClearCoverMm ? parseFloat(formData.wallClearCoverMm) : undefined,
+        wallExtraRebarPercent: formData.wallExtraRebarPercent ? parseFloat(formData.wallExtraRebarPercent) : undefined,
         // Beam
         beam_b: formData.beam_b ? parseFloat(formData.beam_b) : undefined,
         beam_D: formData.beam_D ? parseFloat(formData.beam_D) : undefined,
+        // Slab reinforcement
+        slabTopMainDiaMm: formData.slabTopMainDiaMm ? parseFloat(formData.slabTopMainDiaMm) : undefined,
+        slabTopMainSpacingMm: formData.slabTopMainSpacingMm ? parseFloat(formData.slabTopMainSpacingMm) : undefined,
+        slabTopDistDiaMm: formData.slabTopDistDiaMm ? parseFloat(formData.slabTopDistDiaMm) : undefined,
+        slabTopDistSpacingMm: formData.slabTopDistSpacingMm ? parseFloat(formData.slabTopDistSpacingMm) : undefined,
+        slabBottomMainDiaMm: formData.slabBottomMainDiaMm ? parseFloat(formData.slabBottomMainDiaMm) : undefined,
+        slabBottomMainSpacingMm: formData.slabBottomMainSpacingMm ? parseFloat(formData.slabBottomMainSpacingMm) : undefined,
+        slabBottomDistDiaMm: formData.slabBottomDistDiaMm ? parseFloat(formData.slabBottomDistDiaMm) : undefined,
+        slabBottomDistSpacingMm: formData.slabBottomDistSpacingMm ? parseFloat(formData.slabBottomDistSpacingMm) : undefined,
+        slabClearCoverMm: formData.slabClearCoverMm ? parseFloat(formData.slabClearCoverMm) : undefined,
+        slabExtraRebarPercent: formData.slabExtraRebarPercent ? parseFloat(formData.slabExtraRebarPercent) : undefined,
+        // Beam reinforcement
+        beamTopBarCount: formData.beamTopBarCount ? parseInt(formData.beamTopBarCount, 10) : undefined,
+        beamTopBarDiaMm: formData.beamTopBarDiaMm ? parseFloat(formData.beamTopBarDiaMm) : undefined,
+        beamBottomBarCount: formData.beamBottomBarCount ? parseInt(formData.beamBottomBarCount, 10) : undefined,
+        beamBottomBarDiaMm: formData.beamBottomBarDiaMm ? parseFloat(formData.beamBottomBarDiaMm) : undefined,
+        beamStirrupDiaMm: formData.beamStirrupDiaMm ? parseFloat(formData.beamStirrupDiaMm) : undefined,
+        beamStirrupSpacingMm: formData.beamStirrupSpacingMm ? parseFloat(formData.beamStirrupSpacingMm) : undefined,
+        beamClearCoverMm: formData.beamClearCoverMm ? parseFloat(formData.beamClearCoverMm) : undefined,
+        beamExtraRebarPercent: formData.beamExtraRebarPercent ? parseFloat(formData.beamExtraRebarPercent) : undefined,
+        // Column reinforcement
+        columnMainBarCount: formData.columnMainBarCount ? parseInt(formData.columnMainBarCount, 10) : undefined,
+        columnMainBarDiaMm: formData.columnMainBarDiaMm ? parseFloat(formData.columnMainBarDiaMm) : undefined,
+        columnTieDiaMm: formData.columnTieDiaMm ? parseFloat(formData.columnTieDiaMm) : undefined,
+        columnTieSpacingMm: formData.columnTieSpacingMm ? parseFloat(formData.columnTieSpacingMm) : undefined,
+        columnClearCoverMm: formData.columnClearCoverMm ? parseFloat(formData.columnClearCoverMm) : undefined,
+        columnExtraRebarPercent: formData.columnExtraRebarPercent ? parseFloat(formData.columnExtraRebarPercent) : undefined,
       }
 
       const result = ConcreteCalculatorLib.calculate(input)
       setResult(result)
+
+      const itemId = `item-${Date.now()}`
+      const componentLabel = CONCRETE_ELEMENTS.find((e) => e.value === formData.elementType)?.label || 'Component'
+      const newItem: ConcreteProjectItem = {
+        id: itemId,
+        name: `${projectName.trim() || 'Building Estimate'} • ${componentLabel} ${projectItems.length + 1}`,
+        elementType: formData.elementType,
+        input,
+        result,
+        concreteRate: projectRateInputs[itemId]?.concreteRate ? parseFloat(projectRateInputs[itemId].concreteRate) : undefined,
+        steelRate: projectRateInputs[itemId]?.steelRate ? parseFloat(projectRateInputs[itemId].steelRate) : undefined,
+      }
+      setProjectItems((prev) => {
+        const nextItems = [...prev, newItem]
+        setProjectSummary(ConcreteCalculatorLib.summarizeProject(nextItems))
+        return nextItems
+      })
+      setProjectRateInputs((prev) => ({ ...prev, [itemId]: { concreteRate: prev[itemId]?.concreteRate ?? '', steelRate: prev[itemId]?.steelRate ?? '' } }))
     } catch (error) {
       console.error('Calculation error:', error)
       setErrors({
@@ -574,7 +752,110 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
     } finally {
       setIsCalculating(false)
     }
-  }, [formData, validateForm])
+  }, [formData, projectItems, projectName, projectRateInputs, validateForm])
+
+  const updateProjectRate = useCallback((itemId: string, field: 'concreteRate' | 'steelRate', value: string) => {
+    const parsedValue = value ? parseFloat(value) : undefined
+    setProjectRateInputs((prev) => ({ ...prev, [itemId]: { ...prev[itemId], [field]: value } }))
+    setProjectItems((prev) => {
+      const nextItems = prev.map((item) => item.id === itemId ? { ...item, [field]: parsedValue } : item)
+      setProjectSummary(ConcreteCalculatorLib.summarizeProject(nextItems))
+      return nextItems
+    })
+  }, [])
+
+  const removeProjectItem = useCallback((itemId: string) => {
+    setProjectItems((prev) => {
+      const nextItems = prev.filter((item) => item.id !== itemId)
+      setProjectSummary(ConcreteCalculatorLib.summarizeProject(nextItems))
+      return nextItems
+    })
+    setProjectRateInputs((prev) => {
+      const next = { ...prev }
+      delete next[itemId]
+      return next
+    })
+  }, [])
+
+  const clearProject = useCallback(() => {
+    setProjectItems([])
+    setProjectRateInputs({})
+    setProjectSummary(null)
+    setProjectName('Building Estimate')
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem(PROJECT_STORAGE_KEY)
+    }
+  }, [])
+
+  const downloadProjectReport = useCallback(() => {
+    if (!projectSummary) return
+
+    const fileName = `${(projectName || 'building-estimate').toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'building-estimate'}.txt`
+    const blob = new Blob([projectSummary.reportText], { type: 'text/plain;charset=utf-8' })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = fileName
+    link.click()
+    window.URL.revokeObjectURL(url)
+  }, [projectName, projectSummary])
+
+  const exportProjectAsPdf = useCallback(() => {
+    if (!projectSummary) return
+
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' })
+    const title = (projectName || 'Building Estimate').trim() || 'Building Estimate'
+    const safeName = title.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'building-estimate'
+
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(18)
+    doc.text(title, 40, 50)
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    doc.text('Concrete building estimate summary', 40, 76)
+    doc.text(`Total wet volume: ${projectSummary.totalWetVolume.toFixed(3)} m³`, 40, 104)
+    doc.text(`Total rebar: ${projectSummary.totalReinforcementKg.toFixed(2)} kg`, 40, 124)
+    doc.text(`Concrete amount: ${projectSummary.totalConcreteAmount.toFixed(2)}`, 40, 144)
+    doc.text(`Grand total: ${projectSummary.totalAmount.toFixed(2)}`, 40, 164)
+
+    let y = 194
+    projectSummary.items.forEach((item) => {
+      if (y > 760) {
+        doc.addPage()
+        y = 50
+      }
+      doc.setFont('helvetica', 'bold')
+      doc.text(`${item.name}`, 40, y)
+      doc.setFont('helvetica', 'normal')
+      doc.text(`${item.elementType} • ${item.wetVolume.toFixed(3)} m³ • ${item.reinforcementKg.toFixed(2)} kg rebar`, 40, y + 16)
+      y += 40
+    })
+
+    doc.save(`${safeName}.pdf`)
+  }, [projectName, projectSummary])
+
+  const exportProjectAsXlsx = useCallback(() => {
+    if (!projectSummary) return
+
+    const rows = [
+      ['Component', 'Element Type', 'Wet Volume (m3)', 'Rebar (kg)', 'Concrete Amount', 'Steel Amount', 'Total Amount'],
+      ...projectSummary.items.map((item) => [
+        item.name,
+        item.elementType,
+        item.wetVolume.toFixed(3),
+        item.reinforcementKg.toFixed(2),
+        item.concreteAmount.toFixed(2),
+        item.steelAmount.toFixed(2),
+        item.totalAmount.toFixed(2),
+      ]),
+      ['TOTAL', '', projectSummary.totalWetVolume.toFixed(3), projectSummary.totalReinforcementKg.toFixed(2), projectSummary.totalConcreteAmount.toFixed(2), projectSummary.totalSteelAmount.toFixed(2), projectSummary.totalAmount.toFixed(2)],
+    ]
+    const worksheet = XLSX.utils.aoa_to_sheet(rows)
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Estimate')
+    const safeName = (projectName || 'Building Estimate').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'building-estimate'
+    XLSX.writeFile(workbook, `${safeName}.xlsx`)
+  }, [projectName, projectSummary])
 
   const resetForm = useCallback(() => {
     const unitSystem = getUnitSystem(globalUnit)
@@ -624,6 +905,22 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
       stair_steps2: '',
       stair_width: '',
       stair_landing_len: '',
+      footingRebarDiaMm: '',
+      footingRebarSpacingMm: '',
+      footingClearCoverMm: '',
+      footingExtraRebarPercent: '',
+      stairMainBarDiaMm: '',
+      stairMainBarSpacingMm: '',
+      stairDistBarDiaMm: '',
+      stairDistBarSpacingMm: '',
+      stairClearCoverMm: '',
+      stairExtraRebarPercent: '',
+      wallVerticalBarDiaMm: '',
+      wallVerticalBarSpacingMm: '',
+      wallHorizontalBarDiaMm: '',
+      wallHorizontalBarSpacingMm: '',
+      wallClearCoverMm: '',
+      wallExtraRebarPercent: '',
       beam_b: '',
       beam_D: '',
     })
@@ -685,8 +982,48 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
         stair_steps2: '',
         stair_width: '',
         stair_landing_len: '',
+        footingRebarDiaMm: '',
+        footingRebarSpacingMm: '',
+        footingClearCoverMm: '',
+        footingExtraRebarPercent: '',
+        stairMainBarDiaMm: '',
+        stairMainBarSpacingMm: '',
+        stairDistBarDiaMm: '',
+        stairDistBarSpacingMm: '',
+        stairClearCoverMm: '',
+        stairExtraRebarPercent: '',
+        wallVerticalBarDiaMm: '',
+        wallVerticalBarSpacingMm: '',
+        wallHorizontalBarDiaMm: '',
+        wallHorizontalBarSpacingMm: '',
+        wallClearCoverMm: '',
+        wallExtraRebarPercent: '',
         beam_b: '',
         beam_D: '',
+        slabTopMainDiaMm: '',
+        slabTopMainSpacingMm: '',
+        slabTopDistDiaMm: '',
+        slabTopDistSpacingMm: '',
+        slabBottomMainDiaMm: '',
+        slabBottomMainSpacingMm: '',
+        slabBottomDistDiaMm: '',
+        slabBottomDistSpacingMm: '',
+        slabClearCoverMm: '25',
+        slabExtraRebarPercent: '10',
+        beamTopBarCount: '',
+        beamTopBarDiaMm: '',
+        beamBottomBarCount: '',
+        beamBottomBarDiaMm: '',
+        beamStirrupDiaMm: '',
+        beamStirrupSpacingMm: '',
+        beamClearCoverMm: '25',
+        beamExtraRebarPercent: '10',
+        columnMainBarCount: '',
+        columnMainBarDiaMm: '',
+        columnTieDiaMm: '',
+        columnTieSpacingMm: '',
+        columnClearCoverMm: '40',
+        columnExtraRebarPercent: '10',
       }))
     },
     [formData.unit],
@@ -1348,6 +1685,94 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
             />
           </div>
 
+          {formData.elementType === 'slab' && (
+            <div className="mt-6 rounded-xl border border-slate-200/20 bg-white/70 p-4 dark:border-slate-700/30 dark:bg-slate-900/60">
+              <h3 className="mb-4 font-semibold text-heading dark:text-heading-dark">Slab Reinforcement Details</h3>
+              <div className="grid gap-4 md:grid-cols-2">
+                <InputField label="Top Mesh Ø (main) mm" value={formData.slabTopMainDiaMm || ''} onChange={(v) => handleInputChange('slabTopMainDiaMm', v)} placeholder="12" />
+                <InputField label="Top Mesh Spacing (main) mm" value={formData.slabTopMainSpacingMm || ''} onChange={(v) => handleInputChange('slabTopMainSpacingMm', v)} placeholder="150" />
+                <InputField label="Top Mesh Ø (dist) mm" value={formData.slabTopDistDiaMm || ''} onChange={(v) => handleInputChange('slabTopDistDiaMm', v)} placeholder="10" />
+                <InputField label="Top Mesh Spacing (dist) mm" value={formData.slabTopDistSpacingMm || ''} onChange={(v) => handleInputChange('slabTopDistSpacingMm', v)} placeholder="200" />
+                <InputField label="Bottom Mesh Ø (main) mm" value={formData.slabBottomMainDiaMm || ''} onChange={(v) => handleInputChange('slabBottomMainDiaMm', v)} placeholder="12" />
+                <InputField label="Bottom Mesh Spacing (main) mm" value={formData.slabBottomMainSpacingMm || ''} onChange={(v) => handleInputChange('slabBottomMainSpacingMm', v)} placeholder="150" />
+                <InputField label="Bottom Mesh Ø (dist) mm" value={formData.slabBottomDistDiaMm || ''} onChange={(v) => handleInputChange('slabBottomDistDiaMm', v)} placeholder="10" />
+                <InputField label="Bottom Mesh Spacing (dist) mm" value={formData.slabBottomDistSpacingMm || ''} onChange={(v) => handleInputChange('slabBottomDistSpacingMm', v)} placeholder="200" />
+                <InputField label="Clear Cover mm" value={formData.slabClearCoverMm || ''} onChange={(v) => handleInputChange('slabClearCoverMm', v)} placeholder="25" />
+                <InputField label="Extra Rebar %" value={formData.slabExtraRebarPercent || ''} onChange={(v) => handleInputChange('slabExtraRebarPercent', v)} placeholder="10" />
+              </div>
+            </div>
+          )}
+
+          {formData.elementType === 'beam' && (
+            <div className="mt-6 rounded-xl border border-slate-200/20 bg-white/70 p-4 dark:border-slate-700/30 dark:bg-slate-900/60">
+              <h3 className="mb-4 font-semibold text-heading dark:text-heading-dark">Beam Reinforcement Details</h3>
+              <div className="grid gap-4 md:grid-cols-2">
+                <InputField label="Top Bars Count" value={formData.beamTopBarCount || ''} onChange={(v) => handleInputChange('beamTopBarCount', v)} placeholder="2" />
+                <InputField label="Top Bar Ø mm" value={formData.beamTopBarDiaMm || ''} onChange={(v) => handleInputChange('beamTopBarDiaMm', v)} placeholder="12" />
+                <InputField label="Bottom Bars Count" value={formData.beamBottomBarCount || ''} onChange={(v) => handleInputChange('beamBottomBarCount', v)} placeholder="2" />
+                <InputField label="Bottom Bar Ø mm" value={formData.beamBottomBarDiaMm || ''} onChange={(v) => handleInputChange('beamBottomBarDiaMm', v)} placeholder="12" />
+                <InputField label="Stirrup Ø mm" value={formData.beamStirrupDiaMm || ''} onChange={(v) => handleInputChange('beamStirrupDiaMm', v)} placeholder="8" />
+                <InputField label="Stirrup Spacing mm" value={formData.beamStirrupSpacingMm || ''} onChange={(v) => handleInputChange('beamStirrupSpacingMm', v)} placeholder="150" />
+                <InputField label="Clear Cover mm" value={formData.beamClearCoverMm || ''} onChange={(v) => handleInputChange('beamClearCoverMm', v)} placeholder="25" />
+                <InputField label="Extra Rebar %" value={formData.beamExtraRebarPercent || ''} onChange={(v) => handleInputChange('beamExtraRebarPercent', v)} placeholder="10" />
+              </div>
+            </div>
+          )}
+
+          {formData.elementType === 'column' && (
+            <div className="mt-6 rounded-xl border border-slate-200/20 bg-white/70 p-4 dark:border-slate-700/30 dark:bg-slate-900/60">
+              <h3 className="mb-4 font-semibold text-heading dark:text-heading-dark">Column Reinforcement Details</h3>
+              <div className="grid gap-4 md:grid-cols-2">
+                <InputField label="Main Bars Count" value={formData.columnMainBarCount || ''} onChange={(v) => handleInputChange('columnMainBarCount', v)} placeholder="8" />
+                <InputField label="Main Bar Ø mm" value={formData.columnMainBarDiaMm || ''} onChange={(v) => handleInputChange('columnMainBarDiaMm', v)} placeholder="12" />
+                <InputField label="Tie Ø mm" value={formData.columnTieDiaMm || ''} onChange={(v) => handleInputChange('columnTieDiaMm', v)} placeholder="8" />
+                <InputField label="Tie Spacing mm" value={formData.columnTieSpacingMm || ''} onChange={(v) => handleInputChange('columnTieSpacingMm', v)} placeholder="150" />
+                <InputField label="Clear Cover mm" value={formData.columnClearCoverMm || ''} onChange={(v) => handleInputChange('columnClearCoverMm', v)} placeholder="40" />
+                <InputField label="Extra Rebar %" value={formData.columnExtraRebarPercent || ''} onChange={(v) => handleInputChange('columnExtraRebarPercent', v)} placeholder="10" />
+              </div>
+            </div>
+          )}
+
+          {formData.elementType === 'footing' && (
+            <div className="mt-6 rounded-xl border border-slate-200/20 bg-white/70 p-4 dark:border-slate-700/30 dark:bg-slate-900/60">
+              <h3 className="mb-4 font-semibold text-heading dark:text-heading-dark">Footing Reinforcement Details</h3>
+              <div className="grid gap-4 md:grid-cols-2">
+                <InputField label="Main Bar Ø mm" value={formData.footingRebarDiaMm || ''} onChange={(v) => handleInputChange('footingRebarDiaMm', v)} placeholder="12" />
+                <InputField label="Bar Spacing mm" value={formData.footingRebarSpacingMm || ''} onChange={(v) => handleInputChange('footingRebarSpacingMm', v)} placeholder="150" />
+                <InputField label="Clear Cover mm" value={formData.footingClearCoverMm || ''} onChange={(v) => handleInputChange('footingClearCoverMm', v)} placeholder="50" />
+                <InputField label="Extra Rebar %" value={formData.footingExtraRebarPercent || ''} onChange={(v) => handleInputChange('footingExtraRebarPercent', v)} placeholder="10" />
+              </div>
+            </div>
+          )}
+
+          {formData.elementType === 'wall' && (
+            <div className="mt-6 rounded-xl border border-slate-200/20 bg-white/70 p-4 dark:border-slate-700/30 dark:bg-slate-900/60">
+              <h3 className="mb-4 font-semibold text-heading dark:text-heading-dark">Wall / Shear Wall Reinforcement Details</h3>
+              <div className="grid gap-4 md:grid-cols-2">
+                <InputField label="Vertical Bar Ø mm" value={formData.wallVerticalBarDiaMm || ''} onChange={(v) => handleInputChange('wallVerticalBarDiaMm', v)} placeholder="12" />
+                <InputField label="Vertical Bar Spacing mm" value={formData.wallVerticalBarSpacingMm || ''} onChange={(v) => handleInputChange('wallVerticalBarSpacingMm', v)} placeholder="200" />
+                <InputField label="Horizontal Bar Ø mm" value={formData.wallHorizontalBarDiaMm || ''} onChange={(v) => handleInputChange('wallHorizontalBarDiaMm', v)} placeholder="10" />
+                <InputField label="Horizontal Bar Spacing mm" value={formData.wallHorizontalBarSpacingMm || ''} onChange={(v) => handleInputChange('wallHorizontalBarSpacingMm', v)} placeholder="250" />
+                <InputField label="Clear Cover mm" value={formData.wallClearCoverMm || ''} onChange={(v) => handleInputChange('wallClearCoverMm', v)} placeholder="25" />
+                <InputField label="Extra Rebar %" value={formData.wallExtraRebarPercent || ''} onChange={(v) => handleInputChange('wallExtraRebarPercent', v)} placeholder="10" />
+              </div>
+            </div>
+          )}
+
+          {formData.elementType === 'staircase' && (
+            <div className="mt-6 rounded-xl border border-slate-200/20 bg-white/70 p-4 dark:border-slate-700/30 dark:bg-slate-900/60">
+              <h3 className="mb-4 font-semibold text-heading dark:text-heading-dark">Staircase Reinforcement Details</h3>
+              <div className="grid gap-4 md:grid-cols-2">
+                <InputField label="Main Bar Ø mm" value={formData.stairMainBarDiaMm || ''} onChange={(v) => handleInputChange('stairMainBarDiaMm', v)} placeholder="12" />
+                <InputField label="Main Bar Spacing mm" value={formData.stairMainBarSpacingMm || ''} onChange={(v) => handleInputChange('stairMainBarSpacingMm', v)} placeholder="200" />
+                <InputField label="Distribution Bar Ø mm" value={formData.stairDistBarDiaMm || ''} onChange={(v) => handleInputChange('stairDistBarDiaMm', v)} placeholder="8" />
+                <InputField label="Distribution Bar Spacing mm" value={formData.stairDistBarSpacingMm || ''} onChange={(v) => handleInputChange('stairDistBarSpacingMm', v)} placeholder="250" />
+                <InputField label="Clear Cover mm" value={formData.stairClearCoverMm || ''} onChange={(v) => handleInputChange('stairClearCoverMm', v)} placeholder="25" />
+                <InputField label="Extra Rebar %" value={formData.stairExtraRebarPercent || ''} onChange={(v) => handleInputChange('stairExtraRebarPercent', v)} placeholder="10" />
+              </div>
+            </div>
+          )}
+
           {/* Action Buttons */}
           <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-2 sm:gap-4 justify-between  ">
             <div className="flex flex-wrap gap-2 sm:gap-4">
@@ -1360,14 +1785,14 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
                 Reset
               </button>
 
-              <button
-                type="button"
-                onClick={() => handleInputChange('showStepByStep', !formData.showStepByStep)}
-                className={`flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3   font-medium transition-colors text-xs sm:text-sm whitespace-nowrap ${
-                  formData.showStepByStep
-                    ? 'bg-primary text-white'
-                    : 'border border-slate-300 bg-white text-heading dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark'
-                }`}
+              <PremiumLockedButton
+                calculatorId={CALC_ID}
+                onAuthorizedClick={() =>
+                  handleInputChange('showStepByStep', !formData.showStepByStep)
+                }
+                isActive={formData.showStepByStep}
+                activeClassName="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 font-medium transition-colors text-xs sm:text-sm whitespace-nowrap bg-primary text-white"
+                inactiveClassName="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 font-medium transition-colors text-xs sm:text-sm whitespace-nowrap border border-slate-300 bg-white text-heading dark:border-slate-600 dark:bg-slate-800 dark:text-heading-dark"
               >
                 {formData.showStepByStep ? (
                   <EyeOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -1375,7 +1800,7 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
                   <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 )}
                 {formData.showStepByStep ? 'Hide' : 'Show'} Steps
-              </button>
+              </PremiumLockedButton>
             </div>
 
             <button
@@ -1399,6 +1824,104 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
           </div>
         </div>
 
+        {/* Project Estimate Summary */}
+        {projectSummary && (
+          <div className="border-t border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="text-xl font-semibold text-heading dark:text-heading-dark">Building Estimate Summary</h2>
+                <p className="mt-1 text-sm text-body/70 dark:text-body-dark/70">
+                  {projectItems.length} component(s) saved locally. Unlock to view full summary and export.
+                </p>
+              </div>
+            </div>
+            <PremiumFeatureGate
+              calculatorId={CALC_ID}
+              title="Building Project Estimate"
+              description="Watch the ad to unlock project summary, rate breakdown, and PDF/Excel export."
+              className="mt-4"
+            >
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <input
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                placeholder="Project name"
+                className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800"
+              />
+              <div className="flex flex-wrap gap-2">
+                <PremiumLockedAction calculatorId={CALC_ID} onAuthorizedClick={exportProjectAsPdf} className="rounded-lg bg-primary px-3 py-2 text-sm font-medium text-white">
+                  Export PDF
+                </PremiumLockedAction>
+                <PremiumLockedAction calculatorId={CALC_ID} onAuthorizedClick={exportProjectAsXlsx}>
+                  Export XLSX
+                </PremiumLockedAction>
+                <PremiumLockedAction calculatorId={CALC_ID} onAuthorizedClick={downloadProjectReport}>
+                  Download Text
+                </PremiumLockedAction>
+                <button type="button" onClick={clearProject} className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 dark:border-red-800 dark:text-red-400">Clear Project</button>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <div className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">{projectItems.length} components</div>
+              <div className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600 dark:bg-slate-800 dark:text-slate-300">Auto-saved locally</div>
+            </div>
+            <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              <div className="rounded-xl border border-slate-200/20 bg-slate-50 p-4 dark:border-slate-700/30 dark:bg-slate-800/50">
+                <p className="text-sm text-body/70 dark:text-body-dark/70">Total Wet Volume</p>
+                <p className="mt-1 font-mono text-lg font-semibold">{projectSummary.totalWetVolume.toFixed(3)} m³</p>
+              </div>
+              <div className="rounded-xl border border-slate-200/20 bg-slate-50 p-4 dark:border-slate-700/30 dark:bg-slate-800/50">
+                <p className="text-sm text-body/70 dark:text-body-dark/70">Total Rebar</p>
+                <p className="mt-1 font-mono text-lg font-semibold">{projectSummary.totalReinforcementKg.toFixed(2)} kg</p>
+              </div>
+              <div className="rounded-xl border border-slate-200/20 bg-slate-50 p-4 dark:border-slate-700/30 dark:bg-slate-800/50">
+                <p className="text-sm text-body/70 dark:text-body-dark/70">Concrete Amount</p>
+                <p className="mt-1 font-mono text-lg font-semibold">{projectSummary.totalConcreteAmount.toFixed(2)}</p>
+              </div>
+              <div className="rounded-xl border border-slate-200/20 bg-slate-50 p-4 dark:border-slate-700/30 dark:bg-slate-800/50">
+                <p className="text-sm text-body/70 dark:text-body-dark/70">Grand Total</p>
+                <p className="mt-1 font-mono text-lg font-semibold text-primary">{projectSummary.totalAmount.toFixed(2)}</p>
+              </div>
+            </div>
+
+            <div className="mt-6 rounded-xl border border-slate-200/20 bg-white/70 p-4 dark:border-slate-700/30 dark:bg-slate-900/60">
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="font-semibold text-heading dark:text-heading-dark">Component Breakdown</h3>
+                <span className="text-sm text-body/70 dark:text-body-dark/70">Rates can be edited per component</span>
+              </div>
+              <div className="mt-4 space-y-3">
+                {projectSummary.items.map((item) => (
+                  <div key={item.id} className="rounded-lg border border-slate-200/20 bg-slate-50 p-3 dark:border-slate-700/30 dark:bg-slate-800/40">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div>
+                        <p className="font-medium text-heading dark:text-heading-dark">{item.name}</p>
+                        <p className="text-sm text-body/70 dark:text-body-dark/70">{item.elementType} • {item.wetVolume.toFixed(3)} m³ • {item.reinforcementKg.toFixed(2)} kg rebar</p>
+                      </div>
+                      <button type="button" onClick={() => removeProjectItem(item.id)} className="rounded-lg border border-red-200 px-3 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400">Remove</button>
+                    </div>
+                    <div className="mt-3 grid gap-3 md:grid-cols-2">
+                      <label className="text-sm text-body/70 dark:text-body-dark/70">
+                        Concrete Rate
+                        <input type="number" min="0" value={projectRateInputs[item.id]?.concreteRate ?? ''} onChange={(e) => updateProjectRate(item.id, 'concreteRate', e.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900" />
+                      </label>
+                      <label className="text-sm text-body/70 dark:text-body-dark/70">
+                        Steel Rate
+                        <input type="number" min="0" value={projectRateInputs[item.id]?.steelRate ?? ''} onChange={(e) => updateProjectRate(item.id, 'steelRate', e.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900" />
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6 rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
+              <h3 className="font-semibold">Project Report Preview</h3>
+              <pre className="mt-3 whitespace-pre-wrap text-sm">{projectSummary.reportText}</pre>
+            </div>
+            </PremiumFeatureGate>
+          </div>
+        )}
+
         {/* Results Section */}
         <AnimatePresence>
           {result && (
@@ -1415,6 +1938,11 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
                   Calculation Results
                 </h2>
               </div>
+              <PremiumFeatureGate
+                calculatorId={CALC_ID}
+                title="Concrete Estimate Summary"
+                description="Watch the ad to unlock quantity summary, rebar estimate, step-by-step breakdown, and export."
+              >
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3  ">
                 {/* Volume Results */}
                 <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
@@ -1498,6 +2026,23 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
                   </div>
                 </div>
               </div>
+              {result.reinforcement && (
+                <div className="mt-6 rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
+                  <div className="flex items-center justify-between gap-2">
+                    <b>Rebar Estimate:</b>
+                    <span className="font-mono font-semibold">{result.reinforcement.totalSteelWeightKg.toFixed(2)} kg</span>
+                  </div>
+                  <p className="mt-2 text-sm">{result.reinforcement.summary}</p>
+                  <ul className="mt-3 space-y-2 text-sm">
+                    {result.reinforcement.items.map((item: { label: string; barCount: number; cuttingLengthM: number; weightKg: number }) => (
+                      <li key={item.label} className="flex items-center justify-between gap-2 rounded-lg bg-white/70 px-3 py-2 dark:bg-slate-900/50">
+                        <span>{item.label}</span>
+                        <span className="font-mono">{item.barCount} bars × {item.cuttingLengthM.toFixed(2)} m = {item.weightKg.toFixed(2)} kg</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               {/* Optional engineering summary (non-invasive) */}
               {result.human_summary && (
                 <div className="mt-6   rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
@@ -1551,6 +2096,7 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
                   </ol>
                 </div>
               )}
+              </PremiumFeatureGate>
             </motion.div>
           )}
         </AnimatePresence>

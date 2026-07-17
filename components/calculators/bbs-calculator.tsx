@@ -4,6 +4,7 @@ import { useState, useRef, useMemo, type FC } from 'react'
 import { Calculator, Download, Plus, Trash2, Upload, FileDown, Printer } from 'lucide-react'
 import { calculateBBS } from '@/lib/registry/calculator/bbs-calculator'
 import { BBS_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/bbs-info-section'
+import AdvancedEstimateGate from './advanced-estimate-gate'
 import type {
   BBSInputItem,
   ElementType,
@@ -1086,6 +1087,15 @@ const BBSCalculatorCard: FC<BBSCalculatorCardProps> = ({ globalUnit }) => {
 
       {result && (
         <>
+          <AdvancedEstimateGate
+            title="Bar Bending Schedule"
+            description="Unlock a professional reinforcing schedule summary and planning notes."
+            insights={[
+              { label: 'Members', value: result.results.length.toString(), unit: 'bars' },
+              { label: 'Steel weight', value: result.summary.total_steel_weight_kg.toFixed(1), unit: 'kg' },
+              { label: 'Cost', value: typeof result.summary.total_cost === 'number' ? `${currencySymbol}${result.summary.total_cost.toFixed(2)}` : '-', unit: '' },
+            ]}
+          />
           <div className="mt-6 grid gap-6 md:grid-cols-4">
             <div className="rounded-xl border border-slate-200/20 bg-white/70 p-4 dark:border-slate-700/30 dark:bg-slate-900/60">
               <div className="text-body/70 dark:text-body-dark/70">Total Bars</div>

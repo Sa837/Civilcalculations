@@ -1,8 +1,8 @@
 import { DENSITIES, UnitConverter, UNIT_PRESETS } from '../globalunits'
 import { CalculationUtils } from '../utils'
-import { calcIsolatedFooting } from '@/lib/registry/structural/calc/footing'
-import { calcRetainingWallCantilever } from '@/lib/registry/structural/calc/wall'
-import { calcStairStraight } from '@/lib/registry/structural/calc/staircase'
+import { calcIsolatedFooting } from '../structural/calc/footing'
+import { calcRetainingWallCantilever } from '../structural/calc/wall'
+import { calcStairStraight } from '../structural/calc/staircase'
 
 export const CONCRETE_MIX_TYPES = [
   { value: 'M5', label: 'M5 (1:5:10)', ratios: { cement: 1, sand: 5, aggregate: 10 }, strength: '5 MPa' },
@@ -32,10 +32,42 @@ export interface ConcreteCalculationInput {
   area?: number
   elementType: string
   subType?: string // element-specific shape/type
+  // Slab reinforcement (optional)
+  slabTopMainDiaMm?: number
+  slabTopMainSpacingMm?: number
+  slabTopDistDiaMm?: number
+  slabTopDistSpacingMm?: number
+  slabBottomMainDiaMm?: number
+  slabBottomMainSpacingMm?: number
+  slabBottomDistDiaMm?: number
+  slabBottomDistSpacingMm?: number
+  slabClearCoverMm?: number
+  slabExtraRebarPercent?: number
+  // Beam reinforcement (optional)
+  beamTopBarCount?: number
+  beamTopBarDiaMm?: number
+  beamBottomBarCount?: number
+  beamBottomBarDiaMm?: number
+  beamStirrupDiaMm?: number
+  beamStirrupSpacingMm?: number
+  beamClearCoverMm?: number
+  beamExtraRebarPercent?: number
+  // Column reinforcement (optional)
+  columnMainBarCount?: number
+  columnMainBarDiaMm?: number
+  columnTieDiaMm?: number
+  columnTieSpacingMm?: number
+  columnClearCoverMm?: number
+  columnExtraRebarPercent?: number
   // Column-specific (rect/sq/circ)
   col_b?: number
   col_D?: number
   col_diam?: number
+  // Footing reinforcement (optional)
+  footingRebarDiaMm?: number
+  footingRebarSpacingMm?: number
+  footingClearCoverMm?: number
+  footingExtraRebarPercent?: number
   // Footing-specific (isolated shapes)
   ft_B?: number
   ft_L?: number
@@ -69,6 +101,20 @@ export interface ConcreteCalculationInput {
   stair_steps2?: number
   stair_width?: number
   stair_landing_len?: number
+  // Staircase reinforcement (optional)
+  stairMainBarDiaMm?: number
+  stairMainBarSpacingMm?: number
+  stairDistBarDiaMm?: number
+  stairDistBarSpacingMm?: number
+  stairClearCoverMm?: number
+  stairExtraRebarPercent?: number
+  // Wall reinforcement (optional)
+  wallVerticalBarDiaMm?: number
+  wallVerticalBarSpacingMm?: number
+  wallHorizontalBarDiaMm?: number
+  wallHorizontalBarSpacingMm?: number
+  wallClearCoverMm?: number
+  wallExtraRebarPercent?: number
   // Beam (prismatic)
   beam_b?: number
   beam_D?: number
@@ -80,6 +126,21 @@ export interface ConcreteCalculationInput {
   // Units
   unitSystem: 'metric' | 'imperial'
   useArea: boolean
+}
+
+export interface ConcreteReinforcementItem {
+  label: string
+  barCount: number
+  cuttingLengthM: number
+  weightKg: number
+}
+
+export interface ConcreteReinforcementEstimate {
+  elementType: string
+  totalSteelWeightKg: number
+  totalSteelLengthM: number
+  summary: string
+  items: ConcreteReinforcementItem[]
 }
 
 export interface ConcreteCalculationResult {
@@ -95,13 +156,401 @@ export interface ConcreteCalculationResult {
   mixRatio: string
   elementArea?: number
   totalParts: number
+  reinforcement?: ConcreteReinforcementEstimate
   // Advanced structural output (non-breaking, UI can ignore safely)
   structural?: any
   human_summary?: string
   step_details?: string[]
 }
 
+export interface ConcreteProjectItem {
+  id: string
+  name: string
+  elementType: string
+  input: ConcreteCalculationInput
+  result: ConcreteCalculationResult
+  concreteRate?: number
+  steelRate?: number
+}
+
+export interface ConcreteProjectSummary {
+  items: Array<{
+    id: string
+    name: string
+    elementType: string
+    wetVolume: number
+    dryVolume: number
+    cementBags: number
+    reinforcementKg: number
+    concreteAmount: number
+    steelAmount: number
+    totalAmount: number
+  }>
+  totalWetVolume: number
+  totalDryVolume: number
+  totalCementBags: number
+  totalReinforcementKg: number
+  totalConcreteAmount: number
+  totalSteelAmount: number
+  totalAmount: number
+  reportText: string
+}
+
 export class ConcreteCalculator {
+  private static estimateReinforcement(
+    input: ConcreteCalculationInput,
+    dimensions: { length?: number; width?: number; height?: number; area?: number },
+    elementType: string,
+  ): ConcreteReinforcementEstimate | undefined {
+    const steelDensity = DENSITIES.steel
+    const round = (value: number) => CalculationUtils.roundTo(value, 2)
+
+    const addBarWeight = (
+      items: ConcreteReinforcementItem[],
+      label: string,
+      diameterMm: number | undefined,
+      spacingMm: number | undefined,
+      spanM: number,
+      cuttingLengthM: number,
+    ) => {
+      if (!diameterMm || !spacingMm || spanM <= 0) return
+      const spacingM = spacingMm / 1000
+      const effectiveLength = Math.max(0.1, cuttingLengthM)
+      const barCount = Math.max(2, Math.ceil(spanM / spacingM) + 1)
+      const radiusM = (diameterMm / 1000) / 2
+      const barVolumeM3 = Math.PI * radiusM * radiusM * effectiveLength
+      const weightKg = barVolumeM3 * steelDensity * barCount
+      items.push({
+        label,
+        barCount,
+        cuttingLengthM: round(effectiveLength),
+        weightKg: round(weightKg),
+      })
+    }
+
+    if (elementType === 'slab') {
+      const panelLengthM = dimensions.length ?? 0
+      const panelWidthM = dimensions.width ?? 0
+      if (!panelLengthM || !panelWidthM) return undefined
+
+      const coverM = (input.slabClearCoverMm ?? 25) / 1000
+      const items: ConcreteReinforcementItem[] = []
+      addBarWeight(
+        items,
+        'Top mesh - A-A direction',
+        input.slabTopMainDiaMm,
+        input.slabTopMainSpacingMm,
+        panelWidthM,
+        panelLengthM - 2 * coverM,
+      )
+      addBarWeight(
+        items,
+        'Top mesh - B-B direction',
+        input.slabTopDistDiaMm,
+        input.slabTopDistSpacingMm,
+        panelLengthM,
+        panelWidthM - 2 * coverM,
+      )
+      addBarWeight(
+        items,
+        'Bottom mesh - A-A direction',
+        input.slabBottomMainDiaMm,
+        input.slabBottomMainSpacingMm,
+        panelWidthM,
+        panelLengthM - 2 * coverM,
+      )
+      addBarWeight(
+        items,
+        'Bottom mesh - B-B direction',
+        input.slabBottomDistDiaMm,
+        input.slabBottomDistSpacingMm,
+        panelLengthM,
+        panelWidthM - 2 * coverM,
+      )
+
+      if (items.length === 0) return undefined
+
+      const totalWeight = items.reduce((sum, item) => sum + item.weightKg, 0)
+      const extraPercent = input.slabExtraRebarPercent ?? 0
+      const adjustedWeight = totalWeight * (1 + extraPercent / 100)
+      const totalLength = items.reduce((sum, item) => sum + item.barCount * item.cuttingLengthM, 0)
+      return {
+        elementType: 'slab',
+        totalSteelWeightKg: round(adjustedWeight),
+        totalSteelLengthM: round(totalLength),
+        summary: `Slab reinforcement estimate: ${round(adjustedWeight)} kg steel across ${items.length} bar sets.`,
+        items,
+      }
+    }
+
+    if (elementType === 'beam') {
+      const beamLengthM = dimensions.length ?? 0
+      const beamBreadthM = input.beam_b ?? dimensions.width ?? 0
+      const beamDepthM = input.beam_D ?? dimensions.height ?? 0
+      if (!beamLengthM || !beamBreadthM || !beamDepthM) return undefined
+
+      const coverM = (input.beamClearCoverMm ?? 25) / 1000
+      const items: ConcreteReinforcementItem[] = []
+      const addLongitudinal = (label: string, count: number | undefined, diameterMm: number | undefined) => {
+        if (!count || !diameterMm) return
+        const radiusM = (diameterMm / 1000) / 2
+        const lengthM = Math.max(0.1, beamLengthM - 2 * coverM)
+        const volumeM3 = Math.PI * radiusM * radiusM * lengthM
+        items.push({
+          label,
+          barCount: count,
+          cuttingLengthM: round(lengthM),
+          weightKg: round(volumeM3 * steelDensity * count),
+        })
+      }
+      addLongitudinal('Top bars', input.beamTopBarCount, input.beamTopBarDiaMm)
+      addLongitudinal('Bottom bars', input.beamBottomBarCount, input.beamBottomBarDiaMm)
+
+      if (input.beamStirrupDiaMm && input.beamStirrupSpacingMm) {
+        const spacingM = input.beamStirrupSpacingMm / 1000
+        const stirrupCount = Math.max(2, Math.ceil(beamLengthM / spacingM) + 1)
+        const perimeterM = Math.max(0.1, 2 * (beamBreadthM + beamDepthM) + 0.1)
+        const radiusM = (input.beamStirrupDiaMm / 1000) / 2
+        const volumeM3 = Math.PI * radiusM * radiusM * perimeterM
+        items.push({
+          label: 'Stirrups',
+          barCount: stirrupCount,
+          cuttingLengthM: round(perimeterM),
+          weightKg: round(volumeM3 * steelDensity * stirrupCount),
+        })
+      }
+
+      if (items.length === 0) return undefined
+
+      const totalWeight = items.reduce((sum, item) => sum + item.weightKg, 0)
+      const extraPercent = input.beamExtraRebarPercent ?? 0
+      const adjustedWeight = totalWeight * (1 + extraPercent / 100)
+      const totalLength = items.reduce((sum, item) => sum + item.barCount * item.cuttingLengthM, 0)
+      return {
+        elementType: 'beam',
+        totalSteelWeightKg: round(adjustedWeight),
+        totalSteelLengthM: round(totalLength),
+        summary: `Beam reinforcement estimate: ${round(adjustedWeight)} kg steel across ${items.length} bar groups.`,
+        items,
+      }
+    }
+
+    if (elementType === 'column') {
+      const columnHeightM = dimensions.height ?? 0
+      const columnBreadthM = input.col_b ?? dimensions.width ?? 0
+      const columnDepthM = input.col_D ?? dimensions.length ?? 0
+      const columnDiameterM = input.col_diam ?? 0
+      if (!columnHeightM) return undefined
+
+      const coverM = (input.columnClearCoverMm ?? 40) / 1000
+      const items: ConcreteReinforcementItem[] = []
+      if (input.columnMainBarCount && input.columnMainBarDiaMm) {
+        const radiusM = (input.columnMainBarDiaMm / 1000) / 2
+        const lengthM = Math.max(0.1, columnHeightM - 2 * coverM)
+        const volumeM3 = Math.PI * radiusM * radiusM * lengthM
+        items.push({
+          label: 'Longitudinal bars',
+          barCount: input.columnMainBarCount,
+          cuttingLengthM: round(lengthM),
+          weightKg: round(volumeM3 * steelDensity * input.columnMainBarCount),
+        })
+      }
+
+      if (input.columnTieDiaMm && input.columnTieSpacingMm) {
+        const spacingM = input.columnTieSpacingMm / 1000
+        const tieCount = Math.max(2, Math.ceil(columnHeightM / spacingM) + 1)
+        const perimeterM = input.subType === 'circular' && columnDiameterM > 0
+          ? Math.max(0.1, Math.PI * columnDiameterM + 0.1)
+          : Math.max(0.1, 2 * (columnBreadthM + columnDepthM) + 0.1)
+        const radiusM = (input.columnTieDiaMm / 1000) / 2
+        const volumeM3 = Math.PI * radiusM * radiusM * perimeterM
+        items.push({
+          label: 'Ties',
+          barCount: tieCount,
+          cuttingLengthM: round(perimeterM),
+          weightKg: round(volumeM3 * steelDensity * tieCount),
+        })
+      }
+
+      if (items.length === 0) return undefined
+
+      const totalWeight = items.reduce((sum, item) => sum + item.weightKg, 0)
+      const extraPercent = input.columnExtraRebarPercent ?? 0
+      const adjustedWeight = totalWeight * (1 + extraPercent / 100)
+      const totalLength = items.reduce((sum, item) => sum + item.barCount * item.cuttingLengthM, 0)
+      return {
+        elementType: 'column',
+        totalSteelWeightKg: round(adjustedWeight),
+        totalSteelLengthM: round(totalLength),
+        summary: `Column reinforcement estimate: ${round(adjustedWeight)} kg steel across ${items.length} bar groups.`,
+        items,
+      }
+    }
+
+    if (elementType === 'footing') {
+      const coverM = (input.footingClearCoverMm ?? 50) / 1000
+      const items: ConcreteReinforcementItem[] = []
+      const st = input.subType || 'iso_square'
+      let footingWidthM = dimensions.width ?? 0
+      let footingLengthM = dimensions.length ?? 0
+
+      if (st === 'iso_square' || st === 'iso_rect' || st === 'combined' || st === 'mat') {
+        if (st === 'iso_square' || st === 'combined' || st === 'mat') {
+          footingWidthM = input.ft_a ?? input.ft_B ?? footingWidthM
+          footingLengthM = input.ft_a ?? input.ft_L ?? footingLengthM
+        } else {
+          footingWidthM = input.ft_B ?? footingWidthM
+          footingLengthM = input.ft_L ?? footingLengthM
+        }
+      } else if (st === 'iso_frustum') {
+        footingWidthM = Math.max(input.ft_B_bot ?? 0, input.ft_B_top ?? 0)
+        footingLengthM = Math.max(input.ft_L_bot ?? 0, input.ft_L_top ?? 0)
+      } else if (st === 'strap') {
+        footingWidthM = Math.max(input.ft_a1 ?? 0, input.ft_a2 ?? 0)
+        footingLengthM = input.strap_len ?? footingLengthM
+      }
+
+      if (footingWidthM <= 0 || footingLengthM <= 0 || !input.footingRebarDiaMm || !input.footingRebarSpacingMm) {
+        return undefined
+      }
+
+      const spacingM = (input.footingRebarSpacingMm ?? 150) / 1000
+      const barCountX = Math.max(2, Math.ceil(footingLengthM / spacingM) + 1)
+      const barCountY = Math.max(2, Math.ceil(footingWidthM / spacingM) + 1)
+      const radiusM = (input.footingRebarDiaMm / 1000) / 2
+      const xLengthM = Math.max(0.1, footingWidthM - 2 * coverM)
+      const yLengthM = Math.max(0.1, footingLengthM - 2 * coverM)
+      const xVolumeM3 = Math.PI * radiusM * radiusM * xLengthM
+      const yVolumeM3 = Math.PI * radiusM * radiusM * yLengthM
+      items.push({
+        label: 'Main bars - longitudinal',
+        barCount: barCountX,
+        cuttingLengthM: round(xLengthM),
+        weightKg: round(xVolumeM3 * steelDensity * barCountX),
+      })
+      items.push({
+        label: 'Main bars - transverse',
+        barCount: barCountY,
+        cuttingLengthM: round(yLengthM),
+        weightKg: round(yVolumeM3 * steelDensity * barCountY),
+      })
+
+      const totalWeight = items.reduce((sum, item) => sum + item.weightKg, 0)
+      const extraPercent = input.footingExtraRebarPercent ?? 0
+      const adjustedWeight = totalWeight * (1 + extraPercent / 100)
+      const totalLength = items.reduce((sum, item) => sum + item.barCount * item.cuttingLengthM, 0)
+      return {
+        elementType: 'footing',
+        totalSteelWeightKg: round(adjustedWeight),
+        totalSteelLengthM: round(totalLength),
+        summary: `Footing reinforcement estimate: ${round(adjustedWeight)} kg steel across ${items.length} bar groups.`,
+        items,
+      }
+    }
+
+    if (elementType === 'wall') {
+      const wallLengthM = dimensions.length ?? 0
+      const wallHeightM = dimensions.height ?? 0
+      const wallThicknessM = Math.max(dimensions.width ?? 0, 0.1)
+      if (!wallLengthM || !wallHeightM) return undefined
+
+      const coverM = (input.wallClearCoverMm ?? 25) / 1000
+      const items: ConcreteReinforcementItem[] = []
+      if (input.wallVerticalBarDiaMm && input.wallVerticalBarSpacingMm) {
+        const spacingM = input.wallVerticalBarSpacingMm / 1000
+        const barCount = Math.max(2, Math.ceil(wallHeightM / spacingM) + 1)
+        const lengthM = Math.max(0.1, wallHeightM - 2 * coverM)
+        const radiusM = (input.wallVerticalBarDiaMm / 1000) / 2
+        const volumeM3 = Math.PI * radiusM * radiusM * lengthM
+        items.push({
+          label: 'Vertical bars',
+          barCount,
+          cuttingLengthM: round(lengthM),
+          weightKg: round(volumeM3 * steelDensity * barCount),
+        })
+      }
+
+      if (input.wallHorizontalBarDiaMm && input.wallHorizontalBarSpacingMm) {
+        const spacingM = input.wallHorizontalBarSpacingMm / 1000
+        const barCount = Math.max(2, Math.ceil(wallLengthM / spacingM) + 1)
+        const lengthM = Math.max(0.1, wallLengthM - 2 * coverM)
+        const radiusM = (input.wallHorizontalBarDiaMm / 1000) / 2
+        const volumeM3 = Math.PI * radiusM * radiusM * lengthM
+        items.push({
+          label: 'Horizontal bars',
+          barCount,
+          cuttingLengthM: round(lengthM),
+          weightKg: round(volumeM3 * steelDensity * barCount),
+        })
+      }
+
+      if (items.length === 0) return undefined
+      const totalWeight = items.reduce((sum, item) => sum + item.weightKg, 0)
+      const extraPercent = input.wallExtraRebarPercent ?? 0
+      const adjustedWeight = totalWeight * (1 + extraPercent / 100)
+      const totalLength = items.reduce((sum, item) => sum + item.barCount * item.cuttingLengthM, 0)
+      return {
+        elementType: 'wall',
+        totalSteelWeightKg: round(adjustedWeight),
+        totalSteelLengthM: round(totalLength),
+        summary: `Wall reinforcement estimate: ${round(adjustedWeight)} kg steel across ${items.length} bar groups.`,
+        items,
+      }
+    }
+
+    if (elementType === 'staircase') {
+      const stairLengthM = dimensions.length ?? 0
+      const stairWidthM = dimensions.width ?? 0
+      const stairHeightM = dimensions.height ?? 0
+      if (!stairLengthM || !stairWidthM || !stairHeightM) return undefined
+
+      const coverM = (input.stairClearCoverMm ?? 25) / 1000
+      const items: ConcreteReinforcementItem[] = []
+      if (input.stairMainBarDiaMm && input.stairMainBarSpacingMm) {
+        const spacingM = input.stairMainBarSpacingMm / 1000
+        const barCount = Math.max(2, Math.ceil(stairLengthM / spacingM) + 1)
+        const lengthM = Math.max(0.1, stairLengthM - 2 * coverM)
+        const radiusM = (input.stairMainBarDiaMm / 1000) / 2
+        const volumeM3 = Math.PI * radiusM * radiusM * lengthM
+        items.push({
+          label: 'Main bars',
+          barCount,
+          cuttingLengthM: round(lengthM),
+          weightKg: round(volumeM3 * steelDensity * barCount),
+        })
+      }
+
+      if (input.stairDistBarDiaMm && input.stairDistBarSpacingMm) {
+        const spacingM = input.stairDistBarSpacingMm / 1000
+        const barCount = Math.max(2, Math.ceil(stairWidthM / spacingM) + 1)
+        const lengthM = Math.max(0.1, stairWidthM - 2 * coverM)
+        const radiusM = (input.stairDistBarDiaMm / 1000) / 2
+        const volumeM3 = Math.PI * radiusM * radiusM * lengthM
+        items.push({
+          label: 'Distribution bars',
+          barCount,
+          cuttingLengthM: round(lengthM),
+          weightKg: round(volumeM3 * steelDensity * barCount),
+        })
+      }
+
+      if (items.length === 0) return undefined
+      const totalWeight = items.reduce((sum, item) => sum + item.weightKg, 0)
+      const extraPercent = input.stairExtraRebarPercent ?? 0
+      const adjustedWeight = totalWeight * (1 + extraPercent / 100)
+      const totalLength = items.reduce((sum, item) => sum + item.barCount * item.cuttingLengthM, 0)
+      return {
+        elementType: 'staircase',
+        totalSteelWeightKg: round(adjustedWeight),
+        totalSteelLengthM: round(totalLength),
+        summary: `Staircase reinforcement estimate: ${round(adjustedWeight)} kg steel across ${items.length} bar groups.`,
+        items,
+      }
+    }
+
+    return undefined
+  }
+
   static calculate(input: ConcreteCalculationInput): ConcreteCalculationResult {
     const {
       length,
@@ -275,46 +724,63 @@ export class ConcreteCalculator {
       const tread = conv(input.stair_tread) ?? 0
       const stepsCount = input.stair_steps ?? 0
       const width_m = conv(input.stair_width ?? dimensions.width ?? 1.0) ?? 1.0
-      CalculationUtils.validatePositive(riser, 'Riser')
-      CalculationUtils.validatePositive(tread, 'Tread')
-      CalculationUtils.validatePositive(stepsCount, 'Number of steps')
-      CalculationUtils.validatePositive(width_m, 'Stair width')
+      const hasDetailedStairGeometry = riser > 0 && tread > 0 && stepsCount > 0
       const waist = H
       const landingLen = conv(input.stair_landing_len) ?? 0
       const subtype = input.subType || 'straight'
-      if (subtype === 'dogleg' || subtype === 'quarter_turn' || subtype === 'u_shaped') {
-        const steps2 = input.stair_steps2 ?? 0
-        CalculationUtils.validatePositive(steps2, 'Steps (flight 2)')
-        const run1 = tread * stepsCount
-        const rise1 = riser * stepsCount
-        const run2 = tread * steps2
-        const rise2 = riser * steps2
-        const slope1 = Math.sqrt(run1 * run1 + rise1 * rise1)
-        const slope2 = Math.sqrt(run2 * run2 + rise2 * rise2)
-        const vol1 = slope1 * width_m * waist
-        const vol2 = slope2 * width_m * waist
-        const landVol = landingLen > 0 ? landingLen * width_m * waist : 0
-        wetVolumeM3 = vol1 + vol2 + landVol
-        steps.push(
-          `Stair (${subtype.replace('_','-')}): flight-1 slope = √(${run1.toFixed(3)}²+${rise1.toFixed(3)}²) = ${slope1.toFixed(3)} m`,
-          `Flight-1 volume = ${slope1.toFixed(3)} × ${width_m.toFixed(3)} × ${waist.toFixed(3)} = ${vol1.toFixed(3)} m³`,
-          `Flight-2 slope = √(${run2.toFixed(3)}²+${rise2.toFixed(3)}²) = ${slope2.toFixed(3)} m`,
-          `Flight-2 volume = ${slope2.toFixed(3)} × ${width_m.toFixed(3)} × ${waist.toFixed(3)} = ${vol2.toFixed(3)} m³`,
-          landingLen > 0 ? `Landing volume = ${landingLen.toFixed(3)} × ${width_m.toFixed(3)} × ${waist.toFixed(3)} = ${landVol.toFixed(3)} m³` : `No landing`,
-          `Total stair volume = ${wetVolumeM3.toFixed(3)} m³`
-        )
+      if (hasDetailedStairGeometry) {
+        CalculationUtils.validatePositive(riser, 'Riser')
+        CalculationUtils.validatePositive(tread, 'Tread')
+        CalculationUtils.validatePositive(stepsCount, 'Number of steps')
+        CalculationUtils.validatePositive(width_m, 'Stair width')
+        if (subtype === 'dogleg' || subtype === 'quarter_turn' || subtype === 'u_shaped') {
+          const steps2 = input.stair_steps2 ?? 0
+          CalculationUtils.validatePositive(steps2, 'Steps (flight 2)')
+          const run1 = tread * stepsCount
+          const rise1 = riser * stepsCount
+          const run2 = tread * steps2
+          const rise2 = riser * steps2
+          const slope1 = Math.sqrt(run1 * run1 + rise1 * rise1)
+          const slope2 = Math.sqrt(run2 * run2 + rise2 * rise2)
+          const vol1 = slope1 * width_m * waist
+          const vol2 = slope2 * width_m * waist
+          const landVol = landingLen > 0 ? landingLen * width_m * waist : 0
+          wetVolumeM3 = vol1 + vol2 + landVol
+          steps.push(
+            `Stair (${subtype.replace('_','-')}): flight-1 slope = √(${run1.toFixed(3)}²+${rise1.toFixed(3)}²) = ${slope1.toFixed(3)} m`,
+            `Flight-1 volume = ${slope1.toFixed(3)} × ${width_m.toFixed(3)} × ${waist.toFixed(3)} = ${vol1.toFixed(3)} m³`,
+            `Flight-2 slope = √(${run2.toFixed(3)}²+${rise2.toFixed(3)}²) = ${slope2.toFixed(3)} m`,
+            `Flight-2 volume = ${slope2.toFixed(3)} × ${width_m.toFixed(3)} × ${waist.toFixed(3)} = ${vol2.toFixed(3)} m³`,
+            landingLen > 0 ? `Landing volume = ${landingLen.toFixed(3)} × ${width_m.toFixed(3)} × ${waist.toFixed(3)} = ${landVol.toFixed(3)} m³` : `No landing`,
+            `Total stair volume = ${wetVolumeM3.toFixed(3)} m³`
+          )
+        } else {
+          const flightRun = tread * stepsCount
+          const flightRise = riser * stepsCount
+          const slopeLen = Math.sqrt(flightRun * flightRun + flightRise * flightRise)
+          const flightVol = slopeLen * width_m * waist
+          const landingVol = landingLen > 0 ? landingLen * width_m * waist : 0
+          wetVolumeM3 = flightVol + landingVol
+          steps.push(
+            `Stair (Straight): slope length = √(run²+rise²) = √(${flightRun.toFixed(3)}²+${flightRise.toFixed(3)}²) = ${slopeLen.toFixed(3)} m`,
+            `Flight volume = ${slopeLen.toFixed(3)} × ${width_m.toFixed(3)} × ${waist.toFixed(3)} = ${flightVol.toFixed(3)} m³`,
+            landingLen > 0 ? `Landing volume = ${landingLen.toFixed(3)} × ${width_m.toFixed(3)} × ${waist.toFixed(3)} = ${landingVol.toFixed(3)} m³` : `No landing`
+          )
+        }
       } else {
-        const flightRun = tread * stepsCount
-        const flightRise = riser * stepsCount
-        const slopeLen = Math.sqrt(flightRun * flightRun + flightRise * flightRise)
-        const flightVol = slopeLen * width_m * waist
-        const landingVol = landingLen > 0 ? landingLen * width_m * waist : 0
-        wetVolumeM3 = flightVol + landingVol
-        steps.push(
-          `Stair (Straight): slope length = √(run²+rise²) = √(${flightRun.toFixed(3)}²+${flightRise.toFixed(3)}²) = ${slopeLen.toFixed(3)} m`,
-          `Flight volume = ${slopeLen.toFixed(3)} × ${width_m.toFixed(3)} × ${waist.toFixed(3)} = ${flightVol.toFixed(3)} m³`,
-          landingLen > 0 ? `Landing volume = ${landingLen.toFixed(3)} × ${width_m.toFixed(3)} × ${waist.toFixed(3)} = ${landingVol.toFixed(3)} m³` : `No landing`
-        )
+        let areaM2: number
+        if (useArea && dimensions.area) {
+          areaM2 = dimensions.area
+          steps.push(`Area (direct): A = ${areaM2.toFixed(3)} m²`)
+        } else if (dimensions.length && dimensions.width) {
+          areaM2 = CalculationUtils.calculateRectangularArea(dimensions.length, dimensions.width)
+          steps.push(`Area: A = L × W = ${dimensions.length.toFixed(3)} × ${dimensions.width.toFixed(3)} = ${areaM2.toFixed(3)} m²`)
+        } else {
+          throw new Error('Please provide either area or both length and width')
+        }
+        wetVolumeM3 = CalculationUtils.calculateVolumeFromArea(areaM2, H)
+        elementAreaM2 = areaM2
+        steps.push(`Staircase (fallback): V = A × t = ${areaM2.toFixed(3)} × ${H.toFixed(3)} = ${wetVolumeM3.toFixed(3)} m³`)
       }
     } else if (elementType === 'beam') {
       // Prismatic beam volume: V = L × b × D
@@ -400,6 +866,8 @@ export class ConcreteCalculator {
       totalParts: 1
     })
 
+    const reinforcement = this.estimateReinforcement(input, dimensions, elementType)
+
     // Attach advanced structural calculations for specific element types WITHOUT changing UI behavior
     let structural: any | undefined
     let human_summary: string | undefined
@@ -439,9 +907,64 @@ export class ConcreteCalculator {
     return {
       ...results,
       mixRatio: `${cementRatio}:${sandRatio}:${aggregateRatio}`,
+      reinforcement,
       structural,
       human_summary: human_summary || steps[0],
       step_details: steps
+    }
+  }
+
+  static summarizeProject(items: ConcreteProjectItem[]): ConcreteProjectSummary {
+    const summaryItems = items.map((item) => {
+      const concreteAmount = (item.concreteRate ?? 0) * item.result.wetVolume
+      const steelAmount = (item.steelRate ?? 0) * (item.result.reinforcement?.totalSteelWeightKg ?? 0)
+      return {
+        id: item.id,
+        name: item.name,
+        elementType: item.elementType,
+        wetVolume: item.result.wetVolume,
+        dryVolume: item.result.dryVolume,
+        cementBags: item.result.cementBags,
+        reinforcementKg: item.result.reinforcement?.totalSteelWeightKg ?? 0,
+        concreteAmount,
+        steelAmount,
+        totalAmount: concreteAmount + steelAmount,
+      }
+    })
+
+    const totalWetVolume = summaryItems.reduce((sum, item) => sum + item.wetVolume, 0)
+    const totalDryVolume = summaryItems.reduce((sum, item) => sum + item.dryVolume, 0)
+    const totalCementBags = summaryItems.reduce((sum, item) => sum + item.cementBags, 0)
+    const totalReinforcementKg = summaryItems.reduce((sum, item) => sum + item.reinforcementKg, 0)
+    const totalConcreteAmount = summaryItems.reduce((sum, item) => sum + item.concreteAmount, 0)
+    const totalSteelAmount = summaryItems.reduce((sum, item) => sum + item.steelAmount, 0)
+    const totalAmount = totalConcreteAmount + totalSteelAmount
+
+    const reportText = [
+      'Concrete Building Estimate Report',
+      '==============================',
+      `Total wet volume: ${totalWetVolume.toFixed(3)} m³`,
+      `Total dry volume: ${totalDryVolume.toFixed(3)} m³`,
+      `Total cement bags: ${totalCementBags.toFixed(2)}`,
+      `Total reinforcement steel: ${totalReinforcementKg.toFixed(2)} kg`,
+      `Total concrete amount: ${totalConcreteAmount.toFixed(2)}`,
+      `Total steel amount: ${totalSteelAmount.toFixed(2)}`,
+      `Grand total amount: ${totalAmount.toFixed(2)}`,
+      '',
+      'Component breakdown:',
+      ...summaryItems.map((item) => `- ${item.name} (${item.elementType}): ${item.wetVolume.toFixed(3)} m³ | ${item.reinforcementKg.toFixed(2)} kg | ${item.totalAmount.toFixed(2)}`),
+    ].join('\n')
+
+    return {
+      items: summaryItems,
+      totalWetVolume,
+      totalDryVolume,
+      totalCementBags,
+      totalReinforcementKg,
+      totalConcreteAmount,
+      totalSteelAmount,
+      totalAmount,
+      reportText,
     }
   }
 

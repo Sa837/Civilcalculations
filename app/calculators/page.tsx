@@ -390,8 +390,8 @@ export default function CalculatorsIndex() {
   }
 
   return (
-    <div className="min-h-screen bg-background dark:bg-background-dark">
-      <div className="mx-auto max-w-6xl px-4 py-8">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(44,123,229,0.08),_transparent_35%),linear-gradient(135deg,_rgba(248,249,250,1)_0%,_rgba(255,255,255,1)_100%)] dark:bg-[radial-gradient(circle_at_top_left,_rgba(77,171,247,0.16),_transparent_30%),linear-gradient(135deg,_#121212_0%,_#171717_100%)]">
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="flex-1">
             {selectedCalculator ? (
@@ -440,11 +440,14 @@ export default function CalculatorsIndex() {
             ) : (
               <>
                 {/* Header */}
-                <div className="mb-16 text-center">
-                  <h1 className="mb-6 font-display text-5xl font-bold text-heading dark:text-heading-dark">
+                <div className="mb-10 rounded-[28px] border border-slate-200/70 bg-white/80 p-8 text-center shadow-[0_20px_60px_-20px_rgba(15,23,42,0.18)] backdrop-blur-sm dark:border-slate-800/70 dark:bg-slate-900/70 sm:p-10">
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary dark:bg-primary/20">
+                    <Calculator className="h-6 w-6" />
+                  </div>
+                  <h1 className="mb-3 font-display text-4xl font-bold text-heading dark:text-heading-dark sm:text-5xl">
                     Engineering Calculators
                   </h1>
-                  <p className="mx-auto max-w-2xl font-sans text-xl text-body/80 dark:text-body-dark/80">
+                  <p className="mx-auto max-w-2xl font-sans text-lg text-body/80 dark:text-body-dark/80 sm:text-xl">
                     Professional-grade calculators designed for civil engineering professionals.
                     Built with accuracy and industry standards in mind.
                   </p>
@@ -459,7 +462,7 @@ export default function CalculatorsIndex() {
                       placeholder="Search everything: Brickwork, Concrete, Paint, Steel, Roof Area..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full rounded-2xl border border-slate-200/20 bg-surface px-12 py-4 font-sans text-body placeholder:text-body/40 shadow-card transition-all focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-800/20 dark:bg-surface-dark dark:text-body-dark dark:placeholder:text-body-dark/40"
+                      className="w-full rounded-2xl border border-slate-200/70 bg-white/90 px-12 py-4 font-sans text-body shadow-[0_12px_40px_-20px_rgba(15,23,42,0.35)] transition-all placeholder:text-body/40 focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700/80 dark:bg-slate-900/90 dark:text-body-dark dark:placeholder:text-body-dark/40"
                     />
                   </div>
                 </div>
@@ -474,7 +477,7 @@ export default function CalculatorsIndex() {
                       <button
                         key={category}
                         onClick={() => setSelectedCategory(category)}
-                        className={`group flex items-center gap-2 rounded-xl border px-3 py-2 font-display font-medium transition-all whitespace-nowrap ${isActive ? 'border-primary bg-primary/10 text-primary shadow-soft' : 'border-slate-200/20 bg-surface text-heading hover:border-primary/50 hover:bg-primary/5 dark:border-slate-800/20 dark:bg-surface-dark dark:text-heading-dark dark:hover:bg-slate-800/50'}`}
+                        className={`group flex items-center gap-2 rounded-full border px-3.5 py-2 font-display font-medium transition-all whitespace-nowrap ${isActive ? 'border-primary bg-primary/10 text-primary shadow-soft' : 'border-slate-200/70 bg-white/80 text-heading hover:border-primary/50 hover:bg-primary/5 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-heading-dark dark:hover:bg-slate-800/50'}`}
                       >
                         <span className="text-sm">{category}</span>
                         <span
@@ -568,7 +571,7 @@ export default function CalculatorsIndex() {
                                   animate={{ opacity: 1, y: 0 }}
                                   exit={{ opacity: 0, y: -20 }}
                                   transition={{ duration: 0.3 }}
-                                  className="group relative rounded-2xl border border-slate-200/20 bg-surface p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-hover dark:border-slate-800/20 dark:bg-surface-dark text-left cursor-pointer"
+                                  className="group relative rounded-[24px] border border-slate-200/70 bg-white/80 p-6 shadow-[0_16px_40px_-20px_rgba(15,23,42,0.25)] transition-all hover:-translate-y-1 hover:shadow-hover dark:border-slate-800/70 dark:bg-slate-900/70 text-left cursor-pointer"
                                 >
                                   {/* Favorite Button */}
                                   <div
