@@ -224,10 +224,25 @@ export function PremiumUnlockPanel({
         Your basic calculation is ready. Unlock premium features below to view the full estimate summary.
       </div>
       <AdSlot
-        slotId={`${getPremiumStorageKey(calculatorId).replace(/[^a-z0-9-]+/g, '')}-inline`}
+        slotId="8833542673"
         position="inline"
+        format="auto"
+        responsive="true"
         className="my-0"
       />
+
+      {process.env.NODE_ENV !== 'production' && (
+        <button
+          type="button"
+          onClick={() => {
+            window.sessionStorage.removeItem(getPremiumStorageKey(calculatorId))
+            notifySubscribers()
+          }}
+          className="mt-3 text-xs text-slate-400 underline decoration-dotted hover:text-slate-600"
+        >
+          Dev only: reset unlock for this calculator
+        </button>
+      )}
     </div>
   )
 }
