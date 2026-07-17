@@ -215,8 +215,8 @@ export function PremiumUnlockPanel({
 
       {status === 'blocked' && (
         <div className="mt-4 rounded-xl border border-red-200 bg-red-50/80 p-3 text-sm text-red-700 dark:border-red-700/30 dark:bg-red-900/20 dark:text-red-300">
-          We couldn't load an ad — this is usually caused by an adblocker. Please disable it for
-          this site and try again.
+          We couldn&apos;t load an ad — this is usually caused by an adblocker. Please disable it
+          for this site and try again.
         </div>
       )}
 
