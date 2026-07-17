@@ -59,7 +59,7 @@ type AdBreakConfig = {
 
 declare global {
   interface Window {
-    adsbygoogle?: unknown[]
+    adsbygoogle?: { push: (params?: any) => void }[]
     adBreak?: (config: AdBreakConfig) => void
     adConfig?: (config: Record<string, unknown>) => void
   }
