@@ -16,6 +16,13 @@ import AdSlot from '@/components/ads/AdSlot'
  * 4. Once the timer finishes, a close (X) button appears. Clicking it
  *    unlocks premium features for the rest of the session and closes
  *    the modal.
+ *
+ * FIX (this version): the ad container previously used `overflow-hidden`
+ * with a fixed `min-h-[250px]`. Network inspection showed AdSense was
+ * serving a *backfill* ad (a second internal request after the first
+ * came back empty) whose creative size didn't match that fixed box, so
+ * the ad was being clipped/hidden by the overflow rule. The container
+ * below now lets the ad size itself naturally and never clips it.
  */
 const WATCH_SECONDS = 15
 const STORAGE_PREFIX = 'premium-unlock:'
@@ -114,7 +121,9 @@ function AdWatchModal({ open, onFinish, watchSeconds = WATCH_SECONDS }: AdWatchM
       aria-modal="true"
       aria-label="Watch ad to unlock premium features"
     >
-      <div className="relative w-full max-w-md rounded-2xl border border-amber-200/60 bg-white p-5 shadow-xl dark:border-amber-700/30 dark:bg-slate-900">
+      {/* Wider than before (max-w-md -> max-w-lg) so the backfill ad has
+          more horizontal room to render at its natural size. */}
+      <div className="relative w-full max-w-lg rounded-2xl border border-amber-200/60 bg-white p-5 shadow-xl dark:border-amber-700/30 dark:bg-slate-900">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
             <Sparkles className="h-4 w-4" />
@@ -144,8 +153,31 @@ function AdWatchModal({ open, onFinish, watchSeconds = WATCH_SECONDS }: AdWatchM
             : `Please wait ${secondsLeft}s — premium features unlock automatically once the ad finishes.`}
         </p>
 
-        <div className="mt-4 min-h-[250px] overflow-hidden rounded-xl border border-dashed border-amber-300/70 bg-amber-50/40 dark:border-amber-700/40 dark:bg-slate-800/40">
-          <AdSlot slotId="8833542673" position="sidebar" format="auto" responsive="true" />
+        {/*
+          FIXED AD CONTAINER
+          - removed `overflow-hidden` (was clipping backfill creatives
+            that don't match a fixed 250px box)
+          - removed the fixed `min-h-[250px]` on the OUTER wrapper; the
+            AdSlot component already sets its own min-height, doubling
+            it up here caused mismatched box sizes
+          - added `w-full` + `flex justify-center` so the ad has full
+            modal width available to size itself against, and is
+            centered if the served creative is narrower than the modal
+          - key={open} forces a clean remount every time the modal opens,
+            so a stale/duplicate adsbygoogle push from a previous open
+            can never block a fresh one
+        */}
+        <div
+          key={open ? 'ad-open' : 'ad-closed'}
+          className="mt-4 flex w-full justify-center overflow-visible rounded-xl border border-dashed border-amber-300/70 bg-amber-50/40 p-2 dark:border-amber-700/40 dark:bg-slate-800/40"
+        >
+          <AdSlot
+            slotId="8833542673"
+            position="sidebar"
+            format="auto"
+            responsive="true"
+            fullWidth
+          />
         </div>
 
         {canClose && (
