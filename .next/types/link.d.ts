@@ -30,6 +30,7 @@ declare namespace __next_route_internal_types__ {
 
   type StaticRoutes = 
     | `/`
+    | `/about`
     | `/blog/advanced-structural-analysis-fem`
     | `/blog/bim-building-information-modeling`
     | `/blog/concrete-technology-advanced-mix-design`
@@ -41,19 +42,18 @@ declare namespace __next_route_internal_types__ {
     | `/blog/infrastructure-resilience-climate-change`
     | `/blog/project-management-lean-construction`
     | `/blog/smart-cities-iot-urban-infrastructure`
-    | `/blog/sustainable-construction-green-materials`
     | `/blog/steel-structure-design-modern-analysis`
+    | `/blog/sustainable-construction-green-materials`
     | `/blog/transportation-highway-design-standards`
     | `/blog/water-resources-sustainable-management`
     | `/calculators`
     | `/contact`
     | `/contact-action`
     | `/converters`
-    | `/disclaimer`
     | `/cookie-policy`
-    | `/about`
-    | `/resources`
+    | `/disclaimer`
     | `/privacy-policy`
+    | `/resources`
     | `/terms-and-conditions`
   type DynamicRoutes<T extends string = string> = 
     | `/calculators/${SafeSlug<T>}`

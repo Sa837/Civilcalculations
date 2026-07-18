@@ -1824,7 +1824,204 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
           </div>
         </div>
 
-        {/* Project Estimate Summary */}
+        
+
+        {/* Results Section */}
+        <AnimatePresence>
+          {result && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="border-t border-slate-200/20 bg-gradient-to-r from-primary/5 to-secondary/5 p-8 dark:border-slate-800/20 dark:from-primary/10 dark:to-secondary/10"
+            >
+              {/* Results content */}
+<div className="mb-6 flex items-center gap-2">
+  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+  <h2 className="text-xl font-semibold text-heading dark:text-heading-dark">
+    Calculation Results
+  </h2>
+</div>
+
+<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+  {/* Volume */}
+  <div className="h-full rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
+    <h3 className="mb-4 text-lg font-semibold text-heading dark:text-heading-dark">
+      Volume
+    </h3>
+
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-body/70 dark:text-body-dark/70">
+          Wet Volume
+        </span>
+
+        <span className="font-mono font-semibold">
+          {result.wetVolume.toFixed(3)} {formData.unit === 'm' ? 'm³' : 'ft³'}
+        </span>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <span className="text-body/70 dark:text-body-dark/70">
+          Dry Volume
+        </span>
+
+        <span className="font-mono font-semibold">
+          {result.dryVolume.toFixed(3)} {formData.unit === 'm' ? 'm³' : 'ft³'}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  {/* Cement */}
+  <div className="h-full rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
+    <h3 className="mb-4 text-lg font-semibold text-heading dark:text-heading-dark">
+      Cement
+    </h3>
+
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-body/70 dark:text-body-dark/70">
+          Weight
+        </span>
+
+        <span className="font-mono font-semibold">
+          {result.cementWeight.toFixed(1)} kg
+        </span>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <span className="text-body/70 dark:text-body-dark/70">
+          Bags (50 kg)
+        </span>
+
+        <span className="font-mono font-semibold text-primary">
+          {Math.ceil(result.cementBags)} bags
+        </span>
+      </div>
+    </div>
+  </div>
+
+  {/* Sand */}
+  <div className="h-full rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
+    <h3 className="mb-4 text-lg font-semibold text-heading dark:text-heading-dark">
+      Sand
+    </h3>
+
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-body/70 dark:text-body-dark/70">
+          Weight
+        </span>
+
+        <span className="font-mono font-semibold">
+          {result.sandWeight.toFixed(1)} kg
+        </span>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <span className="text-body/70 dark:text-body-dark/70">
+          Volume
+        </span>
+
+        <span className="font-mono font-semibold">
+          {(result.sandWeight / DENSITIES.sand).toFixed(3)} m³
+        </span>
+      </div>
+    </div>
+  </div>
+
+  {/* Aggregate */}
+  <div className="h-full rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
+    <h3 className="mb-4 text-lg font-semibold text-heading dark:text-heading-dark">
+      Aggregate Estimate
+    </h3>
+
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-body/70 dark:text-body-dark/70">
+          Weight
+        </span>
+
+        <span className="font-mono font-semibold">
+          {result.aggregateWeight.toFixed(1)} kg
+        </span>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <span className="text-body/70 dark:text-body-dark/70">
+          Volume
+        </span>
+
+        <span className="font-mono font-semibold">
+          {(result.aggregateWeight / DENSITIES.aggregate).toFixed(3)} m³
+        </span>
+      </div>
+    </div>
+  </div>
+
+  {/* Reinforcement */}
+  {result.reinforcement && (
+    <div className="lg:col-span-3 rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
+      <h3 className="mb-5 text-lg font-semibold text-heading dark:text-heading-dark">
+        Reinforcement Estimate
+      </h3>
+
+      <div className="mb-5 flex items-center justify-between rounded-lg bg-slate-100 px-4 py-3 dark:bg-slate-800">
+        <span className="font-medium text-body/70 dark:text-body-dark/70">
+          Total Steel Weight
+        </span>
+
+        <span className="font-mono text-lg font-bold text-primary">
+          {result.reinforcement.totalSteelWeightKg.toFixed(2)} kg
+        </span>
+      </div>
+
+      <p className="mb-5 text-sm leading-6 text-body/80 dark:text-body-dark/80">
+        {result.reinforcement.summary}
+      </p>
+
+      <div className="space-y-3">
+        {result.reinforcement.items.map(
+          (item: {
+            label: string
+            barCount: number
+            cuttingLengthM: number
+            weightKg: number
+          }) => (
+            <div
+              key={item.label}
+              className="flex flex-col gap-2 rounded-lg border border-slate-200/30 bg-white px-4 py-3 md:flex-row md:items-center md:justify-between dark:border-slate-700 dark:bg-slate-900/50"
+            >
+              <span className="font-medium">{item.label}</span>
+
+              <span className="font-mono text-sm">
+                {item.barCount} bars × {item.cuttingLengthM.toFixed(2)} m ={" "}
+                <strong>{item.weightKg.toFixed(2)} kg</strong>
+              </span>
+            </div>
+          )
+        )}
+      </div>
+    </div>
+  )}
+
+</div>
+
+{/* Premium Promo Line - Styled with Tailwind for better look */}
+<div className="mt-6 rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
+  <b>Unlock Premium to Calculate for Multiple Elements at Once <i className="text-amber-600 dark:text-amber-400">by viewing ads</i></b>
+</div>
+
+
+              <PremiumFeatureGate
+              calculatorId={CALC_ID}
+              title="Building Project Estimate"
+              description="Watch the ad to unlock To calculate for Multiple Elements at Once ,project summary, rate breakdown, and PDF/Excel export."
+              className="mt-4"
+            >
+                {/* Project Estimate Summary */}
         {projectSummary && (
           <div className="border-t border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -1835,12 +2032,7 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
                 </p>
               </div>
             </div>
-            <PremiumFeatureGate
-              calculatorId={CALC_ID}
-              title="Building Project Estimate"
-              description="Watch the ad to unlock project summary, rate breakdown, and PDF/Excel export."
-              className="mt-4"
-            >
+            
             <div className="flex flex-wrap items-center justify-between gap-3">
               <input
                 value={projectName}
@@ -1918,137 +2110,9 @@ export default function ConcreteCalculator({ globalUnit = 'm' }: ConcreteCalcula
               <h3 className="font-semibold">Project Report Preview</h3>
               <pre className="mt-3 whitespace-pre-wrap text-sm">{projectSummary.reportText}</pre>
             </div>
-            </PremiumFeatureGate>
+            
           </div>
         )}
-
-        {/* Results Section */}
-        <AnimatePresence>
-          {result && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="border-t border-slate-200/20 bg-gradient-to-r from-primary/5 to-secondary/5 p-8 dark:border-slate-800/20 dark:from-primary/10 dark:to-secondary/10"
-            >
-              {/* Results content */}
-              <div className="mb-6 flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-                <h2 className="  text-xl font-semibold text-heading dark:text-heading-dark">
-                  Calculation Results
-                </h2>
-              </div>
-              <PremiumFeatureGate
-                calculatorId={CALC_ID}
-                title="Concrete Estimate Summary"
-                description="Watch the ad to unlock quantity summary, rebar estimate, step-by-step breakdown, and export."
-              >
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3  ">
-                {/* Volume Results */}
-                <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
-                  <h3 className="mb-4   font-semibold text-heading dark:text-heading-dark">
-                    Volume
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-body/70 dark:text-body-dark/70">Wet Volume:</span>
-                      <span className="font-mono font-semibold">
-                        {result.wetVolume.toFixed(3)} {formData.unit === 'm' ? 'm³' : 'ft³'}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-body/70 dark:text-body-dark/70">Dry Volume:</span>
-                      <span className="font-mono font-semibold">
-                        {result.dryVolume.toFixed(3)} {formData.unit === 'm' ? 'm³' : 'ft³'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Cement Results */}
-                <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
-                  <h3 className="mb-4   font-semibold text-heading dark:text-heading-dark">
-                    Cement
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-body/70 dark:text-body-dark/70">Weight:</span>
-                      <span className="font-mono font-semibold">
-                        {result.cementWeight.toFixed(1)} kg
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-body/70 dark:text-body-dark/70">Bags (50kg):</span>
-                      <span className="font-mono font-semibold text-primary">
-                        {Math.ceil(result.cementBags)} bags
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Sand Results */}
-                <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
-                  <h3 className="mb-4   font-semibold text-heading dark:text-heading-dark">Sand</h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-body/70 dark:text-body-dark/70">Weight:</span>
-                      <span className="font-mono font-semibold">
-                        {result.sandWeight.toFixed(1)} kg
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-body/70 dark:text-body-dark/70">Volume:</span>
-                      <span className="font-mono font-semibold">
-                        {(result.sandWeight / DENSITIES.sand).toFixed(3)} m³
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Aggregate Results */}
-                <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
-                  <h3 className="mb-4   font-semibold text-heading dark:text-heading-dark">
-                    Aggregate
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-body/70 dark:text-body-dark/70">Weight:</span>
-                      <span className="font-mono font-semibold">
-                        {result.aggregateWeight.toFixed(1)} kg
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-body/70 dark:text-body-dark/70">Volume:</span>
-                      <span className="font-mono font-semibold">
-                        {(result.aggregateWeight / DENSITIES.aggregate).toFixed(3)} m³
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {result.reinforcement && (
-                <div className="mt-6 rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
-                  <div className="flex items-center justify-between gap-2">
-                    <b>Rebar Estimate:</b>
-                    <span className="font-mono font-semibold">{result.reinforcement.totalSteelWeightKg.toFixed(2)} kg</span>
-                  </div>
-                  <p className="mt-2 text-sm">{result.reinforcement.summary}</p>
-                  <ul className="mt-3 space-y-2 text-sm">
-                    {result.reinforcement.items.map((item: { label: string; barCount: number; cuttingLengthM: number; weightKg: number }) => (
-                      <li key={item.label} className="flex items-center justify-between gap-2 rounded-lg bg-white/70 px-3 py-2 dark:bg-slate-900/50">
-                        <span>{item.label}</span>
-                        <span className="font-mono">{item.barCount} bars × {item.cuttingLengthM.toFixed(2)} m = {item.weightKg.toFixed(2)} kg</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {/* Optional engineering summary (non-invasive) */}
-              {result.human_summary && (
-                <div className="mt-6   rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
-                  <b>Engineering Summary:</b> {result.human_summary}
-                </div>
-              )}
               {/* Steps */}
               {formData.showStepByStep && (
                 <div className="mt-6   rounded-xl border border-blue-200/40 bg-blue-50 p-6 dark:border-blue-700/30 dark:bg-blue-900/40">

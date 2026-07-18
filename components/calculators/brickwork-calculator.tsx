@@ -1673,11 +1673,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                 </h2>
               </div>
 
-              <PremiumFeatureGate
-                calculatorId={CALC_ID}
-                title="Brickwork Estimate Summary"
-                description="Watch the ad to unlock brick quantity summary, step-by-step breakdown, and export."
-              >
+              
               {/* Main Results Table */}
               <div className="mb-8 overflow-hidden rounded-xl border border-slate-200/20 bg-white/70 dark:border-slate-700/30 dark:bg-slate-900/60">
                 <table className="w-full">
@@ -1745,7 +1741,11 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                   </tbody>
                 </table>
               </div>
-
+              <PremiumFeatureGate
+                calculatorId={CALC_ID}
+                title="Brickwork Estimate Summary"
+                description="Watch the ad to unlock brick quantity summary, step-by-step breakdown, and export."
+              >
               <div className="flex flex-wrap gap-2">
                 <PremiumLockedAction
                   calculatorId={CALC_ID}
