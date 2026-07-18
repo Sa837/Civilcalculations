@@ -29,37 +29,37 @@ declare namespace __next_route_internal_types__ {
     S extends `${string}${SearchOrHash}` ? never : S
 
   type StaticRoutes = 
-    | `/`
-    | `/about`
-    | `/blog/advanced-structural-analysis-fem`
-    | `/blog/bim-building-information-modeling`
-    | `/blog/concrete-technology-advanced-mix-design`
     | `/blog/construction-technology-drones-robotics`
-    | `/blog/digital-twins-construction-management`
     | `/blog/bridge-engineering-innovative-design`
     | `/blog/environmental-engineering-remediation`
-    | `/blog/geotechnical-soil-structure-interaction`
-    | `/blog/infrastructure-resilience-climate-change`
     | `/blog/project-management-lean-construction`
-    | `/blog/smart-cities-iot-urban-infrastructure`
     | `/blog/steel-structure-design-modern-analysis`
     | `/blog/sustainable-construction-green-materials`
     | `/blog/transportation-highway-design-standards`
     | `/blog/water-resources-sustainable-management`
     | `/calculators`
-    | `/contact`
     | `/contact-action`
     | `/converters`
-    | `/cookie-policy`
+    | `/`
+    | `/resources`
+    | `/about`
+    | `/blog/advanced-structural-analysis-fem`
+    | `/blog/digital-twins-construction-management`
+    | `/blog/bim-building-information-modeling`
+    | `/blog/geotechnical-soil-structure-interaction`
+    | `/blog/concrete-technology-advanced-mix-design`
+    | `/blog/smart-cities-iot-urban-infrastructure`
+    | `/blog/infrastructure-resilience-climate-change`
+    | `/contact`
     | `/disclaimer`
     | `/privacy-policy`
-    | `/resources`
+    | `/cookie-policy`
     | `/terms-and-conditions`
   type DynamicRoutes<T extends string = string> = 
     | `/calculators/${SafeSlug<T>}`
     | `/converters/${SafeSlug<T>}`
-    | `/resources/${SafeSlug<T>}`
     | `/resources/${SafeSlug<T>}/${SafeSlug<T>}`
+    | `/resources/${SafeSlug<T>}`
 
   type RouteImpl<T> = 
     | StaticRoutes
