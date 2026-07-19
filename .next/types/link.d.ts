@@ -31,30 +31,30 @@ declare namespace __next_route_internal_types__ {
   type StaticRoutes = 
     | `/`
     | `/about`
-    | `/blog/advanced-structural-analysis-fem`
-    | `/blog/bim-building-information-modeling`
-    | `/blog/bridge-engineering-innovative-design`
-    | `/blog/digital-twins-construction-management`
-    | `/blog/concrete-technology-advanced-mix-design`
-    | `/blog/environmental-engineering-remediation`
-    | `/blog/construction-technology-drones-robotics`
-    | `/blog/geotechnical-soil-structure-interaction`
-    | `/blog/infrastructure-resilience-climate-change`
-    | `/blog/smart-cities-iot-urban-infrastructure`
-    | `/blog/project-management-lean-construction`
-    | `/blog/sustainable-construction-green-materials`
-    | `/blog/transportation-highway-design-standards`
-    | `/blog/steel-structure-design-modern-analysis`
-    | `/blog/water-resources-sustainable-management`
+    | `/calculators`
     | `/contact`
     | `/contact-action`
-    | `/calculators`
     | `/converters`
     | `/cookie-policy`
     | `/disclaimer`
+    | `/blog/advanced-structural-analysis-fem`
+    | `/blog/bim-building-information-modeling`
+    | `/blog/bridge-engineering-innovative-design`
+    | `/blog/construction-technology-drones-robotics`
+    | `/blog/concrete-technology-advanced-mix-design`
+    | `/blog/digital-twins-construction-management`
+    | `/blog/environmental-engineering-remediation`
+    | `/blog/geotechnical-soil-structure-interaction`
+    | `/blog/infrastructure-resilience-climate-change`
+    | `/blog/project-management-lean-construction`
+    | `/blog/smart-cities-iot-urban-infrastructure`
+    | `/blog/steel-structure-design-modern-analysis`
+    | `/blog/sustainable-construction-green-materials`
+    | `/blog/transportation-highway-design-standards`
+    | `/blog/water-resources-sustainable-management`
     | `/privacy-policy`
-    | `/terms-and-conditions`
     | `/resources`
+    | `/terms-and-conditions`
   type DynamicRoutes<T extends string = string> = 
     | `/calculators/${SafeSlug<T>}`
     | `/converters/${SafeSlug<T>}`
