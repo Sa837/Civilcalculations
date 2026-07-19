@@ -29,37 +29,37 @@ declare namespace __next_route_internal_types__ {
     S extends `${string}${SearchOrHash}` ? never : S
 
   type StaticRoutes = 
-    | `/blog/construction-technology-drones-robotics`
-    | `/blog/bridge-engineering-innovative-design`
-    | `/blog/environmental-engineering-remediation`
-    | `/blog/project-management-lean-construction`
-    | `/blog/steel-structure-design-modern-analysis`
-    | `/blog/sustainable-construction-green-materials`
-    | `/blog/transportation-highway-design-standards`
-    | `/blog/water-resources-sustainable-management`
-    | `/calculators`
-    | `/contact-action`
-    | `/converters`
     | `/`
-    | `/resources`
     | `/about`
     | `/blog/advanced-structural-analysis-fem`
-    | `/blog/digital-twins-construction-management`
     | `/blog/bim-building-information-modeling`
-    | `/blog/geotechnical-soil-structure-interaction`
+    | `/blog/bridge-engineering-innovative-design`
+    | `/blog/digital-twins-construction-management`
     | `/blog/concrete-technology-advanced-mix-design`
-    | `/blog/smart-cities-iot-urban-infrastructure`
+    | `/blog/environmental-engineering-remediation`
+    | `/blog/construction-technology-drones-robotics`
+    | `/blog/geotechnical-soil-structure-interaction`
     | `/blog/infrastructure-resilience-climate-change`
+    | `/blog/smart-cities-iot-urban-infrastructure`
+    | `/blog/project-management-lean-construction`
+    | `/blog/sustainable-construction-green-materials`
+    | `/blog/transportation-highway-design-standards`
+    | `/blog/steel-structure-design-modern-analysis`
+    | `/blog/water-resources-sustainable-management`
     | `/contact`
+    | `/contact-action`
+    | `/calculators`
+    | `/converters`
+    | `/cookie-policy`
     | `/disclaimer`
     | `/privacy-policy`
-    | `/cookie-policy`
     | `/terms-and-conditions`
+    | `/resources`
   type DynamicRoutes<T extends string = string> = 
     | `/calculators/${SafeSlug<T>}`
     | `/converters/${SafeSlug<T>}`
-    | `/resources/${SafeSlug<T>}/${SafeSlug<T>}`
     | `/resources/${SafeSlug<T>}`
+    | `/resources/${SafeSlug<T>}/${SafeSlug<T>}`
 
   type RouteImpl<T> = 
     | StaticRoutes

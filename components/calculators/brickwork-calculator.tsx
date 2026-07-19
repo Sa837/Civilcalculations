@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback, memo } from 'react'
+import { jsPDF } from 'jspdf'
+import * as XLSX from 'xlsx'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Calculator,
@@ -17,7 +19,9 @@ import {
   BrickworkCalculator as BrickworkCalculatorLib,
   STANDARD_BRICK_SIZES,
   MORTAR_MIX_TYPES,
+  type BrickworkProjectItem,
 } from '@/lib/registry/calculator/brickwork-calculator'
+import { CONCRETE_MIX_TYPES } from '@/lib/registry/calculator/concrete-calculator'
 import { UnitConverter, UNIT_PRESETS } from '@/lib/registry/globalunits'
 import { BRICKWORK_INFO_SECTION } from '@/lib/registry/calculator/enhanced-info-section/brickwork-info-section'
 import {
@@ -45,6 +49,14 @@ interface BrickworkResult {
   wallVolume: number
   netWallVolume: number
   totalOpeningVolume: number
+  totalLintelVolume: number
+  lintelConcreteVolume: number
+  lintelCementWeight: number
+  lintelCementBags: number
+  lintelSandWeight: number
+  lintelAggregateWeight: number
+  lintelSteelWeight: number
+  lintelMixRatio: string
 }
 
 interface Opening {
@@ -53,6 +65,21 @@ interface Opening {
   width: string
   height: string
   unit: 'm' | 'ft'
+}
+
+interface Lintel {
+  id: string
+  name: string
+  kind: 'lintel' | 'sill'
+  spanWidth: string
+  bearingEachSide: string
+  depth: string
+  unit: 'm' | 'ft'
+  mainBarCount: string
+  mainBarDiaMm: string
+  stirrupDiaMm: string
+  stirrupSpacingMm: string
+  clearCoverMm: string
 }
 
 interface BrickworkFormData {
@@ -70,6 +97,8 @@ interface BrickworkFormData {
   showStepByStep: boolean
   area?: string
   openings: Opening[]
+  lintels: Lintel[]
+  lintelMixType: string
   brickSizeType: 'standard' | 'custom'
   standardBrickSize: string
   customBrickInput: string
@@ -799,6 +828,8 @@ const InputField = memo(
 
 InputField.displayName = 'InputField'
 
+const PROJECT_STORAGE_KEY = 'civil-brickwork-project-v1'
+
 export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalculatorProps) {
   const [useArea, setUseArea] = useState(false)
   const [formData, setFormData] = useState<BrickworkFormData>({
@@ -816,6 +847,8 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
     showStepByStep: false,
     area: '',
     openings: [],
+    lintels: [],
+    lintelMixType: 'M15',
     brickSizeType: 'standard',
     standardBrickSize: '240x115x57',
     customBrickInput: '',
@@ -824,6 +857,51 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
   const [result, setResult] = useState<BrickworkResult | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isCalculating, setIsCalculating] = useState(false)
+  const [projectItems, setProjectItems] = useState<BrickworkProjectItem[]>([])
+  const [projectName, setProjectName] = useState('Building Estimate')
+  const [projectRateInputs, setProjectRateInputs] = useState<
+    Record<string, { brickRate: string; cementRate: string; sandRate: string; concreteRate: string; steelRate: string }>
+  >({})
+  const [projectSummary, setProjectSummary] = useState<ReturnType<typeof BrickworkCalculatorLib.summarizeProject> | null>(
+    null,
+  )
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    try {
+      const saved = window.localStorage.getItem(PROJECT_STORAGE_KEY)
+      if (!saved) return
+
+      const parsed = JSON.parse(saved) as {
+        projectName?: string
+        projectItems?: BrickworkProjectItem[]
+        projectRateInputs?: Record<
+          string,
+          { brickRate: string; cementRate: string; sandRate: string; concreteRate: string; steelRate: string }
+        >
+      }
+
+      if (parsed.projectName) setProjectName(parsed.projectName)
+      if (parsed.projectItems && parsed.projectItems.length > 0) {
+        setProjectItems(parsed.projectItems)
+        setProjectSummary(BrickworkCalculatorLib.summarizeProject(parsed.projectItems))
+      }
+      if (parsed.projectRateInputs) {
+        setProjectRateInputs(parsed.projectRateInputs)
+      }
+    } catch {
+      window.localStorage.removeItem(PROJECT_STORAGE_KEY)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    window.localStorage.setItem(
+      PROJECT_STORAGE_KEY,
+      JSON.stringify({ projectName, projectItems, projectRateInputs }),
+    )
+  }, [projectName, projectItems, projectRateInputs])
 
   const parseCustomBrickInput = useCallback((input: string) => {
     const normalized = input.replace(/\*/g, 'x')
@@ -973,6 +1051,33 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
         unit: globalUnit,
       }))
 
+      // Convert lintels/sills
+      newFormData.lintels = prev.lintels.map((lintel) => ({
+        ...lintel,
+        spanWidth: lintel.spanWidth
+          ? UnitConverter.convertLength(
+              parseFloat(lintel.spanWidth),
+              lintel.unit === 'm' ? 'm' : 'ft',
+              newPresets.length,
+            ).toFixed(3)
+          : lintel.spanWidth,
+        bearingEachSide: lintel.bearingEachSide
+          ? UnitConverter.convertLength(
+              parseFloat(lintel.bearingEachSide),
+              lintel.unit === 'm' ? 'm' : 'ft',
+              newPresets.length,
+            ).toFixed(3)
+          : lintel.bearingEachSide,
+        depth: lintel.depth
+          ? UnitConverter.convertLength(
+              parseFloat(lintel.depth),
+              lintel.unit === 'm' ? 'm' : 'ft',
+              newPresets.length,
+            ).toFixed(3)
+          : lintel.depth,
+        unit: globalUnit,
+      }))
+
       return newFormData
     })
   }, [globalUnit])
@@ -1063,6 +1168,43 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
     }))
   }, [])
 
+  const addLintel = useCallback(() => {
+    const newLintel: Lintel = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: `Lintel ${formData.lintels.length + 1}`,
+      kind: 'lintel',
+      spanWidth: '',
+      bearingEachSide: formData.unit === 'm' ? '0.15' : '0.5',
+      depth: formData.unit === 'm' ? '0.15' : '0.5',
+      unit: formData.unit,
+      mainBarCount: '2',
+      mainBarDiaMm: '12',
+      stirrupDiaMm: '8',
+      stirrupSpacingMm: '150',
+      clearCoverMm: '25',
+    }
+    setFormData((prev) => ({
+      ...prev,
+      lintels: [...prev.lintels, newLintel],
+    }))
+  }, [formData.lintels.length, formData.unit])
+
+  const removeLintel = useCallback((id: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      lintels: prev.lintels.filter((lintel) => lintel.id !== id),
+    }))
+  }, [])
+
+  const updateLintel = useCallback((id: string, field: keyof Lintel, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      lintels: prev.lintels.map((lintel) =>
+        lintel.id === id ? { ...lintel, [field]: value } : lintel,
+      ),
+    }))
+  }, [])
+
   const validateForm = useCallback((): boolean => {
     const newErrors: Record<string, string> = {}
 
@@ -1103,6 +1245,19 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
       if (opening.height && parseFloat(opening.height) <= 0) {
         newErrors[`openingHeight_${opening.id}`] =
           `Opening ${index + 1} height must be greater than 0`
+      }
+    })
+
+    // Validate lintels / sills
+    formData.lintels.forEach((lintel, index) => {
+      if (!lintel.spanWidth || parseFloat(lintel.spanWidth) <= 0) {
+        newErrors[`lintelSpan_${lintel.id}`] = `Lintel ${index + 1} span must be greater than 0`
+      }
+      if (!lintel.depth || parseFloat(lintel.depth) <= 0) {
+        newErrors[`lintelDepth_${lintel.id}`] = `Lintel ${index + 1} depth must be greater than 0`
+      }
+      if (lintel.bearingEachSide && parseFloat(lintel.bearingEachSide) < 0) {
+        newErrors[`lintelBearing_${lintel.id}`] = `Lintel ${index + 1} bearing cannot be negative`
       }
     })
 
@@ -1154,10 +1309,56 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
           height: op.height ? parseFloat(op.height) : 0,
           unitSystem: op.unit === 'm' ? ('metric' as const) : ('imperial' as const), // Fix: Add 'as const'
         })),
+        lintelMixType: formData.lintelMixType,
+        lintels: formData.lintels.map((lintel) => ({
+          name: lintel.name,
+          kind: lintel.kind,
+          spanWidth: lintel.spanWidth ? parseFloat(lintel.spanWidth) : 0,
+          bearingEachSide: lintel.bearingEachSide ? parseFloat(lintel.bearingEachSide) : 0,
+          depth: lintel.depth ? parseFloat(lintel.depth) : 0,
+          unitSystem: lintel.unit === 'm' ? ('metric' as const) : ('imperial' as const),
+          mainBarCount: lintel.mainBarCount ? parseInt(lintel.mainBarCount, 10) : undefined,
+          mainBarDiaMm: lintel.mainBarDiaMm ? parseFloat(lintel.mainBarDiaMm) : undefined,
+          stirrupDiaMm: lintel.stirrupDiaMm ? parseFloat(lintel.stirrupDiaMm) : undefined,
+          stirrupSpacingMm: lintel.stirrupSpacingMm ? parseFloat(lintel.stirrupSpacingMm) : undefined,
+          clearCoverMm: lintel.clearCoverMm ? parseFloat(lintel.clearCoverMm) : undefined,
+        })),
       }
 
       const result = BrickworkCalculatorLib.calculate(input)
       setResult(result)
+
+      const itemId = `item-${Date.now()}`
+      const newItem: BrickworkProjectItem = {
+        id: itemId,
+        name: `${projectName.trim() || 'Building Estimate'} • Component ${projectItems.length + 1}`,
+        input,
+        result,
+        brickRate: projectRateInputs[itemId]?.brickRate ? parseFloat(projectRateInputs[itemId].brickRate) : undefined,
+        cementRate: projectRateInputs[itemId]?.cementRate
+          ? parseFloat(projectRateInputs[itemId].cementRate)
+          : undefined,
+        sandRate: projectRateInputs[itemId]?.sandRate ? parseFloat(projectRateInputs[itemId].sandRate) : undefined,
+        concreteRate: projectRateInputs[itemId]?.concreteRate
+          ? parseFloat(projectRateInputs[itemId].concreteRate)
+          : undefined,
+        steelRate: projectRateInputs[itemId]?.steelRate ? parseFloat(projectRateInputs[itemId].steelRate) : undefined,
+      }
+      setProjectItems((prev) => {
+        const nextItems = [...prev, newItem]
+        setProjectSummary(BrickworkCalculatorLib.summarizeProject(nextItems))
+        return nextItems
+      })
+      setProjectRateInputs((prev) => ({
+        ...prev,
+        [itemId]: {
+          brickRate: prev[itemId]?.brickRate ?? '',
+          cementRate: prev[itemId]?.cementRate ?? '',
+          sandRate: prev[itemId]?.sandRate ?? '',
+          concreteRate: prev[itemId]?.concreteRate ?? '',
+          steelRate: prev[itemId]?.steelRate ?? '',
+        },
+      }))
     } catch (error) {
       console.error('Calculation error:', error)
       setErrors({
@@ -1166,7 +1367,151 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
     } finally {
       setIsCalculating(false)
     }
-  }, [formData, validateForm])
+  }, [formData, projectItems, projectName, projectRateInputs, validateForm])
+
+  const updateProjectRate = useCallback(
+    (itemId: string, field: 'brickRate' | 'cementRate' | 'sandRate' | 'concreteRate' | 'steelRate', value: string) => {
+      const parsedValue = value ? parseFloat(value) : undefined
+      setProjectRateInputs((prev) => ({ ...prev, [itemId]: { ...prev[itemId], [field]: value } }))
+      setProjectItems((prev) => {
+        const nextItems = prev.map((item) => (item.id === itemId ? { ...item, [field]: parsedValue } : item))
+        setProjectSummary(BrickworkCalculatorLib.summarizeProject(nextItems))
+        return nextItems
+      })
+    },
+    [],
+  )
+
+  const removeProjectItem = useCallback((itemId: string) => {
+    setProjectItems((prev) => {
+      const nextItems = prev.filter((item) => item.id !== itemId)
+      setProjectSummary(BrickworkCalculatorLib.summarizeProject(nextItems))
+      return nextItems
+    })
+    setProjectRateInputs((prev) => {
+      const next = { ...prev }
+      delete next[itemId]
+      return next
+    })
+  }, [])
+
+  const clearProject = useCallback(() => {
+    setProjectItems([])
+    setProjectRateInputs({})
+    setProjectSummary(null)
+    setProjectName('Building Estimate')
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem(PROJECT_STORAGE_KEY)
+    }
+  }, [])
+
+  const downloadProjectReport = useCallback(() => {
+    if (!projectSummary) return
+
+    const fileName = `${(projectName || 'brickwork-estimate').toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'brickwork-estimate'}.txt`
+    const blob = new Blob([projectSummary.reportText], { type: 'text/plain;charset=utf-8' })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = fileName
+    link.click()
+    window.URL.revokeObjectURL(url)
+  }, [projectName, projectSummary])
+
+  const exportProjectAsPdf = useCallback(() => {
+    if (!projectSummary) return
+
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' })
+    const title = (projectName || 'Building Estimate').trim() || 'Building Estimate'
+    const safeName = title.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'brickwork-estimate'
+
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(18)
+    doc.text(title, 40, 50)
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    doc.text('Brickwork building estimate summary', 40, 76)
+    doc.text(`Total bricks: ${projectSummary.totalBricks.toLocaleString()} pcs`, 40, 104)
+    doc.text(`Total cement: ${projectSummary.totalCementWeight.toFixed(1)} kg (${projectSummary.totalCementBags.toFixed(2)} bags)`, 40, 124)
+    doc.text(`Total sand: ${projectSummary.totalSandWeight.toFixed(1)} kg`, 40, 144)
+    doc.text(`Total lintel/sill concrete: ${projectSummary.totalLintelConcreteVolume.toFixed(3)} m³`, 40, 164)
+    doc.text(`Total lintel/sill steel: ${projectSummary.totalLintelSteelWeight.toFixed(2)} kg`, 40, 184)
+    doc.text(`Grand total: ${projectSummary.totalAmount.toFixed(2)}`, 40, 204)
+
+    let y = 234
+    projectSummary.items.forEach((item) => {
+      if (y > 760) {
+        doc.addPage()
+        y = 50
+      }
+      doc.setFont('helvetica', 'bold')
+      doc.text(`${item.name}`, 40, y)
+      doc.setFont('helvetica', 'normal')
+      doc.text(
+        `${item.numberOfBricks.toLocaleString()} bricks • ${item.cementBags.toFixed(1)} cement bags • ${item.lintelConcreteVolume.toFixed(3)} m³ lintel concrete`,
+        40,
+        y + 16,
+      )
+      y += 40
+    })
+
+    doc.save(`${safeName}.pdf`)
+  }, [projectName, projectSummary])
+
+  const exportProjectAsXlsx = useCallback(() => {
+    if (!projectSummary) return
+
+    const rows = [
+      [
+        'Component',
+        'Bricks',
+        'Cement Bags',
+        'Sand (kg)',
+        'Lintel Concrete (m3)',
+        'Lintel Steel (kg)',
+        'Brick Amount',
+        'Cement Amount',
+        'Sand Amount',
+        'Concrete Amount',
+        'Steel Amount',
+        'Total Amount',
+      ],
+      ...projectSummary.items.map((item) => [
+        item.name,
+        item.numberOfBricks,
+        item.cementBags.toFixed(2),
+        item.sandWeight.toFixed(1),
+        item.lintelConcreteVolume.toFixed(3),
+        item.lintelSteelWeight.toFixed(2),
+        item.brickAmount.toFixed(2),
+        item.cementAmount.toFixed(2),
+        item.sandAmount.toFixed(2),
+        item.concreteAmount.toFixed(2),
+        item.steelAmount.toFixed(2),
+        item.totalAmount.toFixed(2),
+      ]),
+      [
+        'TOTAL',
+        projectSummary.totalBricks,
+        projectSummary.totalCementBags.toFixed(2),
+        projectSummary.totalSandWeight.toFixed(1),
+        projectSummary.totalLintelConcreteVolume.toFixed(3),
+        projectSummary.totalLintelSteelWeight.toFixed(2),
+        projectSummary.totalBrickAmount.toFixed(2),
+        projectSummary.totalCementAmount.toFixed(2),
+        projectSummary.totalSandAmount.toFixed(2),
+        projectSummary.totalConcreteAmount.toFixed(2),
+        projectSummary.totalSteelAmount.toFixed(2),
+        projectSummary.totalAmount.toFixed(2),
+      ],
+    ]
+    const worksheet = XLSX.utils.aoa_to_sheet(rows)
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Estimate')
+    const safeName =
+      (projectName || 'Building Estimate').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'brickwork-estimate'
+    XLSX.writeFile(workbook, `${safeName}.xlsx`)
+  }, [projectName, projectSummary])
   const resetForm = useCallback(() => {
     const presets = UNIT_PRESETS.brickwork[globalUnit === 'm' ? 'metric' : 'imperial']
     const defaults = BrickworkCalculatorLib.getDefaultsForUnitSystem(
@@ -1188,6 +1533,8 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
       showStepByStep: false,
       area: '',
       openings: [],
+      lintels: [],
+      lintelMixType: 'M15',
       brickSizeType: 'standard',
       standardBrickSize: '240x115x57',
       customBrickInput: '',
@@ -1213,6 +1560,18 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
   const getBrickUnit = useCallback(() => (formData.unit === 'm' ? 'mm' : 'in'), [formData.unit])
   const getLengthUnit = useCallback(() => (formData.unit === 'm' ? 'm' : 'ft'), [formData.unit])
   const getAreaUnit = useCallback(() => (formData.unit === 'm' ? 'm²' : 'ft²'), [formData.unit])
+
+  // Step-by-step numbering shifts depending on whether openings and/or
+  // lintels/sills are present, so the numbers stay sequential either way.
+  let stepCounter = 1
+  const openingStepNumber = result && result.totalOpeningVolume > 0 ? ++stepCounter : undefined
+  const lintelStepNumber = result && result.totalLintelVolume > 0 ? ++stepCounter : undefined
+  const netVolumeStepNumber = result ? ++stepCounter : undefined
+  const brickVolumeStepNumber = result ? ++stepCounter : undefined
+  const brickCountStepNumber = result ? ++stepCounter : undefined
+  const mortarStepNumber = result ? ++stepCounter : undefined
+  const cementStepNumber = result ? ++stepCounter : undefined
+  const sandStepNumber = result ? ++stepCounter : undefined
 
   return (
     <div className="mx-auto max-w-4xl p-6 font-display">
@@ -1455,6 +1814,198 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                         <option value="m">Meters (m)</option>
                         <option value="ft">Feet (ft)</option>
                       </select>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Lintel / Sill Section */}
+            <div className="md:col-span-2">
+              <div className="flex flex-wrap justify-between items-center gap-2 mb-3 sm:mb-4">
+                <div>
+                  <label className="block font-medium text-heading dark:text-heading-dark text-sm sm:text-base">
+                    Lintel / Sill (RCC members, Optional)
+                  </label>
+                  <p className="mt-1 text-xs text-body/60 dark:text-body-dark/60">
+                    These spans are cast in concrete, not bricks — their volume is deducted from the
+                    brickwork and their own concrete &amp; rebar are calculated separately.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={addLintel}
+                  className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs sm:text-sm whitespace-nowrap"
+                >
+                  <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  Add Lintel/Sill
+                </button>
+              </div>
+
+              {formData.lintels.length > 0 && (
+                <div className="mb-3">
+                  <label className="mb-2 block text-sm font-medium text-heading dark:text-heading-dark">
+                    Lintel/Sill Concrete Mix
+                  </label>
+                  <select
+                    value={formData.lintelMixType}
+                    onChange={(e) => handleInputChange('lintelMixType', e.target.value)}
+                    className="w-full max-w-xs rounded-xl border border-slate-300 bg-white px-4 py-2 font-sans transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-600 dark:bg-slate-800"
+                  >
+                    {CONCRETE_MIX_TYPES.map((mix) => (
+                      <option key={mix.value} value={mix.value}>
+                        {mix.label} - {mix.strength}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {formData.lintels.map((lintel) => (
+                <div
+                  key={lintel.id}
+                  className="mb-4 p-4 border border-slate-200 rounded-lg dark:border-slate-600"
+                >
+                  <div className="flex flex-wrap justify-between items-center gap-2 mb-3">
+                    <input
+                      value={lintel.name}
+                      onChange={(e) => updateLintel(lintel.id, 'name', e.target.value)}
+                      className="rounded-lg border border-slate-300 bg-white px-2 py-1 text-sm font-medium dark:border-slate-600 dark:bg-slate-800"
+                    />
+                    <div className="flex items-center gap-3">
+                      <select
+                        value={lintel.kind}
+                        onChange={(e) => updateLintel(lintel.id, 'kind', e.target.value as 'lintel' | 'sill')}
+                        className="rounded-lg border border-slate-300 px-2 py-1 text-sm dark:border-slate-600 dark:bg-slate-800"
+                      >
+                        <option value="lintel">Lintel (over opening)</option>
+                        <option value="sill">Sill (under window)</option>
+                      </select>
+                      <button
+                        type="button"
+                        onClick={() => removeLintel(lintel.id)}
+                        className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Span Width</label>
+                      <div className="relative">
+                        <input
+                          type="number"
+                          value={lintel.spanWidth}
+                          onChange={(e) => updateLintel(lintel.id, 'spanWidth', e.target.value)}
+                          placeholder="e.g., opening width"
+                          className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                        />
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body/60 dark:text-body-dark/60">
+                          {lintel.unit}
+                        </div>
+                      </div>
+                      {errors[`lintelSpan_${lintel.id}`] && (
+                        <p className="text-red-600 text-xs mt-1">{errors[`lintelSpan_${lintel.id}`]}</p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Bearing (each side)</label>
+                      <div className="relative">
+                        <input
+                          type="number"
+                          value={lintel.bearingEachSide}
+                          onChange={(e) => updateLintel(lintel.id, 'bearingEachSide', e.target.value)}
+                          placeholder="e.g., 0.15"
+                          className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                        />
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body/60 dark:text-body-dark/60">
+                          {lintel.unit}
+                        </div>
+                      </div>
+                      {errors[`lintelBearing_${lintel.id}`] && (
+                        <p className="text-red-600 text-xs mt-1">{errors[`lintelBearing_${lintel.id}`]}</p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Depth/Thickness</label>
+                      <div className="relative">
+                        <input
+                          type="number"
+                          value={lintel.depth}
+                          onChange={(e) => updateLintel(lintel.id, 'depth', e.target.value)}
+                          placeholder="e.g., 0.15"
+                          className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                        />
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body/60 dark:text-body-dark/60">
+                          {lintel.unit}
+                        </div>
+                      </div>
+                      {errors[`lintelDepth_${lintel.id}`] && (
+                        <p className="text-red-600 text-xs mt-1">{errors[`lintelDepth_${lintel.id}`]}</p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Unit</label>
+                      <select
+                        value={lintel.unit}
+                        onChange={(e) => updateLintel(lintel.id, 'unit', e.target.value as 'm' | 'ft')}
+                        className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                      >
+                        <option value="m">Meters (m)</option>
+                        <option value="ft">Feet (ft)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Main Bars (count)</label>
+                      <input
+                        type="number"
+                        value={lintel.mainBarCount}
+                        onChange={(e) => updateLintel(lintel.id, 'mainBarCount', e.target.value)}
+                        placeholder="2"
+                        className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Main Bar Ø mm</label>
+                      <input
+                        type="number"
+                        value={lintel.mainBarDiaMm}
+                        onChange={(e) => updateLintel(lintel.id, 'mainBarDiaMm', e.target.value)}
+                        placeholder="12"
+                        className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Stirrup Ø mm</label>
+                      <input
+                        type="number"
+                        value={lintel.stirrupDiaMm}
+                        onChange={(e) => updateLintel(lintel.id, 'stirrupDiaMm', e.target.value)}
+                        placeholder="8"
+                        className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Stirrup Spacing mm</label>
+                      <input
+                        type="number"
+                        value={lintel.stirrupSpacingMm}
+                        onChange={(e) => updateLintel(lintel.id, 'stirrupSpacingMm', e.target.value)}
+                        placeholder="150"
+                        className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Clear Cover mm</label>
+                      <input
+                        type="number"
+                        value={lintel.clearCoverMm}
+                        onChange={(e) => updateLintel(lintel.id, 'clearCoverMm', e.target.value)}
+                        placeholder="25"
+                        className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                      />
                     </div>
                   </div>
                 </div>
@@ -1741,6 +2292,62 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                   </tbody>
                 </table>
               </div>
+
+              {/* Lintel / Sill Results */}
+              {result.totalLintelVolume > 0 && (
+                <div className="mb-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
+                    <h3 className="mb-4 text-lg font-semibold text-heading dark:text-heading-dark">
+                      Lintel/Sill Concrete
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-body/70 dark:text-body-dark/70">Volume (deducted from bricks)</span>
+                        <span className="font-mono font-semibold">{result.lintelConcreteVolume.toFixed(3)} m³</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-body/70 dark:text-body-dark/70">Mix Ratio</span>
+                        <span className="font-mono font-semibold">{result.lintelMixRatio}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
+                    <h3 className="mb-4 text-lg font-semibold text-heading dark:text-heading-dark">
+                      Lintel/Sill Cement &amp; Sand
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-body/70 dark:text-body-dark/70">Cement</span>
+                        <span className="font-mono font-semibold">
+                          {result.lintelCementWeight.toFixed(1)} kg (~{result.lintelCementBags} bags)
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-body/70 dark:text-body-dark/70">Sand</span>
+                        <span className="font-mono font-semibold">{result.lintelSandWeight.toFixed(1)} kg</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-body/70 dark:text-body-dark/70">Aggregate</span>
+                        <span className="font-mono font-semibold">{result.lintelAggregateWeight.toFixed(1)} kg</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl border border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
+                    <h3 className="mb-4 text-lg font-semibold text-heading dark:text-heading-dark">
+                      Lintel/Sill Reinforcement
+                    </h3>
+                    <div className="flex items-center justify-between rounded-lg bg-slate-100 px-4 py-3 dark:bg-slate-800">
+                      <span className="font-medium text-body/70 dark:text-body-dark/70">Total Steel Weight</span>
+                      <span className="font-mono text-lg font-bold text-primary">
+                        {result.lintelSteelWeight.toFixed(2)} kg
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <PremiumFeatureGate
                 calculatorId={CALC_ID}
                 title="Brickwork Estimate Summary"
@@ -1755,6 +2362,8 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                       { label: 'Cement', value: result.cementWeight.toFixed(1), unit: 'kg' },
                       { label: 'Sand', value: result.sandWeight.toFixed(1), unit: 'kg' },
                       { label: 'Mortar volume', value: result.mortarVolume.toFixed(3), unit: 'm³' },
+                      { label: 'Lintel/sill concrete', value: result.lintelConcreteVolume.toFixed(3), unit: 'm³' },
+                      { label: 'Lintel/sill steel', value: result.lintelSteelWeight.toFixed(2), unit: 'kg' },
                     ])
                   }
                   className="rounded-lg bg-primary px-3 py-2 text-sm font-medium text-white"
@@ -1769,6 +2378,8 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                       { label: 'Cement', value: result.cementWeight.toFixed(1), unit: 'kg' },
                       { label: 'Sand', value: result.sandWeight.toFixed(1), unit: 'kg' },
                       { label: 'Mortar volume', value: result.mortarVolume.toFixed(3), unit: 'm³' },
+                      { label: 'Lintel/sill concrete', value: result.lintelConcreteVolume.toFixed(3), unit: 'm³' },
+                      { label: 'Lintel/sill steel', value: result.lintelSteelWeight.toFixed(2), unit: 'kg' },
                     ])
                   }
                 >
@@ -1782,12 +2393,201 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                       { label: 'Cement', value: result.cementWeight.toFixed(1), unit: 'kg' },
                       { label: 'Sand', value: result.sandWeight.toFixed(1), unit: 'kg' },
                       { label: 'Mortar volume', value: result.mortarVolume.toFixed(3), unit: 'm³' },
+                      { label: 'Lintel/sill concrete', value: result.lintelConcreteVolume.toFixed(3), unit: 'm³' },
+                      { label: 'Lintel/sill steel', value: result.lintelSteelWeight.toFixed(2), unit: 'kg' },
                     ])
                   }
                 >
                   Export Text
                 </PremiumLockedAction>
               </div>
+
+              {/* Premium Promo Line - matches concrete calculator styling */}
+              <div className="mt-6 rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
+                <b>
+                  Unlock Premium to Calculate for Multiple Walls at Once{' '}
+                  <i className="text-amber-600 dark:text-amber-400">by viewing ads</i>
+                </b>
+              </div>
+
+              {/* Project Estimate Summary */}
+              {projectSummary && (
+                <div className="mt-6 border-t border-slate-200/20 bg-white/70 p-6 dark:border-slate-700/30 dark:bg-slate-900/60">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h2 className="text-xl font-semibold text-heading dark:text-heading-dark">
+                        Building Estimate Summary
+                      </h2>
+                      <p className="mt-1 text-sm text-body/70 dark:text-body-dark/70">
+                        {projectItems.length} component(s) saved locally. Rates apply per component below.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                    <input
+                      value={projectName}
+                      onChange={(e) => setProjectName(e.target.value)}
+                      placeholder="Project name"
+                      className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800"
+                    />
+                    <div className="flex flex-wrap gap-2">
+                      <PremiumLockedAction
+                        calculatorId={CALC_ID}
+                        onAuthorizedClick={exportProjectAsPdf}
+                        className="rounded-lg bg-primary px-3 py-2 text-sm font-medium text-white"
+                      >
+                        Export PDF
+                      </PremiumLockedAction>
+                      <PremiumLockedAction calculatorId={CALC_ID} onAuthorizedClick={exportProjectAsXlsx}>
+                        Export XLSX
+                      </PremiumLockedAction>
+                      <PremiumLockedAction calculatorId={CALC_ID} onAuthorizedClick={downloadProjectReport}>
+                        Download Text
+                      </PremiumLockedAction>
+                      <button
+                        type="button"
+                        onClick={clearProject}
+                        className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 dark:border-red-800 dark:text-red-400"
+                      >
+                        Clear Project
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap items-center gap-2">
+                    <div className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+                      {projectItems.length} components
+                    </div>
+                    <div className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                      Auto-saved locally
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    <div className="rounded-xl border border-slate-200/20 bg-slate-50 p-4 dark:border-slate-700/30 dark:bg-slate-800/50">
+                      <p className="text-sm text-body/70 dark:text-body-dark/70">Total Bricks</p>
+                      <p className="mt-1 font-mono text-lg font-semibold">
+                        {projectSummary.totalBricks.toLocaleString()} pcs
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-slate-200/20 bg-slate-50 p-4 dark:border-slate-700/30 dark:bg-slate-800/50">
+                      <p className="text-sm text-body/70 dark:text-body-dark/70">Total Cement</p>
+                      <p className="mt-1 font-mono text-lg font-semibold">
+                        {projectSummary.totalCementBags.toFixed(1)} bags
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-slate-200/20 bg-slate-50 p-4 dark:border-slate-700/30 dark:bg-slate-800/50">
+                      <p className="text-sm text-body/70 dark:text-body-dark/70">Lintel/Sill Concrete</p>
+                      <p className="mt-1 font-mono text-lg font-semibold">
+                        {projectSummary.totalLintelConcreteVolume.toFixed(3)} m³
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-slate-200/20 bg-slate-50 p-4 dark:border-slate-700/30 dark:bg-slate-800/50">
+                      <p className="text-sm text-body/70 dark:text-body-dark/70">Grand Total</p>
+                      <p className="mt-1 font-mono text-lg font-semibold text-primary">
+                        {projectSummary.totalAmount.toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 rounded-xl border border-slate-200/20 bg-white/70 p-4 dark:border-slate-700/30 dark:bg-slate-900/60">
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="font-semibold text-heading dark:text-heading-dark">Component Breakdown</h3>
+                      <span className="text-sm text-body/70 dark:text-body-dark/70">
+                        Rates can be edited per component
+                      </span>
+                    </div>
+                    <div className="mt-4 space-y-3">
+                      {projectSummary.items.map((item) => (
+                        <div
+                          key={item.id}
+                          className="rounded-lg border border-slate-200/20 bg-slate-50 p-3 dark:border-slate-700/30 dark:bg-slate-800/40"
+                        >
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                              <p className="font-medium text-heading dark:text-heading-dark">{item.name}</p>
+                              <p className="text-sm text-body/70 dark:text-body-dark/70">
+                                {item.numberOfBricks.toLocaleString()} bricks • {item.cementBags.toFixed(1)} cement
+                                bags • {item.sandWeight.toFixed(1)} kg sand
+                                {item.lintelConcreteVolume > 0 &&
+                                  ` • ${item.lintelConcreteVolume.toFixed(3)} m³ lintel concrete • ${item.lintelSteelWeight.toFixed(2)} kg steel`}
+                              </p>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeProjectItem(item.id)}
+                              className="rounded-lg border border-red-200 px-3 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                          <div className="mt-3 grid gap-3 md:grid-cols-3 xl:grid-cols-5">
+                            <label className="text-sm text-body/70 dark:text-body-dark/70">
+                              Brick Rate (per pc)
+                              <input
+                                type="number"
+                                min="0"
+                                value={projectRateInputs[item.id]?.brickRate ?? ''}
+                                onChange={(e) => updateProjectRate(item.id, 'brickRate', e.target.value)}
+                                className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                              />
+                            </label>
+                            <label className="text-sm text-body/70 dark:text-body-dark/70">
+                              Cement Rate (per bag)
+                              <input
+                                type="number"
+                                min="0"
+                                value={projectRateInputs[item.id]?.cementRate ?? ''}
+                                onChange={(e) => updateProjectRate(item.id, 'cementRate', e.target.value)}
+                                className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                              />
+                            </label>
+                            <label className="text-sm text-body/70 dark:text-body-dark/70">
+                              Sand Rate (per kg)
+                              <input
+                                type="number"
+                                min="0"
+                                value={projectRateInputs[item.id]?.sandRate ?? ''}
+                                onChange={(e) => updateProjectRate(item.id, 'sandRate', e.target.value)}
+                                className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                              />
+                            </label>
+                            <label className="text-sm text-body/70 dark:text-body-dark/70">
+                              Concrete Rate (per m³, lintel/sill)
+                              <input
+                                type="number"
+                                min="0"
+                                value={projectRateInputs[item.id]?.concreteRate ?? ''}
+                                onChange={(e) => updateProjectRate(item.id, 'concreteRate', e.target.value)}
+                                className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                              />
+                            </label>
+                            <label className="text-sm text-body/70 dark:text-body-dark/70">
+                              Steel Rate (per kg, lintel/sill)
+                              <input
+                                type="number"
+                                min="0"
+                                value={projectRateInputs[item.id]?.steelRate ?? ''}
+                                onChange={(e) => updateProjectRate(item.id, 'steelRate', e.target.value)}
+                                className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                              />
+                            </label>
+                          </div>
+                          <div className="mt-3 text-right text-sm font-mono text-body/80 dark:text-body-dark/80">
+                            Component total: <strong>{item.totalAmount.toFixed(2)}</strong>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-6 rounded-xl border border-amber-200/40 bg-amber-50 p-4 text-amber-900 dark:border-amber-700/30 dark:bg-amber-900/30 dark:text-amber-100">
+                    <h3 className="font-semibold">Project Report Preview</h3>
+                    <pre className="mt-3 whitespace-pre-wrap text-sm">{projectSummary.reportText}</pre>
+                  </div>
+                </div>
+              )}
 
               {/* Step-by-step Calculation */}
               {formData.showStepByStep && (
@@ -1858,7 +2658,8 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                             )}
                           </div>
                           <p className="text-sm text-blue-800/80 dark:text-blue-200/80">
-                            Total volume of the wall before deducting openings.
+                            Total volume of the wall before deducting openings
+                            {result.totalLintelVolume > 0 ? ' and lintel/sill concrete' : ''}.
                           </p>
                         </div>
                       </div>
@@ -1869,7 +2670,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                       <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-amber-500">
                         <div className="flex items-start gap-3">
                           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-500 text-white font-bold text-sm">
-                            2
+                            {openingStepNumber}
                           </div>
                           <div className="flex-1">
                             <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-2">
@@ -1901,11 +2702,43 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                       </div>
                     )}
 
-                    {/* Step 3 */}
+                    {/* Step - Lintel/Sill deduction */}
+                    {result.totalLintelVolume > 0 && (
+                      <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-orange-500">
+                        <div className="flex items-start gap-3">
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white font-bold text-sm">
+                            {lintelStepNumber}
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-orange-900 dark:text-orange-100 mb-2">
+                              Deduct Lintel/Sill Concrete Volume
+                            </h4>
+                            <div className="bg-slate-100 dark:bg-slate-700/50 rounded p-2 mb-2 font-mono text-sm">
+                              {formData.lintels.map((lintel, i) => (
+                                <div key={lintel.id} className="text-center">
+                                  {lintel.name}: ({lintel.spanWidth} + 2×{lintel.bearingEachSide}) ×{' '}
+                                  {lintel.depth} × {formData.wallThickness}
+                                </div>
+                              ))}
+                              <div className="border-t border-slate-300 dark:border-slate-600 mt-1 pt-1 text-center font-semibold">
+                                Total Lintel/Sill Concrete = {result.totalLintelVolume.toFixed(4)} m³
+                              </div>
+                            </div>
+                            <p className="text-sm text-orange-800/80 dark:text-orange-200/80">
+                              This portion is cast as RCC (concrete + rebar), not brick masonry — its
+                              volume comes out of the brick/mortar calculation below and is estimated
+                              separately as concrete.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Net Wall Volume */}
                     <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-green-500">
                       <div className="flex items-start gap-3">
                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-500 text-white font-bold text-sm">
-                          {result.totalOpeningVolume > 0 ? '3' : '2'}
+                          {netVolumeStepNumber}
                         </div>
                         <div className="flex-1">
                           <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">
@@ -1913,23 +2746,27 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                           </h4>
                           <div className="bg-slate-100 dark:bg-slate-700/50 rounded p-2 mb-2 font-mono text-sm text-center">
                             Net Volume = {result.wallVolume.toFixed(4)} -{' '}
-                            {result.totalOpeningVolume.toFixed(4)} ={' '}
+                            {result.totalOpeningVolume.toFixed(4)}
+                            {result.totalLintelVolume > 0 && ` - ${result.totalLintelVolume.toFixed(4)}`}
+                            {' = '}
                             <strong className="text-green-700 dark:text-green-400">
                               {result.netWallVolume.toFixed(4)} m³
                             </strong>
                           </div>
                           <p className="text-sm text-green-800/80 dark:text-green-200/80">
-                            Actual masonry volume after openings deduction.
+                            Actual brick masonry volume after openings
+                            {result.totalLintelVolume > 0 ? ' and lintel/sill concrete ' : ' '}
+                            deduction.
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Step 4 */}
+                    {/* Brick Volume (with mortar) */}
                     <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-purple-500">
                       <div className="flex items-start gap-3">
                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-purple-500 text-white font-bold text-sm">
-                          {result.totalOpeningVolume > 0 ? '4' : '3'}
+                          {brickVolumeStepNumber}
                         </div>
                         <div className="flex-1">
                           <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">
@@ -1969,7 +2806,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                     <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-indigo-500">
                       <div className="flex items-start gap-3">
                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-500 text-white font-bold text-sm">
-                          {result.totalOpeningVolume > 0 ? '5' : '4'}
+                          {brickCountStepNumber}
                         </div>
                         <div className="flex-1">
                           <h4 className="font-semibold text-indigo-900 dark:text-indigo-100 mb-2">
@@ -2021,7 +2858,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                     <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-cyan-500">
                       <div className="flex items-start gap-3">
                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-cyan-500 text-white font-bold text-sm">
-                          {result.totalOpeningVolume > 0 ? '6' : '5'}
+                          {mortarStepNumber}
                         </div>
                         <div className="flex-1">
                           <h4 className="font-semibold text-cyan-900 dark:text-cyan-100 mb-2">
@@ -2051,7 +2888,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                     <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-rose-500">
                       <div className="flex items-start gap-3">
                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-rose-500 text-white font-bold text-sm">
-                          {result.totalOpeningVolume > 0 ? '7' : '6'}
+                          {cementStepNumber}
                         </div>
                         <div className="flex-1">
                           <h4 className="font-semibold text-rose-900 dark:text-rose-100 mb-2">
@@ -2088,7 +2925,7 @@ export default function BrickworkCalculator({ globalUnit = 'm' }: BrickworkCalcu
                     <div className="rounded-lg bg-white/60 p-4 dark:bg-slate-800/60 border-l-4 border-yellow-500">
                       <div className="flex items-start gap-3">
                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-yellow-500 text-white font-bold text-sm">
-                          {result.totalOpeningVolume > 0 ? '8' : '7'}
+                          {sandStepNumber}
                         </div>
                         <div className="flex-1">
                           <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2">
